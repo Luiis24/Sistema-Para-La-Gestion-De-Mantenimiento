@@ -1,0 +1,27 @@
+.img-logo-sena{
+    width: 70px;
+    filter: invert(37%) sepia(94%) saturate(1723%) hue-rotate(93deg) brightness(92%) contrast(104%);
+}
+.logo-sena{
+    display: flex;
+    align-items: center;
+}
+.titulo-sena{
+    color: rgb(0, 173, 0);
+    font-size: 32px;
+    font-family: sans-serif;
+    margin-left: 10px;
+    font-weight: bold;
+    user-select: none;
+}
+.titulo-taller{
+    color: rgb(0, 173, 0);
+    font-size: 20px;
+    font-family: sans-serif;
+    margin-left: 10px;
+    font-weight: bold;
+    user-select: none;
+}
+
+
+

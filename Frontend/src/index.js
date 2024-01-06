@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Inicio_sesion } from './components/Inicio_de_sesion/Inicio_sesion';
 import reportWebVitals from './reportWebVitals';
+import { Inicio_sesion } from './components/Inicio_de_sesion/Inicio_sesion';
+import { Titulo_sena_cb } from './components/Titulo_sena_cb/Titulo_sena_cb';
+import { Menu_principal } from './components/Menu_principal/Menu_principal';
+import { Registro_aprendiz } from './components/Registro_aprendiz/Registro_aprendiz';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-   <Inicio_sesion />
+  
+  <Titulo_sena_cb/>
+  <Registro_aprendiz/>
+
   </React.StrictMode>
 );
 
