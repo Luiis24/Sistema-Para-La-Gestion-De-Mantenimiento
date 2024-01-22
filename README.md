@@ -1,4 +1,5 @@
 Descripción del Proyecto:
+
 Contexto del Proyecto:
 
 Este proyecto tiene como objetivo facilitar la gestión del mantenimiento de maquinaria industrial en entornos diversos.
