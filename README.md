@@ -25,7 +25,9 @@ PostgreSQL se emplea como el sistema de gestión de bases de datos relacional.
 
 Frontend:
 
-La interfaz de usuario se construye con React.js, una biblioteca de JavaScript para construir interfaces de usuario interactivas.
+La interfaz de usuario se construye con ElectronJs, Electron.js es una plataforma para desarrollar aplicaciones de escritorio usando tecnologías web (HTML, CSS y JavaScript). 
+React.js, una biblioteca de JavaScript para construir interfaces de usuario interactivas.
+
 Para el diseño y estilo, incorporamos:
 
 - React y React-DOM: Framework de interfaz de usuario para construir componentes reutilizables y manejar la interfaz de usuario en la web.
