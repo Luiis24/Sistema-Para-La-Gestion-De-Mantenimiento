@@ -13,9 +13,22 @@ export const Registro_aprendiz = () => {
         <h3>Nombre</h3>
         <input className='inpt-rg-nombre' placeholder="Nombre completo" type="text" id="" name="" />
         <h3 className='h3-fila-2'>Tipo de documento</h3>
-        <input className='inpt-rg-tipo-doc' placeholder="Tipo de documento" type="text" id="" name="" />
+        <select className='inpt-rg-tipo-doc' id='tipo-de-documento-aprendiz'>
+        <option disable selected hidden>Tipo de documento</option>
+        <option>Cédula de Ciudadania</option>
+        <option>Tarjeta de Identidad</option>
+        <option>Cédula de Extranjeria</option>
+        <option>Otro</option>
+        </select>
         <h3 className='h3-fila-3'>Programa</h3>
-        <input className='inpt-rg-programa' placeholder="Programa de formación" type="text" id="" name="" />
+         <select className='inpt-rg-programa' id='tipo-de-documento-aprendiz'>
+        <option disable selected hidden>Programa de formación</option>
+        <option>Mantenimiento electromecanico</option>
+        <option>Tecnólogo en mantenimiento</option>
+        <option>Tecnico en mantenimiento mecanico</option>
+        <option>Tecnico de mecanizado</option>
+        </select>
+
         </div>
         <div className='inputs-segunda-fila-registro-aprendiz'>
         <h3>Correo Electronico</h3>
@@ -35,6 +48,7 @@ export const Registro_aprendiz = () => {
       </div>  
        </div>
         <div className='btn-terminar-registro'>
+            <button className='boton-cancelar-registro' type='submit'>⮜ ‎ Atrás</button>
              <button className='boton-registrar' type='submit'>Registrar</button>
              </div>
       </div>
@@ -43,20 +57,7 @@ export const Registro_aprendiz = () => {
 
 
 
-       <div className="animacion" >
-            <ul className="cuadros">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
-    </div >
+      
 
       </div>
       

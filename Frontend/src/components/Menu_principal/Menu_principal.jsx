@@ -45,20 +45,6 @@ export const Menu_principal = () => {
 
 
 
-      <div className="animacion" >
-            <ul className="cuadros">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
-    </div >
       </div>
       </div>
       

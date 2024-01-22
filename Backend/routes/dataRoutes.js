@@ -3,11 +3,12 @@ const router = express.Router();
 const dataController = require('../controllers/dataControllers');
 
 
+router.post('/registerInstructor', dataController.registerInstructor);
+
+
 router.get('/Products', dataController.getProducts);
 router.get('/usuarios', dataController.usuarios);
 router.get('/detalles/:idproducto', dataController.getProductById);
-
-router.post('/registerUser', dataController.registerUser);
 
 
 router.post('/login', dataController.loginUser);

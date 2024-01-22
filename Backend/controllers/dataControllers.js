@@ -1,13 +1,47 @@
 const { Pool } = require('pg');
 const { CONFIG_BD } = require('../config/db');
-const e = require('express');
-
 const { rows } = require('pg/lib/defaults');
-
-
-
-
+const express = require('express');
 const pool = new Pool(CONFIG_BD)
+
+
+// Posts:
+
+
+// Registrar Un Instructor:
+
+const registerInstructor = (req, res) => {
+    console.log(req.body);
+    const { cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor } = req.body;
+
+    if (!cc_instructor || !nombre_instructor || !email_instructor || !telefono_instructor || !password_instructor) {
+        return res.status(400).json({ error: 'Falta informacion requerida' });
+    }
+
+    pool.query('SELECT * FROM instructores WHERE cc_instructor = $1 OR telefono_instructor = $2 OR email_instructor = $3', [cc_instructor, telefono_instructor, email_instructor], (error, result) => {
+        if (error) {
+            console.error('Error al consultar la base de datos', error);
+            return res.status(500).json({ error: 'Error al registrar el Instructor', error });
+        }
+
+        if (result.rows.length > 0) {
+            return res.status(409).json({ error: 'El Instructor ya existe' });
+        }
+
+        pool.query('INSERT INTO instructores (cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor) VALUES ($1, $2, $3, $4, $5)', [cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor], (error) => {
+            if (error) {
+                console.error('Error al insertar el Instructor en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar el Instructor' });
+            }
+
+            res.status(201).json({ message: 'Instructor registrado exitosamente' });
+        });
+    });
+};
+
+
+// Registrar Un Aprendiz:
+
 
 const getProducts = (req, res)=> {
     pool.query('SELECT * FROM public."productos"', (error, result) => {
@@ -33,54 +67,13 @@ const getProducts = (req, res)=> {
         };
 
 
-    const registerUser = (req, res)=>{
-        console.log (req.body)
-        const { username, email, password } = req.body;
-        
-        if (!username || !email || !password) {
-            return res.status(400).json({ error: 'Falta informacion requerida' });
-        }
-        pool.query('SELECT * FROM usuarios Where Username = $1 OR email = $2', [username, email], (error, result) => {
-            if(error){
-                console.error('Error al consultar la base de datos', error);
-                return res.status(500).json ({error: 'Error al registrar el usuario', error});
-            }
-            if (result.rows.length > 0){
-           
-                return res.status(409).json({ error: 'El usuario ya existe'});
-            }
-            pool.query('INSERT INTO usuarios (username, email, password) VALUES ($1, $2, $3)', [username,email,password],(error)=>{
-                if (error){
-                    console.error('Error al insertar el ususario en la base de datos', error);
-                    return res.status(500).json({ error: 'Error al registrar el usuario' });
-                }
-                res.status(201).json({ message: 'Usuario registrado exitosamente'});
-            })
-        });
-    };
-    // const loginUser = async (req, res) => {
-    //     const { email, password } = req.body;
+
+
+
     
-    //     if (!email || !password) {
-    //         return res.status(400).json({ error: 'Falta informacion requerida' });
-    //     }
-    //     try {
-    //         const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
-    //         if (result.rows.length === 0) {
-    //             return res.status(401).json({ error: 'Usuario no encontrado' });
-    //         }
-    //         const user = result.rows[0];
-    
-    //         const passwordMatch = await bcrypt.compare(password, user.password);
-    //         if (!passwordMatch) {
-    //             return res.status(401).json({ error: 'Contraseña incorrecta' });
-    //         }
-    //         res.status(200).json({ message: 'Inicio de sesión exitoso' });
-    //     } catch (error) {
-    //         console.error('Error al consultar la base de datos', error);
-    //         return res.status(500).json({ error: 'Error al iniciar sesión' });
-    //     }
-    // };
+
+
+
     
     const loginUser = async (req, res) => {
         const { email, password } = req.body;
@@ -237,8 +230,8 @@ const getProducts = (req, res)=> {
 
   
   module.exports = {
+    registerInstructor,
     getProducts,
-    registerUser,
     usuarios,
     loginUser,
     registerProdutcs,
