@@ -186,6 +186,42 @@ const getAprendices = (req, res) => {
 
 
 
+
+// Hoja de inspeccion:
+
+
+// Registro hoja de inspeccion (Post):
+
+
+
+
+
+const registerHojaInspeccion = (req, res) => {
+    console.log(req.body);
+    const { fecha, hora_inicio, hora_fin } = req.body;
+
+    if (!fecha || !hora_inicio || !hora_fin ) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+
+    pool.query(
+        'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin) VALUES ($1, $2, $3)',
+        [fecha, hora_inicio, hora_fin],
+        (error) => {
+            if (error) {
+                console.error('Error al insertar el Hoja de inspeccion en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar el Hoja de inspeccion' });
+            }
+
+            res.status(201).json({ message: 'Hoja de inspección registrado exitosamente' });
+        }   
+    );
+};
+
+
+
+
    
       
     
@@ -197,6 +233,7 @@ const getAprendices = (req, res) => {
     loginInstructor,
     registerAprendiz,
     getAprendices,
+    registerHojaInspeccion
     
     
     
