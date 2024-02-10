@@ -60,10 +60,10 @@ export const Registro_instructor = () => {
     
       <div className='Registro_instructor'>
       <form onSubmit={enviar}>
-      <input className='' placeholder="cc" type="text" name="cc_instructor" onChange={(express) => setCc_instructor(express.target.value)} />
+      <input className='' placeholder="cc" type="number" name="cc_instructor" onChange={(express) => setCc_instructor(express.target.value)} />
       <input className='' placeholder="Nombre completo" type="text" name="nombre_instructor" onChange={(express) => setNombre_instructor(express.target.value)} />
       <input className='' placeholder="Correo Electronico" type="text" name="email_instructor" onChange={(express) => setEmail_instructor(express.target.value)} />
-      <input className='' placeholder="Numero de Telefono" type="text" name="telefono_intructor" onChange={(express) => setTelefono_instructor(express.target.value)} />
+      <input className='' placeholder="Numero de Telefono" type="number" name="telefono_intructor" onChange={(express) => setTelefono_instructor(express.target.value)} />
       <input className='' placeholder="password" type="password" name="password_instructor" onChange={(express) => setPassword_instructor(express.target.value)} />
          <button className='btn' type='submit'>
             Registrarse
