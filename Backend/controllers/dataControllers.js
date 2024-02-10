@@ -80,6 +80,28 @@ const getInstructores = (req, res) => {
 
 
 
+// Iniciar Sesion Instructor
+
+const loginInstructor = (req, res) => {
+    const { cc_instructor, password_instructor } = req.body;
+
+    if (!cc_instructor || !password_instructor) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query('SELECT * FROM instructores WHERE cc_instructor = $1 AND password_instructor = $2', [cc_instructor, password_instructor], (error, result) => {
+        if (error) {
+            console.error('Error al consultar la base de datos', error);
+            return res.status(500).json({ error: 'Error al intentar iniciar sesión' });
+        }
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: 'Credenciales incorrectas' });
+        }
+
+        res.status(200).json({ message: 'Inicio de sesión exitoso' });
+    });
+};
 
 
 
@@ -153,7 +175,11 @@ const getAprendices = (req, res) => {
     });
 };
 
-module.exports = { getAprendices };
+
+
+
+
+
 
 
 
@@ -168,6 +194,7 @@ module.exports = { getAprendices };
   module.exports = {
     registerInstructor,
     getInstructores,
+    loginInstructor,
     registerAprendiz,
     getAprendices,
     
