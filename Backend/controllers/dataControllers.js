@@ -280,7 +280,32 @@ const registerComponenteChecklist = (req, res) => {
       
 // Check List - Estado de los componentes (Post):
 
+const registerCheckList = async (req, res) => {
+    try {
+        // Obtener la información del cuerpo del request
+        const { checklistData } = req.body;
 
+        // Validar si la información está presente
+        if (!checklistData || !Array.isArray(checklistData)) {
+            return res.status(400).json({ error: 'Datos de checklist no proporcionados correctamente' });
+        }
+
+        // Iterar sobre los datos y realizar la inserción en la base de datos
+        for (const { id_componente, estado_componente } of checklistData) {
+            await pool.query(
+                'INSERT INTO checklist (id_componente, estado_componente) VALUES ($1, $2)',
+                [id_componente, estado_componente]
+            );
+        }
+
+        // Enviar respuesta exitosa
+        res.status(201).json({ message: 'Estados de componentes registrados exitosamente' });
+    } catch (error) {
+        console.error('Error al registrar estados de componentes', error);
+        res.status(500).json({ error: 'Error interno del servidor al registrar estados de componentes' });
+    }
+    
+};
 
 
 
@@ -301,7 +326,10 @@ const registerComponenteChecklist = (req, res) => {
     loginAprendiz,
     registerHojaInspeccion,
     registerComponenteChecklist,
-    getComponenteChecklist
+    getComponenteChecklist,
+    registerCheckList,
+  
+    
     
    
     

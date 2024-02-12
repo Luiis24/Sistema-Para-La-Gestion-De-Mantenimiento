@@ -14,8 +14,9 @@ router.get('/aprendices', dataController.getAprendices);
 router.post('/registerHojaInspeccion', dataController.registerHojaInspeccion);
 
 router.post('/registerComponenteChecklist', dataController.registerComponenteChecklist);
-router.get('/componenteChecklist', dataController.getComponenteChecklist)
+router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
+router.post('/registerCheckList', dataController.registerCheckList);
 
 
 module.exports = router;
