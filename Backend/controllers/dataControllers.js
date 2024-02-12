@@ -7,15 +7,6 @@ const pool = new Pool(CONFIG_BD)
 
 
 
-
-
-
-
-
-
-
-
-
 // Instructor
 
 // Registrar Un Instructor (Post):
@@ -92,28 +83,16 @@ const loginInstructor = (req, res) => {
     pool.query('SELECT * FROM instructores WHERE cc_instructor = $1 AND password_instructor = $2', [cc_instructor, password_instructor], (error, result) => {
         if (error) {
             console.error('Error al consultar la base de datos', error);
-            return res.status(500).json({ error: 'Error al intentar iniciar sesión' });
+            return res.status(500).json({ error: 'Error al intentar iniciar sesión de instructor' });
         }
 
         if (result.rows.length === 0) {
-            return res.status(401).json({ error: 'Credenciales incorrectas' });
+            return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
         res.status(200).json({ message: 'Inicio de sesión exitoso' });
     });
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,7 +107,7 @@ const registerAprendiz = (req, res) => {
     console.log(req.body);
     const { tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz } = req.body;
 
-    if (!tipo_doc_aprendiz || !num_doc_aprendiz || !ficha_aprendiz || !programa_aprendiz || !nombre_aprendiz || !telefono_aprendiz || !equipo_aprendiz || !password_aprendiz) {
+    if (!tipo_doc_aprendiz || !num_doc_aprendiz || !ficha_aprendiz || !programa_aprendiz || !nombre_aprendiz || !email_aprendiz || !telefono_aprendiz || !equipo_aprendiz || !password_aprendiz) {
         return res.status(400).json({ error: 'Falta información requerida' });
     }
 
@@ -147,16 +126,33 @@ const registerAprendiz = (req, res) => {
     // Convertir telefono_aprendiz a número entero
     const telefono_aprendiz_num = parseInt(telefono_aprendiz, 10);
 
+    // Consultar si ya existe un aprendiz con el mismo número de documento, email o teléfono
     pool.query(
-        'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-        [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz],
-        (error) => {
+        'SELECT * FROM aprendices WHERE num_doc_aprendiz = $1 OR email_aprendiz = $2 OR telefono_aprendiz = $3',
+        [num_doc_aprendiz, email_aprendiz, telefono_aprendiz_num],
+        (error, result) => {
             if (error) {
-                console.error('Error al insertar el Aprendiz en la base de datos', error);
+                console.error('Error al consultar la base de datos', error);
                 return res.status(500).json({ error: 'Error al registrar el Aprendiz' });
             }
 
-            res.status(201).json({ message: 'Aprendiz registrado exitosamente' });
+            if (result.rows.length > 0) {
+                return res.status(409).json({ error: 'El Aprendiz ya existe' });
+            }
+
+            // Si no hay conflictos, proceder con la inserción
+            pool.query(
+                'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+                [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz],
+                (error) => {
+                    if (error) {
+                        console.error('Error al insertar el Aprendiz en la base de datos', error);
+                        return res.status(500).json({ error: 'Error al registrar el Aprendiz' });
+                    }
+
+                    res.status(201).json({ message: 'Aprendiz registrado exitosamente' });
+                }
+            );
         }
     );
 };
@@ -177,13 +173,35 @@ const getAprendices = (req, res) => {
 
 
 
+// Iniciar sesion aprendiz:
 
+const loginAprendiz = (req, res) => {
+    const { num_doc_aprendiz, password_aprendiz } = req.body;
 
+    if (!num_doc_aprendiz || !password_aprendiz) {
+        return res.status(400).json({ error: 'Falta información requerida de Aprendiz' });
+    }
 
+    // Consultar si existe un aprendiz con el número de documento y contraseña proporcionados
+    pool.query(
+        'SELECT * FROM aprendices WHERE num_doc_aprendiz = $1 AND password_aprendiz = $2',
+        [num_doc_aprendiz, password_aprendiz],
+        (error, result) => {
+            if (error) {
+                console.error('Error al consultar la base de datos', error);
+                return res.status(500).json({ error: 'Error en el servidor de Aprendiz' });
+            }
 
-
-
-
+            if (result.rows.length === 1) {
+                // Inicio de sesión exitoso
+                return res.status(200).json({ message: 'Inicio de sesión exitoso' });
+            } else {
+                // Credenciales inválidas
+                return res.status(401).json({ error: 'Credenciales inválidas de Aprendiz' });
+            }
+        }
+    );
+};
 
 
 
@@ -220,11 +238,58 @@ const registerHojaInspeccion = (req, res) => {
 };
 
 
+// ComponentesChecklist (Post)
 
 
-   
+// Registrar un componente en la tabla componentes_checklist
+const registerComponenteChecklist = (req, res) => {
+    console.log(req.body);
+    const { tipo_componente, nombre_componente } = req.body;
+
+    if (!tipo_componente || !nombre_componente) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query(
+        'INSERT INTO componentes_checklist (tipo_componente, nombre_componente) VALUES ($1, $2)',
+        [tipo_componente, nombre_componente],
+        (error) => {
+            if (error) {
+                console.error('Error al insertar el componente del checklist en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar el componente del checklist' });
+            }
+
+            res.status(201).json({ message: 'Componente del checklist registrado exitosamente' });
+        }
+    );
+};
+
+
+// Obtener la lista de componentes de la tabla componentes_checklist
+
+   const getComponenteChecklist = (req, res) => {
+    pool.query('SELECT * FROM componentes_checklist', (error, result) => {
+        if (error) {
+            console.error('Error al consultar la base de datos', error);
+            return res.status(500).json({ error: 'Error al obtener la lista de componentes' });
+        }
+
+        res.status(200).json(result.rows);
+    });
+};
       
-    
+// Check List - Estado de los componentes (Post):
+
+
+
+
+
+
+
+
+
+
+
 
   
   module.exports = {
@@ -233,9 +298,12 @@ const registerHojaInspeccion = (req, res) => {
     loginInstructor,
     registerAprendiz,
     getAprendices,
-    registerHojaInspeccion
+    loginAprendiz,
+    registerHojaInspeccion,
+    registerComponenteChecklist,
+    getComponenteChecklist
     
-    
+   
     
   
   };

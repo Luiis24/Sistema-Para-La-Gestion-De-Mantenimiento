@@ -10,10 +10,14 @@ const fetch = require ('fetch')
 
 app.use(express.json())
 
-const corsoption = {
-    origin: 'http://localhost:5173',
-}
-app.use(cors(corsoption))
+const corsOptions = {
+  origin: 'http://localhost:3000',  // Reemplaza con la URL de tu aplicación React
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 
 const swaggerDocument = yaml.load(fs.readFileSync('./swagger.yaml', 'utf8'));
@@ -27,7 +31,7 @@ app.use('/', dataRoutes);
 app.use(bodyParser.json());
 
 
-const puerto = 3000;
+const puerto = 4002;
 
 app.listen(puerto, () =>{
     console.log(`Servidor escuchando en http://localhost:${puerto}`);

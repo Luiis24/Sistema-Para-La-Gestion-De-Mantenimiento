@@ -1,4 +1,4 @@
-const CONFIG_BD ={
+ const CONFIG_BD ={
 user: 'postgres',
 host: 'localhost',
 database: 'gestion_de_mantenimiento',
