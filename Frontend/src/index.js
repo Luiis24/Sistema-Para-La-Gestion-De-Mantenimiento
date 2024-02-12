@@ -18,8 +18,8 @@ root.render(
   
   <Titulo_sena_cb/>
   <Animacion_cuadros/>
-  <Check_list/> 
-
+  <Componentes_check/>
+  <Check_list/>
   </React.StrictMode>
 );
 
