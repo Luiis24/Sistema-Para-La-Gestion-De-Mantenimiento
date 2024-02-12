@@ -39,7 +39,7 @@ export const Registro_instructor = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/registerInstructor', {
+      const response = await axios.post('http://localhost:4002/registerInstructor', {
         cc_instructor,
         nombre_instructor,
         email_instructor,

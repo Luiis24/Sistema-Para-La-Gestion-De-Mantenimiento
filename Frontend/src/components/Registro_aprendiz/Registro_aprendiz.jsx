@@ -17,7 +17,7 @@ export const Registro_aprendiz = () => {
   const [password_aprendiz, setPassword_aprendiz] = useState('');
 
   const mensajeNoRegistrado = () => {
-    toast.error('Error al registrar usuario', {
+    toast.error('Error al registrar', {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -29,7 +29,7 @@ export const Registro_aprendiz = () => {
       });
   }
  const mensajeRegistrado = () => {
-    toast.error('Un nuevo instructor fue registrado', {
+    toast.error('Un nuevo Aprendiz fue registrado', {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -45,7 +45,7 @@ export const Registro_aprendiz = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/registerAprendiz', {
+      const response = await axios.post('http://localhost:4002/registerAprendiz', {
         tipo_doc_aprendiz,
         num_doc_aprendiz,
         ficha_aprendiz,
@@ -57,9 +57,11 @@ export const Registro_aprendiz = () => {
         password_aprendiz
       });
 
-      
+      console.log(response.data);
+      toast.success('Aprendiz Registrado Exitosamente')
     } catch (error) {
-      mensajeNoRegistrado()
+      console.error('Error al registrar el Aprendiz', error);
+      toast.error('Error de registro')
     }
   };
 
