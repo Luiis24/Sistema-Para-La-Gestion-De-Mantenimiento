@@ -46,14 +46,21 @@ export const Componentes_check = () => {
             <h2>Registro de Componentes del Checklist</h2>
             <form>
                 <div>
-                    <label htmlFor="tipoComponente">Tipo de Componente:</label>
-                    <input
-                        type="text"
-                        id="tipoComponente"
-                        value={tipoComponente}
-                        onChange={(event) => setTipoComponente(event.target.value)}
-                    />
+                    <label htmlFor="tipoComponente">Tipo de Componente o Sistema:</label>
+                     <select id="tipoComponente" value={tipoComponente} 
+                        onChange={(event) => setTipoComponente(event.target.value)}>
+                            <option disable selected hidden>Componente o Sistema</option>
+                            <option value="Componente Electrico">Componente Electrico</option>
+                            <option value="Componente Mecanico">Componente Mecánico</option>
+                            <option value="Estados de la Maquina">Estados de la Maquina</option>
+                            <option value="Funcionamiento Electrico">Funcionamiento Electrico</option>
+                            <option value="Motor">Motor</option>
+                            <option value="Niveles de Aceite">Niveles de Aceite</option>
+                            <option value="Sistema de Lubricacion">Sistema de Lubricación</option>
+                            <option value="Sistema Electrico">Sistema Electrico</option>
+                    </select>
                 </div>
+
                 <div>
                     <label htmlFor="nombreComponente">Nombre de Componente:</label>
                     <input
