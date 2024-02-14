@@ -216,26 +216,67 @@ const loginAprendiz = (req, res) => {
 
 const registerHojaInspeccion = (req, res) => {
     console.log(req.body);
-    const { fecha, hora_inicio, hora_fin } = req.body;
+    const { fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
 
-    if (!fecha || !hora_inicio || !hora_fin ) {
+    if (!fecha || !hora_inicio || !hora_fin || !estadosComponentes || estadosComponentes.length === 0) {
         return res.status(400).json({ error: 'Falta información requerida' });
     }
 
+    // Iniciar transacción
+    pool.query('BEGIN', async (error) => {
+        if (error) {
+            console.error('Error al iniciar la transacción', error);
+            return res.status(500).json({ error: 'Error al registrar el Hoja de inspección y estados de componentes' });
+        }
 
-    pool.query(
-        'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin) VALUES ($1, $2, $3)',
-        [fecha, hora_inicio, hora_fin],
-        (error) => {
-            if (error) {
-                console.error('Error al insertar el Hoja de inspeccion en la base de datos', error);
-                return res.status(500).json({ error: 'Error al registrar el Hoja de inspeccion' });
-            }
+        try {
+            // Insertar información en la tabla hoja_inspeccion
+            await pool.query(
+                'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin) VALUES ($1, $2, $3) RETURNING id_inspeccion',
+                [fecha, hora_inicio, hora_fin],
+                async (error, result) => {
+                    if (error) {
+                        console.error('Error al insertar la Hoja de inspección en la base de datos', error);
+                        throw new Error('Error al registrar la Hoja de inspección');
+                    }
 
-            res.status(201).json({ message: 'Hoja de inspección registrado exitosamente' });
-        }   
-    );
+                    const idInspeccion = result.rows[0].id_inspeccion;
+
+                    // Insertar información en la tabla checklist
+                    const estadosQuery = estadosComponentes.map(({ id_componente, estado_componente }) => (
+                        pool.query(
+                            'INSERT INTO checklist (estado_componente, id_inspeccion, id_componente) VALUES ($1, $2, $3)',
+                            [estado_componente, idInspeccion, id_componente]
+                        )
+                    ));
+
+                    // Ejecutar todas las consultas de inserción de estados de componentes en paralelo
+                    await Promise.all(estadosQuery);
+
+                    // Confirmar la transacción
+                    pool.query('COMMIT', (error) => {
+                        if (error) {
+                            console.error('Error al confirmar la transacción', error);
+                            return res.status(500).json({ error: 'Error al confirmar la transacción' });
+                        }
+
+                        res.status(201).json({ message: 'Hoja de inspección y estados de componentes registrados exitosamente' });
+                    });
+                }
+            );
+        } catch (error) {
+            // Si hay algún error en el bloque try, realizar un rollback
+            pool.query('ROLLBACK', (rollbackError) => {
+                if (rollbackError) {
+                    console.error('Error al realizar rollback', rollbackError);
+                }
+                console.error('Error en la transacción', error);
+                res.status(500).json({ error: 'Error en la transacción' });
+            });
+        }
+    });
 };
+
 
 
 // ComponentesChecklist (Post)
@@ -280,32 +321,70 @@ const registerComponenteChecklist = (req, res) => {
       
 // Check List - Estado de los componentes (Post):
 
+// ...
+
 const registerCheckList = async (req, res) => {
     try {
-        // Obtener la información del cuerpo del request
-        const { checklistData } = req.body;
+        const { checklistData, fecha, horaInicio, horaFin } = req.body;
 
-        // Validar si la información está presente
         if (!checklistData || !Array.isArray(checklistData)) {
             return res.status(400).json({ error: 'Datos de checklist no proporcionados correctamente' });
         }
 
-        // Iterar sobre los datos y realizar la inserción en la base de datos
         for (const { id_componente, estado_componente } of checklistData) {
             await pool.query(
-                'INSERT INTO checklist (id_componente, estado_componente) VALUES ($1, $2)',
-                [id_componente, estado_componente]
+                'INSERT INTO checklist (id_componente, estado_componente, id_inspeccion) VALUES ($1, $2, (SELECT id_inspeccion FROM hoja_inspeccion WHERE fecha = $3 AND hora_inicio = $4))',
+                [id_componente, estado_componente, fecha, horaInicio]
             );
         }
 
-        // Enviar respuesta exitosa
         res.status(201).json({ message: 'Estados de componentes registrados exitosamente' });
     } catch (error) {
         console.error('Error al registrar estados de componentes', error);
         res.status(500).json({ error: 'Error interno del servidor al registrar estados de componentes' });
     }
-    
 };
+
+// ...
+
+const getUltimosEstados = (req, res) => {
+    pool.query(
+        'SELECT c.id_componente, c.tipo_componente, c.nombre_componente, cl.estado_componente, hi.fecha, hi.hora_inicio, hi.hora_fin ' +
+        'FROM checklist cl ' +
+        'JOIN componentes_checklist c ON cl.id_componente = c.id_componente ' +
+        'JOIN hoja_inspeccion hi ON cl.id_inspeccion = hi.id_inspeccion ' +
+        'WHERE cl.id_checklist IN (' +
+            'SELECT MAX(id_checklist) ' +
+            'FROM checklist ' +
+            'GROUP BY id_componente' +
+        ')',
+        (error, results) => {
+            if (error) {
+                console.error('Error al obtener los últimos estados', error);
+                return res.status(500).json({ error: 'Error al obtener los últimos estados' });
+            }
+
+            const ultimosEstados = {};
+            results.rows.forEach((row) => {
+                const componenteInfo = {
+                    tipo: row.tipo_componente,
+                    nombre: row.nombre_componente,
+                    estado: row.estado_componente,
+                    fecha: row.fecha,
+                    horaInicio: row.hora_inicio,
+                    horaFin: row.hora_fin,  
+                };
+
+                ultimosEstados[row.id_componente] = componenteInfo;
+            });
+
+            res.status(200).json(ultimosEstados);
+        }
+    );
+};
+
+
+
 
 
 
@@ -328,6 +407,7 @@ const registerCheckList = async (req, res) => {
     registerComponenteChecklist,
     getComponenteChecklist,
     registerCheckList,
+    getUltimosEstados
   
     
     

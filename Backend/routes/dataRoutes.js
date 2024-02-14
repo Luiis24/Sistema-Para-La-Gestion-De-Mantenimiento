@@ -18,5 +18,6 @@ router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
 router.post('/registerCheckList', dataController.registerCheckList);
 
+router.get('/getUltimosEstados', dataController.getUltimosEstados)
 
 module.exports = router;
