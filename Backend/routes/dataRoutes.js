@@ -17,7 +17,14 @@ router.post('/registerComponenteChecklist', dataController.registerComponenteChe
 router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
 router.post('/registerCheckList', dataController.registerCheckList);
+router.get('/getUltimosEstados', dataController.getUltimosEstados);
 
-router.get('/getUltimosEstados', dataController.getUltimosEstados)
+router.post('/crearTipoMaquina', dataController.crearTipoMaquina);
+router.get('/getTiposMaquina', dataController.getTiposMaquina);
+
+router.post('/crearMaquina',dataController.crearMaquina);
+router.get('/getMaquinas',dataController.getMaquinas);
+
+
 
 module.exports = router;

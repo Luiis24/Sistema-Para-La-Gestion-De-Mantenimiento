@@ -389,9 +389,90 @@ const getUltimosEstados = (req, res) => {
 
 
 
+// Crear un nuevo tipo de máquina
+const crearTipoMaquina = (req, res) => {
+    const { nombre_tipo_maquina, descripcion_tipo_maquina } = req.body;
+
+    if (!nombre_tipo_maquina || !descripcion_tipo_maquina) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query(
+        'INSERT INTO tipo_maquina (nombre_tipo_maquina, descripcion_tipo_maquina) VALUES ($1, $2)',
+        [nombre_tipo_maquina, descripcion_tipo_maquina],
+        (error) => {
+            if (error) {
+                console.error('Error al insertar el tipo de máquina en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar el tipo de máquina' });
+            }
+
+            res.status(201).json({ message: 'Tipo de máquina registrado exitosamente' });
+        }
+    );
+};
+
+
+// Obtener todos los tipos de máquina
+const getTiposMaquina = (req, res) => {
+    pool.query('SELECT * FROM tipo_maquina', (error, results) => {
+        if (error) {
+            console.error('Error al obtener los tipos de máquina', error);
+            return res.status(500).json({ error: 'Error al obtener los tipos de máquina' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
 
 
 
+// Crear maquina (Post):
+
+
+const crearMaquina = async (req, res) => {
+    const { nombre_maquina, manual_maquina } = req.body;
+
+    try {
+        // Verificar si ya existe una máquina con el mismo nombre
+        const existeMaquina = await pool.query(
+            'SELECT id_maquina FROM maquinas WHERE nombre_maquina = $1',
+            [nombre_maquina]
+        );
+
+        if (existeMaquina.rows.length > 0) {
+            // Si ya existe una máquina con el mismo nombre, devolver un error
+            return res.status(400).json({ error: 'Ya existe una máquina con el mismo nombre' });
+        }
+
+        
+
+
+        // Insertar la nueva máquina
+        await pool.query(
+            'INSERT INTO maquinas (nombre_maquina, manual_maquina) VALUES ($1, $2)',
+            [nombre_maquina, manual_maquina]
+        );
+
+        res.status(201).json({ message: 'Máquina registrada exitosamente' });
+    } catch (error) {
+        console.error('Error al registrar la máquina', error);
+        res.status(500).json({ error: 'Error al registrar la nueva máquina' });
+    }
+};
+
+
+
+// Obtener todas las máquina
+const getMaquinas = (req, res) => {
+    pool.query('SELECT * FROM maquinas', (error, results) => {
+        if (error) {
+            console.error('Error al obtener las máquinas', error);
+            return res.status(500).json({ error: 'Error al obtener máquinas' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
 
 
 
@@ -407,7 +488,11 @@ const getUltimosEstados = (req, res) => {
     registerComponenteChecklist,
     getComponenteChecklist,
     registerCheckList,
-    getUltimosEstados
+    getUltimosEstados,
+    getTiposMaquina,
+    crearTipoMaquina,
+    crearMaquina,
+    getMaquinas
   
     
     
