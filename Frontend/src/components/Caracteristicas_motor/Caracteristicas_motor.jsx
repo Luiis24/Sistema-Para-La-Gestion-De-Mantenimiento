@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const Crear_maquina = () => {
+export const Caracteristicas_motor = () => {
     const [nombre_maquina, setNombre_maquina] = useState('');
     const [manual_maquina, setManual_maquina] = useState('');
     const [tiposMaquina, setTiposMaquina] = useState([]);
