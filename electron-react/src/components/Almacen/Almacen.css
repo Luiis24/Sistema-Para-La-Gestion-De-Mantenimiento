@@ -1,0 +1,31 @@
+
+/* Almacen css */
+
+.BDInventarioTabla{
+    width: 100%;
+}
+
+.BDInventarioTabla thead {
+    background-color: #D9D9D9;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.BDInventarioTabla tbody td{
+    text-align: center;
+    height: 40px;
+    font-size: 18px;
+}
+
+.filtrosAlmacen {
+    display: flex;
+    padding: 20px;
+    gap: 10px;
+    align-items: center;
+}
+
+.containerAlmacen {
+    padding: 20px 50px;
+}

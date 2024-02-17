@@ -1,0 +1,18 @@
+import React from 'react';
+import './Titulo_sena_cb.css';
+import logo from './Sena_logo.png';
+
+export const Titulo_sena_cb = () => {
+  return (
+    
+      <div className='logo-sena'>
+       <img src={logo} className="img-logo-sena" alt='Logo Sena'></img>
+       <div className='titulo-completo'>
+      <div className='titulo-sena'>Centro De Biotecnologia Industrial</div>
+       <div className='titulo-taller'> Taller Maquinas Y Herramientas</div>
+      </div>
+
+      </div>
+      
+  )
+}

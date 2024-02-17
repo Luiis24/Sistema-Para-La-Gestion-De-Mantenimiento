@@ -1,0 +1,66 @@
+
+
+/* CheckList css */
+
+.nombreSistema {
+    background-color: rgb(222, 222, 222);
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 1.5rem;
+}
+
+.containerComponentes {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px 0 10px 0;
+}
+
+.nombreComponente {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.nombreComponente select {
+    width: 30%;
+    padding: 10px 15px 10px 15px;
+    font-size: 16px;
+    background-color: rgb(231, 231, 231);
+    border-radius: 5px;
+    border: none;
+}
+
+.nombreComponente option {
+    background-color: #fff;
+}
+
+.nombreComponente label {
+    font-size: 20px;
+}
+
+.rgCheckList {
+    width: 25%;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 16px;
+    background-color: #34A853;
+    color: #fff;
+    margin: 50px 0 40px 0;
+}
+
+.rgCheckList:hover {
+    background-color: #30944B;
+}
+
+@media (max-width: 1280px) {
+    .nombreComponente {
+        width: 70%;
+    }
+}
