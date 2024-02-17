@@ -1,0 +1,100 @@
+
+/* Orden Trabajo css*/
+hr{
+    border-bottom: 1px solid rgba(246, 246, 246, 0.92);
+}
+.tituloSeccionOT {
+    width: 100%;
+    height: 50px;
+    background-color: #ffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+.containerOT {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    margin: 10px 0 20px 0;
+}
+body{
+    user-select: none;
+}
+.sectionOT {
+    width: 40%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.valueOT {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+.valueOT label{
+    width: 50%;
+    font-size: 17px;
+}
+.mecanicoResponsable {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+    margin: 10px 0 20px 0;
+}
+.sumarMecanico {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    font-size: 20px;
+}
+.descripcionOT {
+    width: 80%;
+    height: 150px;
+    background-color: rgb(231, 231, 231);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 20px;
+    resize: none;
+    margin: 20px 0 20px 0;
+}
+.containerDOT {
+    width: 88%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+.button-ot{
+    padding: 20px;
+    margin-top: -90px;
+}
+.button-ot Button{
+    color: #ffff;
+    margin-left: 85%;
+    background-color: rgb(0, 173, 0);
+}
+Input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.valueOT,.sectionOT::placeholder{
+    font-size: 16px;
+}
+.valueOT Input:focus{
+    font-size: 16px;
+}
+
+@media (max-width: 1280px) {
+    .valueOT label {
+        font-size: 1rem;
+    }
+}

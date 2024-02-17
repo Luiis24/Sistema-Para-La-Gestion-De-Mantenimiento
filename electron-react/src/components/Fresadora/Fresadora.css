@@ -1,0 +1,19 @@
+
+/* Fresadora css*/
+
+.infoFresadora {
+    width: 100% - 200px;
+    height: 80vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.infoFresadora img {
+    width: 500px;
+}
+
+.infoFresadora p {
+    text-align: justify;
+}

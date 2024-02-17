@@ -1,0 +1,26 @@
+
+/* CNC css*/
+
+.infoCNC {
+    height: 70vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.infoCNC img {
+    width: 500px;
+}
+
+.infoCNC p {
+    text-align: justify;
+}
+
+.Cncmaquina {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}

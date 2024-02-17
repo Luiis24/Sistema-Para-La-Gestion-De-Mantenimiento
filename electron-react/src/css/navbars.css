@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Navegadores */
+.navVertical {
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #000;
+}
+
+.navVertical .principal {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 2px;
+}
+
+.principal h2 {
+    font-size: 28px;
+    color: #000;
+}
+
+.principal .logoSena {
+    width: 60px;
+}
+
+.principal:hover {
+    transform: scale(1.05);
+}
+
+.navList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+}
+
+.navList li {
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+    padding: 5px 0 5px 0;
+}
+
+.navList li:hover {
+    background-color: #30944B;
+    color: #fff;
+}
+
+.containerM {
+    width: calc(100% -200px);
+    margin-left: 200px;
+}
+
+.containerM .navHorizontal {
+    height: 50px;
+    background-color: #34A853;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.navHorizontal h2 {
+    color: #fff;
+    height: 100%;
+    font-size: 1.5rem;
+    padding: 0px 30px 0px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ 
+.navHorizontal h2:hover {
+    background-color: #30944B;
+}
+
+#active {
+    background-color: #30944B;
+}
+
+#activeMaquina {
+    background-color: #30944B;
+    color: #fff;
+}
+
+.homeR {
+    display: none;
+}
+
+.menu-responsive {
+    display: none;
+}
+
+#navbar-toggle {
+    display: none;
+}
+
+.navListR {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .navVertical {
+        display: none;
+    }
+
+    .containerM {
+        width: 100%;
+        margin:0;
+    }
+
+    .navHorizontal {
+        position: fixed;
+        width: 100%;
+        padding: 0;
+        justify-content: space-around;
+    }
+
+    .homeR {
+        display: block;
+        position: fixed;
+        left: 0px;
+    }
+
+    .logoSenaR {
+        width: 60px;
+        filter: brightness(100);
+    }
+
+    .menu-responsive {
+        display: block;
+        position: fixed;
+        right: 10px;
+    }
+
+    .menuR {
+        filter: invert(1);
+        width: 35px;
+    }
+
+    #navbar-toggle:checked~.navListR {
+        display: block;
+        position: fixed;
+        width: 100%;
+        top: 50px;
+        left: 0;
+        bottom: 0;
+        background-color: #000000;
+    }
+
+    #navbar-toggle:checked~ h2 {
+        flex-direction: column;
+        display: block;
+        position: fixed;
+        color: #fff;
+        background-color: #000000;
+    }
+
+    .navListR {
+        gap: 20px;
+    }
+
+    .navListR li {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        font-size: 1.5rem;
+        color: #fff;
+    }
+
+    .navHorizontal h2 {
+       display: none;
+    }
+}
