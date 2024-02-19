@@ -114,8 +114,8 @@ export const Menu = () => {
                         <Avatar
                             icon={<AvatarIcon />}
                             classNames={{
-                                base: "bg-gradient-to-br from-[#34A853] to-[#30944B]",
-                                icon: "text-black/80",
+                                base: "bg-gradient-to-br from-[#30944B] to-[#34A853] w-12 h-12",
+                                icon: "text-white",
                             }}
                         />
                     </div>

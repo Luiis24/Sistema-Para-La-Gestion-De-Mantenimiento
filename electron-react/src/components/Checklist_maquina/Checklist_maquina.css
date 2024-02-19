@@ -3,7 +3,8 @@
 /* CheckList css */
 
 .nombreSistema {
-    background-color: rgb(222, 222, 222);
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -11,28 +12,36 @@
 }
 
 .containerComponentes {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     margin: 10px 0 10px 0;
 }
 
 .nombreComponente {
-    width: 50%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 10px;
     margin-top: 10px;
+    gap: 10px;
 }
 
 .nombreComponente select {
-    width: 30%;
+    border-radius: 9px;
     padding: 10px 15px 10px 15px;
     font-size: 16px;
-    background-color: rgb(231, 231, 231);
+    background-color: rgb(245, 245, 245);
+    color: #3d3d3d;
     border-radius: 5px;
     border: none;
+}
+
+.nombreComponente select:hover {
+    cursor: pointer;
+    background-color: rgb(226, 226, 226);
 }
 
 .nombreComponente option {
@@ -40,6 +49,7 @@
 }
 
 .nombreComponente label {
+    width: 40%;
     font-size: 20px;
 }
 
@@ -59,6 +69,10 @@
     background-color: #30944B;
 }
 
+.sectionFormCheck {
+    width: 88%;
+    margin: 15px auto 15px;
+}
 @media (max-width: 1280px) {
     .nombreComponente {
         width: 70%;

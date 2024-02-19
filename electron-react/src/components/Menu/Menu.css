@@ -11,12 +11,12 @@
 }
 
 .containerMenu {
-    width: 80%;
+    width: 70%;
     margin: auto;
     margin:auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 250px 250px;
+    grid-template-rows: 300px 250px;
     grid-template-areas: 
     "maquinasMenu informesMenu almacenMenu"
     "usuariosMenu usuariosMenu almacenMenu";
@@ -81,13 +81,30 @@
     top: -55%;
 }
 
-
-@media (max-width: 1400px) and (min-width: 1280px){
+@media (max-width: 1500px) and (min-width: 1350px){
     .containerMenu{
-        grid-template-rows: 200px 200px;
+        grid-template-rows: 250px 250px;
     }
 }
 
+
+@media (max-width: 1350px) and (min-width: 1280px){
+    .containerMenu{
+        grid-template-rows: 220px 200px;
+    }
+}
+
+@media (max-width: 1280px) and (min-width: 900px){
+    .containerMenu{
+        grid-template-rows: 180px 180px;
+    }
+}
+
+@media (max-width: 900px) and (min-width: 500px){
+    .containerMenu{
+        grid-template-rows: 150px 150px;
+    }
+}
 
 /* Animacion de fondo */
 
@@ -210,7 +227,7 @@
 .IconsPrincipal {
     position: absolute;
     right: 5px;
-    top: 15px;
+    top: 10px;
 }
 .iconP {
     width: 60px;

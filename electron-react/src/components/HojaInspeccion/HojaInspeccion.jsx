@@ -3,10 +3,10 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Table, SelectItem, Input, Select, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
-import './HojaInspeccion.css'
+import './Check_list.css'
 import { Link } from 'react-router-dom';
 
-export const Check_list = () => {
+export const HojaInspeccion = () => {
     const fechaActual = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     const [fecha, setFecha] = useState(fechaActual);
     const [horaInicio, setHoraInicio] = useState('');
@@ -89,7 +89,7 @@ export const Check_list = () => {
     return (
         <div>
             <ToastContainer />
-            <Button onPress={onOpen}>Regisrar hoja de vida</Button>
+            <Button onPress={onOpen}>Regisrar hoja de inspeccion</Button>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
                 <ModalContent>
@@ -98,7 +98,6 @@ export const Check_list = () => {
                             <ModalHeader className="flex flex-col gap-1">Registrar Hoja de inspeccion</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <form onSubmit={RegistrarCheckList} className='formHojaInspeccion'>
-                                    <h2>Check List Torno Wiston 1</h2>
                                     <div className='campoHI'>
                                         <label className='w-2/4 text-lg'>Fecha:</label>
                                         <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
@@ -141,7 +140,6 @@ export const Check_list = () => {
                 </ModalContent>
             </Modal>
 
-<button><Link to={'/'}>inicio</Link></button>
             <h2>Registros de Estados</h2>
             <Table>
                 <TableHeader>

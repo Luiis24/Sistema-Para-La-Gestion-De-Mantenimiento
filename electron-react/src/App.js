@@ -17,7 +17,6 @@ import './components/Navbars/navbars.css'
 import { Inicio_sesion_instructor } from './components/Inicio_sesion_instructor/Inicio_sesion_instructor';
 import {Inicio_sesion_aprendiz} from './components/Inicio_sesion_aprendiz/Inicio_sesion_aprendiz'
 import { Navbars } from './components/Navbars/Navbars';
-import {Check_list} from './components/HojaInspeccion/HojaInspeccion'
 import { Hoja_de_vida } from './components/Hoja_de_vida/Hoja_de_vida';
 import CrearTipoMaquina from './components/Crear_tipo_maquina/Crear_tipo_maquina';
 import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
@@ -86,10 +85,6 @@ const router = createBrowserRouter ([
   {
     path:"/registroAprendiz",
     element: <><Registro_aprendiz/><Animacion_cuadros/></>
-  }, 
-  {
-    path:"/hojaInspeccion",
-    element: <><Check_list/></>
   },
   {
     path:"/crearTipoMaquina",

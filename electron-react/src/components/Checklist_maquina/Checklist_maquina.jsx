@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import './Checklist_maquina.css'
 import { Link, useParams } from 'react-router-dom'
-import logoSena from '../../img/logo.png'
-import menu from '../../img/menu.png'
 import { Select, SelectItem } from "@nextui-org/react";
 import axios from 'axios';
 import { Navbars } from '../Navbars/Navbars'
+import { HojaInspeccion } from '../HojaInspeccion/HojaInspeccion';
+import { Componentes_check } from '../Componentes_check/Componentes_check'
+import { Check_list } from '../Check_list/Check_list';
 
 export const Checklist_maquina = () => {
-
-    const [componentes, setComponentes] = useState([]);
-    const [sistema, setSistema] = useState([])
     const [maquinaid, setMaquinaid] = useState();
     const { id_maquina } = useParams();
-    useEffect(() => {
-        axios.get('http://localhost:4002/componenteChecklist')
-            .then(datos => {
-                setComponentes(datos.data);
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []);
+
 
     useEffect(() => {
         axios
@@ -69,126 +59,17 @@ export const Checklist_maquina = () => {
 
                 <form action="" name='checklist'>
                     <div className="componentesChecklist">
-                        <div className="nombreSistema">
-                            <h2>Sistema Electrico {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
-                        </div>
-
-                        <div className="containerComponentes">
-                            {componentes.map(componente => {
-                                return <div className="nombreComponente">
-                                    <label>{componente.nombre_componente}</label>
-                                    <Select placeholder="Estado" className="2xl:w-72 w-64" name={componente.nombre_componente}>
-                                        <SelectItem value="bueno">Bueno</SelectItem>
-                                        <SelectItem value="malo">Malo</SelectItem>
-                                        <SelectItem value="notificar">Notificar</SelectItem>
-                                        <SelectItem value="altoNivel">Alto Nivel</SelectItem>
-                                        <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
-                                    </Select>
-                                </div>
-                            })}
-                            <div className="nombreComponente">
-                                <label>Interruptores Principales</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Acometida del equipo</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Hongo para emergencia</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                        </div>
 
                         <div className="nombreSistema">
-                            <h2>Sistema Lubricacion</h2>
+                            <h2>Checklist {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
                         </div>
 
-                        <div className="containerComponentes">
-                            <div className="nombreComponente">
-                                <label>Nivel de aceite en caja de velocidades</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="altoNivel">Alto Nivel</SelectItem>
-                                    <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Nivel de aceite en caja de avance</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="altoNivel">Alto Nivel</SelectItem>
-                                    <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Bancadas y guias lubricadas</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                        </div>
 
-                        <div className="nombreSistema">
-                            <h2>Componentes Electricos</h2>
-                        </div>
+                            {/* <HojaInspeccion/>
+                            // <Componentes_check/> */}
+                            <Check_list/>
 
-                        <div className="containerComponentes">
-                            <div className="nombreComponente">
-                                <label>Luz Piloto</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="altoNivel">Alto Nivel</SelectItem>
-                                    <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Motor de caja de velocidades</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="altoNivel">Alto Nivel</SelectItem>
-                                    <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Lampara del torno</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Estado del horometro</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                            <div className="nombreComponente">
-                                <label>Interruptor de la bomba de lubricacion</label>
-                                <Select placeholder="Estado" className="2xl:w-72 w-64" >
-                                    <SelectItem value="bueno">Bueno</SelectItem>
-                                    <SelectItem value="malo">Malo</SelectItem>
-                                    <SelectItem value="notificar">Notificar</SelectItem>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="containerComponentes">
-                            <button className='rgCheckList'>Registrar</button>
-                        </div>
+                        
 
                     </div>
                 </form>

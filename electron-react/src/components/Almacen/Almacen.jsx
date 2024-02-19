@@ -8,6 +8,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, 
 import { SearchIcon } from '../Aprendices/SearchIcon';
 import { PlusIcon } from '../Aprendices/PlusIcon'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
+import { Nueva_salida_almacen } from '../Nueva_salida_almacen/Nueva_salida_almacen';
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
@@ -17,7 +18,13 @@ export const Almacen = () => {
         nombre: '',
         estado: 'all',
         stock: 0
-    })
+    });
+    const [registros, setRegistros] = useState()
+  
+    const handleOpenE = () => {
+        const entrada = document.getElementById('entrada')
+        onOpen(entrada);
+    }
 
     useEffect(() => {
         axios.get('http://localhost:4002/insumos')
@@ -144,6 +151,13 @@ export const Almacen = () => {
                             size="sm" >
                             Nuevo Insumo
                         </Button>
+                        <Button
+                            className="bg-foreground text-background h-12"
+                            onPress={onOpen}
+                            endContent={<PlusIcon style={{ fontSize: 'large' }} />}
+                            size="sm" >
+                            Salida Insumo
+                        </Button>
                     </div>
 
 
@@ -180,8 +194,9 @@ export const Almacen = () => {
                 </div>
             </div>
 
+<Nueva_salida_almacen onOpen={onOpen}/>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} id='entrada'>
                 <ModalContent>
                     {(onClose) => (
                         <>

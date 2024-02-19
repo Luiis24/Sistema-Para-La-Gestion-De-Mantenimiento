@@ -20,10 +20,12 @@
 }
 
 .filtrosAlmacen {
+    width: 100%;
     display: flex;
     padding: 20px;
     gap: 10px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .containerAlmacen {
