@@ -443,10 +443,6 @@ const crearMaquina = async (req, res) => {
             // Si ya existe una máquina con el mismo nombre, devolver un error
             return res.status(400).json({ error: 'Ya existe una máquina con el mismo nombre' });
         }
-
-        
-
-
         // Insertar la nueva máquina
         await pool.query(
             'INSERT INTO maquinas (nombre_maquina, manual_maquina) VALUES ($1, $2)',
@@ -476,6 +472,122 @@ const getMaquinas = (req, res) => {
 
 
 
+
+// Registrar caracteristicas del motor (POST):
+
+
+const crearCaracteristicasMotor = async (req, res) => {
+    const {
+        marca_motor,
+        modelo_motor,
+        descripcion_motor,
+        serie_motor,
+        tamaño_motor,
+        potencia_motor,
+        rpm_motor,
+        voltaje_motor,
+        amp_motor,
+    } = req.body;
+
+    try {
+        await pool.query(
+            'INSERT INTO caracteristicas_motor (marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+            [marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor]
+        );
+
+        res.status(201).json({ message: 'Características del motor registradas exitosamente' });
+    } catch (error) {
+        console.error('Error al registrar las características del motor', error);
+        res.status(500).json({ error: 'Error al registrar las características del motor' });
+    }
+};
+
+
+
+const GetCaracteristicasMotor = async (req, res) => {
+    try {
+        const response = await pool.query('SELECT * FROM caracteristicas_motor');
+        const caracteristicasMotor = response.rows;
+
+        res.status(200).json(caracteristicasMotor);
+    } catch (error) {
+        console.error('Error al obtener las características del motor', error);
+        res.status(500).json({ error: 'Error al obtener las características del motor' });
+    }
+};
+
+
+
+// Historial de reparaciones
+// Guardar historial (Post):
+
+const crearHistorialReparaciones = async (req, res) => {
+    const { procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial } = req.body;
+
+    try {
+        await pool.query(
+            'INSERT INTO historial_reparaciones (procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial) VALUES ($1, $2, $3, $4)',
+            [procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial]
+        );
+
+        res.status(201).json({ message: 'Registro en el historial de reparaciones exitoso' });
+    } catch (error) {
+        console.error('Error al registrar en el historial de reparaciones', error);
+        res.status(500).json({ error: 'Error al registrar en el historial de reparaciones' });
+    }
+};
+
+
+
+const GetHistorialReparaciones = async (req, res) => {
+    try {
+        const response = await pool.query('SELECT * FROM historial_reparaciones ORDER BY fecha_historial DESC');
+        const historialReparaciones = response.rows;
+
+        res.status(200).json(historialReparaciones);
+    } catch (error) {
+        console.error('Error al obtener el historial de reparaciones', error);
+        res.status(500).json({ error: 'Error al obtener el historial de reparaciones' });
+    }
+};
+
+
+// Descripcion del equipo (Post)
+
+const registrarEquipo = async (req, res) => {
+
+    const { nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo} = req.body;
+  
+    try {
+      
+      const resultado = await pool.query(
+        'INSERT INTO descripcion_del_equipo_hv (nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)',
+        [nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo]
+      );
+  
+      res.json({mensaje: 'Equipo registrado correctamente'});
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json('Error registrando equipo'); 
+    }
+  
+  }
+  
+ // Descripcion del equipo (Get)
+
+ const GetDescripcion_equio = async (req, res) => {
+    try {
+        const response = await pool.query('SELECT * FROM descripcion_del_equipo_hv');
+        const Descripcion_equioi = response.rows;
+
+        res.status(200).json(Descripcion_equioi);
+    } catch (error) {
+        console.error('Error al obtener el historial de reparaciones', error);
+        res.status(500).json({ error: 'Error al obtener el historial de reparaciones' });
+    }
+};
+
   
   module.exports = {
     registerInstructor,
@@ -492,8 +604,13 @@ const getMaquinas = (req, res) => {
     getTiposMaquina,
     crearTipoMaquina,
     crearMaquina,
-    getMaquinas
-  
+    getMaquinas,
+    crearCaracteristicasMotor,
+    GetCaracteristicasMotor,
+    crearHistorialReparaciones,
+    GetHistorialReparaciones,
+    registrarEquipo,
+    GetDescripcion_equio,
     
     
    

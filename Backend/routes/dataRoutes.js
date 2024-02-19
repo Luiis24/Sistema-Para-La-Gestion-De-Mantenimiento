@@ -25,6 +25,13 @@ router.get('/getTiposMaquina', dataController.getTiposMaquina);
 router.post('/crearMaquina',dataController.crearMaquina);
 router.get('/getMaquinas',dataController.getMaquinas);
 
+router.post('/crearCaracteristicasMotor',dataController.crearCaracteristicasMotor);
+router.get('/GetCaracteristicasMotor',dataController.GetCaracteristicasMotor);
 
+router.post('/crearHistorialReparaciones',dataController.crearHistorialReparaciones);
+router.get('/GetHistorialReparaciones',dataController.GetHistorialReparaciones);
+
+router.post('/registrarEquipo',dataController.registrarEquipo);
+router.get('/GetDescripcion_equio',dataController.GetDescripcion_equio);
 
 module.exports = router;
