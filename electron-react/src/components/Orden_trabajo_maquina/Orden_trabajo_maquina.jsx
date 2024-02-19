@@ -104,6 +104,7 @@ export const Orden_trabajo_maquina = () => {
         <div className="tituloSeccionOT">
           <h2>Formato Orden de trabajo {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
         </div>
+        <hr />
 
         <form onSubmit={handleSubmit} name='OrdenDeTrabajo'>
           <div className="containerOT">
@@ -111,7 +112,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                <Input type='date' className='w-11/12 h-11 text-2xl' name='fecha_inicio_ot' onChange={handleChange}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange}></Input>
               </div>
 
               <div className="valueOT">
@@ -173,9 +174,11 @@ export const Orden_trabajo_maquina = () => {
 
           </div>
 
+          <hr />
           <div className="tituloSeccionOT">
             <h3>Mecanicos Responsables</h3>
           </div>
+          <hr />
 
 
           <div className="containerOT">
@@ -246,9 +249,11 @@ export const Orden_trabajo_maquina = () => {
 
           <Tabla_mecanicos_ot formMecanicos={formMecanicos} setFormMecanicos={setFormMecanicos} />
 
+          <hr />
           <div className="tituloSeccionOT">
             <h3>Descripcion del trabajo o actividad a realizar</h3>
           </div>
+          <hr />
 
           <div className="containerDOT">
             <Textarea
@@ -259,9 +264,11 @@ export const Orden_trabajo_maquina = () => {
             />
           </div>
 
+          <hr />
           <div className="tituloSeccionOT">
             <h3>Recursos</h3>
           </div>
+          <hr />
 
           <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} />
 

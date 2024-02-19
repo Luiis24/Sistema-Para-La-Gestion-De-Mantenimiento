@@ -19,14 +19,17 @@ import {Inicio_sesion_aprendiz} from './components/Inicio_sesion_aprendiz/Inicio
 import { Navbars } from './components/Navbars/Navbars';
 import {Check_list} from './components/HojaInspeccion/HojaInspeccion'
 import { Hoja_de_vida } from './components/Hoja_de_vida/Hoja_de_vida';
-import { Navbar_vertical } from './components/Navbars/Navbar_vertical';
 import CrearTipoMaquina from './components/Crear_tipo_maquina/Crear_tipo_maquina';
 import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
+import { Menu } from './components/Menu/Menu';
+import { Informes } from './components/Informes/Informes';
+import { Instructores } from './components/Instructores/Instructores';
+import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 
 const router = createBrowserRouter ([
   {
     path:"/MenuPrincipal",
-    element: <><Titulo_sena_cb/><Menu_principal/></>
+    element: <><Menu/></>
   },
   {
     path:"/registerInstructor",
@@ -95,6 +98,18 @@ const router = createBrowserRouter ([
   {
     path:"/crearMaquina",
     element: <><Crear_maquina/><Animacion_cuadros/></>
+  },
+  {
+    path:"/informes",
+    element: <><Informes/></>
+  },
+  {
+    path:"/instructores",
+    element: <><Instructores/></>
+  },
+  {
+    path:"/Registroinstructores",
+    element: <><Registro_instructor/></>
   }
 ]);
 

@@ -10,16 +10,16 @@
     align-items: center;
     gap: 15px;
 }
-
 .formIOT label {
     width: 50%;
 }
-
+.botton-registrar-div Button{
+    background-color: rgb(0, 173, 0);
+}
 .containerTIOT {
     width: 88%;
     margin: 20px auto;
 }
-
 .btn-registrarIOT {
     display: flex;
     justify-content: center;
@@ -32,6 +32,13 @@
     justify-content: center;
     width: 80%;
     margin: 5px auto 30px;
+}
+.formInsumosIOT Input:focus{
+    font-size: 16px;
+}
+.btn-registrarIOT button{
+    color: white;
+    background-color: rgb(0, 173, 0);
 }
 
 .select_insumosOT {

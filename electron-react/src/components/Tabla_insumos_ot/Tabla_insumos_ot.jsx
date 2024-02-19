@@ -4,7 +4,7 @@ import axios from 'axios'
 import './Tabla_insumos_ot.css'
 import { DeleteIcon } from "./DeleteIcon";
 
-export const Tabla_insumos_ot = ({formInsumos, setformInsumos}) => {
+export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rows, setRows] = useState([]);
 
@@ -54,27 +54,33 @@ export const Tabla_insumos_ot = ({formInsumos, setformInsumos}) => {
     return (
         <div>
             <div className="containerTIOT">
-                <Table className='tablaOT'>
+                <Table className="tablaOT">
                     <TableHeader>
                         <TableColumn className="text-lg">Item</TableColumn>
                         <TableColumn className="text-lg">Cantidad</TableColumn>
                         <TableColumn className="text-lg">Unidad</TableColumn>
                         <TableColumn className="text-lg">Nombre</TableColumn>
-                        <TableColumn className="text-lg">Valor Unidad</TableColumn>
+                        <TableColumn className="text-lg">Valor unidad</TableColumn>
                         <TableColumn className="text-lg">SubTotal</TableColumn>
                         <TableColumn className="text-lg">Eliminar</TableColumn>
                     </TableHeader>
                     <TableBody emptyContent={"No hay insumos registrados."}>
                         {rows.map((row, id) => {
-                            return <TableRow key={id+1}>
-                                <TableCell className="text-lg">{id+1}</TableCell>
-                                <TableCell className="text-lg">{row.cantidad}</TableCell>
-                                <TableCell className="text-lg">{row.unidad}</TableCell>
-                                <TableCell className="text-lg">{row.nombre}</TableCell>
-                                <TableCell className="text-lg">{row.valorUnidad}</TableCell>
-                                <TableCell className="text-lg">${(parseInt(row.cantidad) * parseInt(row.valorUnidad))}</TableCell>
-                                <TableCell onClick={() => deleteRow(id)}><DeleteIcon/></TableCell>
-                            </TableRow>
+                            return (
+                                <TableRow key={id + 1}>
+                                    <TableCell className="text-lg">{id + 1}</TableCell>
+                                    <TableCell className="text-lg">{row.cantidad}</TableCell>
+                                    <TableCell className="text-lg">{row.unidad}</TableCell>
+                                    <TableCell className="text-lg">{row.nombre}</TableCell>
+                                    <TableCell className="text-lg">{row.valorUnidad}</TableCell>
+                                    <TableCell className="text-lg">
+                                        ${parseInt(row.cantidad) * parseInt(row.valorUnidad)}
+                                    </TableCell>
+                                    <TableCell onClick={() => deleteRow(id)}>
+                                        <DeleteIcon />
+                                    </TableCell>
+                                </TableRow>
+                            );
                         })}
                     </TableBody>
                     {/* <tfoot>
@@ -102,56 +108,89 @@ export const Tabla_insumos_ot = ({formInsumos, setformInsumos}) => {
                 </Table>
             </div>
             <div className="btn-registrarIOT">
-                <Button onPress={onOpen} className="mr-3">Agregar Insumo</Button>
+                <Button onPress={onOpen} className="mr-3">
+                    Agregar Insumo
+                </Button>
             </div>
-            
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Registrar Insumo</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-2xl">
+                                Registrar Insumo
+                            </ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formInsumosIOT">
                                     <label htmlFor="nombre">Nombre</label>
-                                    <select name="nombre" onChange={handleChange} className="select_insumosOT">
-                                        {insumos.map(insumo => {
-                                            return <option value={insumo.nombre} key={insumo.id_insumos}>{insumo.nombre}({insumo.cantidad_insumo})</option>
+                                    <select
+                                        name="nombre"
+                                        onChange={handleChange}
+                                        className="select_insumosOT"
+                                    >
+                                        {insumos.map((insumo) => {
+                                            return (
+                                                <option value={insumo.nombre} key={insumo.id_insumos}>
+                                                    {insumo.nombre}({insumo.cantidad_insumo})
+                                                </option>
+                                            );
                                         })}
                                     </select>
                                 </div>
                                 <div className="formInsumosIOT">
-                                    <label htmlFor="consumible">Insumo o herramienta</label>
-                                    <select name="consumible" onChange={handleChange} className="select_insumosOT">
+                                    <select name="consumible" onChange={handleChange} placeholder="Insumo o herramienta" className="select_insumosOT">
                                         <option value={'consumible'}>Consumible</option>
                                         <option value={'noConsumible'}>No consumible</option>
                                     </select>
                                 </div>
                                 <div className="formInsumosIOT">
-                                    <label htmlFor="cantidad" className="text-lg">Cantidad</label>
-                                    <Input type="number" name="cantidad" onChange={handleChange} />
+                                    <Input
+                                        placeholder="Cantidad"
+                                        type="number"
+                                        name="cantidad"
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <div className="formInsumosIOT">
-                                    <label htmlFor="unidad">Unidad</label>
-                                    <Input type="text" name="unidad" onChange={handleChange} />
+                                    <Input
+                                        placeholder="Unidad"
+                                        type="text"
+                                        name="unidad"
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <div className="formInsumosIOT">
                                     <label htmlFor="valorUnidad">Valor unitario</label>
-                                    <Input type="number" placeholder="0.00" name="valorUnidad" onChange={handleChange} 
-                                    startContent={
-                                        <div className="pointer-events-none flex items-center">
-                                          <span className="text-default-400 text-small">$</span>
-                                        </div>
-                                      }/>
+                                    <Input
+                                        type="number"
+                                        placeholder="0.00"
+                                        name="valorUnidad"
+                                        onChange={handleChange}
+                                        startContent={
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>
+                                        }
+                                    />
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button
+                                    className="text-slate-50 bg-red-500"
+                                    variant="flat"
+                                    onPress={onClose}
+                                >
                                     Cerrar
                                 </Button>
-                                <Button color="primary" onClick={handleSubmit} onPress={onClose}>
-                                    Registrar
-                                </Button>
+                                <div className="botton-registrar-div">
+                                    <Button
+                                        className="text-white"
+                                        onClick={handleSubmit}
+                                        onPress={onClose}
+                                    >
+                                        Registrar
+                                    </Button>
+                                </div>
                             </ModalFooter>
                         </>
                     )}

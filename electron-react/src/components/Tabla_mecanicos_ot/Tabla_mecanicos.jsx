@@ -1,5 +1,6 @@
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import React, { useState } from 'react'
+import './Tabla_macanicos.css'
 import { DeleteIcon } from "../Tabla_insumos_ot/DeleteIcon";
 
 export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
@@ -26,12 +27,12 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
     }
     return (
         <div>
-            <div className="containerTIOT you">
-                <Table className='tablaOT you'>
+            <div className="containerTIOT">
+                <Table className='w-full'>
                     <TableHeader>
                         <TableColumn className="text-lg">Nombres</TableColumn>
-                        <TableColumn className="text-lg">Numero Documento</TableColumn>
-                        <TableColumn className="text-lg">Eliminar</TableColumn>
+                        <TableColumn className="text-lg ">Número Documento</TableColumn>
+                        <TableColumn className="text-lg ">Eliminar</TableColumn>
                     </TableHeader>
                     <TableBody>
                         {rowsMecanicos[0] ? rowsMecanicos.map((row, id) => {
@@ -41,8 +42,8 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                                 <TableCell onClick={() => deleteRow(id)} className="text-red-500"><DeleteIcon/></TableCell>
                             </TableRow>
                         }) :  <TableRow>
-                                <TableCell className="text-lg text-slate-400">Nombres y apellidos</TableCell>
-                                <TableCell className="text-lg text-slate-400">No. Documento</TableCell>
+                                <TableCell className="text-lg text-slate-400">Nombre completo</TableCell>
+                                <TableCell className="text-lg text-slate-400 ">No. Documento</TableCell>
                                 <TableCell className="text-slate-400"><DeleteIcon/></TableCell>
                         </TableRow>}
 
@@ -50,7 +51,7 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                 </Table>
             </div>
             <div className="btn-registrarMOT">
-                <Button onPress={onOpen}>Agregar Mecanico</Button>
+                <Button onPress={onOpen}>Agregar mecánico</Button>
             </div>
             
 
@@ -58,24 +59,26 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Registrar Mecanico</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    <label htmlFor="cantidad" className="text-lg">Nombres y apellidos</label>
-                                    <Input type="text" name="nombre" onChange={handleChange} />
+                                    
+                                    <Input className="" placeholder="Nombre completo" type="text" name="nombre" onChange={handleChange} />
                                 </div>
                                 <div className="formIOT">
-                                    <label htmlFor="unidad">No. Documento</label>
-                                    <Input type="number" name="documento" onChange={handleChange} />
+                                 
+                                    <Input placeholder="Número de identificación" type="number" name="documento" onChange={handleChange} />
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
-                                <Button color="primary" onClick={handleSubmit} onPress={onClose}>
+                                <div className="botton-registrar-div">
+                                <Button className="text-white" onClick={handleSubmit} onPress={onClose}>
                                     Registrar
                                 </Button>
+                                </div>
                             </ModalFooter>
                         </>
                     )}

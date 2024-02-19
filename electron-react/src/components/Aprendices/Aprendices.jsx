@@ -86,7 +86,7 @@ export const Aprendices = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Aprendices</li>
-                    <li>Instructores</li>
+                    <li><Link to={'/instructores'}>Instructores</Link></li>
                 </ul>
             </div>
 

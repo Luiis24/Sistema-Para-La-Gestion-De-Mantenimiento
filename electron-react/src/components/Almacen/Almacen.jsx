@@ -185,32 +185,30 @@ export const Almacen = () => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Registrar Insumo</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar Insumo</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    <label htmlFor="cantidad" className="text-lg">Nombre Insumo</label>
-                                    <Input type="text" name="nombreInsumo" onChange={handleChange} />
+                                    <Input type="text" name="nombreInsumo" onChange={handleChange} placeholder='Nombre Insumo' />
                                 </div>
                                 <div className="formIOT">
-                                    <label htmlFor="unidad">Cantidad</label>
-                                    <Input type="number" name="cantidad" onChange={handleChange} />
+                                    <Input type="number" name="cantidad" onChange={handleChange} placeholder='Cantidad'/>
                                 </div>
                                 <div className="formIOT">
-                                    <label htmlFor="unidad">Fecha</label>
-                                    <Input type="date" name="fecha" onChange={handleChange} />
+                                    <Input type="date" name="fecha" onChange={handleChange} placeholder='Fecha'/>
                                 </div>
                                 <div className="formIOT">
-                                    <label htmlFor="unidad">Proveedor</label>
-                                    <Input type="number" name="proveedor" onChange={handleChange} />
+                                    <Input type="number" name="proveedor" onChange={handleChange} placeholder='Proveedor'/>
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
-                                <Button color="primary" onClick={handleSubmit} onPress={onClose}>
+                                <div className="botton-registrar-div">
+                                <Button className="text-white" onClick={handleSubmit} onPress={onClose}>
                                     Registrar
                                 </Button>
+                                </div>
                             </ModalFooter>
                         </>
                     )}

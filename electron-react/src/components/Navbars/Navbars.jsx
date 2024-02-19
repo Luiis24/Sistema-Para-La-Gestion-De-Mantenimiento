@@ -146,7 +146,7 @@ export const Navbars = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Crear un nuevo tipo de maquina</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 text-2xl mb-3">Crear un nuevo tipo de maquina</ModalHeader>
               <ModalBody className='flex justify-center'>
                 <form className='flex flex-col gap-5'>
                   <div>
@@ -168,12 +168,14 @@ export const Navbars = () => {
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
+                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
                   Cerrar
                 </Button>
-                <Button color="primary" onPress={onClose} onClick={handleFormSubmit}>
-                  Registrar tipo de maquina
+                <div className="botton-registrar-div">
+                <Button className="text-white" onPress={onClose} onClick={handleFormSubmit}>
+                  Registrar
                 </Button>
+                </div>
               </ModalFooter>
             </>
           )}

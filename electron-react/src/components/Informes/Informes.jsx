@@ -30,11 +30,9 @@ export const Informes = () => {
                         <TableColumn className='text-lg'>Fecha</TableColumn>
                     </TableHeader>
                     <TableBody emptyContent={"No disponible."}>
-                        <TableRow>
-                        </TableRow>
                     </TableBody>
                 </Table>
             </div>
-            </div>
-            )
+        </div>
+    )
 }
