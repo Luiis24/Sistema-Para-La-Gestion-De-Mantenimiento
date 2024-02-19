@@ -14,15 +14,15 @@ import Estado_componente from './components/Estado_componente/Estado_componente'
 import Crear_tipo_maquina from './components/Crear_tipo_maquina/Crear_tipo_maquina';
 import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
 import { Caracteristicas_motor } from './components/Caracteristicas_motor/Caracteristicas_motor'
+import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
+import  Descripcion_del_equipo_hv  from './components/Descripcion_del_equipo_hv/Descripcion_del_equipo_hv'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-  <Crear_maquina/>
-  <Caracteristicas_motor/>
-
-
+  <Descripcion_del_equipo_hv/>
+ 
   </React.StrictMode>
 );
 

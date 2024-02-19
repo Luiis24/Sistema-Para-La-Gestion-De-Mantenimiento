@@ -13,9 +13,7 @@ export const Check_list = () => {
     const [registros, setRegistros] = useState([]);
 
     useEffect(() => {
-        // Obtener la lista de componentes al cargar el componente
         fetchComponentes();
-        // Obtener los registros de estados
         fetchRegistros();
     }, []);
 
@@ -55,13 +53,12 @@ export const Check_list = () => {
         event.preventDefault();
 
         try {
-            // Crear un array de objetos con el formato necesario para la API
             const checklistData = Object.keys(estadosComponentes).map((componenteId) => ({
                 id_componente: componenteId,
                 estado_componente: estadosComponentes[componenteId],
             }));
 
-            // Enviar datos al servidor
+            
             await axios.post('http://localhost:4002/registerCheck_list', checklistData);
 
             // Limpiar estados después de enviar
