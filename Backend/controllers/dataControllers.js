@@ -593,6 +593,47 @@ const crearMaquina = async (req, res) => {
     }
 };
 
+const login = (req, res) => {
+    const { nId, password } = req.body;
+
+    if (!nId || !password) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query(
+        'SELECT * FROM aprendices WHERE num_doc_aprendiz = $1 AND password_aprendiz = $2',
+        [nId, password],
+        (error, aprendizResult) => {
+            if (error) {
+                console.error('Error al consultar la base de datos', error);
+                return res.status(500).json({ error: 'Error en el servidor' });
+            }
+
+            if (aprendizResult.rows.length === 1) {
+                return res.status(200).json({ message: 'Inicio de sesión exitoso como aprendiz' });
+            }
+
+            pool.query(
+                'SELECT * FROM instructores WHERE cc_instructor = $1 AND password_instructor = $2',
+                [nId, password],
+                (error, instructorResult) => {
+                    if (error) {
+                        console.error('Error al consultar la base de datos', error);
+                        return res.status(500).json({ error: 'Error en el servidor' });
+                    }
+
+                    if (instructorResult.rows.length === 1) {
+                        return res.status(200).json({ message: 'Inicio de sesión exitoso como instructor' });
+                    }
+
+                    return res.status(401).json({ error: 'Credenciales inválidas' });
+                }
+            );
+        }
+    );
+};
+
+
 
 
 
@@ -621,7 +662,8 @@ const crearMaquina = async (req, res) => {
     getChecklistById,
     getHojaVidaById,
     crearTipoMaquina,
-    crearMaquina
+    crearMaquina,
+    login
       
  
     

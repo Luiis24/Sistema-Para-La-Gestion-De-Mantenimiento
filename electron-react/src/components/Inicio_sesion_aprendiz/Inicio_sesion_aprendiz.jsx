@@ -8,8 +8,8 @@ import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 
 export const Inicio_sesion_aprendiz = () => {
-  const [num_doc_aprendiz, setNum_doc_aprendiz] = useState('');
-  const [password_aprendiz, setPassword_aprendiz] = useState('');
+  const [nId, setNId] = useState('');
+  const [password, setPassword] = useState('');
   const { setUser } = useAuth();
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -17,15 +17,12 @@ export const Inicio_sesion_aprendiz = () => {
 
   const Iniciar_Sesion = async () => {
     try {
-      const response = await axios.post('http://localhost:4002/loginAprendiz', {
-        num_doc_aprendiz: num_doc_aprendiz,
-        password_aprendiz: password_aprendiz
+      const response = await axios.post('http://localhost:4002/login', {
+        nId: nId,
+        password: password
       });
 
-      const userData = {
-        num_doc_aprendiz: num_doc_aprendiz,
-        password_aprendiz: password_aprendiz
-      }
+      const userData = response.data
 
       const userRegister = () => {
         setUser(userData)
@@ -40,7 +37,7 @@ export const Inicio_sesion_aprendiz = () => {
       console.log(response.data);
 
     } catch (error) {
-      console.error('Error de aprendiz al iniciar sesión', error);
+      console.error('Error al iniciar sesión', error);
     }
   };
 
@@ -58,14 +55,14 @@ export const Inicio_sesion_aprendiz = () => {
             <Input
               placeholder="Usuario"
               type="text"
-              value={num_doc_aprendiz}
-              onChange={(e) => setNum_doc_aprendiz(e.target.value)}
+              value={nId}
+              onChange={(e) => setNId(e.target.value)}
             />
             <div className='cont'>Contraseña:</div>
             <Input
               placeholder="Escribe tu contraseña"
-              value={password_aprendiz}
-              onChange={(e) => setPassword_aprendiz(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               endContent={
                 <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
                   {isVisible ? (

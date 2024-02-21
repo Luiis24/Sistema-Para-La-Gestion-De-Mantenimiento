@@ -7,6 +7,8 @@ router.post('/registerInstructor', dataController.registerInstructor);
 router.post('/loginInstructor', dataController.loginInstructor);
 router.get('/instructores', dataController.getInstructores);
 
+router.post('/login', dataController.login);
+
 router.post('/registerAprendiz', dataController.registerAprendiz);
 router.post('/loginAprendiz', dataController.loginAprendiz);
 router.get('/aprendices', dataController.getAprendices);
