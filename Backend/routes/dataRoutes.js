@@ -34,4 +34,7 @@ router.get('/GetHistorialReparaciones',dataController.GetHistorialReparaciones);
 router.post('/registrarEquipo',dataController.registrarEquipo);
 router.get('/GetDescripcion_equio',dataController.GetDescripcion_equio);
 
-module.exports = router;
+router.post('/crear_caracteristica_maquina',dataController.crear_caracteristica_maquina)
+router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
+
+module.exports = router; 

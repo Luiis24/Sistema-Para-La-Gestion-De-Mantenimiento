@@ -589,6 +589,48 @@ const registrarEquipo = async (req, res) => {
 };
 
   
+
+// Caracteristicas maquina (Post)
+
+const crear_caracteristica_maquina = (req, res) => {
+    const { nombre_caracteristica, funcion_maquina } = req.body;
+
+    if (!nombre_caracteristica || !funcion_maquina) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query(
+        'INSERT INTO caracteristicas_maquina (nombre_caracteristica, funcion_maquina) VALUES ($1, $2)',
+        [nombre_caracteristica, funcion_maquina],
+        (error) => {
+            if (error) {
+                console.error('Error al insertar el tipo de máquina en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar el tipo de máquina' });
+            }
+
+            res.status(201).json({ message: 'Tipo de máquina registrado exitosamente' });
+        }
+    );
+};
+
+
+// Caracteristicas maquina (Get)
+
+const GetCaracteristicasMaquina = (req, res) => {
+    pool.query('SELECT * FROM caracteristicas_maquina', (error, results) => {
+        if (error) {
+            console.error('Error al obtener los tipos de máquina', error);
+            return res.status(500).json({ error: 'Error al obtener los tipos de máquina' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
+
+
+
+
+
   module.exports = {
     registerInstructor,
     getInstructores,
@@ -611,6 +653,8 @@ const registrarEquipo = async (req, res) => {
     GetHistorialReparaciones,
     registrarEquipo,
     GetDescripcion_equio,
+    crear_caracteristica_maquina,
+    GetCaracteristicasMaquina,
     
     
    
