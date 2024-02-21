@@ -16,12 +16,15 @@ import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
 import { Caracteristicas_motor } from './components/Caracteristicas_motor/Caracteristicas_motor'
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 import  Descripcion_del_equipo_hv  from './components/Descripcion_del_equipo_hv/Descripcion_del_equipo_hv'; 
+import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-  <Descripcion_del_equipo_hv/>
+  <Caracteristicas_maquina/>
  
   </React.StrictMode>
 );

@@ -30,10 +30,10 @@ const Descripcion_del_equipo_hv = () => {
     try {
       const response = await axios.post('http://localhost:4002/registrarEquipo', equipo);
       console.log(response.data);
-      alert('Equipo registrado correctamente');
+      
     } catch (error) {
       console.error('Error al registrar equipo', error);
-      alert('Error al registrar equipo');
+    
     }
   };
 
