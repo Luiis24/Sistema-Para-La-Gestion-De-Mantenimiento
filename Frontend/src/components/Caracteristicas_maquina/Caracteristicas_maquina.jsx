@@ -63,7 +63,7 @@ const Caracteristicas_maquina = () => {
         </div>
         <button type="submit">Registrar Característica</button>
       </form>
-
+      
       <div>
         <h3>Características de máquina registradas:</h3>
         <ul>

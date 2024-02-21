@@ -17,6 +17,7 @@ import { Caracteristicas_motor } from './components/Caracteristicas_motor/Caract
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 import  Descripcion_del_equipo_hv  from './components/Descripcion_del_equipo_hv/Descripcion_del_equipo_hv'; 
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
+import CrearHojaVidaMaquina from './components/Hoja_de_vida/CrearHojaVidaMaquina ';
 
 
 
@@ -24,7 +25,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
+  <Crear_maquina/>
+  <Descripcion_del_equipo_hv/>
   <Caracteristicas_maquina/>
+  <Caracteristicas_motor/>
+  <Historial_reparaciones/>
+  <CrearHojaVidaMaquina/>
  
   </React.StrictMode>
 );
