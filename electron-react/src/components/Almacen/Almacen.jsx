@@ -100,8 +100,8 @@ export const Almacen = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
-                    <li><Link to={'/entradaAlmacen'}>Entradas</Link></li>
-                    <li><Link to={'/salidaAlmacen'}>Salidas</Link></li>
+                    {/* <li><Link to={'/entradaAlmacen'}>Entradas</Link></li>
+                    <li><Link to={'/salidaAlmacen'}>Salidas</Link></li> */}
                 </ul>
             </div>
 
@@ -110,7 +110,7 @@ export const Almacen = () => {
                 <div className="navHorizontal">
                     <h2 id='active'>Insumos</h2>
 
-                    <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
+                    {/* <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link> */}
                     <input type="checkbox" id="navbar-toggle"></input>
                     <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
 

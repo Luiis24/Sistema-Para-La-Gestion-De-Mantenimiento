@@ -93,9 +93,9 @@ export const Aprendices = () => {
             <div className="containerM">
 
                 <div className="navHorizontal">
-                    <h2 id='active'>Base de datos</h2>
+                    <h2 id='active'>Lista de aprendices</h2>
 
-                    <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
+                    {/* <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link> */}
                     <input type="checkbox" id="navbar-toggle"></input>
                     <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
 

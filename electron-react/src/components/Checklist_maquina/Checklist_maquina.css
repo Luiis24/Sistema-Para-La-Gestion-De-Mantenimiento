@@ -54,10 +54,7 @@
 }
 
 .rgCheckList {
-    width: 25%;
-    height: 40px;
-    font-size: 20px;
-    font-weight: bold;
+    width: 15%;
     border: none;
     border-radius: 16px;
     background-color: #34A853;
@@ -73,8 +70,15 @@
     width: 88%;
     margin: 15px auto 15px;
 }
+
 @media (max-width: 1280px) {
-    .nombreComponente {
-        width: 70%;
+    .nombreComponente select{
+        width: 40%;
+    }
+}
+
+@media (max-width: 950px) {
+    .containerComponentes{
+        grid-template-columns: 1fr;
     }
 }

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
-import {Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 export const Registro_aprendiz = () => {
   const [tipo_doc_aprendiz, setTipo_doc_aprendiz] = useState("");
@@ -196,7 +196,7 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*DOCUMENTO/SELECT */}
-              <h3 className="h3-fila-1">Tipo de documento</h3>
+              <h3 className="h3-fila-1">Tipo de documento</h3>            
               <Select
                 className="max-w-xs"
                 placeholder="Seleccione tipo documento"
@@ -285,7 +285,9 @@ export const Registro_aprendiz = () => {
               {/*PASSWORD*/}
               <h3 className="h3-fila-2">Contraseña</h3>
               <Input
-               onChange={(express)=> setPassword_aprendiz(express.target.value)}
+                onChange={(express) =>
+                  setPassword_aprendiz(express.target.value)
+                }
                 variant="bordered"
                 placeholder="Ingresa tu contraseña"
                 endContent={
@@ -307,9 +309,12 @@ export const Registro_aprendiz = () => {
             </div>
           </div>
           <div className="btn-terminar-registro">
-            <button className="boton-cancelar-registro" type="submit">
-              <Link to={'/aprendices'}>⮜ ‎ Atrás</Link>
-            </button>
+            <Link to={"/aprendices"}>
+              {" "}
+              <button className="boton-cancelar-aprendices" type="submit">
+                ⮜ ‎ Atrás
+              </button>
+            </Link>
             <button className="boton-registrar" type="submit">
               Registrar
             </button>

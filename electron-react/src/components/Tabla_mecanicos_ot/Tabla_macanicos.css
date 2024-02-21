@@ -26,7 +26,12 @@
 }
 .btn-registrarMOT button{
     color: white;
+    width: 15%;
     background-color: rgb(0, 173, 0);
+}
+
+.btn-registrarMOT button:hover{ 
+    background-color: rgb(1, 133, 1)
 }
 /* .tablaOT{
     width: 1236px;

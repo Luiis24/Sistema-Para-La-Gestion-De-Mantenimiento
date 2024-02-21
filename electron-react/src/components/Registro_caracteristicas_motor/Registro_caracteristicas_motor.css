@@ -1,0 +1,39 @@
+.container-rg-caracteristicasM {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.rg-caracteristicasM {
+    width: 35%;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+    z-index: 1;
+}
+
+.titulo-registro-CM {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: rgb(70, 70, 70);
+    -webkit-user-select: none;
+    user-select: none;
+    margin-bottom: 3%;
+}
+
+.inp-registro-CM {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

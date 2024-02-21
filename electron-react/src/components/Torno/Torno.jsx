@@ -13,7 +13,7 @@ export const Torno = () => {
         <div className="navHorizontal">
           <h2 id='active'>Informacion</h2>
 
-          <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
+          {/* <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
           <input type="checkbox" id="navbar-toggle"></input>
           <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt="menu"></img></label>
 
@@ -23,7 +23,7 @@ export const Torno = () => {
             <li>Wiston 2</li>
             <li>Wiston 3</li>
             <li>Red Start</li>
-          </ul>
+          </ul> */}
         </div>
 
         {/* <div className="infoTorno">

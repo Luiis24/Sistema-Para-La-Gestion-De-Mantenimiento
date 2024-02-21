@@ -108,7 +108,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                 </Table>
             </div>
             <div className="btn-registrarIOT">
-                <Button onPress={onOpen} className="mr-3">
+                <Button onPress={onOpen} className="mr-3 w-1/6">
                     Agregar Insumo
                 </Button>
             </div>
@@ -175,19 +175,13 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <Button
-                                    className="text-slate-50 bg-red-500"
-                                    variant="flat"
-                                    onPress={onClose}
-                                >
-                                    Cerrar
-                                </Button>
-                                <div className="botton-registrar-div">
-                                    <Button
-                                        className="text-white"
-                                        onClick={handleSubmit}
-                                        onPress={onClose}
-                                    >
+                                <div className='button-cerrar'>
+                                    <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
+                                        Cerrar
+                                    </Button>
+                                </div>
+                                <div className='button-2-inp'>
+                                    <Button className='text-white' type="submit" onPress={onClose} onClick={handleSubmit}>
                                         Registrar
                                     </Button>
                                 </div>

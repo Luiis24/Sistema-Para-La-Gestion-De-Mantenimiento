@@ -64,6 +64,10 @@
     padding: 10px 15px 10px 25px;
 }
 
+/* .maquinaN a {
+    margin: 10px 15px 10px 25px;
+} */
+
 .maquinaN:hover {
     background-color: #30944B;
     color: #fff;
@@ -91,7 +95,7 @@
     border-radius: 5px;
 }
 
-/* nav anterior */
+/* nav Usuarios, Informes, Almacen */
 
 .navList {
     width: 100%;
@@ -146,10 +150,17 @@
     gap: 10px;
 }
  
-.navHorizontal h2:hover {
+.navHorizontal a:hover {
     background-color: #30944B;
 }
 
+.navHorizontal a {
+    color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #active {
     background-color: #30944B;
@@ -252,3 +263,10 @@
        display: none;
     }
 }
+
+@media (max-width: 1040px) {
+    .navHorizontal h2{
+        gap: 0;
+    }
+}
+

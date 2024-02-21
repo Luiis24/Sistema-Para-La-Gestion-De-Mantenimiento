@@ -34,7 +34,7 @@ export const Navbars = () => {
     }
   };
 
-// Traer maquinas y tipos de maquinas al navbar
+  // Traer maquinas y tipos de maquinas al navbar
 
   useEffect(() => {
     axios.get('http://localhost:4002/maquinas')
@@ -168,13 +168,15 @@ export const Navbars = () => {
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
-                  Cerrar
-                </Button>
-                <div className="botton-registrar-div">
-                <Button className="text-white" onPress={onClose} onClick={handleFormSubmit}>
-                  Registrar
-                </Button>
+                <div className='button-cerrar'>
+                  <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
+                    Cerrar
+                  </Button>
+                </div>
+                <div className='button-2-inp'>
+                  <Button className='text-white' type="submit" onPress={onClose} onClick={handleFormSubmit}>
+                    Registrar
+                  </Button>
                 </div>
               </ModalFooter>
             </>

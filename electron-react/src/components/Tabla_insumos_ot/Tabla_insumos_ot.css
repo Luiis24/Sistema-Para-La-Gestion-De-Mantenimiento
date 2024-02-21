@@ -27,6 +27,14 @@
     margin: 5px auto 30px;
 }
 
+.btn-registrarIOT Button {
+    width: 15%;
+}
+
+.btn-registrarIOT button:hover{ 
+    background-color: rgb(1, 133, 1)
+}
+
 .btn-registrarMOT {
     display: flex;
     justify-content: center;

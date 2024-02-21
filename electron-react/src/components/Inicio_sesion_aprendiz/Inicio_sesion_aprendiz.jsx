@@ -46,17 +46,14 @@ export const Inicio_sesion_aprendiz = () => {
       <div className='complete'>
         <div className='inicio_sesion'>
           <div className='titulo-sesion'>Iniciar Sesión</div>
-          <div className="cambiarUsuario">
-            <Link to={'/registerInstructor'}><Button className='btn_active_inicio w-32'>Instructor</Button></Link>
-            <Button className="w-32" >Aprendiz</Button>
-          </div>
           <div className='numid'>Número de identificación:</div>
           <div className="inp-inicio_aprendiz">
             <Input
               placeholder="Usuario"
-              type="text"
+              type="Number"
               value={nId}
               onChange={(e) => setNId(e.target.value)}
+              className='mt-3'
             />
             <div className='cont'>Contraseña:</div>
             <Input
@@ -73,7 +70,7 @@ export const Inicio_sesion_aprendiz = () => {
                 </button>
               }
               type={isVisible ? "text" : "password"}
-              className="max-w-xs"
+              className="max-w-xs mt-3"
             />
           </div>
           <div className='btn-iniciar-ses'>

@@ -20,39 +20,16 @@ import { Titulo_sena_cb } from "../Titulo_sena_cb/Titulo_sena_cb";
 export const Menu = () => {
 
     const { user } = useAuth();
-    const [userEnTabla, setUserEnTabla] = useState([])
-    const [users, setUsers] = useState([]);
-    const [usersI, setUsersI] = useState([])
-
-    useEffect(() => {
-        axios.get('http://localhost:4002/aprendices')
-            .then(datos => {
-                setUsers(datos.data);
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios.get('http://localhost:4002/instructores')
-            .then(datos => {
-                setUsersI(datos.data);
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos:', error);
-            });
-    }, []);
 
 
-    useEffect(() => {
-        if (user.hasOwnProperty('num_doc_aprendiz')) {
-            setUserEnTabla(users.filter(u => u.num_doc_aprendiz === user.num_doc_aprendiz));
-        } else if (user.hasOwnProperty('cc_instructor')) {
-            setUserEnTabla(usersI.filter(u => u.cc_instructor === user.cc_instructor));
-        }
-        setUserEnTabla(users.filter(usuario => usuario.num_doc_aprendiz == user.num_doc_aprendiz))
-    }, []);
+    // useEffect(() => {
+    //     console.log(user)
+    //     if (user.hasOwnProperty('num_doc_aprendiz')) {
+    //         console.log('aprendiz')
+    //     } else if (user.hasOwnProperty('cc_instructor')) {
+    //         console.log('instructor')
+    //     }
+    // }, []);
 
 
 
@@ -100,7 +77,6 @@ export const Menu = () => {
                         </Link>
                     </div>
                 </div>
-
 
 
                 {/* <div className="containerUserName">

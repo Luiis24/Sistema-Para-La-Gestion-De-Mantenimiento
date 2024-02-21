@@ -26,21 +26,25 @@
 .maquinasMenu {
     grid-area: maquinasMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
+    border-radius: 7px;
 }
 
 .informesMenu {
     grid-area: informesMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
+    border-radius: 7px;
 }
 
 .almacenMenu {
     grid-area: almacenMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
+    border-radius: 7px;
 }
 
 .usuariosMenu {
     grid-area: usuariosMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
+    border-radius: 7px;
 }
 
 .imgSectionMenu{

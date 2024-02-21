@@ -147,8 +147,8 @@ export const Check_list = () => {
                     </div>
                 ))}
 
-                <div className="flex justify-center">
-                    <button className='rgCheckList' type='submit'>Registrar</button>
+                <div className="button-inp flex justify-center">
+                    <Button className='rgCheckList' type='submit'>Registrar</Button>
                 </div>
             </form>
         </div>
