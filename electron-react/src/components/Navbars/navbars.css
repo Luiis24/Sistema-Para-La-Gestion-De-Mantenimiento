@@ -71,7 +71,6 @@
 .maquinaN:hover {
     background-color: #30944B;
     color: #fff;
-    border-radius: 5px;
 }
 
 .adminMaquina {
@@ -92,7 +91,6 @@
 .herramientaMaquinaN:hover {
     background-color: #30944B;
     color: #fff;
-    border-radius: 5px;
 }
 
 /* nav Usuarios, Informes, Almacen */
@@ -115,7 +113,6 @@
 .navList li:hover {
     background-color: #30944B;
     color: #fff;
-    border-radius: 5px;
 }
 
 /* Todos los container */

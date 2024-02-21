@@ -22,14 +22,14 @@ export const Menu = () => {
     const { user } = useAuth();
 
 
-    // useEffect(() => {
-    //     console.log(user)
-    //     if (user.hasOwnProperty('num_doc_aprendiz')) {
-    //         console.log('aprendiz')
-    //     } else if (user.hasOwnProperty('cc_instructor')) {
-    //         console.log('instructor')
-    //     }
-    // }, []);
+    useEffect(() => {
+        console.log(user)
+        if (user.hasOwnProperty('num_doc_aprendiz')) {
+            console.log('aprendiz')
+        } else if (user.hasOwnProperty('cc_instructor')) {
+            console.log('instructor')
+        }
+    }, []);
 
 
 
@@ -53,26 +53,22 @@ export const Menu = () => {
 
                 <div className="containerMenu">
                     <div className="maquinasMenu">
-                        <Link to={'/tornos'}>
-                            <img src={imagen_maquinas} className="imgSectionMenu"></img>
+                        <Link to={'/tornos'} className="a-menu">
                             <p className="text-menu">Maquinas</p>
                         </Link>
                     </div>
                     <div className="informesMenu">
-                        <Link to={'/informes'}>
-                            <img src={imagen_informes} className="imgSectionMenu"></img>
+                        <Link to={'/informes'} className="a-menu">
                             <p className="text-menu">Informes</p>
                         </Link>
                     </div>
                     <div className="almacenMenu">
-                        <Link to={'/almacen'}>
-                            <img src={imagen_almacen} className="imgSectionMenu"></img>
-                            <p className="text-menu-almacen">Almacen</p>
+                        <Link to={'/almacen'} className="a-menu">
+                            <p className="text-menu">Almacen</p>
                         </Link>
                     </div>
                     <div className="usuariosMenu">
-                        <Link to={'/aprendices'}>
-                            <img src={imagen_aprendices} className="imgSectionMenu"></img>
+                        <Link to={'/aprendices'} className="a-menu">
                             <p className="text-menu">Usuarios</p>
                         </Link>
                     </div>
@@ -116,21 +112,6 @@ export const Menu = () => {
                     </div>
                 </div>
 
-
-                <div className="animacion">
-                    <ul className="cuadros">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </div>
             </div>
         </div>
     );

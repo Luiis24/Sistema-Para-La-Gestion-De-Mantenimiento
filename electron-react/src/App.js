@@ -40,7 +40,7 @@ import {Registro_caracteristicas_motor} from './components/Registro_caracteristi
 const router = createBrowserRouter ([
   {
     path:"/MenuPrincipal",
-    element: <><Menu/></>
+    element: <><Menu/><Animacion_cuadros/></>
   },
   {
     path:"/",
