@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NextUIProvider } from "@nextui-org/react";
-import { UsuarioProvider } from './estados/usuario';
+import { UsuarioProvider } from './estados/usuario'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

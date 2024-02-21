@@ -49,11 +49,11 @@ export const Checklist_maquina = () => {
 
       <div className="containerM">
         <div className="navHorizontal">
-          <h2 id="active">CheckList</h2>
+          <h2 id="active">Checklist</h2>
           <h2>
-            <Link to={"/"}>Orden De Trabajo</Link>
+            <Link to={'/OrdenDeTrabajo/:id_maquina'}>Orden de trabajo</Link>
           </h2>
-          <h2>Hoja De Vida</h2>
+          <Link to={'/hoja-de-vida'}><h2>Hoja de vida</h2></Link>
 
           <Link to={"/"} className="homeR">
             <img className="logoSenaR" src={logoSena} alt="logo Sena"></img>
@@ -92,7 +92,7 @@ export const Checklist_maquina = () => {
                     <label>{componente.nombre_componente}</label>
                     <Select
                       placeholder="Estado"
-                      className="2xl:w-72 w-64"
+                      className="2xl:w-72 w-11/12 left-64"
                       name={componente.nombre_componente}
                     >
                       <SelectItem value="bueno">Bueno</SelectItem>
@@ -106,7 +106,7 @@ export const Checklist_maquina = () => {
               })}
               <div className="nombreComponente">
                 <label>Interruptores Principales</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-80">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -114,7 +114,7 @@ export const Checklist_maquina = () => {
               </div>
               <div className="nombreComponente">
                 <label>Acometida del equipo</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -122,7 +122,7 @@ export const Checklist_maquina = () => {
               </div>
               <div className="nombreComponente">
                 <label>Hongo para emergencia</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -136,22 +136,24 @@ export const Checklist_maquina = () => {
 <hr/>
             <div className="containerComponentes">
               <div className="nombreComponente">
+              
                 <label>Nivel de aceite en caja de velocidades</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+         
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="altoNivel">Alto nivel</SelectItem>
                   <SelectItem value="bajoNivel">Bajo nivel</SelectItem>
                 </Select>
               </div>
               <div className="nombreComponente">
                 <label>Nivel de aceite en caja de avance</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="altoNivel">Alto nivel</SelectItem>
                   <SelectItem value="bajoNivel">Bajo nivel</SelectItem>
                 </Select>
               </div>
               <div className="nombreComponente">
                 <label>Bancadas y guías lubricadas</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -166,21 +168,21 @@ export const Checklist_maquina = () => {
             <div className="containerComponentes">
               <div className="nombreComponente">
                 <label>Luz Piloto</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="altoNivel">Alto Nivel</SelectItem>
                   <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
                 </Select>
               </div>
               <div className="nombreComponente">
                 <label>Motor de caja de velocidades</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="altoNivel">Alto Nivel</SelectItem>
                   <SelectItem value="bajoNivel">Bajo Nivel</SelectItem>
                 </Select>
               </div>
               <div className="nombreComponente">
                 <label>Lámpara del torno</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -188,7 +190,7 @@ export const Checklist_maquina = () => {
               </div>
               <div className="nombreComponente">
                 <label>Estado del horometro</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>
@@ -196,7 +198,7 @@ export const Checklist_maquina = () => {
               </div>
               <div className="nombreComponente">
                 <label>Interruptor de la bomba de lubricación</label>
-                <Select placeholder="Estado" className="2xl:w-72 w-64">
+                <Select placeholder="Estado" className="2xl:w-72 w-11/12 left-64">
                   <SelectItem value="bueno">Bueno</SelectItem>
                   <SelectItem value="malo">Malo</SelectItem>
                   <SelectItem value="notificar">Notificar</SelectItem>

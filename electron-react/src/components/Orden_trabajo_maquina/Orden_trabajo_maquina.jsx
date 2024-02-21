@@ -84,10 +84,10 @@ export const Orden_trabajo_maquina = () => {
       <div className="containerM">
         <div className="navHorizontal">
           <h2>
-            <Link to={"/checklistMaquina"}>CheckList</Link>
+            <Link to={"/checklistMaquina"}>Checklist</Link>
           </h2>
           <h2 id="active">Orden de trabajo</h2>
-          <h2>Hoja de vida</h2>
+          <Link to={'/hoja-de-vida'}><h2>Hoja de vida</h2></Link>
 
           <Link to={"/"} className="homeR">
             <img className="logoSenaR" src={logoSena} alt="logo Sena"></img>

@@ -21,6 +21,7 @@ import {Check_list} from './components/HojaInspeccion/HojaInspeccion'
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 import { Instructores } from './components/Instructores/Instructores';
 import { Sierras } from './components/Sierras/Sierras'
+import { Hoja_de_vida } from './components/Hoja_de_vida/Hoja_de_vida';
 
 
 const router = createBrowserRouter ([
@@ -55,6 +56,10 @@ const router = createBrowserRouter ([
   {
     path:"/cnc",
     element: <><Cnc/></>
+  },
+  {
+    path:"/hoja-de-vida",
+    element: <><Navbars/><Hoja_de_vida/></>
   },
   {
     path:"/fresadoras",

@@ -88,32 +88,57 @@ export const Check_list = () => {
 
     return (
         <div>
+            <div className='container-table'>
+            <Table className='m-6 mx-20 w-full'>
+                <TableHeader>
+                        <TableColumn className='text-lg'>Fecha</TableColumn>
+                        <TableColumn className='text-lg'>Hora inicio</TableColumn>
+                        <TableColumn className='text-lg ml-6'>Hora fin</TableColumn>
+                        {componentes.map((componente) => (
+                            <th key={componente.id_componente}>{componente.nombre_componente}</th>
+                        ))}
+                </TableHeader>
+                <TableBody emptyContent={"Registre hoja de inspección."}>
+                    {registros.map((registro) => (
+                        <TableRow key={registro.id_registro}>
+                            <TableCell>{registro.fecha}</TableCell>
+                            <TableCell>{registro.hora_inicio}</TableCell>
+                            <TableCell>{registro.hora_fin}</TableCell>
+                            {componentes.map((componente) => (
+                                <td key={componente.id_componente}>{registro[componente.id_componente]}</td>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            </div>
             <ToastContainer />
-            <Button onPress={onOpen}>Regisrar hoja de vida</Button>
-
+            <div className='button-inp'>
+            <Button className='button-inp' onPress={onOpen}>Registrar hoja de inspección</Button>
+            </div>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Registrar Hoja de inspeccion</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar hoja de inspección</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <form onSubmit={RegistrarCheckList} className='formHojaInspeccion'>
-                                    <h2>Check List Torno Wiston 1</h2>
+                                    <h2 className='h2-inp'>Check list torno Wiston 1</h2>
                                     <div className='campoHI'>
-                                        <label className='w-2/4 text-lg'>Fecha:</label>
+                                        <label className='w-2/4 text-base'>Fecha:</label>
                                         <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
                                     </div>
                                     <div className='campoHI'>
-                                        <label className='w-2/4 text-lg'>Hora de inicio:</label>
+                                        <label className='w-2/4 text-base'>Hora de inicio:</label>
                                         <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
                                     </div>
                                     <div className='campoHI'>
-                                        <label className='w-2/4 text-lg'>Hora de fin:</label>
+                                        <label className='w-2/4 text-base'>Hora de fin:</label>
                                         <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
                                     </div>
                                     {componentes.map((componente) => (
                                         <div key={componente.id_componente} className='campoHI'>
-                                            <label className='w-2/4 text-lg'>{componente.tipo_componente} - {componente.nombre_componente}:</label>
+                                            <label className='w-2/4 text-base'>{componente.tipo_componente} - {componente.nombre_componente}:</label>
                                             <Select
                                                 value={estadosComponentes[componente.id_componente]}
                                                 onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
@@ -129,42 +154,22 @@ export const Check_list = () => {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <div className='button-cerrar'>
+                                <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
-                                <Button color="primary" type="submit" onPress={onClose}>
+                                </div>
+                                <div className='button-2-inp'>
+                                <Button className='text-white' type="submit" onPress={onClose}>
                                     Registrar
                                 </Button>
+                                </div>
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
-
-<button><Link to={'/'}>inicio</Link></button>
-            <h2>Registros de Estados</h2>
-            <Table>
-                <TableHeader>
-                        <TableColumn>Fecha</TableColumn>
-                        <TableColumn>Hora Inicio</TableColumn>
-                        <TableColumn>Hora Fin</TableColumn>
-                        {componentes.map((componente) => (
-                            <th key={componente.id_componente}>{componente.nombre_componente}</th>
-                        ))}
-                </TableHeader>
-                <TableBody emptyContent={"Registre hoja de inspeccion."}>
-                    {registros.map((registro) => (
-                        <TableRow key={registro.id_registro}>
-                            <TableCell>{registro.fecha}</TableCell>
-                            <TableCell>{registro.hora_inicio}</TableCell>
-                            <TableCell>{registro.hora_fin}</TableCell>
-                            {componentes.map((componente) => (
-                                <td key={componente.id_componente}>{registro[componente.id_componente]}</td>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            
         </div>
     );
 };

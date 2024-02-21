@@ -1,0 +1,39 @@
+body {
+  user-select: none;
+}
+.inputs-hv {
+  width: 53%;
+  margin-left: 53%;
+}
+.inputs-hv2 {
+  width: 100%;
+  margin-left: 78%;
+}
+.label-hv {
+  font-size: 17px;
+  position: relative;
+  top: 45px;
+  right: -23%;
+}
+.input-hv {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin-left: -5%;
+}
+.container-hv {
+  width: 100%;
+}
+.segundafila {
+  margin-top: -64.5%;
+  margin-right: 46%;
+}
+.container-hv2 {
+  margin-top: 5.5%;
+}
+.input-hv2 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 48%;
+}

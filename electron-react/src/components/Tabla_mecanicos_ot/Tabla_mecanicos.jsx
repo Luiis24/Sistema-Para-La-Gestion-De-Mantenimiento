@@ -71,9 +71,11 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                                 </div>
                             </ModalBody>
                             <ModalFooter>
+                                <div className="button-cerrar-m">
                                 <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>
+                                </div>
                                 <div className="botton-registrar-div">
                                 <Button className="text-white" onClick={handleSubmit} onPress={onClose}>
                                     Registrar

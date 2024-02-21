@@ -1,3 +1,4 @@
+
 .formHojaInspeccion {
     display: flex;
     flex-direction: column;
@@ -5,10 +6,37 @@
     padding: 20px;
     gap: 20px;
 }
-
+.container-table{
+    width: 88%;
+}
 .campoHI {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}.h2-inp{
+    font-size: 18px;
+}
+.label{
+    margin-right: 50px;
+}
+.button-inp Button{
+    color: #ffff;
+    font-size: 14px;
+    margin: 40px 40px;
+    margin-left: 42%;
+    background-color: rgb(0, 173, 0);
+}
+.button-2-inp Button{
+    color: #ffff;
+    background-color: rgb(0, 173, 0)
+}
+.button-inp Button:hover{ 
+    background-color: rgb(1, 133, 1)
+}
+.button-2-inp Button:hover{ 
+    background-color: rgb(1, 133, 1)
+}
+.button-cerrar Button:hover{
+    background-color: rgb(196, 2, 2);
 }

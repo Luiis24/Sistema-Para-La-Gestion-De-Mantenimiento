@@ -101,28 +101,6 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
               );
             })}
           </TableBody>
-          {/* <tfoot>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>SubTotal</td>
-                            <td>$130,000</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Iva</td>
-                            <td>$24,000.00</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Total, Recursos($)</td>
-                            <td>$252,200.00</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Total, Hora Hombre($)</td>
-                            <td>$130,000</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Costo Total Mantenimiento</td>
-                            <td>$154,700.00</td>
-                        </tr>
-                    </tfoot> */}
         </Table>
       </div>
       <div className="btn-registrarIOT">
@@ -187,6 +165,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                 </div>
               </ModalBody>
               <ModalFooter>
+                <div className="button-cerrar-i">
                 <Button
                   className="text-slate-50 bg-red-500"
                   variant="flat"
@@ -194,6 +173,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                 >
                   Cerrar
                 </Button>
+                </div>
                 <div className="botton-registrar-div">
                 <Button
                   className="text-white"

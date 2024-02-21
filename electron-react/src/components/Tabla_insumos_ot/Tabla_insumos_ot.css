@@ -16,6 +16,9 @@
 .botton-registrar-div Button{
     background-color: rgb(0, 173, 0);
 }
+.botton-registrar-div Button:hover{
+    background-color: rgb(1, 133, 1);
+}
 .containerTIOT {
     width: 88%;
     margin: 20px auto;
@@ -26,7 +29,9 @@
     width: 80%;
     margin: 5px auto 30px;
 }
-
+.button-cerrar-i Button:hover{
+    background-color: rgb(196, 2, 2);
+}
 .btn-registrarMOT {
     display: flex;
     justify-content: center;
@@ -39,4 +44,7 @@
 .btn-registrarIOT button{
     color: white;
     background-color: rgb(0, 173, 0);
+}
+.btn-registrarIOT button:hover{
+    background-color: rgb(1, 133, 1);
 }

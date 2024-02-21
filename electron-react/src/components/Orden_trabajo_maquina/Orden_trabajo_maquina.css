@@ -82,6 +82,9 @@ body{
     margin-left: 85%;
     background-color: rgb(0, 173, 0);
 }
+.button-ot Button:hover{
+    background-color: rgb(1, 133, 1);
+}
 Input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
