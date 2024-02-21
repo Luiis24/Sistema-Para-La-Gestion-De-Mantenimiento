@@ -37,4 +37,7 @@ router.get('/GetDescripcion_equio',dataController.GetDescripcion_equio);
 router.post('/crear_caracteristica_maquina',dataController.crear_caracteristica_maquina)
 router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
 
+router.post('/crearHojaVidaMaquina',dataController.crearHojaVidaMaquina)
+router.get('/getHojas_de_vida',dataController.getHojas_de_vida)
+
 module.exports = router; 

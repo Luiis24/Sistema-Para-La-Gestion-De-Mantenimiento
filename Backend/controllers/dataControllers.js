@@ -210,13 +210,9 @@ const loginAprendiz = (req, res) => {
 
 // Registro hoja de inspeccion (Post):
 
-
-
-
-
-const registerHojaInspeccion = (req, res) => {
+const registerHojaInspeccion = async (req, res) => {
     console.log(req.body);
-    const { fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
+    const { fecha, hora_inicio, hora_fin, estadosComponentes, id_maquina } = req.body;
 
     if (!fecha || !hora_inicio || !hora_fin || !estadosComponentes || estadosComponentes.length === 0) {
         return res.status(400).json({ error: 'Falta información requerida' });
@@ -231,51 +227,47 @@ const registerHojaInspeccion = (req, res) => {
 
         try {
             // Insertar información en la tabla hoja_inspeccion
-            await pool.query(
-                'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin) VALUES ($1, $2, $3) RETURNING id_inspeccion',
-                [fecha, hora_inicio, hora_fin],
-                async (error, result) => {
-                    if (error) {
-                        console.error('Error al insertar la Hoja de inspección en la base de datos', error);
-                        throw new Error('Error al registrar la Hoja de inspección');
-                    }
-
-                    const idInspeccion = result.rows[0].id_inspeccion;
-
-                    // Insertar información en la tabla checklist
-                    const estadosQuery = estadosComponentes.map(({ id_componente, estado_componente }) => (
-                        pool.query(
-                            'INSERT INTO checklist (estado_componente, id_inspeccion, id_componente) VALUES ($1, $2, $3)',
-                            [estado_componente, idInspeccion, id_componente]
-                        )
-                    ));
-
-                    // Ejecutar todas las consultas de inserción de estados de componentes en paralelo
-                    await Promise.all(estadosQuery);
-
-                    // Confirmar la transacción
-                    pool.query('COMMIT', (error) => {
-                        if (error) {
-                            console.error('Error al confirmar la transacción', error);
-                            return res.status(500).json({ error: 'Error al confirmar la transacción' });
-                        }
-
-                        res.status(201).json({ message: 'Hoja de inspección y estados de componentes registrados exitosamente' });
-                    });
-                }
+            const result = await pool.query(
+                'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin, id_maquina) VALUES ($1, $2, $3, $4) RETURNING id_inspeccion',
+                [fecha, hora_inicio, hora_fin, id_maquina]
             );
+
+            const idInspeccion = result.rows[0].id_inspeccion;
+
+            // Insertar información en la tabla checklist
+            const estadosQuery = estadosComponentes.map(({ id_componente, estado_componente }) => (
+                pool.query(
+                    'INSERT INTO checklist (estado_componente, id_inspeccion, id_componente) VALUES ($1, $2, $3)',
+                    [estado_componente, idInspeccion, id_componente]
+                )
+            ));
+
+            // Ejecutar todas las consultas de inserción de estados de componentes en paralelo
+            await Promise.all(estadosQuery);
+
+            // Confirmar la transacción
+            pool.query('COMMIT', (error) => {
+                if (error) {
+                    console.error('Error al confirmar la transacción', error);
+                    return res.status(500).json({ error: 'Error al confirmar la transacción' });
+                }
+
+                res.status(201).json({ message: 'Hoja de inspección y estados de componentes registrados exitosamente' });
+            });
         } catch (error) {
-            // Si hay algún error en el bloque try, realizar un rollback
+            // Revertir la transacción en caso de error
             pool.query('ROLLBACK', (rollbackError) => {
                 if (rollbackError) {
-                    console.error('Error al realizar rollback', rollbackError);
+                    console.error('Error al revertir la transacción', rollbackError);
                 }
-                console.error('Error en la transacción', error);
-                res.status(500).json({ error: 'Error en la transacción' });
+
+                console.error('Error al registrar el Hoja de inspección y estados de componentes', error);
+                res.status(500).json({ error: 'Error al registrar el Hoja de inspección y estados de componentes' });
             });
         }
     });
 };
+
 
 
 
@@ -444,10 +436,15 @@ const crearMaquina = async (req, res) => {
             return res.status(400).json({ error: 'Ya existe una máquina con el mismo nombre' });
         }
         // Insertar la nueva máquina
-        await pool.query(
-            'INSERT INTO maquinas (nombre_maquina, manual_maquina) VALUES ($1, $2)',
+        const resultado = await pool.query(
+            'INSERT INTO maquinas (nombre_maquina, manual_maquina) VALUES ($1, $2) RETURNING id_maquina',
             [nombre_maquina, manual_maquina]
         );
+
+        const idMaquina = resultado.rows[0].id_maquina;
+
+        // Llamar al controlador para crear la hoja de vida
+        await crearHojaVidaMaquina(idMaquina);
 
         res.status(201).json({ message: 'Máquina registrada exitosamente' });
     } catch (error) {
@@ -458,12 +455,30 @@ const crearMaquina = async (req, res) => {
 
 
 
+
 // Obtener todas las máquina
 const getMaquinas = (req, res) => {
     pool.query('SELECT * FROM maquinas', (error, results) => {
         if (error) {
             console.error('Error al obtener las máquinas', error);
             return res.status(500).json({ error: 'Error al obtener máquinas' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
+
+
+
+
+
+
+
+const getHojas_de_vida = (req, res) => {
+    pool.query('SELECT * FROM hoja_de_vdia', (error, results) => {
+        if (error) {
+            console.error('Error al obtener las hojas de vida', error);
+            return res.status(500).json({ error: 'Error al obtener hojas de vida' });
         }
 
         res.status(200).json(results.rows);
@@ -631,6 +646,10 @@ const GetCaracteristicasMaquina = (req, res) => {
 
 
 
+
+
+
+
   module.exports = {
     registerInstructor,
     getInstructores,
@@ -655,6 +674,8 @@ const GetCaracteristicasMaquina = (req, res) => {
     GetDescripcion_equio,
     crear_caracteristica_maquina,
     GetCaracteristicasMaquina,
+    crearHojaVidaMaquina,
+    getHojas_de_vida
     
     
    
