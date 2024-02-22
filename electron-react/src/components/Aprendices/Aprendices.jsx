@@ -6,7 +6,7 @@ import { PlusIcon } from './PlusIcon'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
 import menu from '../../img/menu.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Select, SelectItem, Button } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button } from "@nextui-org/react";
 
 export const Aprendices = () => {
     const [users, setUsers] = useState([]);
@@ -32,7 +32,6 @@ export const Aprendices = () => {
         vacation: "warning",
     };
 
-    
 
     const filterUsers = (users) => {
         return users.filter(user => {
@@ -41,7 +40,7 @@ export const Aprendices = () => {
                 (filters.equipo === 'all' ||
                     user.equipo_aprendiz === filters.equipo) &&
                 (filters.nombre === '' ||
-                user.nombre_aprendiz === filters.nombre)
+                    user.nombre_aprendiz === filters.nombre)
             )
         })
     }
@@ -79,7 +78,7 @@ export const Aprendices = () => {
     return (
         <div>
             <div className="navVertical">
-                <Link to={'/'}>
+                <Link to={'/MenuPrincipal'}>
                     <div className="principal">
                         <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
                         <h2>Principal</h2>
@@ -87,7 +86,7 @@ export const Aprendices = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Aprendices</li>
-                    <li><Link to={'/Instructores'}>Instructores</Link></li>
+                    <li><Link to={'/instructores'}>Instructores</Link></li>
                 </ul>
             </div>
 
@@ -96,7 +95,7 @@ export const Aprendices = () => {
                 <div className="navHorizontal">
                     <h2 id='active'>Lista de aprendices</h2>
 
-                    <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
+                    {/* <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link> */}
                     <input type="checkbox" id="navbar-toggle"></input>
                     <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
 
@@ -106,70 +105,70 @@ export const Aprendices = () => {
                     </ul>
                 </div>
 
-<div className="containerUsuarios">
-                <div className="filtersUsuarios">
-                    <Input classNames={{
-                        base: "w-full sm:max-w-[44%]",
-                        inputWrapper: "border-1",
-                    }}
-                        placeholder="Buscar por nombre..."
-                        size="sm"
-                        startContent={<SearchIcon className="text-default-300" />}
-                        onChange={handleNombre}
-                    />
+                <div className="containerUsuarios">
+                    <div className="filtersUsuarios">
+                        <Input classNames={{
+                            base: "w-full sm:max-w-[44%]",
+                            inputWrapper: "border-1",
+                        }}
+                            placeholder="Buscar por nombre..."
+                            size="sm"
+                            startContent={<SearchIcon className="text-default-300" />}
+                            onChange={handleNombre}
+                        />
 
-                    <select placeholder='Programas de formación' className="filterU" onChange={handlePF}>
-                        <option value="all">Todos</option>
-                        {noRepetidos.map(programaFormacion => {
-                            return <option value={programaFormacion}>{programaFormacion}</option>
-                        })}
-                    </select>
-    
+                        <select placeholder='Programas de formacion' className="filterU" onChange={handlePF}>
+                            <option value="all">Todos</option>
+                            {noRepetidos.map(programaFormacion => {
+                                return <option value={programaFormacion}>{programaFormacion}</option>
+                            })}
+                        </select>
 
-                    <select placeholder='Equipos' className="filterU" onChange={handleEquipo}>
-                        <option value="all">Todos</option>
-                        {eqnoRepetidos.map(eq => {
-                            return <option value={eq}>{eq}</option>
-                        })}
-                    </select>
 
-                    <Link to={'/registroAprendiz'}><Button
-                        className="bg-foreground text-background h-12"
-                        endContent={<PlusIcon style={{fontSize:'large'}}/>}
-                        size="sm"
-                    >
-                        Nuevo aprendiz
-                    </Button></Link>
+                        <select placeholder='Equipos' className="filterU" onChange={handleEquipo}>
+                            <option value="all">Todos</option>
+                            {eqnoRepetidos.map(eq => {
+                                return <option value={eq}>{eq}</option>
+                            })}
+                        </select>
+
+                        <Link to={'/registroAprendiz'}><Button
+                            className="bg-foreground text-background h-12"
+                            endContent={<PlusIcon style={{ fontSize: 'large' }} />}
+                            size="sm"
+                        >
+                            Nuevo Usuario
+                        </Button></Link>
+                    </div>
+
+
+                    <Table>
+                        <TableHeader>
+                            <TableColumn className='text-lg'>Nombre</TableColumn>
+                            <TableColumn className='text-lg'>Documento</TableColumn>
+                            <TableColumn className='text-lg'>Programa de formacion</TableColumn>
+                            <TableColumn className='text-lg'>Equipo</TableColumn>
+                            <TableColumn className='text-lg'>Telefono</TableColumn>
+                            <TableColumn className='text-lg'>Ficha</TableColumn>
+                            <TableColumn className='text-lg'>Estado</TableColumn>
+                        </TableHeader>
+                        <TableBody emptyContent={"No se encontro."}>
+                            {filteredUsers.map(user => {
+                                return <TableRow key={user.id_aprendiz}>
+                                    <TableCell className='text-lg'>{user.nombre_aprendiz}</TableCell>
+                                    <TableCell className='text-lg'>{user.num_doc_aprendiz}</TableCell>
+                                    <TableCell className='text-lg'>{user.programa_aprendiz}</TableCell>
+                                    <TableCell className='text-lg'>{user.equipo_aprendiz}</TableCell>
+                                    <TableCell className='text-lg'>{user.telefono_aprendiz}</TableCell>
+                                    <TableCell className='text-lg'>{user.ficha_aprendiz}</TableCell>
+                                    <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap['active']} size="sm" variant="flat">
+                                        Activo
+                                    </Chip></TableCell>
+                                </TableRow>
+                            })}
+                        </TableBody>
+                    </Table>
                 </div>
-
-
-                <Table>
-                    <TableHeader>
-                        <TableColumn className='text-lg'>Nombre</TableColumn>
-                        <TableColumn className='text-lg'>Documento</TableColumn>
-                        <TableColumn className='text-lg'>Programa de formacion</TableColumn>
-                        <TableColumn className='text-lg'>Equipo</TableColumn>
-                        <TableColumn className='text-lg'>Telefono</TableColumn>
-                        <TableColumn className='text-lg'>Ficha</TableColumn>
-                        <TableColumn className='text-lg'>Estado</TableColumn>
-                    </TableHeader>
-                    <TableBody emptyContent={"No se encontro."}>
-                        {filteredUsers.map(user => {
-                            return <TableRow key={user.id_aprendiz}>
-                                <TableCell className='text-lg'>{user.nombre_aprendiz}</TableCell>
-                                <TableCell className='text-lg'>{user.num_doc_aprendiz}</TableCell>
-                                <TableCell className='text-lg'>{user.programa_aprendiz}</TableCell>
-                                <TableCell className='text-lg'>{user.equipo_aprendiz}</TableCell>
-                                <TableCell className='text-lg'>{user.telefono_aprendiz}</TableCell>
-                                <TableCell className='text-lg'>{user.ficha_aprendiz}</TableCell>
-                                <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap['active']} size="sm" variant="flat">
-                                    Activo
-                                </Chip></TableCell>
-                            </TableRow>
-                        })}
-                    </TableBody>
-                </Table>
-            </div>
             </div>
         </div>
     )

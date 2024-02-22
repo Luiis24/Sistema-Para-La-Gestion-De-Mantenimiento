@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 .btn-registrarMOT {
     display: flex;
@@ -21,15 +18,6 @@
 .botton-registrar-div Button{
     background-color: rgb(0, 173, 0);
 }
-.botton-registrar-div Button:hover{
-    background-color: rgb(1, 133, 1);
-}
-.btn-registrarMOT Button:hover{
-    background-color: rgb(1, 133, 1);
-}
-.button-cerrar-m Button:hover{
-    background-color: rgb(196, 2, 2);
-}
 .containerTIOT{
     width: 88%;
 }
@@ -38,5 +26,15 @@
 }
 .btn-registrarMOT button{
     color: white;
+    width: 15%;
     background-color: rgb(0, 173, 0);
 }
+
+.btn-registrarMOT button:hover{ 
+    background-color: rgb(1, 133, 1)
+}
+/* .tablaOT{
+    width: 1236px;
+    position: relative;
+    right: 56px 
+} */

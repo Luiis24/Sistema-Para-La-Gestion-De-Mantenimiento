@@ -14,8 +14,6 @@ import {
   TableCell,
   Chip,
   Input,
-  Select,
-  SelectItem,
   Button,
 } from "@nextui-org/react";
 
@@ -23,13 +21,12 @@ export const Instructores = () => {
   const [users, setUsers] = useState([]);
   const [filters, setFilters] = useState({
     nombre: "",
-    programa_de_formacion: "all",
-    equipo: "all",
+    estado: "all",
   });
 
   useEffect(() => {
     axios
-      .get("http://localhost:4002/aprendices")
+      .get("http://localhost:4002/instructores")
       .then((datos) => {
         setUsers(datos.data);
       })
@@ -47,25 +44,17 @@ export const Instructores = () => {
   const filterUsers = (users) => {
     return users.filter((user) => {
       return (
-        (filters.programa_de_formacion === "all" ||
-          user.programa_aprendiz === filters.programa_de_formacion) &&
-        (filters.equipo === "all" || user.equipo_aprendiz === filters.equipo) &&
-        (filters.nombre === "" || user.nombre_aprendiz === filters.nombre)
+        (filters.estado === "all" ||
+          user.estado_instructor === filters.estado) &&
+        (filters.nombre === "" || user.nombre_instructor === filters.nombre)
       );
     });
   };
 
-  const handlePF = (event) => {
+  const handleEstado = (event) => {
     setFilters((prevState) => ({
       ...prevState,
-      programa_de_formacion: event.target.value,
-    }));
-  };
-
-  const handleEquipo = (event) => {
-    setFilters((prevState) => ({
-      ...prevState,
-      equipo: event.target.value,
+      estado: event.target.value,
     }));
   };
 
@@ -79,15 +68,13 @@ export const Instructores = () => {
   const programasFormacion = users.map((user) => user.programa_aprendiz);
   const noRepetidos = [...new Set(programasFormacion)];
 
-  const equipos = users.map((user) => user.equipo_aprendiz);
-  const eqnoRepetidos = [...new Set(equipos)];
 
   const filteredUsers = filterUsers(users);
 
   return (
     <div>
       <div className="navVertical">
-        <Link to={"/"}>
+        <Link to={"/MenuPrincipal"}>
           <div className="principal">
             <img className="logoSena" src={logoSena} alt="Logo Sena"></img>
             <h2>Principal</h2>
@@ -103,13 +90,9 @@ export const Instructores = () => {
         </ul>
       </div>
       <div className="containerM">
+
         <div className="navHorizontal">
           <h2 id="active">Lista de instructores</h2>
-
-          <ul className="navListR">
-            <li id="activeMaquina">Aprendices</li>
-            <li>Nuevo Instructor</li>
-          </ul>
         </div>
 
         <div className="containerUsuarios">
@@ -126,30 +109,14 @@ export const Instructores = () => {
             />
 
             <select
-              placeholder="Programas de formación"
+              placeholder="Estado"
               className="filterU"
-              onChange={handlePF}
+              onChange={handleEstado}
             >
               <option value="all">Todos</option>
-              {noRepetidos.map((programaFormacion) => {
-                return (
-                  <option value={programaFormacion}>{programaFormacion}</option>
-                );
-              })}
             </select>
 
-            <select
-              placeholder="Equipos"
-              className="filterU"
-              onChange={handleEquipo}
-            >
-              <option value="all">Todos</option>
-              {eqnoRepetidos.map((eq) => {
-                return <option value={eq}>{eq}</option>;
-              })}
-            </select>
-
-            <Link to={"/registroInstructor"}>
+            <Link to={"/Registroinstructores"}>
               <Button
                 className="bg-foreground text-background h-12"
                 endContent={<PlusIcon style={{ fontSize: "large" }} />}
@@ -165,12 +132,8 @@ export const Instructores = () => {
             <TableHeader>
               <TableColumn className="text-lg">Nombre</TableColumn>
               <TableColumn className="text-lg">Documento</TableColumn>
-              <TableColumn className="text-lg">
-                Programa de formación
-              </TableColumn>
-              <TableColumn className="text-lg">Equipo</TableColumn>
+              <TableColumn className="text-lg">Email</TableColumn>
               <TableColumn className="text-lg">Teléfono</TableColumn>
-              <TableColumn className="text-lg">Ficha</TableColumn>
               <TableColumn className="text-lg">Estado</TableColumn>
             </TableHeader>
             <TableBody emptyContent={"No se encontro."}>
@@ -178,22 +141,16 @@ export const Instructores = () => {
                 return (
                   <TableRow key={user.id_aprendiz}>
                     <TableCell className="text-lg">
-                      {user.nombre_aprendiz}
+                      {user.nombre_instructor}
                     </TableCell>
                     <TableCell className="text-lg">
-                      {user.num_doc_aprendiz}
+                      {user.cc_instructor}
                     </TableCell>
                     <TableCell className="text-lg">
-                      {user.programa_aprendiz}
+                      {user.email_instructor}
                     </TableCell>
                     <TableCell className="text-lg">
-                      {user.equipo_aprendiz}
-                    </TableCell>
-                    <TableCell className="text-lg">
-                      {user.telefono_aprendiz}
-                    </TableCell>
-                    <TableCell className="text-lg">
-                      {user.ficha_aprendiz}
+                      {user.telefono_instructor}
                     </TableCell>
                     <TableCell>
                       <Chip

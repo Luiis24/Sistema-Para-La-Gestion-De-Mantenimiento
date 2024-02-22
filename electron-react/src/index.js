@@ -4,14 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NextUIProvider } from "@nextui-org/react";
-import { UsuarioProvider } from './estados/usuario'; 
+import { UsuarioProvider } from './estados/usuario';
+import Descripcion_del_equipo_hv from './components/Descripcion_del_equipo_hv/Descripcion_del_equipo_hv';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UsuarioProvider>
       <NextUIProvider>
-        <App />
+        <Descripcion_del_equipo_hv/>
       </NextUIProvider>
     </UsuarioProvider>
   </React.StrictMode>

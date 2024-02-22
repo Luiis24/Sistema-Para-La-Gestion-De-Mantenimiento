@@ -6,7 +6,7 @@ import { Table, SelectItem, Input, Select, Modal, ModalContent, ModalHeader, Mod
 import './HojaInspeccion.css'
 import { Link } from 'react-router-dom';
 
-export const Check_list = () => {
+export const HojaInspeccion = () => {
     const fechaActual = new Date().toISOString().split('T')[0]; // Obtener la fecha actual en formato YYYY-MM-DD
     const [fecha, setFecha] = useState(fechaActual);
     const [horaInicio, setHoraInicio] = useState('');
@@ -113,7 +113,7 @@ export const Check_list = () => {
             </Table>
             </div>
             <ToastContainer />
-            <div className='button-inp'>
+            <div className='button-inp flex justify-center'>
             <Button className='button-inp' onPress={onOpen}>Registrar hoja de inspección</Button>
             </div>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
@@ -154,7 +154,7 @@ export const Check_list = () => {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                <div className='button-cerrar'>
+                            <div className='button-cerrar'>
                                 <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
                                     Cerrar
                                 </Button>

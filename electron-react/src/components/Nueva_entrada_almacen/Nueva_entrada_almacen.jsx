@@ -8,7 +8,7 @@ export const Nueva_entrada_almacen = () => {
     return (
         <div>
             <div className="navVertical">
-                <Link to={'/'}>
+                <Link to={'/MenuPrincipal'}>
                     <div className="principal">
                         <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
                         <h2>Principal</h2>

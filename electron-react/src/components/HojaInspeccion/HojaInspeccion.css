@@ -22,10 +22,10 @@
 }
 .button-inp Button{
     color: #ffff;
-    font-size: 14px;
+    font-size: 16px;
     margin: 40px 40px;
-    margin-left: 42%;
     background-color: rgb(0, 173, 0);
+    width: 15%;
 }
 .button-2-inp Button{
     color: #ffff;

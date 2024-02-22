@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from '@nextui-org/react';
 
 export const Componentes_check = () => {
     const [tipoComponente, setTipoComponente] = useState('');
@@ -43,20 +44,28 @@ export const Componentes_check = () => {
     return (
         <div>
             <ToastContainer />
+            <form className='flex gap-5 flex-col m-5'>
+                
             <h2>Registro de Componentes del Checklist</h2>
-            <form>
                 <div>
-                    <label htmlFor="tipoComponente">Tipo de Componente:</label>
-                    <input
-                        type="text"
-                        id="tipoComponente"
-                        value={tipoComponente}
-                        onChange={(event) => setTipoComponente(event.target.value)}
-                    />
+                    <label htmlFor="tipoComponente">Tipo de Componente o Sistema:</label>
+                     <select id="tipoComponente" value={tipoComponente} 
+                        onChange={(event) => setTipoComponente(event.target.value)} className='w-full h-12 bg-gray-100 br-5'>
+                            <option disable selected hidden>Componente o Sistema</option>
+                            <option value="Componente Electrico">Componente Electrico</option>
+                            <option value="Componente Mecanico">Componente Mecánico</option>
+                            <option value="Estados de la Maquina">Estados de la Maquina</option>
+                            <option value="Funcionamiento Electrico">Funcionamiento Electrico</option>
+                            <option value="Motor">Motor</option>
+                            <option value="Niveles de Aceite">Niveles de Aceite</option>
+                            <option value="Sistema de Lubricacion">Sistema de Lubricación</option>
+                            <option value="Sistema Electrico">Sistema Electrico</option>
+                    </select>
                 </div>
+
                 <div>
                     <label htmlFor="nombreComponente">Nombre de Componente:</label>
-                    <input
+                    <Input
                         type="text"
                         id="nombreComponente"
                         value={nombreComponente}
@@ -64,27 +73,25 @@ export const Componentes_check = () => {
                     />
                 </div>
                 <div>
-                    <button type="button" onClick={RegistrarComponente}>Registrar Componente</button>
+                    <Button type="button" onClick={RegistrarComponente}>Registrar Componente</Button>
                 </div>
             </form>
 
             <h2>Listado de Componentes del Checklist</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tipo de Componente</th>
-                        <th>Nombre de Componente</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {componentes.map((componente) => (
-                        <tr key={componente.id}>
-                            <td>{componente.tipo_componente}</td>
-                            <td>{componente.nombre_componente}</td>
-                        </tr>
+            <Table>
+                <TableHeader>
+                        <TableColumn>Tipo de componente</TableColumn>
+                        <TableColumn>Nombre de componente</TableColumn>
+                </TableHeader>
+                <TableBody emptyContent={"Error."}>
+                {componentes.map((componente) => (
+                        <TableRow key={componente.id}>
+                            <TableCell>{componente.tipo_componente}</TableCell>
+                            <TableCell>{componente.nombre_componente}</TableCell>
+                        </TableRow>
                     ))}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </div>
     );
 };

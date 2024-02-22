@@ -73,6 +73,8 @@ body{
     align-items: center;
     margin: 20px auto;
 }
+
+
 .button-ot{
     padding: 20px;
     margin-top: -90px;
@@ -81,9 +83,6 @@ body{
     color: #ffff;
     margin-left: 85%;
     background-color: rgb(0, 173, 0);
-}
-.button-ot Button:hover{
-    background-color: rgb(1, 133, 1);
 }
 Input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;

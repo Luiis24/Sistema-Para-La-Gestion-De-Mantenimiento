@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import './Tabla_macanicos.css'
 import { DeleteIcon } from "../Tabla_insumos_ot/DeleteIcon";
 
-export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
+export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rowsMecanicos, setrowsMecanicos] = useState([]);
 
@@ -36,15 +36,15 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                     </TableHeader>
                     <TableBody>
                         {rowsMecanicos[0] ? rowsMecanicos.map((row, id) => {
-                            return <TableRow key={id+1}>
+                            return <TableRow key={id + 1}>
                                 <TableCell className="text-lg">{row.nombre}</TableCell>
                                 <TableCell className="text-lg">{row.documento}</TableCell>
-                                <TableCell onClick={() => deleteRow(id)} className="text-red-500"><DeleteIcon/></TableCell>
+                                <TableCell onClick={() => deleteRow(id)} className="text-red-500"><DeleteIcon /></TableCell>
                             </TableRow>
-                        }) :  <TableRow>
-                                <TableCell className="text-lg text-slate-400">Nombre completo</TableCell>
-                                <TableCell className="text-lg text-slate-400 ">No. Documento</TableCell>
-                                <TableCell className="text-slate-400"><DeleteIcon/></TableCell>
+                        }) : <TableRow>
+                            <TableCell className="text-lg text-slate-400">Nombre completo</TableCell>
+                            <TableCell className="text-lg text-slate-400 ">No. Documento</TableCell>
+                            <TableCell className="text-slate-400"><DeleteIcon /></TableCell>
                         </TableRow>}
 
                     </TableBody>
@@ -53,7 +53,7 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
             <div className="btn-registrarMOT">
                 <Button onPress={onOpen}>Agregar mecánico</Button>
             </div>
-            
+
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
                 <ModalContent>
@@ -62,24 +62,24 @@ export const Tabla_mecanicos_ot = ({formMecanicos, setFormMecanicos}) => {
                             <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    
+
                                     <Input className="" placeholder="Nombre completo" type="text" name="nombre" onChange={handleChange} />
                                 </div>
                                 <div className="formIOT">
-                                 
+
                                     <Input placeholder="Número de identificación" type="number" name="documento" onChange={handleChange} />
                                 </div>
                             </ModalBody>
                             <ModalFooter>
-                                <div className="button-cerrar-m">
-                                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
-                                    Cerrar
-                                </Button>
+                                <div className='button-cerrar'>
+                                    <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
+                                        Cerrar
+                                    </Button>
                                 </div>
-                                <div className="botton-registrar-div">
-                                <Button className="text-white" onClick={handleSubmit} onPress={onClose}>
-                                    Registrar
-                                </Button>
+                                <div className='button-2-inp'>
+                                    <Button className='text-white' type="submit" onPress={onClose} onClick={handleSubmit}>
+                                        Registrar
+                                    </Button>
                                 </div>
                             </ModalFooter>
                         </>

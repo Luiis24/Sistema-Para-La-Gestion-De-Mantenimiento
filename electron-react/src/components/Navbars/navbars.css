@@ -3,13 +3,16 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 /* Navegadores */
+
 .navVertical {
-    width: 180px;
+    width: 200px;
     min-height: 100vh;
     position: fixed;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid #cbcbcb;
 }
 
 .navVertical .principal {
@@ -61,6 +64,10 @@
     padding: 10px 15px 10px 25px;
 }
 
+/* .maquinaN a {
+    margin: 10px 15px 10px 25px;
+} */
+
 .maquinaN:hover {
     background-color: #30944B;
     color: #fff;
@@ -88,7 +95,7 @@
     border-radius: 5px;
 }
 
-
+/* nav Usuarios, Informes, Almacen */
 
 .navList {
     width: 100%;
@@ -108,11 +115,14 @@
 .navList li:hover {
     background-color: #30944B;
     color: #fff;
+    
 }
 
+/* Todos los container */
+
 .containerM {
-    width: calc(100% - 180px);
-    margin-left: 180px;
+    width: calc(100% - 200px);
+    margin-left: 200px;
 }
 
 .containerM .navHorizontal {
@@ -126,6 +136,9 @@
     gap: 5px;
 }
 
+
+/* Navbar Horizontal */
+
 .navHorizontal h2 {
     color: #fff;
     height: 100%;
@@ -134,20 +147,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
  
-.navHorizontal h2:hover {
+.navHorizontal a:hover {
     background-color: #30944B;
+}
+
+.navHorizontal a {
+    color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #active {
     background-color: #30944B;
 }
 
-.activeM {
+#activeMaquina {
     background-color: #30944B;
     color: #fff;
 }
+
+
+/* Responsive */
 
 .homeR {
     display: none;
@@ -238,3 +263,10 @@
        display: none;
     }
 }
+
+@media (max-width: 1040px) {
+    .navHorizontal h2{
+        gap: 0;
+    }
+}
+

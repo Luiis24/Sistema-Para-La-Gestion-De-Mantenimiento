@@ -18,3 +18,16 @@
     height: 40px;
     font-size: 18px;
 }
+
+.filtrosAlmacen {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.containerAlmacen {
+    padding: 20px 50px;
+}

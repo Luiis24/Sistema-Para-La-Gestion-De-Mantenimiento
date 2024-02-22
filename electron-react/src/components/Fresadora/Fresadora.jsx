@@ -1,25 +1,23 @@
-import React from "react";
-import "./Fresadora.css";
-import fresadora from "./fresadora.png";
-import { Link } from "react-router-dom";
-import logoSena from "../../img/logo.png";
-import menu from "../../img/menu.png";
+import React from 'react'
+import './Fresadora.css'
+import fresadora from './fresadora.png'
+import { Link } from 'react-router-dom'
+import logoSena from '../../img/logo.png'
+import menu from '../../img/menu.png'
 
 export const Fresadora = () => {
   return (
     <div>
       <div className="navVertical">
-        <Link to={"/"}>
+        <Link to={'/'}>
           <div className="principal">
-            <img className="logoSena" src={logoSena} alt="Logo Sena"></img>
+            <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
             <h2>Principal</h2>
           </div>
         </Link>
-        <ul className="navList">
-          <li id="activeMaquina">Fresadoras</li>
-          <Link to={"/checklistMaquina"}>
-            <li>Kondor</li>
-          </Link>
+        <ul className='navList'>
+          <li id='activeMaquina'>Fresadoras</li>
+          <li>Kondor</li>
           <li>Inmomil</li>
           <li>Inmodril</li>
           <li>Taladrofresa</li>
@@ -28,26 +26,26 @@ export const Fresadora = () => {
 
       <div className="containerM">
         <div className="navHorizontal">
-          <h2 id="active">Información</h2>
+          <h2 id='active'>Informacion</h2>
+
+          <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link>
+          <input type="checkbox" id="navbar-toggle"></input>
+          <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
+
+          <ul className='navListR'>
+          <li id='activeMaquina'>Fresadoras</li>
+          <li>Kondor</li>
+          <li>Inmomil</li>
+          <li>Inmodril</li>
+          <li>Taladrofresa</li>
+        </ul>
         </div>
 
         <div className="infoFresadora">
-          <img src={fresadora} alt="Imagen De Fresadora" />
-          <p>
-            Una fresadora es una máquina herramienta para realizar trabajos
-            mecanizados por arranque de viruta, mediante el movimiento de una
-            herramienta rotativa de varios filos de corte, denominada fresa.1​
-            Mediante el fresado se pueden mecanizar los más diversos materiales,
-            como madera, acero, fundición de hierro, metales no férricos y
-            materiales sintéticos, superficies planas o curvas, de entalladura,
-            de ranuras, de dentado, etc. Además, las piezas fresadas pueden ser
-            desbastadas o afinadas. En las fresadoras tradicionales, la pieza se
-            desplaza acercando las zonas a mecanizar a la herramienta,
-            permitiendo obtener formas diversas, desde superficies planas a
-            otras más complejas.
-          </p>
+          <img src={fresadora} alt='Imagen De Fresadora' />
+          <p>Una fresadora es una máquina herramienta para realizar trabajos mecanizados por arranque de viruta, mediante el movimiento de una herramienta rotativa de varios filos de corte, denominada fresa.1​ Mediante el fresado se pueden mecanizar los más diversos materiales, como madera, acero, fundición de hierro, metales no férricos y materiales sintéticos, superficies planas o curvas, de entalladura, de ranuras, de dentado, etc. Además, las piezas fresadas pueden ser desbastadas o afinadas. En las fresadoras tradicionales, la pieza se desplaza acercando las zonas a mecanizar a la herramienta, permitiendo obtener formas diversas, desde superficies planas a otras más complejas.</p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
