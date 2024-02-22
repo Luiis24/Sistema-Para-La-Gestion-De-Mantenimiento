@@ -30,7 +30,7 @@ root.render(
   <Caracteristicas_maquina/>
   <Caracteristicas_motor/>
   <Historial_reparaciones/>
-  <CrearHojaVidaMaquina/>
+
  
   </React.StrictMode>
 );
