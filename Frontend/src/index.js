@@ -25,7 +25,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-  <Crear_maquina/>
   <Descripcion_del_equipo_hv/>
   <Caracteristicas_maquina/>
   <Caracteristicas_motor/>

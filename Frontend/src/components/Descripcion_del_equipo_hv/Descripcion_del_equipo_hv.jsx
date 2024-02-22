@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Descripcion_del_equipo_hv = () => {
   const fechaActual = new Date().toISOString().split('T')[0];
+  const [maquinas, setMaquinas] = useState([]);
+  const [selectedMaquina, setSelectedMaquina] = useState('');
   const [nombre, setNombre] = useState('');
   const [marca, setMarca] = useState('');
   const [fechaFabricacion, setFechaFabricacion] = useState(fechaActual);
@@ -25,15 +27,26 @@ const Descripcion_del_equipo_hv = () => {
   const [sistema_neumatico_equipo, setSistema_neumatico_equipo] = useState('');
   const [sistema_hidraulico_equipo, setSistema_hidraulico_equipo] = useState('');
   const [sistema_termico_equipo, setSistema_termico_equipo] = useState('');
-  
+
+  useEffect(() => {
+    fetchMaquinas();
+  }, []);
+
+  const fetchMaquinas = async () => {
+    try {
+      const response = await axios.get('http://localhost:4002/getMaquinas');
+      setMaquinas(response.data.reverse()); // Reversing the order to display newer machines first
+    } catch (error) {
+      console.error('Error al obtener las máquinas', error);
+    }
+  };
+
   const registrarEquipo = async (equipo) => {
     try {
       const response = await axios.post('http://localhost:4002/registrarEquipo', equipo);
       console.log(response.data);
-      
     } catch (error) {
       console.error('Error al registrar equipo', error);
-    
     }
   };
 
@@ -41,28 +54,29 @@ const Descripcion_del_equipo_hv = () => {
     e.preventDefault();
 
     const equipo = {
+      id_maquina: selectedMaquina,
       nombre_equipo: nombre,
       marca_equipo: marca,
-      fecha_fabricacion_equipo:fechaFabricacion,
-      fabricante_equipo: fabricante_equipo, 
-      ubicacion_equipo:ubicacion_equipo, 
-      caracteristicas_equipo:caracteristicas_equipo, 
-      codigo_equipo:codigo_equipo, 
-      modelo_equipo:modelo_equipo, 
-      num_serie_equipo:num_serie_equipo, 
-      prioridad_equipo:prioridad_equipo, 
-      voltaje_equipo:voltaje_equipo, 
-      corriente_equipo:corriente_equipo, 
-      frecuencia_equipo:frecuencia_equipo, 
-      capacidad_equipo:capacidad_equipo, 
-      peso_equipo:peso_equipo, 
-      alimentacion_equipo:alimentacion_equipo, 
-      sistema_electrico_equipo:sistema_electrico_equipo, 
-      sistema_electronico_equipo:sistema_electronico_equipo, 
-      sistema_mecanico_equipo:sistema_mecanico_equipo, 
-      sistema_neumatico_equipo:sistema_neumatico_equipo, 
-      sistema_hidraulico_equipo:sistema_hidraulico_equipo, 
-      sistema_termico_equipo:sistema_termico_equipo,
+      fecha_fabricacion_equipo: fechaFabricacion,
+      fabricante_equipo: fabricante_equipo,
+      ubicacion_equipo: ubicacion_equipo,
+      caracteristicas_equipo: caracteristicas_equipo,
+      codigo_equipo: codigo_equipo,
+      modelo_equipo: modelo_equipo,
+      num_serie_equipo: num_serie_equipo,
+      prioridad_equipo: prioridad_equipo,
+      voltaje_equipo: voltaje_equipo,
+      corriente_equipo: corriente_equipo,
+      frecuencia_equipo: frecuencia_equipo,
+      capacidad_equipo: capacidad_equipo,
+      peso_equipo: peso_equipo,
+      alimentacion_equipo: alimentacion_equipo,
+      sistema_electrico_equipo: sistema_electrico_equipo,
+      sistema_electronico_equipo: sistema_electronico_equipo,
+      sistema_mecanico_equipo: sistema_mecanico_equipo,
+      sistema_neumatico_equipo: sistema_neumatico_equipo,
+      sistema_hidraulico_equipo: sistema_hidraulico_equipo,
+      sistema_termico_equipo: sistema_termico_equipo,
     };
 
     await registrarEquipo(equipo);
@@ -72,6 +86,20 @@ const Descripcion_del_equipo_hv = () => {
     <div>
       <h1>Descripción del equipo</h1>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>Seleccionar máquina:</label>
+          <select
+            value={selectedMaquina}
+            onChange={(event) => setSelectedMaquina(event.target.value)}
+          >
+            <option disable selected hidden> Tipo de Maquina</option>
+            {maquinas.map((maquina) => (
+              <option key={maquina.id_maquina} value={maquina.id_maquina}>
+                {maquina.nombre_maquina}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label>Nombre del equipo:</label>
           <input

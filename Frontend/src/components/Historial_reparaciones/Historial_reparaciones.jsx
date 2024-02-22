@@ -5,12 +5,15 @@ export const Historial_reparaciones = () => {
   const fechaActual = new Date().toISOString().split('T')[0]; // Cambiar el formato de fecha para postgres
   const [historial, setHistorial] = useState([]);
   const [procedimiento_historial, setProcedimiento_historial] = useState("");
-  const [repuestos_involucrados, setRepuestos_involucrados] = useState("");
+  const [insumos_usados_historial, setinsumos_usados_historial] = useState("");
   const [observaciones_historial, setObservaciones_historial] = useState("");
   const [fecha_historial, setFecha_historial] = useState(fechaActual);
+  const [maquinas, setMaquinas] = useState([]);
+  const [selectedMaquina, setSelectedMaquina] = useState('');
 
   useEffect(() => {
     fetchHistorialReparaciones();
+    fetchMaquinas();
   }, []);
 
   const fetchHistorialReparaciones = async () => {
@@ -22,13 +25,23 @@ export const Historial_reparaciones = () => {
     }
   };
 
+  const fetchMaquinas = async () => {
+    try {
+      const response = await axios.get('http://localhost:4002/getMaquinas');
+      setMaquinas(response.data.reverse());
+    } catch (error) {
+      console.error('Error al obtener las máquinas', error);
+    }
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     try {
       await axios.post('http://localhost:4002/crearHistorialReparaciones', {
+        id_maquina: selectedMaquina,
         procedimiento_historial,
-        repuestos_involucrados,
+        insumos_usados_historial,
         observaciones_historial,
         fecha_historial,
       });
@@ -53,6 +66,21 @@ export const Historial_reparaciones = () => {
       <h1>Historial de reparaciones</h1>
       <form onSubmit={handleFormSubmit}>
         <div>
+          <label>Selecciona una máquina:</label>
+          <select
+          
+            value={selectedMaquina}
+            onChange={(event) => setSelectedMaquina(event.target.value)}
+          >
+           <option disable selected hidden> Tipo de Maquina</option>
+            {maquinas.map((maquina) => (
+              <option key={maquina.id_maquina} value={maquina.id_maquina}>
+                {maquina.nombre_maquina}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label>Procedimiento realizado:</label>
           <textarea
             type="textarea"
@@ -66,8 +94,8 @@ export const Historial_reparaciones = () => {
           <textarea
             type="textarea"
             placeholder="Escribe los repuestos involucrados"
-            value={repuestos_involucrados}
-            onChange={(event) => setRepuestos_involucrados(event.target.value)}
+            value={insumos_usados_historial}
+            onChange={(event) => setinsumos_usados_historial(event.target.value)}
           />
         </div>
         <div>
@@ -95,7 +123,7 @@ export const Historial_reparaciones = () => {
           {historial.map((registro) => (
             <li key={registro.id_registro}>
               <p>Procedimiento: {registro.procedimiento_historial}</p>
-              <p>Repuestos involucrados: {registro.repuestos_involucrados}</p>
+              <p>Repuestos involucrados: {registro.insumos_usados_historial}</p>
               <p>Observaciones: {registro.observaciones_historial}</p>
               <p>Fecha: {formatFecha(registro.fecha_historial)}</p>
               <hr />
@@ -106,3 +134,4 @@ export const Historial_reparaciones = () => {
     </div>
   );
 };
+
