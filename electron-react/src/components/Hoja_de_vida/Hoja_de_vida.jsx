@@ -47,7 +47,9 @@ export const Hoja_de_vida = () => {
                 </div>
 
                 <div className="crearCM">
+                    // no va
                     <Link to={'/crearCaracteristicasMotor'}><h3>Crear Caracteristicas Motor</h3></Link>
+                    <Link to={'/crearCaracteristicasMaquina'}><h3>Crear Caracteristicas Maquina</h3></Link>
                 </div>
             </div>
         </div>

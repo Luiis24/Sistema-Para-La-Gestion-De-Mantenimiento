@@ -1,0 +1,31 @@
+.rg-caracteristicasMq {
+    background-color: rgb(247, 247, 247);
+    width: 40%;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+    z-index: 1;
+}
+
+.col-carcateristicasM {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.col-carcateristicasM textarea{
+    resize: none;
+}
+
+.boton-cancelar-registro {
+    width: 150px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boton-cancelar-registro:hover {
+    background-color: #dedede;
+    border-radius: 10px;
+}

@@ -563,12 +563,12 @@ const getChecklistById = (req, res) => {
 // crear maquina
 
 const crearMaquina = async (req, res) => {
-    const { nombre_maquina, manual_maquina } = req.body;
+    const { nombre_maquina, manual_maquina, id_tipo_maquina } = req.body;
 
     try {
         // Verificar si ya existe una máquina con el mismo nombre
         const existeMaquina = await pool.query(
-            'SELECT id_maquina FROM maquinas WHERE nombre_maquina = $1',
+            'SELECT * FROM maquinas WHERE nombre_maquina = $1',
             [nombre_maquina]
         );
 
@@ -582,8 +582,8 @@ const crearMaquina = async (req, res) => {
 
         // Insertar la nueva máquina
         await pool.query(
-            'INSERT INTO maquinas (nombre_maquina, manual_maquina) VALUES ($1, $2)',
-            [nombre_maquina, manual_maquina]
+            'INSERT INTO maquinas (nombre_maquina, manual_maquina, id_tipo_maquina) VALUES ($1, $2, $3)',
+            [nombre_maquina, manual_maquina, id_tipo_maquina]
         );
 
         res.status(201).json({ message: 'Máquina registrada exitosamente' });
