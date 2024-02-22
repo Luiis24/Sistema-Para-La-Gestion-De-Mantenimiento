@@ -444,7 +444,7 @@ const crearMaquina = async (req, res) => {
         const idMaquina = resultado.rows[0].id_maquina;
 
         // Llamar al controlador para crear la hoja de vida
-        await crearHojaVidaMaquina(idMaquina);
+       
 
         res.status(201).json({ message: 'Máquina registrada exitosamente' });
     } catch (error) {
@@ -475,7 +475,7 @@ const getMaquinas = (req, res) => {
 
 
 const getHojas_de_vida = (req, res) => {
-    pool.query('SELECT * FROM hoja_de_vdia', (error, results) => {
+    pool.query('SELECT * FROM hoja_de_vida', (error, results) => {
         if (error) {
             console.error('Error al obtener las hojas de vida', error);
             return res.status(500).json({ error: 'Error al obtener hojas de vida' });
@@ -608,25 +608,49 @@ const registrarEquipo = async (req, res) => {
 // Caracteristicas maquina (Post)
 
 const crear_caracteristica_maquina = (req, res) => {
-    const { nombre_caracteristica, funcion_maquina } = req.body;
+  const { id_maquina, nombre_caracteristica, descripcion_caracteristica } = req.body;
 
-    if (!nombre_caracteristica || !funcion_maquina) {
-        return res.status(400).json({ error: 'Falta información requerida' });
+  if (!id_maquina || !nombre_caracteristica || !descripcion_caracteristica) {
+    return res.status(400).json({ error: 'Falta información requerida' });
+  }
+
+  pool.query(
+    'INSERT INTO caracteristicas_maquina (id_maquina, nombre_caracteristica, descripcion_caracteristica) VALUES ($1, $2, $3)',
+    [id_maquina, nombre_caracteristica, descripcion_caracteristica],
+    (error) => {
+      if (error) {
+        console.error('Error al insertar la característica de la máquina en la base de datos', error);
+        return res.status(500).json({ error: 'Error al registrar la característica de la máquina' });
+      }
+
+      res.status(201).json({ message: 'Característica de la máquina registrada exitosamente' });
     }
-
-    pool.query(
-        'INSERT INTO caracteristicas_maquina (nombre_caracteristica, funcion_maquina) VALUES ($1, $2)',
-        [nombre_caracteristica, funcion_maquina],
-        (error) => {
-            if (error) {
-                console.error('Error al insertar el tipo de máquina en la base de datos', error);
-                return res.status(500).json({ error: 'Error al registrar el tipo de máquina' });
-            }
-
-            res.status(201).json({ message: 'Tipo de máquina registrado exitosamente' });
-        }
-    );
+  );
 };
+
+const actualizar_funcion_maquina = (req, res) => {
+  const { id_maquina, funcion_maquina } = req.body;
+
+  if (!id_maquina || !funcion_maquina) {
+    return res.status(400).json({ error: 'Falta información requerida' });
+  }
+
+  pool.query(
+    'UPDATE caracteristicas_maquina SET funcion_maquina = $1 WHERE id_maquina = $2',
+    [funcion_maquina, id_maquina],
+    (error) => {
+      if (error) {
+        console.error('Error al actualizar la función de la máquina en la base de datos', error);
+        return res.status(500).json({ error: 'Error al actualizar la función de la máquina' });
+      }
+
+      res.status(200).json({ message: 'Función de la máquina actualizada exitosamente' });
+    }
+  );
+};
+
+
+
 
 
 // Caracteristicas maquina (Get)
@@ -673,8 +697,8 @@ const GetCaracteristicasMaquina = (req, res) => {
     registrarEquipo,
     GetDescripcion_equio,
     crear_caracteristica_maquina,
+    actualizar_funcion_maquina,
     GetCaracteristicasMaquina,
-    crearHojaVidaMaquina,
     getHojas_de_vida
     
     
