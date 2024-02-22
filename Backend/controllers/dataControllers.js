@@ -493,6 +493,7 @@ const getHojas_de_vida = (req, res) => {
 
 const crearCaracteristicasMotor = async (req, res) => {
     const {
+        id_maquina,  
         marca_motor,
         modelo_motor,
         descripcion_motor,
@@ -506,8 +507,8 @@ const crearCaracteristicasMotor = async (req, res) => {
 
     try {
         await pool.query(
-            'INSERT INTO caracteristicas_motor (marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-            [marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor]
+            'INSERT INTO caracteristicas_motor (id_maquina, marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+            [id_maquina, marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor]
         );
 
         res.status(201).json({ message: 'Características del motor registradas exitosamente' });
@@ -516,6 +517,7 @@ const crearCaracteristicasMotor = async (req, res) => {
         res.status(500).json({ error: 'Error al registrar las características del motor' });
     }
 };
+
 
 
 
@@ -537,12 +539,12 @@ const GetCaracteristicasMotor = async (req, res) => {
 // Guardar historial (Post):
 
 const crearHistorialReparaciones = async (req, res) => {
-    const { procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial } = req.body;
+    const { id_maquina, procedimiento_historial, insumos_usados_historial, observaciones_historial, fecha_historial } = req.body;
 
     try {
         await pool.query(
-            'INSERT INTO historial_reparaciones (procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial) VALUES ($1, $2, $3, $4)',
-            [procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial]
+            'INSERT INTO historial_reparaciones (id_maquina, procedimiento_historial, insumos_usados_historial, observaciones_historial, fecha_historial) VALUES ($1, $2, $3, $4, $5)',
+            [id_maquina, procedimiento_historial, insumos_usados_historial, observaciones_historial, fecha_historial]
         );
 
         res.status(201).json({ message: 'Registro en el historial de reparaciones exitoso' });
@@ -551,6 +553,7 @@ const crearHistorialReparaciones = async (req, res) => {
         res.status(500).json({ error: 'Error al registrar en el historial de reparaciones' });
     }
 };
+
 
 
 
@@ -570,24 +573,69 @@ const GetHistorialReparaciones = async (req, res) => {
 // Descripcion del equipo (Post)
 
 const registrarEquipo = async (req, res) => {
-
-    const { nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo} = req.body;
+    const {
+      id_maquina,
+      nombre_equipo,
+      marca_equipo,
+      fecha_fabricacion_equipo,
+      fabricante_equipo,
+      ubicacion_equipo,
+      caracteristicas_equipo,
+      codigo_equipo,
+      modelo_equipo,
+      num_serie_equipo,
+      prioridad_equipo,
+      voltaje_equipo,
+      corriente_equipo,
+      frecuencia_equipo,
+      capacidad_equipo,
+      peso_equipo,
+      alimentacion_equipo,
+      sistema_electrico_equipo,
+      sistema_electronico_equipo,
+      sistema_mecanico_equipo,
+      sistema_neumatico_equipo,
+      sistema_hidraulico_equipo,
+      sistema_termico_equipo,
+    } = req.body;
   
     try {
-      
       const resultado = await pool.query(
-        'INSERT INTO descripcion_del_equipo_hv (nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)',
-        [nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo]
+        'INSERT INTO descripcion_del_equipo_hv (id_maquina, nombre_equipo, marca_equipo, fecha_fabricacion_equipo, fabricante_equipo, ubicacion_equipo, caracteristicas_equipo, codigo_equipo, modelo_equipo, num_serie_equipo, prioridad_equipo, voltaje_equipo, corriente_equipo, frecuencia_equipo, capacidad_equipo, peso_equipo, alimentacion_equipo, sistema_electrico_equipo, sistema_electronico_equipo, sistema_mecanico_equipo, sistema_neumatico_equipo, sistema_hidraulico_equipo, sistema_termico_equipo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)',
+        [
+          id_maquina,
+          nombre_equipo,
+          marca_equipo,
+          fecha_fabricacion_equipo,
+          fabricante_equipo,
+          ubicacion_equipo,
+          caracteristicas_equipo,
+          codigo_equipo,
+          modelo_equipo,
+          num_serie_equipo,
+          prioridad_equipo,
+          voltaje_equipo,
+          corriente_equipo,
+          frecuencia_equipo,
+          capacidad_equipo,
+          peso_equipo,
+          alimentacion_equipo,
+          sistema_electrico_equipo,
+          sistema_electronico_equipo,
+          sistema_mecanico_equipo,
+          sistema_neumatico_equipo,
+          sistema_hidraulico_equipo,
+          sistema_termico_equipo,
+        ]
       );
   
-      res.json({mensaje: 'Equipo registrado correctamente'});
-  
+      res.json({ mensaje: 'Equipo registrado correctamente' });
     } catch (error) {
-      console.log(error);
-      res.status(500).json('Error registrando equipo'); 
+      console.error(error);
+      res.status(500).json('Error registrando equipo');
     }
+  };
   
-  }
   
  // Descripcion del equipo (Get)
 
