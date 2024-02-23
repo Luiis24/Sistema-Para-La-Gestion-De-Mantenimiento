@@ -722,6 +722,54 @@ const GetCaracteristicasMaquina = (req, res) => {
 
 
 
+
+
+
+// Obtener la descripción del equipo por id_maquina
+const getDescripcionEquipoById = async (id_maquina) => {
+  try {
+    const response = await pool.query('SELECT * FROM descripcion_del_equipo_hv WHERE id_maquina = $1', [id_maquina]);
+    return response.rows;
+  } catch (error) {
+    console.error('Error al obtener la descripción del equipo', error);
+    throw error;
+  }
+};
+
+// Obtener las características de la máquina por id_maquina
+const getCaracteristicasMaquinaById = async (id_maquina) => {
+  try {
+    const response = await pool.query('SELECT * FROM caracteristicas_maquina WHERE id_maquina = $1', [id_maquina]);
+    return response.rows;
+  } catch (error) {
+    console.error('Error al obtener las características de la máquina', error);
+    throw error;
+  }
+};
+
+// Obtener las características del motor por id_maquina
+const getCaracteristicasMotorById = async (id_maquina) => {
+  try {
+    const response = await pool.query('SELECT * FROM caracteristicas_motor WHERE id_maquina = $1', [id_maquina]);
+    return response.rows;
+  } catch (error) {
+    console.error('Error al obtener las características del motor', error);
+    throw error;
+  }
+};
+
+// Obtener el historial de reparaciones por id_maquina
+const getHistorialReparacionesById = async (id_maquina) => {
+  try {
+    const response = await pool.query('SELECT * FROM historial_reparaciones WHERE id_maquina = $1 ORDER BY fecha_historial DESC', [id_maquina]);
+    return response.rows;
+  } catch (error) {
+    console.error('Error al obtener el historial de reparaciones', error);
+    throw error;
+  }
+};
+
+
   module.exports = {
     registerInstructor,
     getInstructores,
@@ -747,10 +795,14 @@ const GetCaracteristicasMaquina = (req, res) => {
     crear_caracteristica_maquina,
     actualizar_funcion_maquina,
     GetCaracteristicasMaquina,
-    getHojas_de_vida
+    getHojas_de_vida,
+
+
     
-    
-   
+    getDescripcionEquipoById,
+    getCaracteristicasMaquinaById,
+    getCaracteristicasMotorById,
+    getHistorialReparacionesById
     
   
   };
