@@ -25,25 +25,27 @@ export const Hoja_de_vida = () => {
     fetchMaquinas();
   }, []);
 
-  const handleMaquinaSelect = async () => {
+  const handleMaquinaSelect = async (id_maquina) => {
     try {
-      const id_maquina = selectedMaquina;
-
       // Obtener la descripción del equipo por id_maquina
       const descripcionEquipoData = await axios.get(`http://localhost:4002/getDescripcionEquipoById/${id_maquina}`);
       setDescripcionEquipo(descripcionEquipoData.data);
+      console.log('Descripción del Equipo:', descripcionEquipoData.data);
 
       // Obtener las características de la máquina por id_maquina
       const caracteristicasMaquinaData = await axios.get(`http://localhost:4002/getCaracteristicasMaquinaById/${id_maquina}`);
       setCaracteristicasMaquina(caracteristicasMaquinaData.data);
+      console.log('Características de la Máquina:', caracteristicasMaquinaData.data);
 
       // Obtener las características del motor por id_maquina
       const caracteristicasMotorData = await axios.get(`http://localhost:4002/getCaracteristicasMotorById/${id_maquina}`);
       setCaracteristicasMotor(caracteristicasMotorData.data);
+      console.log('Características del Motor:', caracteristicasMotorData.data);
 
       // Obtener el historial de reparaciones por id_maquina
       const historialReparacionesData = await axios.get(`http://localhost:4002/getHistorialReparacionesById/${id_maquina}`);
       setHistorialReparaciones(historialReparacionesData.data);
+      console.log('Historial de Reparaciones:', historialReparacionesData.data);
     } catch (error) {
       console.error('Error al obtener la información de la máquina seleccionada', error);
     }
@@ -52,21 +54,18 @@ export const Hoja_de_vida = () => {
   return (
     <div>
       <h1>Hoja de Vida</h1>
-      <div>
-        <label>Selecciona una máquina:</label>
-        <select
-          value={selectedMaquina}
-          onChange={(event) => setSelectedMaquina(event.target.value)}
-        >
-          <option disable selected hidden>Maquinas registradas</option>
-          {maquinas.map((maquina) => (
-            <option key={maquina.id_maquina} value={maquina.id_maquina}>
-              {maquina.nombre_maquina}
-            </option>
-          ))}
-        </select>
-        <button onClick={handleMaquinaSelect}>Mostrar Datos</button>
-      </div>
+   
+
+      {/* Botones para mostrar datos de cada máquina */}
+      {maquinas.map((maquina) => (
+        <div key={maquina.id_maquina}>
+          <button onClick={() => handleMaquinaSelect(maquina.id_maquina)}>
+            Mostrar Datos de {maquina.nombre_maquina}
+          </button>
+        </div>
+      ))}
+
+      <hr />
 
       {/* Información de la máquina seleccionada */}
       {descripcionEquipo.length > 0 && (
