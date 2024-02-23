@@ -18,18 +18,22 @@ import { Historial_reparaciones } from './components/Historial_reparaciones/Hist
 import  Descripcion_del_equipo_hv  from './components/Descripcion_del_equipo_hv/Descripcion_del_equipo_hv'; 
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
 import {Hoja_de_vida} from './components/Hoja_de_vida/Hoja_de_vida';
+import { Insumos } from './components/Insumos/Insumos';
+import { Usar_insumos } from './components/Insumos/Usar_insumos';
 
   // <Descripcion_del_equipo_hv/>
   // <Caracteristicas_maquina/>
   // <Caracteristicas_motor/>
   // <Historial_reparaciones/>
+  {/* <Hoja_de_vida/> */}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-  <Hoja_de_vida/>
- 
+  <Insumos/>
+  <Usar_insumos/>
+
   </React.StrictMode>
 );
 
