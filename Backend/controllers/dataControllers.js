@@ -770,6 +770,45 @@ const getHistorialReparacionesById = async (id_maquina) => {
 };
 
 
+//Insumos (Post)
+
+const RegistrarInsumo = (req, res) => {
+    const { nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo } = req.body;
+
+    if (!nombre_insumo  || !fecha_llegada_insumo || !cantidad_insumo || !proveedor_insumo) {
+        return res.status(400).json({ error: 'Falta información requerida' });
+    }
+
+    pool.query(
+        'INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)',
+        [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
+        (error) => {
+            if (error) {
+                console.error('Error al insertar los insumos en la base de datos', error);
+                return res.status(500).json({ error: 'Error al registrar insumos' });
+            }
+
+            res.status(201).json({ message: 'Los insumos fueron registrados exitosamente' });
+        }
+    );
+};
+
+//Insumos (Get)
+
+const GetInsumos = (req, res) => {
+    pool.query('SELECT * FROM insumos', (error, results) => {
+        if (error) {
+            console.error('Error al obtener la lista de los insumos', error);
+            return res.status(500).json({ error: 'Error al obtener la lista de los insumos' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
+  
+
+
+
   module.exports = {
     registerInstructor,
     getInstructores,
@@ -796,13 +835,12 @@ const getHistorialReparacionesById = async (id_maquina) => {
     actualizar_funcion_maquina,
     GetCaracteristicasMaquina,
     getHojas_de_vida,
-
-
-    
     getDescripcionEquipoById,
     getCaracteristicasMaquinaById,
     getCaracteristicasMotorById,
-    getHistorialReparacionesById
+    getHistorialReparacionesById,
+    RegistrarInsumo,
+    GetInsumos,
     
   
   };
