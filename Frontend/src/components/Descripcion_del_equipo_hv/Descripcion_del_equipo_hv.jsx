@@ -92,7 +92,7 @@ const Descripcion_del_equipo_hv = () => {
             value={selectedMaquina}
             onChange={(event) => setSelectedMaquina(event.target.value)}
           >
-            <option disable selected hidden> Tipo de Maquina</option>
+            <option disable selected hidden>Maquinas registradas</option>
             {maquinas.map((maquina) => (
               <option key={maquina.id_maquina} value={maquina.id_maquina}>
                 {maquina.nombre_maquina}
