@@ -39,6 +39,8 @@ router.post('/actualizar_funcion_maquina',dataController.actualizar_funcion_maqu
 router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
 
 
+// Hoja de vida:
+
 const {
   getDescripcionEquipoById,
   getCaracteristicasMaquinaById,
@@ -85,6 +87,12 @@ router.get('/getHistorialReparacionesById/:id_maquina', async (req, res) => {
     res.status(500).json({ error: 'Error al obtener el historial de reparaciones por id_maquina' });
   }
 });
+
+
+// Insumos:
+
+router.post('/RegistrarInsumo', dataController.RegistrarInsumo)
+router.get('/GetInsumos', dataController.GetInsumos)
 
 
 module.exports = router; 
