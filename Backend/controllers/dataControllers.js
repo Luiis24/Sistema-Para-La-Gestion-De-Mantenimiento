@@ -447,7 +447,7 @@ const getTipoMaquinas = (req, res) => {
     });
 };
 
-// nose
+// obtener orden de trabajo por maquina
 
 const getOrdenTrabajoById = (req, res) => {
     const id_maquina = req.params.id_maquina;
@@ -468,7 +468,7 @@ const getOrdenTrabajoById = (req, res) => {
     });
   };
 
-  // orden de trabajo
+  // orden de trabajo nova
 
   const registerOrdenTrabajo = (req, res) => {
     console.log(req.body);
@@ -593,6 +593,8 @@ const crearMaquina = async (req, res) => {
     }
 };
 
+// login de aprendiz e instructor
+
 const login = (req, res) => {
     const { nId, password } = req.body;
 
@@ -633,9 +635,24 @@ const login = (req, res) => {
     );
 };
 
+// obtener hoja de vida
+
+const getHojas_de_vida = (req, res) => {
+    pool.query('SELECT * FROM hoja_de_vida', (error, results) => {
+        if (error) {
+            console.error('Error al obtener las hojas de vida', error);
+            return res.status(500).json({ error: 'Error al obtener hojas de vida' });
+        }
+
+        res.status(200).json(results.rows);
+    });
+};
+
+// crear caracteristicas de motor de la maquina
 
 const crearCaracteristicasMotor = async (req, res) => {
     const {
+        id_maquina,  
         marca_motor,
         modelo_motor,
         descripcion_motor,
@@ -649,8 +666,8 @@ const crearCaracteristicasMotor = async (req, res) => {
 
     try {
         await pool.query(
-            'INSERT INTO caracteristicas_motor (marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-            [marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor]
+            'INSERT INTO caracteristicas_motor (id_maquina, marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+            [id_maquina, marca_motor, modelo_motor, descripcion_motor, serie_motor, tamaño_motor, potencia_motor, rpm_motor, voltaje_motor, amp_motor]
         );
 
         res.status(201).json({ message: 'Características del motor registradas exitosamente' });
@@ -661,6 +678,7 @@ const crearCaracteristicasMotor = async (req, res) => {
 };
 
 
+// obtener caracteristicas de motor de la maquina
 
 const GetCaracteristicasMotor = async (req, res) => {
     try {
@@ -751,25 +769,49 @@ const registrarEquipo = async (req, res) => {
 // Caracteristicas maquina (Post)
 
 const crear_caracteristica_maquina = (req, res) => {
-    const { nombre_caracteristica, funcion_maquina } = req.body;
-
-    if (!nombre_caracteristica || !funcion_maquina) {
-        return res.status(400).json({ error: 'Falta información requerida' });
+    const { id_maquina, nombre_caracteristica, descripcion_caracteristica } = req.body;
+  
+    if (!id_maquina || !nombre_caracteristica || !descripcion_caracteristica) {
+      return res.status(400).json({ error: 'Falta información requerida' });
     }
-
+  
     pool.query(
-        'INSERT INTO caracteristicas_maquina (nombre_caracteristica, funcion_maquina) VALUES ($1, $2)',
-        [nombre_caracteristica, funcion_maquina],
-        (error) => {
-            if (error) {
-                console.error('Error al insertar el tipo de máquina en la base de datos', error);
-                return res.status(500).json({ error: 'Error al registrar el tipo de máquina' });
-            }
-
-            res.status(201).json({ message: 'Tipo de máquina registrado exitosamente' });
+      'INSERT INTO caracteristicas_maquina (id_maquina, nombre_caracteristica, descripcion_caracteristica) VALUES ($1, $2, $3)',
+      [id_maquina, nombre_caracteristica, descripcion_caracteristica],
+      (error) => {
+        if (error) {
+          console.error('Error al insertar la característica de la máquina en la base de datos', error);
+          return res.status(500).json({ error: 'Error al registrar la característica de la máquina' });
         }
+  
+        res.status(201).json({ message: 'Característica de la máquina registrada exitosamente' });
+      }
     );
-};
+  };
+
+const actualizar_funcion_maquina = (req, res) => {
+    const { id_maquina, funcion_maquina } = req.body;
+  
+    if (!id_maquina || !funcion_maquina) {
+      return res.status(400).json({ error: 'Falta información requerida' });
+    }
+  
+    pool.query(
+      'UPDATE caracteristicas_maquina SET funcion_maquina = $1 WHERE id_maquina = $2',
+      [funcion_maquina, id_maquina],
+      (error) => {
+        if (error) {
+          console.error('Error al actualizar la función de la máquina en la base de datos', error);
+          return res.status(500).json({ error: 'Error al actualizar la función de la máquina' });
+        }
+  
+        res.status(200).json({ message: 'Función de la máquina actualizada exitosamente' });
+      }
+    );
+  };
+
+
+
 
 
 // Caracteristicas maquina (Get)
@@ -784,6 +826,50 @@ const GetCaracteristicasMaquina = (req, res) => {
         res.status(200).json(results.rows);
     });
 };
+
+// Obtener la descripción del equipo por id_maquina
+const getDescripcionEquipoById = async (id_maquina) => {
+    try {
+      const response = await pool.query('SELECT * FROM descripcion_del_equipo_hv WHERE id_maquina = $1', [id_maquina]);
+      return response.rows;
+    } catch (error) {
+      console.error('Error al obtener la descripción del equipo', error);
+      throw error;
+    }
+  };
+  
+  // Obtener las características de la máquina por id_maquina
+  const getCaracteristicasMaquinaById = async (id_maquina) => {
+    try {
+      const response = await pool.query('SELECT * FROM caracteristicas_maquina WHERE id_maquina = $1', [id_maquina]);
+      return response.rows;
+    } catch (error) {
+      console.error('Error al obtener las características de la máquina', error);
+      throw error;
+    }
+  };
+  
+  // Obtener las características del motor por id_maquina
+  const getCaracteristicasMotorById = async (id_maquina) => {
+    try {
+      const response = await pool.query('SELECT * FROM caracteristicas_motor WHERE id_maquina = $1', [id_maquina]);
+      return response.rows;
+    } catch (error) {
+      console.error('Error al obtener las características del motor', error);
+      throw error;
+    }
+  };
+  
+  // Obtener el historial de reparaciones por id_maquina
+  const getHistorialReparacionesById = async (id_maquina) => {
+    try {
+      const response = await pool.query('SELECT * FROM historial_reparaciones WHERE id_maquina = $1 ORDER BY fecha_historial DESC', [id_maquina]);
+      return response.rows;
+    } catch (error) {
+      console.error('Error al obtener el historial de reparaciones', error);
+      throw error;
+    }
+  };
 
 
 
@@ -823,12 +909,15 @@ const GetCaracteristicasMaquina = (req, res) => {
     registrarEquipo,
     GetDescripcion_equio,
     crear_caracteristica_maquina,
+    actualizar_funcion_maquina,
     GetCaracteristicasMaquina,
-      
- 
-    
-    
-    
+    getHojas_de_vida,
+
+
+    getDescripcionEquipoById,
+    getCaracteristicasMaquinaById,
+    getCaracteristicasMotorById,
+    getHistorialReparacionesById
   
   };
   

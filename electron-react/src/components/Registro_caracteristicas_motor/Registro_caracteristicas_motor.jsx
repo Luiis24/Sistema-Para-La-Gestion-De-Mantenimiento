@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Registro_caracteristicas_motor.css'
 import { Link } from 'react-router-dom';
 import { Input } from '@nextui-org/react';
 
 export const Registro_caracteristicas_motor = () => {
+    const [maquinas, setMaquinas] = useState([]);
+    const [selectedMaquina, setSelectedMaquina] = useState('');
+
     const [marca_motor, setMarca_motor] = useState('');
     const [modelo_motor, setModelo_motor] = useState('');
     const [descripcion_motor, setDescripcion_motor] = useState('');
@@ -15,11 +18,28 @@ export const Registro_caracteristicas_motor = () => {
     const [voltaje_motor, setVoltaje_motor] = useState('');
     const [amp_motor, setAmp_motor] = useState('');
 
+    // Cargar la lista de máquinas al montar el componente
+    useEffect(() => {
+        const fetchMaquinas = async () => {
+            try {
+                const response = await axios.get('http://localhost:4002/getMaquinas');
+                // Ordenar las máquinas por ID de forma descendente
+                const maquinasOrdenadas = response.data.sort((a, b) => b.id_maquina - a.id_maquina);
+                setMaquinas(maquinasOrdenadas);
+            } catch (error) {
+                console.error('Error al obtener la lista de máquinas', error);
+            }
+        };
+
+        fetchMaquinas();
+    }, []);
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
         try {
             await axios.post('http://localhost:4002/crearCaracteristicasMotor', {
+                id_maquina: selectedMaquina,
                 marca_motor,
                 modelo_motor,
                 descripcion_motor,
@@ -32,6 +52,7 @@ export const Registro_caracteristicas_motor = () => {
             });
 
             console.log('Características del motor registradas exitosamente');
+            window.location.href = '/tornos'
         } catch (error) {
             console.error('Error al registrar las características del motor', error);
         }
@@ -41,9 +62,21 @@ export const Registro_caracteristicas_motor = () => {
         <div className='container-rg-caracteristicasM'>
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
                 <div className="titulo-registro-CM">
-                    <h1>Agrega las características del motor.</h1>
+                    <h1>Agrega las características del motor</h1>
                 </div>
                 <div className='inp-registro-CM'>
+                    <select
+                        value={selectedMaquina}
+                        onChange={(event) => setSelectedMaquina(event.target.value)}
+                        className=' h-14 bg-gray-100 rounded-md p-3'
+                    >
+                        <option disable selected hidden>Maquinas registradas</option>
+                        {maquinas.map((maquina) => (
+                            <option key={maquina.id_maquina} value={maquina.id_maquina}>
+                                {maquina.nombre_maquina}
+                            </option>
+                        ))}
+                    </select>
                     <div>
                         <Input
                             className="mt-4"

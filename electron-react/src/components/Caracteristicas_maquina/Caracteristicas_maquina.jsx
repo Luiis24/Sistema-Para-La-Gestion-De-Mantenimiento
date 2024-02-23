@@ -12,30 +12,20 @@ const Caracteristicas_maquina = () => {
     const [selectedMaquina, setSelectedMaquina] = useState('');
     const [caracteristicas, setCaracteristicas] = useState([{ id: '', nombre: '', descripcion: '' }]);
     const [funcionMaquina, setFuncionMaquina] = useState('');
-    const [caracteristicasMaquina, setCaracteristicasMaquina] = useState([]);
 
     useEffect(() => {
         fetchMaquinas();
-        fetchCaracteristicasMaquina();
     }, []);
 
     const fetchMaquinas = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/maquinas');
+            const response = await axios.get('http://localhost:4002/getMaquinas');
             setMaquinas(response.data.reverse());
         } catch (error) {
             console.error('Error al obtener las máquinas', error);
         }
     };
 
-    const fetchCaracteristicasMaquina = async () => {
-        try {
-            const response = await axios.get('http://localhost:4002/GetCaracteristicasMaquina');
-            setCaracteristicasMaquina(response.data);
-        } catch (error) {
-            console.error('Error al obtener las características de la máquina', error);
-        }
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -67,9 +57,9 @@ const Caracteristicas_maquina = () => {
             });
 
             toast.success('Características de máquina registradas exitosamente');
-            fetchCaracteristicasMaquina();
             setCaracteristicas([{ id: '', nombre: '', descripcion: '' }]);
             setFuncionMaquina('');
+            window.location.href = '/crearCaracteristicasMotor';
         } catch (error) {
             console.error('Error al registrar las características de la máquina', error);
             toast.error('Error al registrar las características de la máquina');
@@ -80,12 +70,16 @@ const Caracteristicas_maquina = () => {
         try {
             await axios.delete(`http://localhost:4002/Eliminar_Caracteristica_Maquina/${caracteristicaId}`);
             toast.success('Característica eliminada exitosamente');
-            fetchCaracteristicasMaquina();
         } catch (error) {
             console.error('Error al eliminar la característica de la máquina', error);
             toast.error('Error al eliminar la característica de la máquina');
         }
     };
+
+    const scrollCarcateristicas = () => {
+        const container_cm = document.getElementById('container-col-CM')
+        container_cm.classList.add('overflow-y-scroll')
+    }
 
     return (
         <div className='container-rg-caracteristicasM'>
@@ -102,46 +96,48 @@ const Caracteristicas_maquina = () => {
                         onChange={(event) => setSelectedMaquina(event.target.value)}
                         className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
                     >
-                        <option value="">Seleccione una máquina</option>
+                        <option disable selected hidden>Seleccione una máquina</option>
                         {maquinas.map((maquina) => (
                             <option key={maquina.id_maquina} value={maquina.id_maquina}>
                                 {maquina.nombre_maquina}
                             </option>
                         ))}
                     </select>
-
-                    {caracteristicas.map((caracteristica, index) => (
-                        <div key={index} className='col-carcateristicasM'>
-                            <Input
-                                type="text"
-                                placeholder={`Nombre de la característica ${index + 1}`}
-                                value={caracteristica.nombre}
-                                onChange={(event) => {
-                                    const updatedCaracteristicas = [...caracteristicas];
-                                    updatedCaracteristicas[index].nombre = event.target.value;
-                                    setCaracteristicas(updatedCaracteristicas);
-                                }}
-                            />
-                            <Input
-                                placeholder={`Descripción de la característica ${index + 1}`}
-                                value={caracteristica.descripcion}
-                                onChange={(event) => {
-                                    const updatedCaracteristicas = [...caracteristicas];
-                                    updatedCaracteristicas[index].descripcion = event.target.value;
-                                    setCaracteristicas(updatedCaracteristicas);
-                                }}
-                            />
-                            {caracteristica.id !== '' && (
-                                <button type="button" onClick={() => handleDeleteCaracteristica(caracteristica.id)}>
-                                    Eliminar Característica
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                    <div className="container-col-CM" id='container-col-CM'>
+                        {caracteristicas.map((caracteristica, index) => (
+                            <div key={index} className='col-carcateristicasM'>
+                                <Input
+                                    type="text"
+                                    placeholder={`Nombre de la característica ${index + 1}`}
+                                    value={caracteristica.nombre}
+                                    onChange={(event) => {
+                                        const updatedCaracteristicas = [...caracteristicas];
+                                        updatedCaracteristicas[index].nombre = event.target.value;
+                                        setCaracteristicas(updatedCaracteristicas);
+                                    }}
+                                />
+                                <Input
+                                    placeholder={`Descripción de la característica ${index + 1}`}
+                                    value={caracteristica.descripcion}
+                                    onChange={(event) => {
+                                        const updatedCaracteristicas = [...caracteristicas];
+                                        updatedCaracteristicas[index].descripcion = event.target.value;
+                                        setCaracteristicas(updatedCaracteristicas);
+                                    }}
+                                />
+                                {caracteristica.id !== '' && (
+                                    <button type="button" onClick={() => handleDeleteCaracteristica(caracteristica.id)}>
+                                        Eliminar Característica
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                     <div className="flex justify-end">
                         <Button
                             type="button"
-                            onClick={() => setCaracteristicas([...caracteristicas, { id: '', nombre: '', descripcion: '' }])}
+                            onClick={() => {setCaracteristicas([...caracteristicas, { id: '', nombre: '', descripcion: '' }])
+                        scrollCarcateristicas()}}
                             className="bg-foreground text-background h-12"
                             endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                         >

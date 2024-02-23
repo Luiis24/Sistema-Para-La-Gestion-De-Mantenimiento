@@ -34,6 +34,8 @@ export const Crear_maquina = () => {
             });
 
             console.log('Máquina registrada exitosamente');
+            window.location.href = '/crearDescripcionEquipo'
+            
         } catch (error) {
             console.error('Error al registrar la máquina', error);
         }
@@ -48,18 +50,18 @@ export const Crear_maquina = () => {
                     <h1>Crear una nueva maquina</h1>
                 </div>
                 <div className='inp-registro-CM'>
-                        <select
-                            value={selectedTipoMaquina}
-                            onChange={(event) => setSelectedTipoMaquina(event.target.value)}
-                            className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
-                        >
-                            <option disable selected hidden>Tipo de maquina</option>
-                            {tiposMaquina.map((tipo) => (
-                                <option key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
-                                    {tipo.nombre_tipo_maquina}
-                                </option>
-                            ))}
-                        </select>
+                    <select
+                        value={selectedTipoMaquina}
+                        onChange={(event) => setSelectedTipoMaquina(event.target.value)}
+                        className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
+                    >
+                        <option disable selected hidden>Tipo de maquina</option>
+                        {tiposMaquina.map((tipo) => (
+                            <option key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
+                                {tipo.nombre_tipo_maquina}
+                            </option>
+                        ))}
+                    </select>
 
                     <div>
                         <Input

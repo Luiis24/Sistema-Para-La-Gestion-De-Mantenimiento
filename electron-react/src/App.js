@@ -36,6 +36,7 @@ import { Informes } from './components/Informes/Informes';
 
 import {Registro_caracteristicas_motor} from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor'
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
+import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
 
 
 const router = createBrowserRouter ([
@@ -123,6 +124,10 @@ const router = createBrowserRouter ([
   {
     path:"/crearCaracteristicasMaquina",
     element: <><Caracteristicas_maquina/><Animacion_cuadros/></>
+  },
+  {
+    path:"/crearDescripcionEquipo",
+    element: <><Registro_descripcion_equipo_hv/><Animacion_cuadros/></>
   }
 ]);
 

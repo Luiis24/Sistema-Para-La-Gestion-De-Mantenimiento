@@ -37,7 +37,7 @@ export const Navbars = () => {
   // Traer maquinas y tipos de maquinas al navbar
 
   useEffect(() => {
-    axios.get('http://localhost:4002/maquinas')
+    axios.get('http://localhost:4002/getMaquinas')
       .then(datos => {
         setMaquinas(datos.data);
       })
