@@ -2,8 +2,8 @@
   background-color: rgb(247, 247, 247);
   border-radius: 10px;
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
-  width: 95%;
-  height: 1025px;
+  width: 70%;
+  height: 1270px;
   margin: 30px;
 }
 .inputs-registro-hv {
@@ -16,14 +16,14 @@
 }
 .Primera-fila-input {
   flex-direction: column;
-  margin-right: 7%;
+  margin-right: 6%;
   display: flex;
 }
 .segunda-fila-input {
-  margin-right: 7%;
+  margin-right: 6%;
 }
 .tercera-fila-input {
-  margin-right: 7%;
+  margin-right: 6%;
 }
 .label-hv {
   display: flex;
@@ -37,17 +37,15 @@
   justify-content: center;
 }
 .button-cancelar-hv Button {
-    width: 200px;
+  width: 200px;
   font-weight: bold;
+  position: relative;
+  right: 60px;
   background-color: rgb(247, 247, 247);
   border-radius: 11px;
   text-align: center;
-  font-size: 16px;
   cursor: pointer;
   height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 16px;
 }
 .button-cancelar-hv Button:hover {
@@ -56,22 +54,17 @@
 .button-cancelar-hv Button:active {
   background-color: rgb(250, 250, 250);
 }
-.button-registrar-hv Button{
+.button-registrar-hv Button {
   background: rgb(0, 173, 0);
   border-radius: 12px;
   text-decoration: none;
-  font-weight: bold;
   color: white;
   text-align: center;
   font-size: 16px;
   cursor: pointer;
-  margin-left: 180px;
+  margin-left: 200px;
   height: 40px;
   width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 15px;
 }
 .button-registrar-hv Button:hover {
   background: rgb(0, 153, 0);

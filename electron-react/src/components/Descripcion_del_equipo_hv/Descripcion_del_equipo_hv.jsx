@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Descripcion_del_equipo_hv.css";
-import { Input, Textarea, Button } from "@nextui-org/react";
-
+import { Input, Textarea, Button, Select, SelectItem } from "@nextui-org/react";
 
 export const Descripcion_del_equipo_hv = () => {
   const fechaActual = new Date().toISOString().split("T")[0];
+  const [maquinas, setMaquinas] = useState([]);
+  const [selectedMaquina, setSelectedMaquina] = useState("");
   const [nombre, setNombre] = useState("");
   const [marca, setMarca] = useState("");
   const [fechaFabricacion, setFechaFabricacion] = useState(fechaActual);
@@ -31,6 +32,19 @@ export const Descripcion_del_equipo_hv = () => {
     useState("");
   const [sistema_termico_equipo, setSistema_termico_equipo] = useState("");
 
+  useEffect(() => {
+    fetchMaquinas();
+  }, []);
+
+  const fetchMaquinas = async () => {
+    try {
+      const response = await axios.get("http://localhost:4002/getMaquinas");
+      setMaquinas(response.data.reverse()); // Reversing the order to display newer machines first
+    } catch (error) {
+      console.error("Error al obtener las máquinas", error);
+    }
+  };
+
   const registrarEquipo = async (equipo) => {
     try {
       const response = await axios.post(
@@ -47,6 +61,7 @@ export const Descripcion_del_equipo_hv = () => {
     e.preventDefault();
 
     const equipo = {
+      id_maquina: selectedMaquina,
       nombre_equipo: nombre,
       marca_equipo: marca,
       fecha_fabricacion_equipo: fechaFabricacion,
@@ -84,6 +99,27 @@ export const Descripcion_del_equipo_hv = () => {
           <div className="inputs-registro-hv">
             <div className="Primera-fila-input">
               <div>
+                <label className="label-hv">Seleccionar máquina:</label>
+                <Select
+                  className="w-64"
+                  placeholder="Selecciona máquina"
+                  value={selectedMaquina}
+                  onChange={(event) => setSelectedMaquina(event.target.value)}
+                >
+                  <SelectItem disable selected hidden>
+                    Maquinas registradas
+                  </SelectItem>
+                  {maquinas.map((maquina) => (
+                    <SelectItem
+                      key={maquina.id_maquina}
+                      value={maquina.id_maquina}
+                    >
+                      {maquina.nombre_maquina}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+              <div>
                 <label className="label-hv">Nombre del equipo:</label>
                 <Input
                   type="text"
@@ -115,9 +151,7 @@ export const Descripcion_del_equipo_hv = () => {
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Fabricante del equipo:
-                </label>
+                <label className="label-hv">Fabricante del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -127,32 +161,28 @@ export const Descripcion_del_equipo_hv = () => {
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Ubicacion del equipo:
-                </label>
+                <label className="label-hv">Ubicacion del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Ubicacion del equipo"
+                  placeholder="Ubicación del equipo"
                   value={ubicacion_equipo}
                   onChange={(e) => setUbicacion_equipo(e.target.value)}
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Caracteristicas del equipo:
-                </label>
+                <label className="label-hv">Características del equipo:</label>
                 <Textarea
-                  placeholder="Marca"
+                  placeholder="Escribe sus características"
                   value={caracteristicas_equipo}
                   onChange={(e) => setCaracteristicas_equipo(e.target.value)}
                 />
               </div>
-              </div>
-              {/*Segunda fila*/}
-              <div className="segunda-fila-input">
+            </div>
+            {/*Segunda fila*/}
+            <div className="segunda-fila-input">
               <div>
-                <label className="label-hv">Codigo del equipo:</label>
+                <label className="label-hv">Código del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -171,26 +201,20 @@ export const Descripcion_del_equipo_hv = () => {
                   onChange={(e) => setModelo_equipo(e.target.value)}
                 />
               </div>
-              
-              
-              
+
               <div>
-                <label className="label-hv">
-                  Numero de serie del equipo:
-                </label>
+                <label className="label-hv">Número de serie del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Numero de serie del equipo"
+                  placeholder="Número de serie del equipo"
                   value={num_serie_equipo}
                   onChange={(e) => setNum_serie_equipo(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="label-hv">
-                  Prioridad del equipo:
-                </label>
+                <label className="label-hv">Prioridad del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -199,14 +223,9 @@ export const Descripcion_del_equipo_hv = () => {
                   onChange={(e) => setPrioridad_equipo(e.target.value)}
                 />
               </div>
-            
 
-            
-           
               <div>
-                <label className="label-hv">
-                  Voltaje del equipo:
-                </label>
+                <label className="label-hv">Voltaje del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -216,9 +235,7 @@ export const Descripcion_del_equipo_hv = () => {
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Corriente del equipo:
-                </label>
+                <label className="label-hv">Corriente del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -227,13 +244,8 @@ export const Descripcion_del_equipo_hv = () => {
                   onChange={(e) => setCorriente_equipo(e.target.value)}
                 />
               </div>
-              </div>
-  {/*tercera fila*/}
-  <div className="tercera-fila-input">
               <div>
-                <label className="label-hv">
-                  Frecuencia del equipo:
-                </label>
+                <label className="label-hv">Frecuencia del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -243,9 +255,7 @@ export const Descripcion_del_equipo_hv = () => {
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Capacidad del equipo:
-                </label>
+                <label className="label-hv">Capacidad del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
@@ -254,6 +264,9 @@ export const Descripcion_del_equipo_hv = () => {
                   onChange={(e) => setCapacidad_equipo(e.target.value)}
                 />
               </div>
+            </div>
+            {/*tercera fila*/}
+            <div className="tercera-fila-input">
               <div>
                 <label className="label-hv">Peso del equipo:</label>
                 <Input
@@ -264,110 +277,98 @@ export const Descripcion_del_equipo_hv = () => {
                   onChange={(e) => setPeso_equipo(e.target.value)}
                 />
               </div>
+
               <div>
-                <label className="label-hv">
-                  Alimentación del equipo:
-                </label>
+                <label className="label-hv">Alimentación del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe el tipo de alimentación del equipo"
+                  placeholder="Tipo de alimentación del equipo"
                   value={alimentacion_equipo}
                   onChange={(e) => setAlimentacion_equipo(e.target.value)}
                 />
               </div>
-              
-            
-              
+
               <div>
                 <label className="label-hv">
-                  Sistema electrico del equipo:
+                  Sistema eléctrico del equipo:
                 </label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema electrico"
+                  placeholder="¿Cuenta con sistema eléctrico?"
                   value={sistema_electrico_equipo}
                   onChange={(e) => setSistema_electrico_equipo(e.target.value)}
                 />
               </div>
               <div>
                 <label className="label-hv">
-                  Sistema electronico del equipo:
+                  Sistema electrónico del equipo:
                 </label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema"
+                  placeholder="¿Cuenta con sistema electrónico?"
                   value={sistema_electronico_equipo}
                   onChange={(e) =>
                     setSistema_electronico_equipo(e.target.value)
                   }
                 />
               </div>
-              </div>
-              {/*Cuarta fila*/}
-              <div className="cuarta-fila-input">
               <div>
-                <label className="label-hv">
-                  Sistema mecanico del equipo:
-                </label>
+                <label className="label-hv">Sistema mecánico del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema mecanico"
+                  placeholder="¿Cuenta con sistema mecánico?"
                   value={sistema_mecanico_equipo}
                   onChange={(e) => setSistema_mecanico_equipo(e.target.value)}
                 />
               </div>
               <div>
                 <label className="label-hv">
-                  Sistema neumatico del equipo:
+                  Sistema neumático del equipo:
                 </label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema neumatico"
+                  placeholder="¿Cuenta con sistema neumático?"
                   value={sistema_neumatico_equipo}
                   onChange={(e) => setSistema_neumatico_equipo(e.target.value)}
                 />
               </div>
               <div>
                 <label className="label-hv">
-                  Sistema hidraulico del equipo:
+                  Sistema hidráulico del equipo:
                 </label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema hidraulico"
+                  placeholder="¿Cuenta con sistema hidráulico?"
                   value={sistema_hidraulico_equipo}
                   onChange={(e) => setSistema_hidraulico_equipo(e.target.value)}
                 />
               </div>
               <div>
-                <label className="label-hv">
-                  Sistema termico del equipo:
-                </label>
+                <label className="label-hv">Sistema térmico del equipo:</label>
                 <Input
                   type="text"
                   className="w-64"
-                  placeholder="Escribe si el equipo cuenta con sistema termico"
+                  placeholder="¿Cuenta con sistema térmico?"
                   value={sistema_termico_equipo}
                   onChange={(e) => setSistema_termico_equipo(e.target.value)}
                 />
               </div>
-              </div>
+            </div>
           </div>
-         
-             <div className="buttons-hv">
-                <div className="button-cancelar-hv">
-              <Button  type="submit">
-                ⮜ ‎ Atrás
-              </Button>
-              </div>
-              <div className="button-registrar-hv">
-          <Button  type="submit">Registrar Equipo</Button>
-          </div>
+
+          <div className="buttons-hv">
+            <div className="button-cancelar-hv">
+              <Button type="submit">⮜ ‎ Atrás</Button>
+            </div>
+            <div className="button-registrar-hv">
+              <Button type="submit">Registrar equipo</Button>
+            </div>
           </div>
         </form>
       </div>
