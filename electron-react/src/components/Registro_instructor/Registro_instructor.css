@@ -24,13 +24,10 @@ body{
 }
 .btn-inst{
     background: rgb(0, 173, 0);
-    justify-content: center;
-    text-decoration: none;
-    align-items: center;
+    text-decoration: none;  
     border-radius:12px;
     text-align: center;
     border-style: none;
-    font-weight: bold;
     font-size: 16px;
     cursor: pointer;
     margin-left: 60px;
