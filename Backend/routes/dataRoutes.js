@@ -95,4 +95,13 @@ router.post('/RegistrarInsumo', dataController.RegistrarInsumo)
 router.get('/GetInsumos', dataController.GetInsumos)
 
 
+// ...
+
+router.post('/UsarInsumo/:id_insumo', dataController.UsarInsumo);
+
+// ...
+
+
+
+
 module.exports = router; 
