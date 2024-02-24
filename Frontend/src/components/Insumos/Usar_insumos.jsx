@@ -10,6 +10,7 @@ export const Usar_insumos = () => {
   const [cantidadUsar, setCantidadUsar] = useState(1);
 
   useEffect(() => {
+    // Función para cargar la lista de insumos
     const fetchInsumos = async () => {
       try {
         const response = await axios.get('http://localhost:4002/GetInsumos');
@@ -42,46 +43,32 @@ export const Usar_insumos = () => {
   };
 
   const handleGestionarInsumo = (id) => {
+    console.log("ID del insumo seleccionado:", id);
     setSelectedInsumoId(id);
     setModalVisible(true);
   };
 
-  const handleModalOption = (option) => {
-    if (option === 'Usar') {
-      // Si la opción es "Usar", mostrar el formulario para ingresar la cantidad
-      setCantidadUsar(1); // Puedes establecer un valor predeterminado
-    } else {
-      // Si la opción es "Devolver", puedes realizar lógica adicional aquí si es necesario
-      console.log(`Insumo con ID ${selectedInsumoId} seleccionado. Opción: ${option}`);
+  const handleSubmitModal = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log("ID del insumo a usar:", selectedInsumoId);
+
+      if (selectedInsumoId === null) {
+        console.error('ID del insumo no definida');
+        return;
+      }
+
+     await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
+  cantidad: cantidadUsar,
+});
+
+      console.log(`Insumo con ID ${selectedInsumoId} usado. Cantidad: ${cantidadUsar}`);
       setModalVisible(false);
+    } catch (error) {
+      console.error('Error al usar insumo', error);
     }
   };
-
-  // ...
-
-const handleSubmitModal = async (event) => {
-  event.preventDefault();
-
-  try {
-    if (!selectedInsumoId) {
-      console.error('No se ha seleccionado un insumo.');
-      return;
-    }
-
-    // Realizar la solicitud POST al servidor para usar insumo
-    await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
-      cantidad: cantidadUsar,
-    });
-
-    console.log(`Insumo con ID ${selectedInsumoId} usado. Cantidad: ${cantidadUsar}`);
-    setModalVisible(false);
-  } catch (error) {
-    console.error('Error al usar insumo', error);
-  }
-};
-
-
-
 
   return (
     <div>
@@ -109,20 +96,19 @@ const handleSubmitModal = async (event) => {
       {modalVisible && (
         <div className="modal">
           <h3>Selecciona una opción:</h3>
-          {cantidadUsar > 0 && (
-            <form onSubmit={handleSubmitModal}>
-              <label>
-                Cantidad a usar:
-                <input
-                  type="number"
-                  value={cantidadUsar}
-                  onChange={(e) => setCantidadUsar(e.target.value)}
-                  min={1}
-                />
-              </label>
-              <button type="submit">Usar Insumo</button>
-            </form>
-          )}
+          <form onSubmit={handleSubmitModal}>
+            <label>
+              Cantidad a usar:
+              <input
+                type="number"
+                value={cantidadUsar}
+                onChange={(e) => setCantidadUsar(e.target.value)}
+                min={1}
+              />
+            </label>
+            <button type="submit">Usar Insumo</button>
+          </form>
+          {/* Puedes agregar más opciones o botones según sea necesario */}
           <button onClick={() => handleModalOption('Devolver')}>Devolver Insumo</button>
         </div>
       )}

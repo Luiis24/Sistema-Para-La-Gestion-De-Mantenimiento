@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { format } from 'date-fns';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { format } from "date-fns";
 
 export const Insumos = () => {
-  const [nombreInsumo, setNombreInsumo] = useState('');
-  const [fechaLlegadaInsumo, setFechaLlegadaInsumo] = useState(new Date().toISOString().split('T')[0]);
-  const [cantidadInsumo, setCantidadInsumo] = useState('');
-  const [proveedorInsumo, setProveedorInsumo] = useState('');
+  const [nombreInsumo, setNombreInsumo] = useState("");
+  const [fechaLlegadaInsumo, setFechaLlegadaInsumo] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [cantidadInsumo, setCantidadInsumo] = useState("");
+  const [proveedorInsumo, setProveedorInsumo] = useState("");
   const [insumos, setInsumos] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4002/RegistrarInsumo', {
-        nombre_insumo: nombreInsumo,
-        fecha_llegada_insumo: fechaLlegadaInsumo,
-        cantidad_insumo: cantidadInsumo,
-        proveedor_insumo: proveedorInsumo,
-      });
+      const response = await axios.post(
+        "http://localhost:4002/RegistrarInsumo",
+        {
+          nombre_insumo: nombreInsumo,
+          fecha_llegada_insumo: fechaLlegadaInsumo,
+          cantidad_insumo: cantidadInsumo,
+          proveedor_insumo: proveedorInsumo,
+        }
+      );
 
       console.log(response.data);
 
-      setNombreInsumo('');
-      setFechaLlegadaInsumo(new Date().toISOString().split('T')[0]);
-      setCantidadInsumo('');
-      setProveedorInsumo('');
+      setNombreInsumo("");
+      setFechaLlegadaInsumo(new Date().toISOString().split("T")[0]);
+      setCantidadInsumo("");
+      setProveedorInsumo("");
 
       // Después de registrar un nuevo insumo, llamar de nuevo para actualizar la lista
       fetchInsumos();
     } catch (error) {
-      console.error('Error al registrar insumos', error);
+      console.error("Error al registrar insumos", error);
     }
   };
 
@@ -41,13 +46,16 @@ export const Insumos = () => {
 
   const fetchInsumos = async () => {
     try {
-      const response = await axios.get('http://localhost:4002/GetInsumos');
+      const response = await axios.get("http://localhost:4002/GetInsumos");
       // Ordenar los insumos por fecha de llegada (más nuevo arriba)
-      const sortedInsumos = response.data.sort((a, b) => new Date(b.fecha_llegada_insumo) - new Date(a.fecha_llegada_insumo));
+      const sortedInsumos = response.data.sort(
+        (a, b) =>
+          new Date(b.fecha_llegada_insumo) - new Date(a.fecha_llegada_insumo)
+      );
       setInsumos(sortedInsumos);
-      console.log('Datos de insumos obtenidos:', sortedInsumos);
+      console.log("Datos de insumos obtenidos:", sortedInsumos);
     } catch (error) {
-      console.error('Error al obtener la lista de insumos', error);
+      console.error("Error al obtener la lista de insumos", error);
     }
   };
 
@@ -113,11 +121,13 @@ export const Insumos = () => {
           {insumos.map((insumo) => (
             <tr key={insumo.id_insumos}>
               <td>{insumo.nombre_insumo}</td>
-              <td>{format(new Date(insumo.fecha_llegada_insumo), 'dd/MM/yyyy')}</td>
+              <td>
+                {format(new Date(insumo.fecha_llegada_insumo), "dd/MM/yyyy")}
+              </td>
               <td>{insumo.proveedor_insumo}</td>
               <td>{insumo.cantidad_insumo}</td>
-              <td>{insumo.usando || 0}</td>
-              <td>{insumo.cantidad_insumo - (insumo.usando || 0)}</td>
+              <td>{insumo.insumos_en_uso || 0}</td>
+              <td>{insumo.cantidad_insumo - (insumo.insumos_en_uso || 0)}</td>
             </tr>
           ))}
         </tbody>
