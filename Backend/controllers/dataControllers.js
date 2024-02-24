@@ -625,7 +625,7 @@ const login = (req, res) => {
                     }
 
                     if (instructorResult.rows.length === 1) {
-                        return res.status(200).json({ message: 'Inicio de sesión exitoso como instructor' });
+                        return res.status(200).json(instructorResult.rows[0]);
                     }
 
                     return res.status(401).json({ error: 'Credenciales inválidas' });
