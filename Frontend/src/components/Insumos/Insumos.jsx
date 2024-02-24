@@ -55,6 +55,7 @@ export const Insumos = () => {
     <div>
       <h1>Almacen de insumos</h1>
       <form onSubmit={handleSubmit}>
+        <h3>Agregar un nuevo insumo</h3>
         <div>
           <label>Nombre del insumo:</label>
           <input
@@ -115,6 +116,8 @@ export const Insumos = () => {
               <td>{format(new Date(insumo.fecha_llegada_insumo), 'dd/MM/yyyy')}</td>
               <td>{insumo.proveedor_insumo}</td>
               <td>{insumo.cantidad_insumo}</td>
+              <td>{insumo.usando || 0}</td>
+              <td>{insumo.cantidad_insumo - (insumo.usando || 0)}</td>
             </tr>
           ))}
         </tbody>

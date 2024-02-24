@@ -7,6 +7,7 @@ export const Usar_insumos = () => {
   const [ordenCantidadAscendente, setOrdenCantidadAscendente] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedInsumoId, setSelectedInsumoId] = useState(null);
+  const [cantidadUsar, setCantidadUsar] = useState(1);
 
   useEffect(() => {
     const fetchInsumos = async () => {
@@ -46,10 +47,41 @@ export const Usar_insumos = () => {
   };
 
   const handleModalOption = (option) => {
-    // Aquí puedes realizar acciones según la opción seleccionada (Usar o Devolver)
-    console.log(`Insumo con ID ${selectedInsumoId} seleccionado. Opción: ${option}`);
-    setModalVisible(false);
+    if (option === 'Usar') {
+      // Si la opción es "Usar", mostrar el formulario para ingresar la cantidad
+      setCantidadUsar(1); // Puedes establecer un valor predeterminado
+    } else {
+      // Si la opción es "Devolver", puedes realizar lógica adicional aquí si es necesario
+      console.log(`Insumo con ID ${selectedInsumoId} seleccionado. Opción: ${option}`);
+      setModalVisible(false);
+    }
   };
+
+  // ...
+
+const handleSubmitModal = async (event) => {
+  event.preventDefault();
+
+  try {
+    if (!selectedInsumoId) {
+      console.error('No se ha seleccionado un insumo.');
+      return;
+    }
+
+    // Realizar la solicitud POST al servidor para usar insumo
+    await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
+      cantidad: cantidadUsar,
+    });
+
+    console.log(`Insumo con ID ${selectedInsumoId} usado. Cantidad: ${cantidadUsar}`);
+    setModalVisible(false);
+  } catch (error) {
+    console.error('Error al usar insumo', error);
+  }
+};
+
+
+
 
   return (
     <div>
@@ -66,7 +98,7 @@ export const Usar_insumos = () => {
       <ul>
         {insumos.map((insumo) => (
           <li key={insumo.id_insumos}>
-            {insumo.nombre_insumo} - Cantidad: {insumo.cantidad_insumo}
+            {insumo.nombre_insumo} - Disponibles: {insumo.cantidad_insumo}
             <button onClick={() => handleGestionarInsumo(insumo.id_insumos)}>
               Gestionar Insumo
             </button>
@@ -77,7 +109,20 @@ export const Usar_insumos = () => {
       {modalVisible && (
         <div className="modal">
           <h3>Selecciona una opción:</h3>
-          <button onClick={() => handleModalOption('Usar')}>Usar Insumo</button>
+          {cantidadUsar > 0 && (
+            <form onSubmit={handleSubmitModal}>
+              <label>
+                Cantidad a usar:
+                <input
+                  type="number"
+                  value={cantidadUsar}
+                  onChange={(e) => setCantidadUsar(e.target.value)}
+                  min={1}
+                />
+              </label>
+              <button type="submit">Usar Insumo</button>
+            </form>
+          )}
           <button onClick={() => handleModalOption('Devolver')}>Devolver Insumo</button>
         </div>
       )}

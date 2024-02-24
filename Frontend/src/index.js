@@ -27,12 +27,13 @@ import { Usar_insumos } from './components/Insumos/Usar_insumos';
   // <Historial_reparaciones/>
   {/* <Hoja_de_vida/> */}
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-  <Insumos/>
   <Usar_insumos/>
+  <Insumos/>
 
   </React.StrictMode>
 );
