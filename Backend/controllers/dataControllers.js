@@ -809,6 +809,42 @@ const GetInsumos = (req, res) => {
 
 
 
+
+const UsarInsumo = async (req, res) => {
+  const { id_insumos, cantidad } = req.body;
+
+  try {
+    // Obtener la cantidad actual de insumos
+    const result = await pool.query('SELECT cantidad_insumo FROM insumos WHERE id_insumos = $1', [id_insumos]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Insumo no encontrado' });
+    }
+
+    const cantidadActual = result.rows[0].cantidad_insumo;
+
+    // Verificar si hay suficientes insumos disponibles
+    if (cantidadActual < cantidad) {
+      return res.status(400).json({ message: 'No hay suficientes insumos disponibles' });
+    }
+
+    // Actualizar la cantidad de insumos disponibles
+    await pool.query('UPDATE insumos SET cantidad_insumo = $1 WHERE id_insumos = $2', [cantidadActual - cantidad, id_insumos]);
+
+    // Registrar el uso en la columna insumos_en_uso (o ajusta según tu modelo)
+    await pool.query('UPDATE insumos SET insumos_en_uso = insumos_en_uso + $1 WHERE id_insumos = $2', [cantidad, id_insumos]);
+
+    // Respondemos con la confirmación
+    res.status(200).json({ message: 'Insumo usado exitosamente' });
+  } catch (error) {
+    console.error('Error al usar insumo', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+
+
+
   module.exports = {
     registerInstructor,
     getInstructores,
@@ -841,7 +877,7 @@ const GetInsumos = (req, res) => {
     getHistorialReparacionesById,
     RegistrarInsumo,
     GetInsumos,
-    
+    UsarInsumo
   
   };
   
