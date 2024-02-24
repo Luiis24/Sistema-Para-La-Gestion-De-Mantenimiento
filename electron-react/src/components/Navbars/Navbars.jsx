@@ -13,6 +13,9 @@ export const Navbars = () => {
   const [tipoMaquina, setTipoMaquina] = useState([])
   const [maquinasPorTipo, setMaquinasPorTipo] = useState({});
 
+  const [tipoMSeleccionada, setTipoMSeleccionada] = useState();
+  const [maquinaSeleccionada, setMaquinaSeleccionada] = useState();
+
   const { rol } = useAuth();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -69,17 +72,14 @@ export const Navbars = () => {
     setMaquinasPorTipo(maquinasPorTipo);
   }, [maquinas]);
 
-  const hiddenMenu = (id) => {
-    const clave = document.getElementById(id);
-    clave.classList.toggle("hidden")
-  }
-
+  
   const selectTipoMaquina = (id) => {
-    const clave = document.getElementById(id);
-    clave.classList.remove("hidden")
-  }
+    setTipoMSeleccionada(id);
+  };
 
-
+  const selectMaquina = (id) => {
+    setMaquinaSeleccionada(id);
+  };
 
   return (
     <div>
@@ -96,18 +96,19 @@ export const Navbars = () => {
 
             {tipoMaquina ? tipoMaquina.map(tipoM => {
               return <div className="tipoMaquina" key={tipoM.id_tipo_maquina}>
-                <div className="tipoMaquinaN text-gray-800 hover:text-gray-200 focus:bg-gray-200" onClick={() => { hiddenMenu(tipoM.id_tipo_maquina) }}>
+                <div className="tipoMaquinaN text-gray-800 hover:text-gray-200 focus:bg-gray-200" onClick={() => { selectTipoMaquina(tipoM.id_tipo_maquina) }}>
                   <h3 className='text-2xl'>{tipoM.nombre_tipo_maquina}</h3>
                   <svg className="w-4 h-4 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 9-7 7-7-7" />
                   </svg>
                 </div>
 
-                <div className="listMaquinasN hidden" id={tipoM.id_tipo_maquina} onClick={() => { selectTipoMaquina(tipoM.id_tipo_maquina) }}>
+                <div className={`listMaquinasN ${tipoMSeleccionada === tipoM.id_tipo_maquina ? '' : 'hidden'}`} id={tipoM.id_tipo_maquina}>
+
                   {maquinasPorTipo[tipoM.id_tipo_maquina] ? maquinasPorTipo[tipoM.id_tipo_maquina].map(maquina => {
                     return (
-                      <div className="maquinaN" key={maquina.id_maquina}>
-                        <a href={`/checklistMaquina/${maquina.id_maquina}`}><h3 className='text-xl'>{maquina.nombre_maquina}</h3></a>
+                      <div className={`maquinaN ${maquinaSeleccionada === maquina.id_maquina ? 'bg-lime-700' : ''}`} key={maquina.id_maquina} id={maquina.id_maquina}>
+                        <a href={`/checklistMaquina/${maquina.id_maquina}`} onClick={() => { selectMaquina(maquina.id_maquina) }}><h3 className='text-xl'>{maquina.nombre_maquina}</h3></a>
                       </div>
                     )
                   }) : <p className='p-4 text-sm text-gray-500'>No hay máquinas para este tipo</p>}
@@ -123,14 +124,14 @@ export const Navbars = () => {
               <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
               </svg>
-              <h3 className='text-lg text-gray-600 '>Tipo maquina</h3>
+              <h3 className='text-lg'>Tipo maquina</h3>
             </div>
             <Link to={'/crearMaquina'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
                 </svg>
-                <h3 className='text-lg text-gray-600 '>Maquina</h3>
+                <h3 className='text-lg'>Maquina</h3>
               </div>
             </Link>
             {/* <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
@@ -142,7 +143,7 @@ export const Navbars = () => {
           </div> */}
           </div> : ''}
 
-          <div>
+          <div className='atrasN'>
             <Link to={'/MenuPrincipal'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

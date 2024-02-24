@@ -98,7 +98,6 @@
 .adminMaquina {
     padding-top: 1rem;
     border-top: 1px solid #cbcbcb;
-    border-bottom: 1px solid #cbcbcb;
 }
 
 .herramientaMaquinaN {
@@ -116,11 +115,15 @@
 }
 
 .containerSectionN {
-    height: 84vh;
+    height: 91vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+.atrasN{
+    border-top: 1px solid #cbcbcb;
 }
 
 /* nav Usuarios, Informes, Almacen */

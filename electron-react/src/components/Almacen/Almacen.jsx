@@ -175,8 +175,8 @@ export const Almacen = () => {
                             {filteredInsumos.map(insumo => {
                                 return <TableRow key={insumo.id_insumo}>
                                     <TableCell className='text-lg'>{insumo.id_insumos}</TableCell>
-                                    <TableCell className='text-lg'>{insumo.nombre}</TableCell>
-                                    <TableCell className='text-lg'>{insumo.proveedor}</TableCell>
+                                    <TableCell className='text-lg'>{insumo.nombre_insumo}</TableCell>
+                                    <TableCell className='text-lg'>{insumo.proveedor_insumo}</TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
                                     <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>0<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
@@ -184,7 +184,7 @@ export const Almacen = () => {
                                     </svg>
                                     </TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap[insumo.estado_insumo]} size="sm" variant="flat">
+                                    <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color='success' size="sm" variant="flat">
                                         Disponible
                                     </Chip></TableCell>
                                 </TableRow>

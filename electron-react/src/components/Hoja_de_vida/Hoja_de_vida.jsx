@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Navbars } from '../Navbars/Navbars'
+import './Hoja_de_vida.css'
 import axios from 'axios'
+import { Input } from '@nextui-org/react'
 
 export const Hoja_de_vida = () => {
     const { id_maquina } = useParams();
@@ -93,15 +95,258 @@ export const Hoja_de_vida = () => {
 
                     <hr />
 
+
                     {/* Información de la máquina seleccionada */}
                     {descripcionEquipo.length > 0 && (
                         <div>
-                            <h2>Descripción del Equipo</h2>
                             {descripcionEquipo.map((item, index) => (
                                 <div key={index}>
-                                    <p>Nombre: {item.nombre_equipo}</p>
-                                    <p>Marca: {item.marca_equipo}</p>
-                                    {/* Agrega más campos según sea necesario */}
+                                    <div className="tituloSeccionOT">
+                                        <h2>Descripción del equipo</h2>
+                                    </div>
+                                    <hr />
+                                    <div className="containerHv">
+                                        <div className="sectionHv">
+                                            <div className="valueHv">
+                                                <label htmlFor="Nombre-hv">Nombre</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Nombre-hv"
+                                                    placeholder={item.nombre_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Marca-hv">Marca</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Marca-hv"
+                                                    placeholder={item.marca_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Frecuencia-hv">Año de fabricación</label>
+                                                <Input
+                                                    type="Text"
+                                                    className="w-11/12 h-11"
+                                                    name="Frecuencia-hv"
+                                                    placeholder={item.fecha_fabricacion_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Fabricante-hv">Fabricante</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Fabricante-hv"
+                                                    placeholder={item.fabricante_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Ubicación-hv">Ubicación</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Ubicación-hv"
+                                                    placeholder={item.ubicacion_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                        </div>
+                                        <div className="sectionHv">
+                                            <div className="valueHv">
+                                                <label htmlFor="Características-hv">Características</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Características-hv"
+                                                    placeholder={item.caracteristicas_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Código-hv">Código</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Código-hv"
+                                                    placeholder={item.codigo_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Modelo-hv">Modelo</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Modelo-hv"
+                                                    placeholder={item.modelo_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-mecánico-hv">Número de serie</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Sistema-mecánico-hv"
+                                                    placeholder={item.num_serie_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Prioridad-hv">Prioridad</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Prioridad-hv"
+                                                    placeholder={item.prioridad_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    {/*Descripción técnica*/}
+                                    <div className="tituloSeccionOT">
+                                        <h2>Descripción técnica</h2>
+                                    </div>
+                                    <hr />
+                                    <div className="containerHv">
+                                        <div className="sectionHv">
+                                            <div className="valueHv">
+                                                <label htmlFor="Voltaje-hv">Voltaje</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Voltaje-hv"
+                                                    placeholder={item.voltaje_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Corriente-hv">Corriente</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Corriente-hv"
+                                                    placeholder={item.corriente_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Frecuencia-hv">Frecuencia</label>
+                                                <Input
+                                                    type="Text"
+                                                    className="w-11/12 h-11"
+                                                    name="Frecuencia-hv"
+                                                    placeholder={item.frecuencia_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Capacidad-hv">Capacidad</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Capacidad-hv"
+                                                    placeholder={item.capacidad_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Peso-hv">Peso</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Peso-hv"
+                                                    placeholder={item.peso_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Alimentación-hv">Alimentación</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Alimentación-hv"
+                                                    placeholder={item.alimentacion_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                        </div>
+
+                                        <div className="sectionHv">
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-eléctrico-hv">Sistema eléctrico</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    placeholder={item.sistema_electrico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-electrónico-hv">
+                                                    Sistema electrónico
+                                                </label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Sistema-electrónico-hv"
+                                                    placeholder={item.sistema_electronico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-mecánico-hv">Sistema mecánico</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Sistema-mecánico-hv"
+                                                    placeholder={item.sistema_mecanico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-neumático-hv">Sistema neumático</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Sistema-neumático-hv"
+                                                    placeholder={item.sistema_neumatico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-hidráulico-hv">Sistema hidráulico</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11"
+                                                    name="Sistema-hidráulico-hv"
+                                                    placeholder={item.sistema_hidraulico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                            <div className="valueHv">
+                                                <label htmlFor="Sistema-térmico-hv">Sistema térmico</label>
+                                                <Input
+                                                    type="text"
+                                                    className="w-11/12 h-11 cursor-default"
+                                                    name="Sistema térmico-hv"
+                                                    placeholder={item.sistema_termico_equipo}
+                                                    readOnly
+                                                ></Input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr /> 
                                 </div>
                             ))}
                         </div>

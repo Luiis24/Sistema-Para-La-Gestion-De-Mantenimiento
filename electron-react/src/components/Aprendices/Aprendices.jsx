@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios';
 import './Aprendices.css'
 import { SearchIcon } from './SearchIcon';
@@ -6,7 +6,8 @@ import { PlusIcon } from './PlusIcon'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
 import menu from '../../img/menu.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue } from "@nextui-org/react";
+
 
 export const Aprendices = () => {
     const [users, setUsers] = useState([]);
@@ -14,7 +15,24 @@ export const Aprendices = () => {
         nombre: '',
         programa_de_formacion: 'all',
         equipo: 'all'
-    })
+    });
+
+    const [page, setPage] = React.useState(1);
+
+    // const { data, isLoading } = useSWR(`https://swapi.py4e.com/api/people?page=${page}`, users, {
+    //     keepPreviousData: true,
+    // });
+
+    const rowsPerPage = 10;
+
+    const pages = useMemo(() => {
+        return users?.count ? Math.ceil(users.count / rowsPerPage) : 0;
+    }, [users?.count, rowsPerPage]);
+
+    // const loadingState = isLoading || data?.results.length === 0 ? "loading" : "idle";
+
+
+
 
     useEffect(() => {
         axios.get('http://localhost:4002/aprendices')
@@ -142,7 +160,23 @@ export const Aprendices = () => {
                     </div>
 
 
-                    <Table>
+                    <Table
+                        bottomContent={
+                            pages > 0 ? (
+                                <div className="flex w-full justify-center">
+                                    <Pagination
+                                        isCompact
+                                        showControls
+                                        showShadow
+                                        color="primary"
+                                        page={page}
+                                        total={pages}
+                                        onChange={(page) => setPage(page)}
+                                    />
+                                </div>
+                            ) : null
+                        }
+                    >
                         <TableHeader>
                             <TableColumn className='text-lg'>Nombre</TableColumn>
                             <TableColumn className='text-lg'>Documento</TableColumn>
@@ -152,7 +186,10 @@ export const Aprendices = () => {
                             <TableColumn className='text-lg'>Ficha</TableColumn>
                             <TableColumn className='text-lg'>Estado</TableColumn>
                         </TableHeader>
-                        <TableBody emptyContent={"No se encontro."}>
+                        <TableBody emptyContent={"No se encontro."}
+                            items={users ?? []}
+                            loadingContent={<Spinner />}
+                        >
                             {filteredUsers.map(user => {
                                 return <TableRow key={user.id_aprendiz}>
                                     <TableCell className='text-lg'>{user.nombre_aprendiz}</TableCell>

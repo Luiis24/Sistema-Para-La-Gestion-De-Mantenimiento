@@ -45,6 +45,8 @@ router.post('/crear_caracteristica_maquina',dataController.crear_caracteristica_
 router.post('/actualizar_funcion_maquina',dataController.actualizar_funcion_maquina)
 router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
 
+router.get('/getOrdenesTrabajo', dataController.GetOrdenesTrabajo)
+
 
 const {
     getDescripcionEquipoById,

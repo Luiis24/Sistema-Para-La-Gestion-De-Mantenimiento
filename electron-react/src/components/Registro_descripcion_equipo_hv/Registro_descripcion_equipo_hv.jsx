@@ -64,7 +64,6 @@ export const Registro_descripcion_equipo_hv = () => {
         e.preventDefault();
 
         const equipo = {
-            id_maquina: selectedMaquina,
             nombre_equipo: nombre,
             marca_equipo: marca,
             fecha_fabricacion_equipo: fechaFabricacion,
@@ -87,6 +86,7 @@ export const Registro_descripcion_equipo_hv = () => {
             sistema_neumatico_equipo: sistema_neumatico_equipo,
             sistema_hidraulico_equipo: sistema_hidraulico_equipo,
             sistema_termico_equipo: sistema_termico_equipo,
+            id_maquina: selectedMaquina,
         };
 
         await registrarEquipo(equipo);
