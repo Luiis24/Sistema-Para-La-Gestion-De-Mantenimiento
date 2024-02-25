@@ -74,7 +74,7 @@ export const Insumos = () => {
           />
         </div>
         <div>
-          <label>Fecha de llegada del insumo:</label>
+          <label>Fecha de entrega:</label>
           <input
             type="date"
             value={fechaLlegadaInsumo}
@@ -110,7 +110,7 @@ export const Insumos = () => {
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Fecha de llegada</th>
+            <th>Agregado</th>
             <th>Proveedor</th>
             <th>Cantidad</th>
             <th>Usando</th>

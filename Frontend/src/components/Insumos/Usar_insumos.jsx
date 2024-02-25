@@ -8,9 +8,13 @@ export const Usar_insumos = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedInsumoId, setSelectedInsumoId] = useState(null);
   const [cantidadUsar, setCantidadUsar] = useState(1);
+  const [maxCantidadUsar, setMaxCantidadUsar] = useState(1);
+  const [selectedInsumoNombre, setSelectedInsumoNombre] = useState("");
+  const [modalDevolucionVisible, setModalDevolucionVisible] = useState(false);
+  const [cantidadDevolver, setCantidadDevolver] = useState(1);
+  const [maxCantidadDevolver, setMaxCantidadDevolver] = useState(1);
 
   useEffect(() => {
-    // Función para cargar la lista de insumos
     const fetchInsumos = async () => {
       try {
         const response = await axios.get('http://localhost:4002/GetInsumos');
@@ -45,7 +49,28 @@ export const Usar_insumos = () => {
   const handleGestionarInsumo = (id) => {
     console.log("ID del insumo seleccionado:", id);
     setSelectedInsumoId(id);
+
+    const insumoSeleccionado = insumos.find((insumo) => insumo.id_insumos === id);
+    const maxCantidad = insumoSeleccionado.cantidad_insumo - (insumoSeleccionado.insumos_en_uso || 0);
+    setMaxCantidadUsar(maxCantidad);
+
+    setSelectedInsumoNombre(insumoSeleccionado.nombre_insumo);
+
     setModalVisible(true);
+    setModalDevolucionVisible(false);
+  };
+
+  const handleDevolverInsumo = (id) => {
+    console.log("ID del insumo seleccionado para devolver:", id);
+    setSelectedInsumoId(id);
+
+    const insumoSeleccionado = insumos.find((insumo) => insumo.id_insumos === id);
+    setMaxCantidadDevolver(insumoSeleccionado.insumos_en_uso || 0);
+
+    setSelectedInsumoNombre(insumoSeleccionado.nombre_insumo);
+
+    setModalDevolucionVisible(true);
+    setModalVisible(false);
   };
 
   const handleSubmitModal = async (event) => {
@@ -59,14 +84,48 @@ export const Usar_insumos = () => {
         return;
       }
 
-     await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
-  cantidad: cantidadUsar,
-});
+      if (cantidadUsar > maxCantidadUsar) {
+        console.error('La cantidad ingresada supera la cantidad disponible');
+        return;
+      }
+
+      await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
+        id_insumo: selectedInsumoId,
+        cantidad: cantidadUsar,
+      });
 
       console.log(`Insumo con ID ${selectedInsumoId} usado. Cantidad: ${cantidadUsar}`);
       setModalVisible(false);
     } catch (error) {
       console.error('Error al usar insumo', error);
+    }
+  };
+
+  const handleSubmitDevolucionModal = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log("ID del insumo a devolver:", selectedInsumoId);
+
+      if (selectedInsumoId === null) {
+        console.error('ID del insumo no definida');
+        return;
+      }
+
+      if (cantidadDevolver > maxCantidadDevolver) {
+        console.error('La cantidad ingresada supera la cantidad en uso');
+        return;
+      }
+
+      await axios.post(`http://localhost:4002/DevolverInsumo/${selectedInsumoId}`, {
+        id_insumo: selectedInsumoId,
+        cantidad: cantidadDevolver,
+      });
+
+      console.log(`Insumo con ID ${selectedInsumoId} devuelto. Cantidad: ${cantidadDevolver}`);
+      setModalDevolucionVisible(false);
+    } catch (error) {
+      console.error('Error al devolver insumo', error);
     }
   };
 
@@ -85,9 +144,12 @@ export const Usar_insumos = () => {
       <ul>
         {insumos.map((insumo) => (
           <li key={insumo.id_insumos}>
-            {insumo.nombre_insumo} - Disponibles: {insumo.cantidad_insumo}
+            {insumo.nombre_insumo} - Disponibles: {insumo.cantidad_insumo - (insumo.insumos_en_uso || 0)}
             <button onClick={() => handleGestionarInsumo(insumo.id_insumos)}>
-              Gestionar Insumo
+              Seleccionar Insumo
+            </button>
+            <button onClick={() => handleDevolverInsumo(insumo.id_insumos)}>
+              Devolver Insumo
             </button>
           </li>
         ))}
@@ -95,21 +157,39 @@ export const Usar_insumos = () => {
 
       {modalVisible && (
         <div className="modal">
-          <h3>Selecciona una opción:</h3>
+          <h3>Selecciona una opción para {selectedInsumoNombre}:</h3>
           <form onSubmit={handleSubmitModal}>
             <label>
-              Cantidad a usar:
+              Cantidad a usar (máximo {maxCantidadUsar}):
               <input
                 type="number"
                 value={cantidadUsar}
                 onChange={(e) => setCantidadUsar(e.target.value)}
                 min={1}
+                max={maxCantidadUsar}
               />
             </label>
             <button type="submit">Usar Insumo</button>
           </form>
-          {/* Puedes agregar más opciones o botones según sea necesario */}
-          <button onClick={() => handleModalOption('Devolver')}>Devolver Insumo</button>
+        </div>
+      )}
+
+      {modalDevolucionVisible && (
+        <div className="modal">
+          <h3>Selecciona una opción para devolver {selectedInsumoNombre}:</h3>
+          <form onSubmit={handleSubmitDevolucionModal}>
+            <label>
+              Cantidad a devolver (máximo {maxCantidadDevolver}):
+              <input
+                type="number"
+                value={cantidadDevolver}
+                onChange={(e) => setCantidadDevolver(e.target.value)}
+                min={1}
+                max={maxCantidadDevolver}
+              />
+            </label>
+            <button type="submit">Devolver Insumo</button>
+          </form>
         </div>
       )}
     </div>
