@@ -965,11 +965,14 @@ const GetInsumos = (req, res) => {
   });
 };
 
-const UsarInsumo = async (req, res) => {
-  const { id_insumo, cantidad } = req.body;
+// Usar insumo
 
+const UsarInsumo = async (req, res) => {
+  const { id_insumo, nombre_insumo, cantidad } = req.body;
+   console.log("Recibido: ", id_insumo, cantidad);
   try {
     console.log("ID del insumo:", id_insumo);
+    console.log("Nombre del insumo:", nombre_insumo);
     console.log("Cantidad:", cantidad);
     const result = await pool.query(
       "SELECT * FROM insumos WHERE id_insumos = $1",
@@ -980,10 +983,10 @@ const UsarInsumo = async (req, res) => {
       return res.status(404).json({ message: "Insumo no encontrado" });
     }
 
-    // Obtener la cantidad actual de insumos
+    
     const cantidadActual = result.rows[0].insumos_en_uso || 0;
 
-    // Actualizar la cantidad de insumos en uso
+   
     await pool.query(
       "UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2",
       [cantidadActual + parseInt(cantidad), id_insumo]
@@ -996,6 +999,8 @@ const UsarInsumo = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
+// Ver insumo con la id
 
 const getInsumoById = async (req, res) => {
   const id_insumo = req.params.id_insumo;
@@ -1016,6 +1021,41 @@ const getInsumoById = async (req, res) => {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
+// Devolver insumo
+
+const devolverInsumo = async (req, res) => {
+  const { id } = req.params;
+  const { cantidad } = req.body;
+
+  try {
+    // Verificar si el insumo existe
+    const insumoExistente = await pool.query('SELECT * FROM insumos WHERE id_insumos = $1', [id]);
+
+    if (insumoExistente.rows.length === 0) {
+      return res.status(404).json({ message: 'Insumo no encontrado' });
+    }
+
+    const insumo = insumoExistente.rows[0];
+    const cantidadEnUso = insumo.insumos_en_uso || 0;
+
+    // Verificar si la cantidad a devolver no supera la cantidad en uso
+    if (cantidad > cantidadEnUso) {
+      return res.status(400).json({ message: 'La cantidad ingresada supera la cantidad en uso' });
+    }
+
+    // Realizar la devolución de insumo
+    await pool.query('UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2', [cantidadEnUso - cantidad, id]);
+
+    res.status(200).json({ message: 'Insumo devuelto exitosamente' });
+  } catch (error) {
+    console.error('Error al devolver insumo', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+
+
 
 module.exports = {
   registerInstructor,
@@ -1051,4 +1091,5 @@ module.exports = {
   GetInsumos,
   UsarInsumo,
   getInsumoById,
+  devolverInsumo
 };
