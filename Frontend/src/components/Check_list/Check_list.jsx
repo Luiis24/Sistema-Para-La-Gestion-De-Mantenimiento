@@ -3,29 +3,38 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// ... (importaciones)
-
 export const Check_list = () => {
+    const [maquinas, setMaquinas] = useState([]);
     const [componentes, setComponentes] = useState([]);
     const [estadosComponentes, setEstadosComponentes] = useState({});
     const [fecha, setFecha] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [horaFin, setHoraFin] = useState('');
+    const [selectedMaquina, setSelectedMaquina] = useState(null);
 
     useEffect(() => {
-        // Llamada a la API para obtener los componentes del checklist
-        fetchComponentesChecklist();
+        fetchMaquinas();
     }, []);
 
-    const fetchComponentesChecklist = async () => {
+    const fetchMaquinas = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/componenteChecklist');
+            const response = await axios.get('http://localhost:4002/GetMaquinas');
+            setMaquinas(response.data);
+        } catch (error) {
+            console.error('Error al obtener la lista de máquinas', error);
+        }
+    };
+
+    const fetchComponentesByMaquina = async (idMaquina) => {
+        try {
+            const response = await axios.get(`http://localhost:4002/componenteChecklist/${idMaquina}`);
             const initialEstados = {};
             response.data.forEach((componente) => {
-                initialEstados[componente.id_componente] = ''; // Estado inicial: vacío
+                initialEstados[componente.id_componente] = '';
             });
             setEstadosComponentes(initialEstados);
             setComponentes(response.data);
+            setSelectedMaquina(idMaquina);
         } catch (error) {
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
@@ -38,6 +47,7 @@ export const Check_list = () => {
         }));
     };
 
+
     const renderEstadoOptions = (nombreComponente) => {
         if (nombreComponente.toLowerCase().includes('nivel')) {
             return (
@@ -47,7 +57,8 @@ export const Check_list = () => {
                     <option key="bajoNivel" value="Bajo Nivel">Bajo Nivel</option>
                 </>
             );
-        } else {
+        } 
+        else {
             return (
                 <>
                     <option disable selected hidden>Estado</option>
@@ -57,20 +68,19 @@ export const Check_list = () => {
                 </>
             );
         }
+        
     };
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            // Enviar estados a la API para registrarlos
             const estadosRegistrados = Object.entries(estadosComponentes).map(([id_componente, estado_componente]) => ({
                 id_componente,
                 estado_componente,
             }));
 
-            // Enviar información de hoja de inspección y estados de componentes
-            await axios.post('http://localhost:4002/registerHojaInspeccion', {
+            await axios.post(`http://localhost:4002/registerHojaInspeccion/${selectedMaquina}`, {
                 fecha,
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
@@ -79,7 +89,6 @@ export const Check_list = () => {
 
             toast.success('Hoja de inspección y estados de componentes registrados exitosamente');
 
-            // Limpiar estados y fechas después del registro
             setEstadosComponentes({});
             setFecha('');
             setHoraInicio('');
@@ -94,37 +103,53 @@ export const Check_list = () => {
     return (
         <div>
             <ToastContainer />
-            <h2>Lista de Componentes del Checklist</h2>
-            <form onSubmit={handleFormSubmit}>
-                <label>
-                    Fecha:
-                    <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
-                </label>
-                <label>
-                    Hora de Inicio:
-                    <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
-                </label>
-                <label>
-                    Hora de Fin:
-                    <input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
-                </label>
-                <ul>
-                    {componentes.map((componente) => (
-                        <li key={componente.id_componente}>
-                            <label>
-                                Tipo: {componente.tipo_componente}, Nombre: {componente.nombre_componente}
-                                <select
-                                    value={estadosComponentes[componente.id_componente] || ''}
-                                    onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
-                                >
-                                    {renderEstadoOptions(componente.nombre_componente)}
-                                </select>
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-                <button type="submit">Enviar</button>
-            </form>
+            <h2>Lista de Máquinas</h2>
+            <ul>
+                {maquinas.map((maquina) => (
+                    <p key={maquina.id_maquina}>
+                        <button onClick={() => fetchComponentesByMaquina(maquina.id_maquina)}>
+                            {maquina.nombre_maquina}
+                        </button>
+                    </p>
+                ))}
+            </ul>
+
+            {selectedMaquina && (
+                <div>
+                    <h2>Lista de Componentes del Checklist</h2>
+                    <p>Maquina seleccionada: {maquinas.find(maquina => maquina.id_maquina === selectedMaquina)?.nombre_maquina}</p>
+                    <form onSubmit={handleFormSubmit}>
+                        <label>
+                            Fecha:
+                            <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                        </label>
+                        <label>
+                            Hora de Inicio:
+                            <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+                        </label>
+                        <label>
+                            Hora de Fin:
+                            <input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
+                        </label>
+                        <ul>
+                            {componentes.map((componente) => (
+                                <li key={componente.id_componente}>
+                                    <label>
+                                        Tipo: {componente.tipo_componente}, Nombre: {componente.nombre_componente}
+                                        <select
+                                            value={estadosComponentes[componente.id_componente] || ''}
+                                            onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
+                                        >
+                                            {renderEstadoOptions(componente.nombre_componente)}
+                                        </select>
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 };
