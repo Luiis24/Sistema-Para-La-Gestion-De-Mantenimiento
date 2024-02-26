@@ -146,7 +146,7 @@ export const Usar_insumos = () => {
           <li key={insumo.id_insumos}>
             {insumo.nombre_insumo} - Disponibles: {insumo.cantidad_insumo - (insumo.insumos_en_uso || 0)}
             <button onClick={() => handleGestionarInsumo(insumo.id_insumos)}>
-              Seleccionar Insumo
+              Usar Insumo
             </button>
             <button onClick={() => handleDevolverInsumo(insumo.id_insumos)}>
               Devolver Insumo
