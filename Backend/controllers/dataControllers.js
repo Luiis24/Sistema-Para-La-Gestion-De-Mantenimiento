@@ -931,24 +931,63 @@ const RegistrarInsumo = (req, res) => {
     return res.status(400).json({ error: "Falta información requerida" });
   }
 
+  // Verificar si ya existe un insumo con el mismo nombre
   pool.query(
-    "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)",
-    [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
-    (error) => {
+    "SELECT * FROM insumos WHERE nombre_insumo = $1",
+    [nombre_insumo],
+    (error, result) => {
       if (error) {
-        console.error(
-          "Error al insertar los insumos en la base de datos",
-          error
-        );
+        console.error("Error al buscar el insumo en la base de datos", error);
         return res.status(500).json({ error: "Error al registrar insumos" });
       }
 
-      res
-        .status(201)
-        .json({ message: "Los insumos fueron registrados exitosamente" });
+      if (result.rows.length > 0) {
+        // Si ya existe, actualiza la cantidad y la fecha
+        pool.query(
+          "UPDATE insumos SET cantidad_insumo = cantidad_insumo + $1, fecha_llegada_insumo = $2 WHERE nombre_insumo = $3",
+          [cantidad_insumo, fecha_llegada_insumo, nombre_insumo],
+          (updateError) => {
+            if (updateError) {
+              console.error(
+                "Error al actualizar la cantidad y la fecha del insumo existente",
+                updateError
+              );
+              return res
+                .status(500)
+                .json({ error: "Error al registrar insumos" });
+            }
+
+            res.status(200).json({
+              message: "La cantidad y la fecha del insumo existente fueron actualizadas exitosamente",
+            });
+          }
+        );
+      } else {
+        // Si no existe, inserta un nuevo insumo
+        pool.query(
+          "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)",
+          [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
+          (insertError) => {
+            if (insertError) {
+              console.error(
+                "Error al insertar los insumos en la base de datos",
+                insertError
+              );
+              return res
+                .status(500)
+                .json({ error: "Error al registrar insumos" });
+            }
+
+            res.status(201).json({
+              message: "Los insumos fueron registrados exitosamente",
+            });
+          }
+        );
+      }
     }
   );
 };
+
 
 //Insumos (Get)
 
