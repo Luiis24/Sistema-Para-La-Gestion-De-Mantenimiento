@@ -46,27 +46,6 @@
     overflow-y: scroll;
 }
 
-/* scroll */
-
-.listMaquinas::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-.listMaquinas::-webkit-scrollbar-thumb {
-    background: #e7e7e7;
-    border-radius: 4px;
-}
-
-.listMaquinas::-webkit-scrollbar-thumb:hover {
-    background: #b3b3b3;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
-}
-
-.listMaquinas::-webkit-scrollbar-thumb:active {
-    background-color: #999999;
-}
-
 .tipoMaquinaN {
     display: flex;
     align-items: center;
@@ -124,6 +103,27 @@
 
 .atrasN{
     border-top: 1px solid #cbcbcb;
+}
+
+/* scroll */
+
+.listMaquinas::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.listMaquinas::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+    border-radius: 4px;
+}
+
+.listMaquinas::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.listMaquinas::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
 }
 
 /* nav Usuarios, Informes, Almacen */
@@ -227,16 +227,18 @@
 
 @media (max-width: 700px) {
     .navVertical {
+        position: fixed;
+        top: 0;
         display: none;
     }
 
     .containerM {
         width: 100%;
-        margin:0;
+        margin: 0px 0 0 0;
     }
 
     .navHorizontal {
-        position: fixed;
+        position: absolute;
         width: 100%;
         padding: 0;
         justify-content: space-around;
@@ -302,6 +304,12 @@
 @media (max-width: 1040px) {
     .navHorizontal h2{
         gap: 0;
+        overflow: hidden;
+        font-size: 1rem;
+    }
+
+    .navHorizontal svg {
+        width: 1.2rem;
     }
 }
 

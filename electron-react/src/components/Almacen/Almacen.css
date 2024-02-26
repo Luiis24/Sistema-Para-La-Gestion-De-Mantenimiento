@@ -38,3 +38,13 @@
     justify-content: center;
     margin-top: 3vh;
 }
+
+.filterI {
+    background-color: #f1f1f1;
+    border: 1px solid #ececec;
+    width: 15%;
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+}
+

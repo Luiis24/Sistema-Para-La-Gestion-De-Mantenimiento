@@ -13,7 +13,7 @@ import { Titulo_sena_cb } from "../Titulo_sena_cb/Titulo_sena_cb";
 
 export const Menu = () => {
 
-    const { rol, nombre } = useAuth();
+    const { rol, nombre, programaFormacion } = useAuth();
 
 
     const hiddenHerramientas = () => {
@@ -65,7 +65,7 @@ export const Menu = () => {
 
                 <div className="containerUserName">
                     <p className="nombreUser">{nombre ? nombre : ''}</p>
-                    <p className="rolUser flex flex-col text-center">{rol ? rol : ''}</p>
+                    <p className="rolUser flex flex-col text-center">{rol ? rol : ''}  {programaFormacion ? - programaFormacion : ''}</p>
                 </div>
 
 

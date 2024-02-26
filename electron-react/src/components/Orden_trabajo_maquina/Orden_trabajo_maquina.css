@@ -100,3 +100,25 @@ Input[type=number]::-webkit-inner-spin-button {
         font-size: 1rem;
     }
 }
+
+@media (max-width: 1000px) {
+    .containerOT {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .sectionOT {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .tituloSeccionOT {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0 10px 0 10px;
+    }
+
+    .btn-registrarMOT Button {
+        width: 70%;
+    }
+}
