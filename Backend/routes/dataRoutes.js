@@ -16,6 +16,12 @@ router.post('/registerHojaInspeccion', dataController.registerHojaInspeccion);
 router.post('/registerComponenteChecklist', dataController.registerComponenteChecklist);
 router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
+// Componente segun la id:
+
+router.get('/componenteChecklist/:idMaquina',dataController.getComponentesByMaquina);
+
+
+
 router.post('/registerCheckList', dataController.registerCheckList);
 router.get('/getUltimosEstados', dataController.getUltimosEstados);
 
@@ -37,6 +43,10 @@ router.get('/GetDescripcion_equio',dataController.GetDescripcion_equio);
 router.post('/crear_caracteristica_maquina',dataController.crear_caracteristica_maquina)
 router.post('/actualizar_funcion_maquina',dataController.actualizar_funcion_maquina)
 router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
+
+//Ultima maquina:
+
+router.get('/ultimaMaquina', dataController.ultimaMaquina)
 
 
 // Hoja de vida:

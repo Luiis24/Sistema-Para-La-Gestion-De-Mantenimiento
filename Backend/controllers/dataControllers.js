@@ -303,8 +303,6 @@ const registerHojaInspeccion = async (req, res) => {
   ) {
     return res.status(400).json({ error: "Falta información requerida" });
   }
-
-  // Iniciar transacción
   pool.query("BEGIN", async (error) => {
     if (error) {
       console.error("Error al iniciar la transacción", error);
@@ -315,7 +313,6 @@ const registerHojaInspeccion = async (req, res) => {
     }
 
     try {
-      // Insertar información en la tabla hoja_inspeccion
       const result = await pool.query(
         "INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin, id_maquina) VALUES ($1, $2, $3, $4) RETURNING id_inspeccion",
         [fecha, hora_inicio, hora_fin, id_maquina]
@@ -323,7 +320,6 @@ const registerHojaInspeccion = async (req, res) => {
 
       const idInspeccion = result.rows[0].id_inspeccion;
 
-      // Insertar información en la tabla checklist
       const estadosQuery = estadosComponentes.map(
         ({ id_componente, estado_componente }) =>
           pool.query(
@@ -332,10 +328,8 @@ const registerHojaInspeccion = async (req, res) => {
           )
       );
 
-      // Ejecutar todas las consultas de inserción de estados de componentes en paralelo
       await Promise.all(estadosQuery);
 
-      // Confirmar la transacción
       pool.query("COMMIT", (error) => {
         if (error) {
           console.error("Error al confirmar la transacción", error);
@@ -350,7 +344,6 @@ const registerHojaInspeccion = async (req, res) => {
         });
       });
     } catch (error) {
-      // Revertir la transacción en caso de error
       pool.query("ROLLBACK", (rollbackError) => {
         if (rollbackError) {
           console.error("Error al revertir la transacción", rollbackError);
@@ -380,26 +373,41 @@ const registerComponenteChecklist = (req, res) => {
     return res.status(400).json({ error: "Falta información requerida" });
   }
 
+  // Obtener la id de la última máquina creada
   pool.query(
-    "INSERT INTO componentes_checklist (tipo_componente, nombre_componente) VALUES ($1, $2)",
-    [tipo_componente, nombre_componente],
-    (error) => {
-      if (error) {
-        console.error(
-          "Error al insertar el componente del checklist en la base de datos",
-          error
-        );
-        return res
-          .status(500)
-          .json({ error: "Error al registrar el componente del checklist" });
+    "SELECT id_maquina FROM maquinas ORDER BY id_maquina DESC LIMIT 1",
+    (selectError, selectResult) => {
+      if (selectError) {
+        console.error("Error al obtener la última máquina", selectError);
+        return res.status(500).json({ error: "Error al registrar el componente del checklist" });
       }
 
-      res
-        .status(201)
-        .json({ message: "Componente del checklist registrado exitosamente" });
+      const idMaquina = selectResult.rows[0].id_maquina;
+
+      // Insertar el componente del checklist con la id de la última máquina
+      pool.query(
+        "INSERT INTO componentes_checklist (tipo_componente, nombre_componente, id_maquina) VALUES ($1, $2, $3)",
+        [tipo_componente, nombre_componente, idMaquina],
+        (insertError) => {
+          if (insertError) {
+            console.error(
+              "Error al insertar el componente del checklist en la base de datos",
+              insertError
+            );
+            return res
+              .status(500)
+              .json({ error: "Error al registrar el componente del checklist" });
+          }
+
+          res
+            .status(201)
+            .json({ message: "Componente del checklist registrado exitosamente" });
+        }
+      );
     }
   );
 };
+
 
 // Obtener la lista de componentes de la tabla componentes_checklist
 
@@ -417,8 +425,6 @@ const getComponenteChecklist = (req, res) => {
 };
 
 // Check List - Estado de los componentes (Post):
-
-// ...
 
 const registerCheckList = async (req, res) => {
   try {
@@ -958,7 +964,8 @@ const RegistrarInsumo = (req, res) => {
             }
 
             res.status(200).json({
-              message: "La cantidad y la fecha del insumo existente fueron actualizadas exitosamente",
+              message:
+                "La cantidad y la fecha del insumo existente fueron actualizadas exitosamente",
             });
           }
         );
@@ -966,7 +973,12 @@ const RegistrarInsumo = (req, res) => {
         // Si no existe, inserta un nuevo insumo
         pool.query(
           "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)",
-          [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
+          [
+            nombre_insumo,
+            fecha_llegada_insumo,
+            cantidad_insumo,
+            proveedor_insumo,
+          ],
           (insertError) => {
             if (insertError) {
               console.error(
@@ -988,7 +1000,6 @@ const RegistrarInsumo = (req, res) => {
   );
 };
 
-
 //Insumos (Get)
 
 const GetInsumos = (req, res) => {
@@ -1008,7 +1019,7 @@ const GetInsumos = (req, res) => {
 
 const UsarInsumo = async (req, res) => {
   const { id_insumo, nombre_insumo, cantidad } = req.body;
-   console.log("Recibido: ", id_insumo, cantidad);
+  console.log("Recibido: ", id_insumo, cantidad);
   try {
     console.log("ID del insumo:", id_insumo);
     console.log("Nombre del insumo:", nombre_insumo);
@@ -1022,10 +1033,8 @@ const UsarInsumo = async (req, res) => {
       return res.status(404).json({ message: "Insumo no encontrado" });
     }
 
-    
     const cantidadActual = result.rows[0].insumos_en_uso || 0;
 
-   
     await pool.query(
       "UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2",
       [cantidadActual + parseInt(cantidad), id_insumo]
@@ -1069,10 +1078,13 @@ const devolverInsumo = async (req, res) => {
 
   try {
     // Verificar si el insumo existe
-    const insumoExistente = await pool.query('SELECT * FROM insumos WHERE id_insumos = $1', [id]);
+    const insumoExistente = await pool.query(
+      "SELECT * FROM insumos WHERE id_insumos = $1",
+      [id]
+    );
 
     if (insumoExistente.rows.length === 0) {
-      return res.status(404).json({ message: 'Insumo no encontrado' });
+      return res.status(404).json({ message: "Insumo no encontrado" });
     }
 
     const insumo = insumoExistente.rows[0];
@@ -1080,18 +1092,58 @@ const devolverInsumo = async (req, res) => {
 
     // Verificar si la cantidad a devolver no supera la cantidad en uso
     if (cantidad > cantidadEnUso) {
-      return res.status(400).json({ message: 'La cantidad ingresada supera la cantidad en uso' });
+      return res
+        .status(400)
+        .json({ message: "La cantidad ingresada supera la cantidad en uso" });
     }
 
     // Realizar la devolución de insumo
-    await pool.query('UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2', [cantidadEnUso - cantidad, id]);
+    await pool.query(
+      "UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2",
+      [cantidadEnUso - cantidad, id]
+    );
 
-    res.status(200).json({ message: 'Insumo devuelto exitosamente' });
+    res.status(200).json({ message: "Insumo devuelto exitosamente" });
   } catch (error) {
-    console.error('Error al devolver insumo', error);
-    res.status(500).json({ message: 'Error interno del servidor' });
+    console.error("Error al devolver insumo", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
+const ultimaMaquina = (req, res) => {
+  pool.query(
+    "SELECT * FROM maquinas ORDER BY id_maquina DESC LIMIT 1",
+    (error, result) => {
+      if (error) {
+        console.error("Error al obtener la última máquina registrada", error);
+        return res
+          .status(500)
+          .json({ error: "Error al obtener la última máquina registrada" });
+      }
+
+      res.status(200).json(result.rows[0]);
+    }
+  );
+};
+
+
+const getComponentesByMaquina = async (req, res) => {
+  const idMaquina = req.params.idMaquina;
+
+  try {
+    // Realiza la consulta a la base de datos para obtener los componentes de la máquina específica
+    const response = await pool.query(
+      'SELECT * FROM componentes_checklist WHERE id_maquina = $1',
+      [idMaquina]
+    );
+
+    res.json(response.rows);
+  } catch (error) {
+    console.error('Error al obtener los componentes de la máquina', error);
+    res.status(500).json({ error: 'Error al obtener los componentes de la máquina' });
+  }
+};
+
 
 
 
@@ -1130,5 +1182,7 @@ module.exports = {
   GetInsumos,
   UsarInsumo,
   getInsumoById,
-  devolverInsumo
+  devolverInsumo,
+  ultimaMaquina,
+  getComponentesByMaquina,
 };
