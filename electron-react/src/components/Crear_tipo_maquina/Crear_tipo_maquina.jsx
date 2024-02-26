@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 
 
-const CrearTipoMaquina = ({isOpen, onOpen, onOpenChange}) => {
+const CrearTipoMaquina = () => {
     const [nombreTipoMaquina, setNombreTipoMaquina] = useState('');
     const [descripcionTipoMaquina, setDescripcionTipoMaquina] = useState('');
 
@@ -24,56 +24,34 @@ const CrearTipoMaquina = ({isOpen, onOpen, onOpenChange}) => {
     };
 
     return (
-        <div>
-            <Modal
-                backdrop="opaque"
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                classNames={{
-                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
-                }}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                            <ModalBody className='flex justify-center'>
-                                <h1>Crear Un Nuevo Tipo De Maquina</h1>
-                                <form onSubmit={handleFormSubmit}>
-                                    <div>
-                                        <label>Nombre del Tipo de Maquina:</label>
-                                        <Input
-                                            type="text"
-                                            placeholder="Tipo de Maquina"
-                                            value={nombreTipoMaquina}
-                                            onChange={(event) => setNombreTipoMaquina(event.target.value)}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label>Descripción del Tipo de Maquina:</label>
-                                        <Input
-                                            type="textarea"
-                                            placeholder="Describe el tipo de Maquina que estás creando"
-                                            value={descripcionTipoMaquina}
-                                            onChange={(event) => setDescripcionTipoMaquina(event.target.value)}
-                                        />
-                                    </div>
-                                    <Button type="submit">Registrar Tipo de Maquina</Button>
-                                    <Button><Link to={'/tornos'}>Inicio</Link></Button>
-                                </form>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
+        <div className='container-rg-caracteristicasM'>
+            <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
+                <div className="titulo-registro-CM">
+                    <h1>Crear nuevo tipo de maquina</h1>
+                </div>
+                <div className='inp-registro-CM'>
+                    <div>
+                        <Input
+                            type="text"
+                            placeholder="Tipo de Maquina"
+                            value={nombreTipoMaquina}
+                            onChange={(event) => setNombreTipoMaquina(event.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            type="textarea"
+                            placeholder="Describe el tipo de Maquina que estás creando"
+                            value={descripcionTipoMaquina}
+                            onChange={(event) => setDescripcionTipoMaquina(event.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className='btn-terminar-registro'>
+                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
+                    <button type="submit" className='boton-registrar'>Registrar</button>
+                </div>
+            </form>
 
         </div>
     );

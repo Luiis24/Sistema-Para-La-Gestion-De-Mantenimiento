@@ -888,7 +888,148 @@ const getDescripcionEquipoById = async (id_maquina) => {
     });
 };
 
+//Insumos (Post)
 
+const RegistrarInsumo = (req, res) => {
+    const {
+      nombre_insumo,
+      fecha_llegada_insumo,
+      cantidad_insumo,
+      proveedor_insumo,
+    } = req.body;
+  
+    if (
+      !nombre_insumo ||
+      !fecha_llegada_insumo ||
+      !cantidad_insumo ||
+      !proveedor_insumo
+    ) {
+      return res.status(400).json({ error: "Falta información requerida" });
+    }
+  
+    pool.query(
+      "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)",
+      [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
+      (error) => {
+        if (error) {
+          console.error(
+            "Error al insertar los insumos en la base de datos",
+            error
+          );
+          return res.status(500).json({ error: "Error al registrar insumos" });
+        }
+  
+        res
+          .status(201)
+          .json({ message: "Los insumos fueron registrados exitosamente" });
+      }
+    );
+  };
+  
+  //Insumos (Get)
+  
+  const GetInsumos = (req, res) => {
+    pool.query("SELECT * FROM insumos", (error, results) => {
+      if (error) {
+        console.error("Error al obtener la lista de los insumos", error);
+        return res
+          .status(500)
+          .json({ error: "Error al obtener la lista de los insumos" });
+      }
+  
+      res.status(200).json(results.rows);
+    });
+  };
+  
+  // Usar insumo
+  
+  const UsarInsumo = async (req, res) => {
+    const { id_insumo, nombre_insumo, cantidad } = req.body;
+     console.log("Recibido: ", id_insumo, cantidad);
+    try {
+      console.log("ID del insumo:", id_insumo);
+      console.log("Nombre del insumo:", nombre_insumo);
+      console.log("Cantidad:", cantidad);
+      const result = await pool.query(
+        "SELECT * FROM insumos WHERE id_insumos = $1",
+        [id_insumo]
+      );
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: "Insumo no encontrado" });
+      }
+  
+      
+      const cantidadActual = result.rows[0].insumos_en_uso || 0;
+  
+     
+      await pool.query(
+        "UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2",
+        [cantidadActual + parseInt(cantidad), id_insumo]
+      );
+  
+      console.log("Insumo usado exitosamente");
+      res.status(200).json({ message: "Insumo usado exitosamente" });
+    } catch (error) {
+      console.error("Error al usar insumo", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  };
+  
+  // Ver insumo con la id
+  
+  const getInsumoById = async (req, res) => {
+    const id_insumo = req.params.id_insumo;
+  
+    try {
+      const result = await pool.query(
+        "SELECT * FROM insumos WHERE id_insumos = $1",
+        [id_insumo]
+      );
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({ message: "Insumo no encontrado" });
+      }
+  
+      res.status(200).json(result.rows[0]);
+    } catch (error) {
+      console.error("Error al obtener insumo por ID", error);
+      res.status(500).json({ message: "Error interno del servidor" });
+    }
+  };
+  
+  // Devolver insumo
+  
+  const devolverInsumo = async (req, res) => {
+    const { id } = req.params;
+    const { cantidad } = req.body;
+  
+    try {
+      // Verificar si el insumo existe
+      const insumoExistente = await pool.query('SELECT * FROM insumos WHERE id_insumos = $1', [id]);
+  
+      if (insumoExistente.rows.length === 0) {
+        return res.status(404).json({ message: 'Insumo no encontrado' });
+      }
+  
+      const insumo = insumoExistente.rows[0];
+      const cantidadEnUso = insumo.insumos_en_uso || 0;
+  
+      // Verificar si la cantidad a devolver no supera la cantidad en uso
+      if (cantidad > cantidadEnUso) {
+        return res.status(400).json({ message: 'La cantidad ingresada supera la cantidad en uso' });
+      }
+  
+      // Realizar la devolución de insumo
+      await pool.query('UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2', [cantidadEnUso - cantidad, id]);
+  
+      res.status(200).json({ message: 'Insumo devuelto exitosamente' });
+    } catch (error) {
+      console.error('Error al devolver insumo', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+  };
+  
 
 
   
@@ -930,6 +1071,12 @@ const getDescripcionEquipoById = async (id_maquina) => {
     getCaracteristicasMaquinaById,
     getCaracteristicasMotorById,
     getHistorialReparacionesById,
+
+    RegistrarInsumo,
+    GetInsumos,
+    UsarInsumo,
+    getInsumoById,
+    devolverInsumo, 
 
     GetOrdenesTrabajo
   

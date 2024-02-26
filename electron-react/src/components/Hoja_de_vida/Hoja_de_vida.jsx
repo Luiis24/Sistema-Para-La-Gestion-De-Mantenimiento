@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Navbars } from '../Navbars/Navbars'
 import './Hoja_de_vida.css'
 import axios from 'axios'
-import { Input } from '@nextui-org/react'
+import { Input, Textarea, Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from '@nextui-org/react'
 
 export const Hoja_de_vida = () => {
     const { id_maquina } = useParams();
@@ -59,6 +59,14 @@ export const Hoja_de_vida = () => {
             });
     }, [id_maquina]);
 
+    const formatFecha = (fecha) => {
+        const date = new Date(fecha);
+        const dia = date.getDate();
+        const mes = date.getMonth() + 1;
+        const año = date.getFullYear();
+        return `${dia}/${mes}/${año}`;
+      };
+
     return (
         <div>
             <Navbars></Navbars>
@@ -87,13 +95,6 @@ export const Hoja_de_vida = () => {
                 </div>
 
                 <div className="crearCM">
-
-
-                    <div className="nombreSistema">
-                        <h2>Hoja de vida {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
-                    </div>
-
-                    <hr />
 
 
                     {/* Información de la máquina seleccionada */}
@@ -346,7 +347,7 @@ export const Hoja_de_vida = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <hr /> 
+                                    <hr />
                                 </div>
                             ))}
                         </div>
@@ -354,23 +355,130 @@ export const Hoja_de_vida = () => {
 
                     {caracteristicasMaquina.length > 0 && (
                         <div>
-                            <h2>Características de la Máquina</h2>
-                            {caracteristicasMaquina.map((item, index) => (
-                                <div key={index}>
-                                    <p>Descripción: {item.descripcion_caracteristica}</p>
-                                    {/* Agrega más campos según sea necesario */}
-                                </div>
-                            ))}
+                            <div className="tituloSeccionOT">
+                                <h2>Datos del equipo - Características</h2>
+                            </div>
+                            <hr/>
+                            <div className="container-table-hv">
+                                <Table className='w-full'>
+                                    <TableHeader>
+                                        <TableColumn className='text-lg"'>Nombre</TableColumn>
+                                        <TableColumn className='text-lg"'>Descripción</TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {caracteristicasMaquina.map((caracteristica) => (
+
+                                            <TableRow key={caracteristica.id_caracteristicas_maquina}>
+                                                <TableCell className='text-lg'> {caracteristica.nombre_caracteristica}</TableCell>
+                                                <TableCell className='text-lg'> {caracteristica.descripcion_caracteristica}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                            <hr />
+                            <div className="tituloSeccionOT">
+                                <h2>Función del equipo</h2>
+                            </div>
+                            <hr />
+                            <div className="containerDOT">
+                                <Textarea
+                                    placeholder={caracteristicasMaquina[0].funcion_maquina}
+                                    className="col-span-8 md:col-span-6 mb-6 md:mb-0"
+                                    name="descripcion_de_trabajo"
+                                />
+                            </div>
+                            <hr />
                         </div>
                     )}
 
+
+
                     {caracteristicasMotor.length > 0 && (
                         <div>
-                            <h2>Características del Motor</h2>
+                            <div className="tituloSeccionOT">
+                                <h2>Características de los motores</h2>
+                            </div>
+                            <hr />
                             {caracteristicasMotor.map((item, index) => (
-                                <div key={index}>
-                                    <p>Marca: {item.marca_motor}</p>
-                                    {/* Agrega más campos según sea necesario */}
+                                <div className="containerHv" key={index}>
+                                    <div className="sectionHv">
+
+                                        <div className="valueHv">
+                                            <label>Marca del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.marca_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>Modelo del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.modelo_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>Descripción del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.descripcion_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>Serie del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.serie_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>Tamaño del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.tamaño_motor}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="sectionHv">
+                                        <div className="valueHv">
+                                            <label>Potencia del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.potencia_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>RPM del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.rpm_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>Voltaje del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.voltaje_motor}
+                                            />
+                                        </div>
+                                        <div className="valueHv">
+                                            <label>AMP del motor:</label>
+                                            <Input
+                                                readOnly
+                                                type="text"
+                                                placeholder={item.amp_motor}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -378,17 +486,46 @@ export const Hoja_de_vida = () => {
 
                     {historialReparaciones.length > 0 && (
                         <div>
-                            <h2>Historial de Reparaciones</h2>
-                            {historialReparaciones.map((item, index) => (
-                                <div key={index}>
-                                    <p>Procedimiento: {item.procedimiento_historial}</p>
-                                    {/* Agrega más campos según sea necesario */}
-                                </div>
-                            ))}
+                            <hr/>
+                            <div className="tituloSeccionOT">
+                                <h2>Historial de reparaciones</h2>
+                            </div>
+                            <hr/>
+                            <div className="container-table-hv">
+                                <Table>
+                                    <TableHeader>
+                                        <TableColumn className="text-lg">Procedimiento</TableColumn>
+                                        <TableColumn className="text-lg">
+                                            Repuestos involucrados
+                                        </TableColumn>
+                                        <TableColumn className="text-lg">Observaciones</TableColumn>
+                                        <TableColumn className="text-lg">Fecha</TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {historialReparaciones.map((registro) => (
+                                            <TableRow key={registro.id_registro}>
+                                                <TableCell className="text-lg text-slate-400">
+                                                    {" "}
+                                                    {registro.procedimiento_historial}
+                                                </TableCell>
+                                                <TableCell className="text-lg text-slate-400">
+                                                    {registro.insumos_usados_historial}
+                                                </TableCell>
+                                                <TableCell className="text-lg text-slate-400">
+                                                    {registro.observaciones_historial}
+                                                </TableCell>
+                                                <TableCell className="text-lg text-slate-400">
+                                                    {formatFecha(registro.fecha_historial)}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

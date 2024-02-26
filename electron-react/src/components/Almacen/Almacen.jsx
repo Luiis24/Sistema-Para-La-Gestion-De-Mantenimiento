@@ -2,54 +2,58 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import './Almacen.css'
 import { Link } from 'react-router-dom'
+import { format } from "date-fns";
 import logoSena from '../../img/logo.png'
-import menu from '../../img/menu.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination } from "@nextui-org/react";
 import { SearchIcon } from '../Aprendices/SearchIcon';
-import { PlusIcon } from '../Aprendices/PlusIcon'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
-import { Nueva_salida_almacen } from '../Nueva_salida_almacen/Nueva_salida_almacen';
+import { PlusIcon } from '../Aprendices/PlusIcon';
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [entradaInsumo, setEntradaInsumo] = useState()
     const [filters, setFilters] = useState({
         nombre: '',
         estado: 'all',
-        stock: 0
+        stock: 0,
     });
-    const [registros, setRegistros] = useState()
-  
-    const handleOpenE = () => {
-        const entrada = document.getElementById('entrada')
-        onOpen(entrada);
-    }
 
+    const [paginaActual, setPaginaActual] = useState(1);
+    const itemsPorPagina = 10;
+
+    // get insumos
     useEffect(() => {
         axios.get('http://localhost:4002/insumos')
             .then(datos => {
-                setInsumos(datos.data);
+                const sortedInsumos = datos.data.sort(
+                    (a, b) =>
+                        new Date(b.fecha_llegada_insumo) - new Date(a.fecha_llegada_insumo)
+                );
+                setInsumos(sortedInsumos);
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
 
-    const statusColorMap = {
-        disponible: "success",
-        paused: "danger",
-        vacation: "warning",
-    };
-
+    // filtrar insumos
     const filterInsumos = (insumos) => {
         return insumos.filter(insumo => {
-            return ((insumo.cantidad_insumo >= filters.stock) &&
-                (filters.estado === 'all' ||
-                    insumo.estado_insumo === filters.estado) &&
-                (filters.nombre === '' ||
-                    insumo.nombre === filters.nombre)
-            )
+            if (filters.estado === 'all') {
+                return (
+                    insumo.cantidad_insumo >= filters.stock &&
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                );
+            } else if (filters.estado === '1') { // Si se selecciona "Disponible"
+                return (
+                    insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > filters.stock &&
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                );
+            } else if (filters.estado === '0') { // Si se selecciona "En uso"
+                return (
+                    insumo.insumos_en_uso > 0 &&
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                );
+            }
+            return true;
         })
     }
 
@@ -58,6 +62,7 @@ export const Almacen = () => {
             ...prevState,
             estado: event.target.value
         }))
+        setPaginaActual(1);
     }
 
     const handleStock = (event) => {
@@ -65,6 +70,7 @@ export const Almacen = () => {
             ...prevState,
             stock: event.target.value
         }))
+        setPaginaActual(1)
     }
 
     const handleNombre = (event) => {
@@ -72,22 +78,21 @@ export const Almacen = () => {
             ...prevState,
             nombre: event.target.value
         }))
-    }
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEntradaInsumo({
-            ...entradaInsumo,
-            [name]: value
-        });
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
+        setPaginaActual(1)
     }
 
     const filteredInsumos = filterInsumos(insumos);
+
+    const totalPaginas = Math.ceil(filteredInsumos.length / itemsPorPagina);
+
+    const cambiarPagina = (pagina) => {
+        setPaginaActual(pagina);
+    }
+
+
+    const startIndex = (paginaActual - 1) * itemsPorPagina;
+    const endIndex = startIndex + itemsPorPagina;
+    const paginatedInsumos = filteredInsumos.slice(startIndex, endIndex);
 
     return (
         <div>
@@ -100,6 +105,7 @@ export const Almacen = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
+                    <li><Link to={'/insumos'}>Uso</Link></li>
                     {/* <li><Link to={'/entradaAlmacen'}>Entradas</Link></li>
                     <li><Link to={'/salidaAlmacen'}>Salidas</Link></li> */}
                 </ul>
@@ -109,16 +115,6 @@ export const Almacen = () => {
 
                 <div className="navHorizontal">
                     <h2 id='active'>Insumos</h2>
-
-                    {/* <Link to={'/'} className='homeR'><img className="logoSenaR" src={logoSena} alt='logo Sena'></img></Link> */}
-                    <input type="checkbox" id="navbar-toggle"></input>
-                    <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
-
-                    <ul className='navListR'>
-                        <li id='activeMaquina'>Inventario</li>
-                        <li><Link to={'/entradaAlmacen'}>Entradas</Link></li>
-                        <li><Link to={'/salidaAlmacen'}>Salida</Link></li>
-                    </ul>
                 </div>
 
                 <div className="containerAlmacen">
@@ -134,26 +130,26 @@ export const Almacen = () => {
                         />
 
                         <select placeholder='Estado' className="filterU" onChange={handleUso}>
+                            <option disable selected hidden>Estado</option>
                             <option value="all">Todos</option>
-                            <option value="disponible">Disponible</option>
-                            <option value="enUso">En uso</option>
+                            <option value="1">Disponible</option>
+                            <option value="0">En uso</option>
                         </select>
 
                         <input type='range' id='stock' min='0' max='100' onChange={handleStock}></input>
                         <span>{filters.stock}</span>
 
 
-
+                        <Link to={"/entradaAlmacen"}>
+                            <Button
+                                className="bg-foreground text-background h-12"
+                                endContent={<PlusIcon style={{ fontSize: 'large' }} />}
+                                size="sm" >
+                                Nuevo Insumo
+                            </Button>
+                        </Link>
                         <Button
-                            className="bg-foreground text-background h-12"
-                            onPress={onOpen}
-                            endContent={<PlusIcon style={{ fontSize: 'large' }} />}
-                            size="sm" >
-                            Nuevo Insumo
-                        </Button>
-                        <Button
-                            className="bg-foreground text-background h-12"
-                            onPress={onOpen}
+                            className="bg-foreground text-background h-12 cursor-not-allowed"
                             endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                             size="sm" >
                             Salida Insumo
@@ -163,72 +159,46 @@ export const Almacen = () => {
 
                     <Table>
                         <TableHeader>
-                            <TableColumn className='text-lg'>N. inventario</TableColumn>
                             <TableColumn className='text-lg'>Nombre</TableColumn>
+                            <TableColumn className='text-lg'>Agregado</TableColumn>
                             <TableColumn className='text-lg'>Proveedor</TableColumn>
-                            <TableColumn className='text-lg'>Entradas</TableColumn>
+                            <TableColumn className='text-lg'>Cantidad</TableColumn>
                             <TableColumn className='text-lg'>En uso</TableColumn>
-                            <TableColumn className='text-lg'>Stock</TableColumn>
+                            <TableColumn className='text-lg'>Disponibles</TableColumn>
                             <TableColumn className='text-lg'>Estado</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No se encontro insumos."}>
-                            {filteredInsumos.map(insumo => {
+                            {paginatedInsumos.map(insumo => {
                                 return <TableRow key={insumo.id_insumo}>
-                                    <TableCell className='text-lg'>{insumo.id_insumos}</TableCell>
                                     <TableCell className='text-lg'>{insumo.nombre_insumo}</TableCell>
+                                    <TableCell className='text-lg'>{format(new Date(insumo.fecha_llegada_insumo), "dd/MM/yyyy")}</TableCell>
                                     <TableCell className='text-lg'>{insumo.proveedor_insumo}</TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>0<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                                        <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
+                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>{insumo.insumos_en_uso || 0}
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
+                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
                                     </TableCell>
-                                    <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color='success' size="sm" variant="flat">
-                                        Disponible
-                                    </Chip></TableCell>
+                                    <TableCell className='text-lg'>{insumo.cantidad_insumo - (insumo.insumos_en_uso || 0)}</TableCell>
+                                    <TableCell>
+                                        <Chip className="capitalize text-lg p-3 rounded-lg" color={insumo.insumos_en_uso === insumo.cantidad_insumo ? 'danger' : 'success'} size="sm" variant="flat">
+                                            {insumo.insumos_en_uso === insumo.cantidad_insumo ? 'No disponible' : 'Disponible'}
+                                        </Chip>
+                                    </TableCell>
                                 </TableRow>
                             })}
                         </TableBody>
                     </Table>
+
+                    <div className="paginador">
+                    <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="secondary"/>
                 </div>
+                </div>
+
+
+
             </div>
-
-<Nueva_salida_almacen onOpen={onOpen}/>
-
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} id='entrada'>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar Insumo</ModalHeader>
-                            <ModalBody className="modalIOT">
-                                <div className="formIOT">
-                                    <Input type="text" name="nombreInsumo" onChange={handleChange} placeholder='Nombre Insumo' />
-                                </div>
-                                <div className="formIOT">
-                                    <Input type="number" name="cantidad" onChange={handleChange} placeholder='Cantidad'/>
-                                </div>
-                                <div className="formIOT">
-                                    <Input type="date" name="fecha" onChange={handleChange} placeholder='Fecha'/>
-                                </div>
-                                <div className="formIOT">
-                                    <Input type="number" name="proveedor" onChange={handleChange} placeholder='Proveedor'/>
-                                </div>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button className="text-slate-50 bg-red-500" variant="flat" onPress={onClose}>
-                                    Cerrar
-                                </Button>
-                                <div className="botton-registrar-div">
-                                <Button className="text-white" onClick={handleSubmit} onPress={onClose}>
-                                    Registrar
-                                </Button>
-                                </div>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
         </div>
     )
 }

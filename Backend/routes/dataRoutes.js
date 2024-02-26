@@ -95,6 +95,16 @@ const {
     }
   });
 
+  // Insumos:
+
+router.post('/RegistrarInsumo', dataController.RegistrarInsumo)
+router.get('/GetInsumos', dataController.GetInsumos)
+
+router.post('/UsarInsumo/:id_insumo', dataController.UsarInsumo);
+
+router.get('/GetInsumoById/:id_insumo', dataController.getInsumoById);
+
+router.post('/DevolverInsumo/:id', dataController.devolverInsumo);
 
 
 module.exports = router;

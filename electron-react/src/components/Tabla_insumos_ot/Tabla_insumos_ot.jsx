@@ -56,11 +56,11 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
             <div className="containerTIOT">
                 <Table className="tablaOT">
                     <TableHeader>
-                        <TableColumn className="text-lg">Item</TableColumn>
                         <TableColumn className="text-lg">Cantidad</TableColumn>
-                        <TableColumn className="text-lg">Unidad</TableColumn>
                         <TableColumn className="text-lg">Nombre</TableColumn>
+                        <TableColumn className="text-lg">Unidad</TableColumn>
                         <TableColumn className="text-lg">Valor unidad</TableColumn>
+                        <TableColumn className="text-lg">Consumible</TableColumn>
                         <TableColumn className="text-lg">SubTotal</TableColumn>
                         <TableColumn className="text-lg">Eliminar</TableColumn>
                     </TableHeader>
@@ -68,16 +68,16 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                         {rows.map((row, id) => {
                             return (
                                 <TableRow key={id + 1}>
-                                    <TableCell className="text-lg">{id + 1}</TableCell>
                                     <TableCell className="text-lg">{row.cantidad}</TableCell>
-                                    <TableCell className="text-lg">{row.unidad}</TableCell>
                                     <TableCell className="text-lg">{row.nombre}</TableCell>
+                                    <TableCell className="text-lg">{row.unidad}</TableCell>
                                     <TableCell className="text-lg">{row.valorUnidad}</TableCell>
+                                    <TableCell className="text-lg">{row.consumible}</TableCell>
                                     <TableCell className="text-lg">
                                         ${parseInt(row.cantidad) * parseInt(row.valorUnidad)}
                                     </TableCell>
                                     <TableCell onClick={() => deleteRow(id)}>
-                                        <DeleteIcon />
+                                        <DeleteIcon className="cursor-pointer"/>
                                     </TableCell>
                                 </TableRow>
                             );
@@ -131,7 +131,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                                         {insumos.map((insumo) => {
                                             return (
                                                 <option value={insumo.nombre} key={insumo.id_insumos}>
-                                                    {insumo.nombre}({insumo.cantidad_insumo})
+                                                    {insumo.nombre_insumo}({insumo.cantidad_insumo})
                                                 </option>
                                             );
                                         })}

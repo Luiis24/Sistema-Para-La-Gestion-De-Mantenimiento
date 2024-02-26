@@ -135,15 +135,17 @@ export const Aprendices = () => {
                             onChange={handleNombre}
                         />
 
-                        <select placeholder='Programas de formacion' className="filterU" onChange={handlePF}>
+                        <select className="filterU" onChange={handlePF}>
+                            <option disable selected hidden>Programa de formacion</option>
                             <option value="all">Todos</option>
-                            {noRepetidos.map(programaFormacion => {
-                                return <option value={programaFormacion}>{programaFormacion}</option>
-                            })}
+                            {noRepetidos.map(programaFormacion => (
+                                <option value={programaFormacion}>{programaFormacion}</option>
+                            ))}
                         </select>
 
 
-                        <select placeholder='Equipos' className="filterU" onChange={handleEquipo}>
+                        <select className="filterU" onChange={handleEquipo}>
+                            <option disable selected hidden>Equipo</option>
                             <option value="all">Todos</option>
                             {eqnoRepetidos.map(eq => {
                                 return <option value={eq}>{eq}</option>

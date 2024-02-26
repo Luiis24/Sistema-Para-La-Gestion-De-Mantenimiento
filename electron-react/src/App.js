@@ -15,7 +15,6 @@ import { Instructores } from './components/Instructores/Instructores';
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 
 import { Almacen } from './components/Almacen/Almacen';
-import { Nueva_entrada_almacen } from './components/Nueva_entrada_almacen/Nueva_entrada_almacen';
 import { Nueva_salida_almacen } from './components/Nueva_salida_almacen/Nueva_salida_almacen';
 
 import { Cnc } from './components/Cnc/Cnc';
@@ -37,6 +36,8 @@ import { Informes } from './components/Informes/Informes';
 import {Registro_caracteristicas_motor} from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor'
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
 import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
+import { Insumos } from './components/Insumos/Insumos';
+import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
 
 
 const router = createBrowserRouter ([
@@ -75,10 +76,6 @@ const router = createBrowserRouter ([
   {
     path:"/almacen",
     element: <><Almacen/></>
-  },
-  {
-    path:"/entradaAlmacen",
-    element: <><Nueva_entrada_almacen/></>
   },
   {
     path:"/salidaAlmacen",
@@ -128,6 +125,14 @@ const router = createBrowserRouter ([
   {
     path:"/crearDescripcionEquipo",
     element: <><Registro_descripcion_equipo_hv/><Animacion_cuadros/></>
+  },
+  {
+    path:"/insumos",
+    element: <><Insumos/></>
+  },
+  {
+    path:"/entradaAlmacen",
+    element: <><Registro_almacen/><Animacion_cuadros/></>
   }
 ]);
 

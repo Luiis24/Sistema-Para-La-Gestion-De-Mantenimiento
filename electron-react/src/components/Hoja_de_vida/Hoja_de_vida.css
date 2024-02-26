@@ -22,3 +22,22 @@
     width: 50%;
     font-size: 17px;
 }
+.container-table-hv {
+    width: 88%;
+    margin: 0 auto 40px;
+  }
+
+/* carcateristicas maquina */
+.titulo-cm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    font-family: sans-serif;
+    color: rgb(70, 70, 70);
+    user-select: none;
+    margin-bottom: 3%;
+}
+

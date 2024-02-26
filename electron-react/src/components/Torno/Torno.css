@@ -54,7 +54,7 @@
 
     0%,
     35% {
-        background-image: url("https://crm.ferrotall.com/media/prod_pics_heller/original/175/torno-convencional-con-variador-de-velocidad-heller.png");
+        background-image: url("../../img/maquinasFoto1.jpg");
     }
 
     40%,
@@ -64,6 +64,6 @@
 
     80%,
     100% {
-        background-image: url("https://www.shutterstock.com/shutterstock/photos/2225137677/display_1500/stock-vector-engineer-maintenance-failure-machine-isometric-industrial-employee-worker-fixing-in-factory-element-2225137677.jpg");
+        background-image: url("../../img/maquinasFoto3.jpg");
     }
 }

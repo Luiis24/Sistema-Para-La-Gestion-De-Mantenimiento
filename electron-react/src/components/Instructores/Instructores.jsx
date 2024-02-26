@@ -108,14 +108,6 @@ export const Instructores = () => {
               onChange={handleNombre}
             />
 
-            <select
-              placeholder="Estado"
-              className="filterU"
-              onChange={handleEstado}
-            >
-              <option value="all">Todos</option>
-            </select>
-
             <Link to={"/Registroinstructores"}>
               <Button
                 className="bg-foreground text-background h-12"
