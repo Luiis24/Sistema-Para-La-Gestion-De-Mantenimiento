@@ -426,36 +426,55 @@ const getComponenteChecklist = (req, res) => {
 
 // Check List - Estado de los componentes (Post):
 
+const registerChecklist = async (req, res) => {
+  try {
+    const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
+
+    console.log('Datos recibidos en el controlador:', {
+      id_maquina,
+      fecha,
+      hora_inicio,
+      hora_fin,
+      estadosComponentes,
+    });
+
+    // Obtener el número de inspección actual para esa máquina
+    const { rows } = await pool.query(
+      'SELECT COALESCE(MAX(num_inspeccion), 0) + 1 AS nuevo_num_inspeccion FROM checklist WHERE id_maquina = $1',
+      [id_maquina]
+    );
+
+    const nuevoNumInspeccion = rows[0].nuevo_num_inspeccion;
+
+    // Construir la consulta SQL para insertar en la tabla checklist
+    const query = `
+      INSERT INTO checklist (id_maquina, num_inspeccion, fecha, hora_inicio, hora_fin, estado_componente, id_componente)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+
+    // Ejecutar la consulta para cada estadoComponente
+    for (const estadoComponente of estadosComponentes) {
+      const values = [
+        id_maquina,
+        nuevoNumInspeccion,
+        fecha,
+        hora_inicio,
+        hora_fin,
+        estadoComponente.estado_componente,
+        estadoComponente.id_componente,
+      ];
+
+      await pool.query(query, values);
+    }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Error al registrar en checklist:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 
-
-// const registerChecklist = async (req, res) => {
-//   try {
-//     const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
-
-//     const checklist = await Checklist.create({
-//       id_maquina,
-//       fecha,
-//       hora_inicio,
-//       hora_fin,
-//     });
-
-//     // Registra los estados de los componentes en la tabla componentes_checklist
-//     await Promise.all(estadosComponentes.map(async ({ id_componente, estado_componente }) => {
-//       await ComponentesChecklist.create({
-//         id_checklist: checklist.id_checklist,
-//         id_componente,
-//         estado_componente,
-//       });
-//     }));
-
-//     // Responde con éxito
-//     res.status(201).json({ message: 'Registro en checklist exitoso' });
-//   } catch (error) {
-//     console.error('Error al registrar en checklist:', error);
-//     res.status(500).json({ error: 'Error interno del servidor' });
-//   }
-// };
 
 
 
@@ -1150,7 +1169,38 @@ const getComponentesByMaquina = async (req, res) => {
 };
 
 
+const getHistorialRegistros = async (req, res) => {
+  const { idMaquina } = req.params;
 
+  try {
+    const response = await pool.query(
+      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC',
+      [idMaquina]
+    );
+
+    res.json(response.rows);
+  } catch (error) {
+    console.error('Error al obtener el historial de registros', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+
+const getUltimoRegistro = async (req, res) => {
+  const { idMaquina } = req.params;
+
+  try {
+    const response = await pool.query(
+      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC LIMIT 1',
+      [idMaquina]
+    );
+
+    res.json(response.rows[0]);
+  } catch (error) {
+    console.error('Error al obtener el último registro', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 
 module.exports = {
@@ -1190,4 +1240,9 @@ module.exports = {
   devolverInsumo,
   ultimaMaquina,
   getComponentesByMaquina,
+  getHistorialRegistros,
+  getUltimoRegistro
+
+
+
 };
