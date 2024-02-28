@@ -888,6 +888,21 @@ const getDescripcionEquipoById = async (id_maquina) => {
     });
 };
 
+ // Orden de trabajo para modal (Get)
+
+ const GetOrdenTrabajo = async (req, res) => {
+  const { id } = req.body;
+  pool.query('SELECT * FROM orden_de_trabajo WHERE id_orden_de_trabajo = $1', [id], 
+  (error, result) => {
+      if (error) {
+          console.error('Error al consultar la base de datos', error);
+          return res.status(500).json({ error: 'Error al obtener la orden de trabajo' });
+      }
+
+      res.status(200).json(result.rows);
+  });
+};
+
 // registrar insumo
 
 const RegistrarInsumo = (req, res) => {
@@ -1116,7 +1131,8 @@ const RegistrarInsumo = (req, res) => {
     getInsumoById,
     devolverInsumo, 
 
-    GetOrdenesTrabajo
+    GetOrdenesTrabajo,
+    GetOrdenTrabajo
   
   };
   

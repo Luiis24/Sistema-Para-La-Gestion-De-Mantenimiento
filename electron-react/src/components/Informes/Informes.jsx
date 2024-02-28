@@ -4,9 +4,12 @@ import logoSena from '../../img/logo.png'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import axios from 'axios';
 import './Informes.css'
+import { Orden_trabajo_modal } from './Orden_trabajo_modal';
 
 export const Informes = () => {
     const [ordenesTrabajo, setOrdenesTrabajo] = useState([]);
+    const [ordenTrabajo, setOrdenTrabajo] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:4002/getOrdenesTrabajo')
@@ -17,6 +20,18 @@ export const Informes = () => {
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
+
+    // informacion orden de trabajo modal
+    const handleInfoOT = async (id) => {
+        try {
+            const response = await axios.post('http://localhost:4002/getOrdenTrabajo', { id });
+            const ot = await response.data
+            setOrdenTrabajo(ot);    
+            setModalVisible(true);
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -53,7 +68,7 @@ export const Informes = () => {
                         <TableBody emptyContent={"No disponible."}>
                             {ordenesTrabajo.map((orden) => {
                                 return (
-                                    <TableRow key={orden.id_orden_de_trabajo}>
+                                    <TableRow key={orden.id_orden_de_trabajo} onClick={() => handleInfoOT(orden.id_orden_de_trabajo)} className='cursor-pointer'>
                                         <TableCell>{orden.id_maquina}</TableCell>
                                         <TableCell>{orden.tipo_de_trabajo}</TableCell>
                                         <TableCell>{orden.tipo_de_mantenimiento}</TableCell>
@@ -69,6 +84,10 @@ export const Informes = () => {
                 </div>
 
             </div>
+
+            {modalVisible && (
+                <Orden_trabajo_modal ordenTrabajo={ordenTrabajo}/>
+            )}
         </div>
     )
 }

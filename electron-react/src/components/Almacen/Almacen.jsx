@@ -10,13 +10,16 @@ import { PlusIcon } from '../Aprendices/PlusIcon';
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
+
+    // filtros
     const [filters, setFilters] = useState({
         nombre: '',
-        estado: 'all',
-        stock: 0,
+        estado: 'all'
     });
     const [ordenNombreAscendente, setOrdenNombreAscendente] = useState(true);
     const [ordenCantidadAscendente, setOrdenCantidadAscendente] = useState(true);
+
+    // usar y devolver insumos
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedInsumoId, setSelectedInsumoId] = useState(null);
     const [cantidadUsar, setCantidadUsar] = useState(1);
@@ -26,6 +29,7 @@ export const Almacen = () => {
     const [cantidadDevolver, setCantidadDevolver] = useState(1);
     const [maxCantidadDevolver, setMaxCantidadDevolver] = useState(1);
 
+    // paginador
     const [paginaActual, setPaginaActual] = useState(1);
     const itemsPorPagina = 15;
 
@@ -46,26 +50,38 @@ export const Almacen = () => {
 
     // filtrar insumos
     const filterInsumos = (insumos) => {
-        return insumos.filter(insumo => {
+        const filtered = insumos.filter(insumo => {
             if (filters.estado === 'all') {
                 return (
-                    insumo.cantidad_insumo >= filters.stock &&
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             } else if (filters.estado === '1') { // Si se selecciona "Disponible"
                 return (
-                    insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > filters.stock &&
+                    (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) &&
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             } else if (filters.estado === '0') { // Si se selecciona "En uso"
                 return (
-                    insumo.insumos_en_uso > 0 &&
+                    (insumo.insumos_en_uso > 0) &&
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             }
             return true;
-        })
+        });
+    
+        if (ordenNombreAscendente) {
+            filtered.sort((a, b) => (a.nombre_insumo > b.nombre_insumo) ? 1 : -1);
+        } else {
+            filtered.sort((a, b) => (a.nombre_insumo < b.nombre_insumo) ? 1 : -1);
+        }
+    
+        if (!ordenCantidadAscendente) {
+            filtered.sort((a, b) => b.cantidad_insumo - a.cantidad_insumo);
+        }
+    
+        return filtered;
     }
+
 
     // cambiar filtros
 
@@ -77,14 +93,6 @@ export const Almacen = () => {
         setPaginaActual(1);
     }
 
-    const handleStock = (event) => {
-        setFilters(prevState => ({
-            ...prevState,
-            stock: event.target.value
-        }))
-        setPaginaActual(1)
-    }
-
     const handleNombre = (event) => {
         setFilters(prevState => ({
             ...prevState,
@@ -93,32 +101,31 @@ export const Almacen = () => {
         setPaginaActual(1)
     }
 
-    // const handleToggleOrdenNombre = (event) => {
-    //     setFilters(prevState => ({
-    //         ...prevState.sort((a,b => {
-    //             ordenNombreAscendente
-    //             ? a.nombre_insumo.localeCompare(b.nombre_insumo)
-    //             : b.nombre_insumo.localeCompare(a.nombre_insumo)
-    //         }))
-    //     }))
-    //     setPaginaActual(1)
-    // }
+    const handleOrdenNombre = () => {
+        setOrdenNombreAscendente(!ordenNombreAscendente);
+        setPaginaActual(1)
+    }
+
+    const handleOrdenCantidad = () => {
+        setOrdenCantidadAscendente(!ordenCantidadAscendente);
+        setPaginaActual(1)
+    }
 
     const filteredInsumos = filterInsumos(insumos);
 
-    // cambiar de pagina
-    const totalPaginas = Math.ceil(filteredInsumos.length / itemsPorPagina);
 
+    // cambiar de pagina
+
+    const totalPaginas = Math.ceil(filteredInsumos.length / itemsPorPagina);
     const cambiarPagina = (pagina) => {
         setPaginaActual(pagina);
     }
-
-
     const startIndex = (paginaActual - 1) * itemsPorPagina;
     const endIndex = startIndex + itemsPorPagina;
     const paginatedInsumos = filteredInsumos.slice(startIndex, endIndex);
 
-    // usar insumo
+
+    // usar y devolver insumo
 
     const handleGestionarInsumo = (id) => {
         console.log("ID del insumo seleccionado:", id);
@@ -133,8 +140,6 @@ export const Almacen = () => {
         setModalVisible(true);
         setModalDevolucionVisible(false);
     };
-
-    // devolver insumo
 
     const handleDevolverInsumo = (id) => {
         console.log("ID del insumo seleccionado para devolver:", id);
@@ -207,14 +212,6 @@ export const Almacen = () => {
         }
     };
 
-    const handleNombreAsc = () => {
-        const paginatedInsumos = paginatedInsumos.sort((a,b) => {
-            ordenNombreAscendente
-            ? a.nombre_insumo.localeCompare(b.nombre_insumo)
-            : b.nombre_insumo.localeCompare(a.nombre_insumo)
-        })
-    }
-
     return (
         <div>
             <div className="navVertical">
@@ -255,14 +252,13 @@ export const Almacen = () => {
                             <option value="0">En uso</option>
                         </select>
 
-                        <button className='filterI' onClick={handleNombreAsc}>
+                        <button className='filterI' onClick={handleOrdenNombre}>
                             {ordenNombreAscendente ? 'Ordenar A-Z' : 'Ordenar Z-A'}
                         </button>
-                        
-                        <button className='filterI'>Mayor a menor</button>
 
-                        {/* <input type='range' id='stock' min='0' max='100' onChange={handleStock}></input>
-                        <span>{filters.stock}</span> */}
+                        <button className='filterI' onClick={handleOrdenCantidad}>
+                            {ordenCantidadAscendente ? 'Mayor a menor' : 'Menor a mayor'}
+                        </button>
 
 
                         <Link to={"/entradaAlmacen"}>
@@ -300,10 +296,11 @@ export const Almacen = () => {
                                     <TableCell className='text-lg'>{format(new Date(insumo.fecha_llegada_insumo), "dd/MM/yyyy")}</TableCell>
                                     <TableCell className='text-lg'>{insumo.proveedor_insumo}</TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>{insumo.insumos_en_uso || 0}
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>
+                                        {insumo.insumos_en_uso || 0}
+                                        <svg className="w-6 h-6 text-gray-800 hover:text-lime-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" strokWidth="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
+                                            <path stroke="currentColor" strokeWidth="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         </svg>
                                     </TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo - (insumo.insumos_en_uso || 0)}</TableCell>

@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^13.5.0",
     "electron-is-dev": "^2.0.0",
     "framer-motion": "^11.0.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
@@ -22,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://10.207.80.114:3000 && electron .\""
+    "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://192.168.0.3:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": [

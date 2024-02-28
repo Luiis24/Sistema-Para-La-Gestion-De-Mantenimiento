@@ -65,7 +65,7 @@ export const Menu = () => {
 
                 <div className="containerUserName">
                     <p className="nombreUser">{nombre ? nombre : ''}</p>
-                    <p className="rolUser flex flex-col text-center">{rol ? rol : ''}  {programaFormacion ? - programaFormacion : ''}</p>
+                    <p className="rolUser flex flex-col text-center">{rol ? rol : ''}  {programaFormacion ? `- ${programaFormacion}` : ''}</p>
                 </div>
 
 

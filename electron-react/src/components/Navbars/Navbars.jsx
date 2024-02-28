@@ -4,6 +4,7 @@ import './navbars.css'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
 import { useAuth } from '../../estados/usuario';
+import menu from '../../img/menu.png'
 
 export const Navbars = () => {
 
@@ -87,6 +88,8 @@ export const Navbars = () => {
             <h2>SGMI</h2>
           </div>
         </Link>
+        <input type="checkbox" id="navbar-toggle"></input>
+            <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
         <div className="containerSectionN">
           <div className="listMaquinas">
             <p className='text-sm text-gray-600 pl-4'><Link to={'/tornos'}>Maquinas</Link></p>

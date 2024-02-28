@@ -27,10 +27,11 @@ export const Registro_almacen = () => {
 
             console.log(response.data);
 
-            setNombreInsumo("");
-            setFechaLlegadaInsumo(new Date().toISOString().split("T")[0]);
-            setCantidadInsumo("");
-            setProveedorInsumo("");
+            // setNombreInsumo("");
+            // setFechaLlegadaInsumo(new Date().toISOString().split("T")[0]);
+            // setCantidadInsumo("");
+            // setProveedorInsumo("");
+            window.location.href = "/almacen"
 
         } catch (error) {
             console.error("Error al registrar insumos", error);
