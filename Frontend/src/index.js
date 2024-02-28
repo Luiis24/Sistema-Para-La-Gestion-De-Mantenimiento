@@ -21,7 +21,7 @@ import {Hoja_de_vida} from './components/Hoja_de_vida/Hoja_de_vida';
 import { Insumos } from './components/Insumos/Insumos';
 import { Usar_insumos } from './components/Insumos/Usar_insumos';
 
-// <Componentes_check/>
+// <Componentes_check/> CREAR COMPONENTE
 
 //   <estado_componente/>
 
@@ -29,8 +29,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
+
 <Check_list/>
-<Estado_componente/>
 
   </React.StrictMode>
 );
