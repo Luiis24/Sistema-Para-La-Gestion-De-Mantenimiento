@@ -65,7 +65,7 @@ export const Componentes_check = () => {
                         value={tipoComponente}
                         onChange={(event) => setTipoComponente(event.target.value)}
                     >
-                        <option disabled selected hidden>Componente o Sistema</option>
+                        <option disable selected hidden>Componente o Sistema</option>
                         <option value="Componente Electrico">Componente Electrico</option>
                         <option value="Componente Mecanico">Componente Mecánico</option>
                         <option value="Estados de la Maquina">Estados de la Maquina</option>

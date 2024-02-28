@@ -10,7 +10,7 @@ import { Animacion_cuadros } from './components/Animacion_cuadros/Animacion_cuad
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 import { Componentes_check } from './components/Componentes_check/Componentes_check'
 import { Check_list } from './components/Check_list/Check_list'
-import Estado_componente from './components/Estado_componente/Estado_componente';
+import {Estado_componente} from './components/Estado_componente/Estado_componente';
 import Crear_tipo_maquina from './components/Crear_tipo_maquina/Crear_tipo_maquina';
 import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
 import { Caracteristicas_motor } from './components/Caracteristicas_motor/Caracteristicas_motor'
@@ -29,10 +29,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
 
-
 <Check_list/>
-
+<Estado_componente/>
   </React.StrictMode>
+
 );
 
 // If you want to start measuring performance in your app, pass a function

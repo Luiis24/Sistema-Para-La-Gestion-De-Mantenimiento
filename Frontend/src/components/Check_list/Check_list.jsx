@@ -11,7 +11,6 @@ export const Check_list = () => {
   const [horaInicio, setHoraInicio] = useState('');
   const [horaFin, setHoraFin] = useState('');
   const [selectedMaquina, setSelectedMaquina] = useState(null);
-  
 
   useEffect(() => {
     fetchMaquinas();
@@ -72,11 +71,25 @@ export const Check_list = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
+    // Verificar que los valores necesarios estén presentes
+    if (!selectedMaquina || !fecha || !horaInicio || !horaFin) {
+      toast.error('Por favor, complete todos los campos antes de enviar.');
+      return;
+    }
+
     try {
       const estadosRegistrados = Object.entries(estadosComponentes).map(([id_componente, estado_componente]) => ({
         id_componente,
         estado_componente,
       }));
+
+      console.log('Datos a enviar:', {
+        id_maquina: selectedMaquina,
+        fecha,
+        hora_inicio: horaInicio,
+        hora_fin: horaFin,
+        estadosComponentes: estadosRegistrados,
+      });
 
       await axios.post('http://localhost:4002/registerChecklist', {
         id_maquina: selectedMaquina,
@@ -87,18 +100,28 @@ export const Check_list = () => {
       });
 
       toast.success('Registro en la checklist exitoso');
-
       setEstadosComponentes({});
       setFecha('');
       setHoraInicio('');
       setHoraFin('');
 
+
+
+      console.log('Datos a enviar:', {
+        id_maquina: selectedMaquina,
+        fecha,
+        hora_inicio: horaInicio,
+        hora_fin: horaFin,
+        estadosComponentes: estadosRegistrados,
+      });
+
     } catch (error) {
       console.error('Error al registrar en la checklist', error);
-      toast.error('Error al registrar en la checklist');
+      toast.error('Error al registrar en la checklist. Por favor, inténtelo nuevamente.');
     }
   };
 
+  
   return (
     <div>
       <ToastContainer />
