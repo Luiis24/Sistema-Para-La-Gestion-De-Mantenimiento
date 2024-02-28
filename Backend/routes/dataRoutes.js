@@ -22,7 +22,7 @@ router.get('/componenteChecklist/:idMaquina',dataController.getComponentesByMaqu
 
 
 
-router.post('/registerCheckList', dataController.registerCheckList);
+router.post('/registerChecklist', dataController.registerChecklist);
 router.get('/getUltimosEstados', dataController.getUltimosEstados);
 
 router.post('/crearTipoMaquina', dataController.crearTipoMaquina);

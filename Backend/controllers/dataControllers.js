@@ -426,33 +426,38 @@ const getComponenteChecklist = (req, res) => {
 
 // Check List - Estado de los componentes (Post):
 
-const registerCheckList = async (req, res) => {
-  try {
-    const { checklistData, fecha, horaInicio, horaFin } = req.body;
 
-    if (!checklistData || !Array.isArray(checklistData)) {
-      return res
-        .status(400)
-        .json({ error: "Datos de checklist no proporcionados correctamente" });
-    }
 
-    for (const { id_componente, estado_componente } of checklistData) {
-      await pool.query(
-        "INSERT INTO checklist (id_componente, estado_componente, id_inspeccion) VALUES ($1, $2, (SELECT id_inspeccion FROM hoja_inspeccion WHERE fecha = $3 AND hora_inicio = $4))",
-        [id_componente, estado_componente, fecha, horaInicio]
-      );
-    }
 
-    res
-      .status(201)
-      .json({ message: "Estados de componentes registrados exitosamente" });
-  } catch (error) {
-    console.error("Error al registrar estados de componentes", error);
-    res.status(500).json({
-      error: "Error interno del servidor al registrar estados de componentes",
-    });
-  }
-};
+// const registerChecklist = async (req, res) => {
+//   try {
+//     const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
+
+//     const checklist = await Checklist.create({
+//       id_maquina,
+//       fecha,
+//       hora_inicio,
+//       hora_fin,
+//     });
+
+//     // Registra los estados de los componentes en la tabla componentes_checklist
+//     await Promise.all(estadosComponentes.map(async ({ id_componente, estado_componente }) => {
+//       await ComponentesChecklist.create({
+//         id_checklist: checklist.id_checklist,
+//         id_componente,
+//         estado_componente,
+//       });
+//     }));
+
+//     // Responde con éxito
+//     res.status(201).json({ message: 'Registro en checklist exitoso' });
+//   } catch (error) {
+//     console.error('Error al registrar en checklist:', error);
+//     res.status(500).json({ error: 'Error interno del servidor' });
+//   }
+// };
+
+
 
 // ...
 
@@ -1158,7 +1163,7 @@ module.exports = {
   registerHojaInspeccion,
   registerComponenteChecklist,
   getComponenteChecklist,
-  registerCheckList,
+  registerChecklist,
   getUltimosEstados,
   getTiposMaquina,
   crearTipoMaquina,
