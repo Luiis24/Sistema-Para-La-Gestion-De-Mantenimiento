@@ -82,17 +82,17 @@ export const Navbars = () => {
   return (
     <div>
       <div className="navVertical">
-        <Link to={'/MenuPrincipal'}>
+        <Link to={'/MenuPrincipal'} className='w-fit md:w-full'>
           <div className="principal">
             <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
             <h2>SGMI</h2>
           </div>
         </Link>
         <input type="checkbox" id="navbar-toggle"></input>
-            <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
+        <label htmlFor="navbar-toggle" className="menu-responsive cursor-pointer"><img className='menuR' src={menu} alt='menu'></img></label>
         <div className="containerSectionN">
           <div className="listMaquinas">
-            <p className='text-sm text-gray-600 pl-4'><Link to={'/tornos'}>Maquinas</Link></p>
+            <p className='text-sm text-gray-600 pl-4 font-semibold'><Link to={'/tornos'}>Maquinas</Link></p>
 
             {tipoMaquina ? tipoMaquina.map(tipoM => {
               return <div className="tipoMaquina" key={tipoM.id_tipo_maquina}>
@@ -119,7 +119,7 @@ export const Navbars = () => {
 
           </div>
           {rol === 'Instructor' ? <div className="adminMaquina">
-            <p className='text-sm text-gray-600 pl-4'>Admin tools</p>
+            <p className='text-sm text-gray-600 pl-4 font-semibold'>Admin tools</p>
             <Link to={'/crearTipoMaquina'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

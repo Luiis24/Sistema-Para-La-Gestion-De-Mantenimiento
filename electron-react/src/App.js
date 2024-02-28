@@ -38,6 +38,7 @@ import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caract
 import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
 import { Insumos } from './components/Insumos/Insumos';
 import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
+import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 
 
 const router = createBrowserRouter ([
@@ -133,6 +134,10 @@ const router = createBrowserRouter ([
   {
     path:"/entradaAlmacen",
     element: <><Registro_almacen/><Animacion_cuadros/></>
+  },
+  {
+    path:"/registroReparacion",
+    element: <><Historial_reparaciones/><Animacion_cuadros/></>
   }
 ]);
 

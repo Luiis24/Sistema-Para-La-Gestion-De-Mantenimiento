@@ -41,3 +41,25 @@
     margin-bottom: 3%;
 }
 
+
+@media (max-width: 1000px) {
+    .containerHv {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .sectionHv {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .tituloSeccionHv {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0 10px 0 10px;
+    }
+
+    .btn-registrarMOT Button {
+        width: 70%;
+    }
+}

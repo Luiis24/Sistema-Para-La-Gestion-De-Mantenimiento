@@ -45,6 +45,7 @@ export const Informes = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Informes</li>
+                    <li><Link to={'/registroReparacion'}>Informes</Link></li>
                 </ul>
             </div>
 

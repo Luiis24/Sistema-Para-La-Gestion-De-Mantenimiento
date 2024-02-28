@@ -698,19 +698,35 @@ const GetCaracteristicasMotor = async (req, res) => {
 // Guardar historial (Post):
 
 const crearHistorialReparaciones = async (req, res) => {
-    const { procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial } = req.body;
+  const {
+    id_maquina,
+    procedimiento_historial,
+    insumos_usados_historial,
+    observaciones_historial,
+    fecha_historial,
+  } = req.body;
 
-    try {
-        await pool.query(
-            'INSERT INTO historial_reparaciones (procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial) VALUES ($1, $2, $3, $4)',
-            [procedimiento_historial, repuestos_involucrados, observaciones_historial, fecha_historial]
-        );
+  try {
+    await pool.query(
+      "INSERT INTO historial_reparaciones (id_maquina, procedimiento_historial, insumos_usados_historial, observaciones_historial, fecha_historial) VALUES ($1, $2, $3, $4, $5)",
+      [
+        id_maquina,
+        procedimiento_historial,
+        insumos_usados_historial,
+        observaciones_historial,
+        fecha_historial,
+      ]
+    );
 
-        res.status(201).json({ message: 'Registro en el historial de reparaciones exitoso' });
-    } catch (error) {
-        console.error('Error al registrar en el historial de reparaciones', error);
-        res.status(500).json({ error: 'Error al registrar en el historial de reparaciones' });
-    }
+    res
+      .status(201)
+      .json({ message: "Registro en el historial de reparaciones exitoso" });
+  } catch (error) {
+    console.error("Error al registrar en el historial de reparaciones", error);
+    res
+      .status(500)
+      .json({ error: "Error al registrar en el historial de reparaciones" });
+  }
 };
 
 

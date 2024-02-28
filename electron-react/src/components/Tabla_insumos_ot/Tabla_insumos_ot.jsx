@@ -113,7 +113,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                 </Button>
             </div>
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} placement={"center"}>
                 <ModalContent>
                     {(onClose) => (
                         <>

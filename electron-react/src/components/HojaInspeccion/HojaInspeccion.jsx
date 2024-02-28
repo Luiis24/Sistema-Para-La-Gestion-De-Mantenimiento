@@ -88,35 +88,35 @@ export const HojaInspeccion = () => {
 
     return (
         <div>
-            <div className='container-table'>
-            <Table className='m-6 mx-20 w-full'>
-                <TableHeader>
+            <div className="containerTIOT">
+                <Table>
+                    <TableHeader>
                         <TableColumn className='text-lg'>Fecha</TableColumn>
                         <TableColumn className='text-lg'>Hora inicio</TableColumn>
                         <TableColumn className='text-lg ml-6'>Hora fin</TableColumn>
                         {componentes.map((componente) => (
                             <th key={componente.id_componente}>{componente.nombre_componente}</th>
                         ))}
-                </TableHeader>
-                <TableBody emptyContent={"Registre hoja de inspección."}>
-                    {registros.map((registro) => (
-                        <TableRow key={registro.id_registro}>
-                            <TableCell>{registro.fecha}</TableCell>
-                            <TableCell>{registro.hora_inicio}</TableCell>
-                            <TableCell>{registro.hora_fin}</TableCell>
-                            {componentes.map((componente) => (
-                                <td key={componente.id_componente}>{registro[componente.id_componente]}</td>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody emptyContent={"Registre hoja de inspección."}>
+                        {registros.map((registro) => (
+                            <TableRow key={registro.id_registro}>
+                                <TableCell>{registro.fecha}</TableCell>
+                                <TableCell>{registro.hora_inicio}</TableCell>
+                                <TableCell>{registro.hora_fin}</TableCell>
+                                {componentes.map((componente) => (
+                                    <td key={componente.id_componente}>{registro[componente.id_componente]}</td>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </div>
             <ToastContainer />
-            <div className='button-inp flex justify-center'>
-            <Button className='button-inp' onPress={onOpen}>Registrar hoja de inspección</Button>
+            <div className='button-inp flex justify-center btn-registrarIOT'>
+                <Button className='button-inp' onPress={onOpen}>Hoja de inspección</Button>
             </div>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} placement={"center"}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -153,22 +153,22 @@ export const HojaInspeccion = () => {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                            <div className='button-cerrar'>
-                                <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
-                                    Cerrar
-                                </Button>
+                                <div className='button-cerrar'>
+                                    <Button className='text-slate-50 bg-red-500' variant="flat" onPress={onClose}>
+                                        Cerrar
+                                    </Button>
                                 </div>
                                 <div className='button-2-inp'>
-                                <Button className='text-white' type="submit" onPress={onClose}>
-                                    Registrar
-                                </Button>
+                                    <Button className='text-white' type="submit" onPress={onClose}>
+                                        Registrar
+                                    </Button>
                                 </div>
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
-            
+
         </div>
     );
 };

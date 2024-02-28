@@ -55,7 +55,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
             </div>
 
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} placement={"center"}>
                 <ModalContent>
                     {(onClose) => (
                         <>

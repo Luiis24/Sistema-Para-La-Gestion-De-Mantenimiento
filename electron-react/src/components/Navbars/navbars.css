@@ -221,7 +221,7 @@
     display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
     .navVertical {
         position: fixed;
         top: 0;
@@ -237,6 +237,7 @@
 
     .principal .logoSena{
         width: 56px;
+        filter: brightness(100);
     }
 
     .principal h2{
@@ -249,15 +250,7 @@
 
     .containerM {
         width: 100%;
-        margin: 0px 0 0 0;
-    }
-
-    .navHorizontal {
-        /* position: absolute;
-        width: 100%;
-        padding: 0;
-        justify-content: space-around; */
-        display: none;
+        margin: 50px 0 0 0;
     }
 
     .homeR {
@@ -302,21 +295,26 @@
         background-color: #000000;
     }
 
-    .navListR {
-        gap: 20px;
+    .containerM .navHorizontal {
+        width: 100%;
+        padding: 0;
+        justify-content: space-around;
+        background-color: #fff;
+        color: #000000;
     }
 
-    .navListR li {
-        display: flex;
-        justify-content: center;
-        padding: 10px;
-        font-size: 1.5rem;
+    .navHorizontal a {
+       background-color: #eeeeee;
+    } 
+
+    .navHorizontal h2 {
+        color: #505050;
+    }
+
+    #active {
         color: #fff;
     }
 
-    .navHorizontal h2 {
-       display: none;
-    }
 }
 
 @media (max-width: 1040px) {

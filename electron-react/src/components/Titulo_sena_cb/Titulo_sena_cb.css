@@ -24,5 +24,12 @@
     user-select: none;
 }
 
+@media (max-width: 768px) {
+    .img-logo-sena {
+        width: 56px;
+        padding: 10px 0 0 10px;
+    }
+}
+
 
 

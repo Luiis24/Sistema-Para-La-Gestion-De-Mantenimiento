@@ -8,7 +8,7 @@ export const Torno = () => {
     <div>
 
       <div className="containerM">
-        <div className="navHorizontal">
+        <div className="navHorizontal hidden md:flex">
           <h2 id='active'>Informacion</h2>
         </div>
 

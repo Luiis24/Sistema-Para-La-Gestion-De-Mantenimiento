@@ -1,0 +1,77 @@
+.value-hr label {
+    width: 50%;
+    font-size: 17px;
+  }
+  .value-hr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+  }
+  .section-hlp Input:focus {
+    font-size: 16px;
+  }
+  .section-hlp Textarea {
+    max-width: 100%;
+    max-height: 60px;
+  }
+  Textarea::placeholder {
+    font-size: 16px;
+  }
+  Textarea:focus {
+    font-size: 16px;
+  }
+  .Historial-rp {
+    display: flex;
+    justify-content: center;
+  }
+  .Historial-rp-bq {
+    background-color: rgb(247, 247, 247);
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+    width: 53%;
+    height: 1120px;
+    margin: 50px;
+  }
+  .Titulo-hlp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    font-family: sans-serif;
+    color: rgb(70, 70, 70);
+    user-select: none;
+    margin-bottom: 3%;
+  }
+  .container-hlp {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0 20px 0;
+  }
+  .section-hlp {
+    width: 80%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .Button-registrar-hlp Button {
+    color: white;
+    width: 28%;
+    font-size: 15px;
+    background-color: rgb(0, 173, 0);
+  }
+  .Button-registrar-hlp Button:hover {
+    background-color: rgb(1, 133, 1);
+  }
+  .Button-registrar-hlp {
+    display: flex;
+    margin: 50px;
+    justify-content: center;
+  }
+  .container-table-hr {
+    width: 83%;
+    margin: auto;
+  }

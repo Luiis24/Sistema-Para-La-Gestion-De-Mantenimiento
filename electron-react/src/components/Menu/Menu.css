@@ -179,5 +179,11 @@
     font-size: 15px;
 }
 
+@media (max-width: 768px) {
+    .containerUserName{
+        right: 70px;
+        top: 25px;
+    }
 
+}
 

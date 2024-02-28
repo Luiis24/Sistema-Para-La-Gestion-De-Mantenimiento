@@ -67,3 +67,9 @@
         background-image: url("../../img/maquinasFoto3.jpg");
     }
 }
+
+@media (max-width: 768px) {
+    .slider {
+        height: 40vh;
+    }
+}
