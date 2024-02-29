@@ -20,8 +20,9 @@ router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
 router.get('/componenteChecklist/:idMaquina',dataController.getComponentesByMaquina);
 
-router.get('/getUltimoRegistroPorMaquina/:id_maquina', dataController.getUltimoRegistro);
-router.get('/getHistorialRegistrosPorMaquina/:id_maquina', dataController.getHistorialRegistros);
+router.get('/GetUltimoRegistro/:idMaquina', dataController.getUltimoRegistro);
+router.get('/GetHistorialRegistros/:idMaquina', dataController.getHistorialRegistros);
+
 
 
 router.post('/registerChecklist', dataController.registerChecklist);
