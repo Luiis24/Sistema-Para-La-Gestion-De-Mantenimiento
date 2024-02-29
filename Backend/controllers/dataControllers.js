@@ -1169,25 +1169,8 @@ const getComponentesByMaquina = async (req, res) => {
 };
 
 
-const getHistorialRegistros = async (req, res) => {
-  const { idMaquina } = req.params;
-
-  try {
-    const response = await pool.query(
-      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC',
-      [idMaquina]
-    );
-
-    res.json(response.rows);
-  } catch (error) {
-    console.error('Error al obtener el historial de registros', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-};
-
-
 const getUltimoRegistro = async (req, res) => {
-  const { idMaquina } = req.params;
+  const { idMaquina } = req.query;
 
   try {
     const response = await pool.query(
@@ -1198,6 +1181,22 @@ const getUltimoRegistro = async (req, res) => {
     res.json(response.rows[0]);
   } catch (error) {
     console.error('Error al obtener el último registro', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+const getHistorialRegistros = async (req, res) => {
+  const { idMaquina } = req.query;
+
+  try {
+    const response = await pool.query(
+      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC',
+      [idMaquina]
+    );
+
+    res.json(response.rows);
+  } catch (error) {
+    console.error('Error al obtener el historial de registros', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
