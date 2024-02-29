@@ -1150,6 +1150,7 @@ const ultimaMaquina = (req, res) => {
   );
 };
 
+// Coimponenetes de la maquina por ID
 
 const getComponentesByMaquina = async (req, res) => {
   const idMaquina = req.params.idMaquina;
@@ -1168,9 +1169,10 @@ const getComponentesByMaquina = async (req, res) => {
   }
 };
 
+// Ver registros del checklist
 
 const getUltimoRegistro = async (req, res) => {
-  const { idMaquina } = req.query;
+  const { idMaquina } = req.params; 
 
   try {
     const response = await pool.query(
@@ -1186,7 +1188,7 @@ const getUltimoRegistro = async (req, res) => {
 };
 
 const getHistorialRegistros = async (req, res) => {
-  const { idMaquina } = req.query;
+  const { idMaquina } = req.params; 
 
   try {
     const response = await pool.query(
@@ -1200,6 +1202,7 @@ const getHistorialRegistros = async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
 
 
 module.exports = {

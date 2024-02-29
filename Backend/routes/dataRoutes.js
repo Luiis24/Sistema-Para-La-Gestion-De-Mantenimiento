@@ -24,7 +24,6 @@ router.get('/GetUltimoRegistro/:idMaquina', dataController.getUltimoRegistro);
 router.get('/GetHistorialRegistros/:idMaquina', dataController.getHistorialRegistros);
 
 
-
 router.post('/registerChecklist', dataController.registerChecklist);
 router.get('/getUltimosEstados', dataController.getUltimosEstados);
 
