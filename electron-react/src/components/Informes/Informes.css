@@ -58,6 +58,16 @@
     font-size: 1rem;
 }
 
+.section-logo-MOT {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-logo-MOT img{
+    width: 50px;
+}
+
 /* scroll */
 
 .container-modal-ot::-webkit-scrollbar {

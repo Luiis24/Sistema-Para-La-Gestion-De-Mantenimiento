@@ -1,14 +1,14 @@
 import React from 'react'
-import './Torno.css'
+import './Maquinas.css'
 import { Link } from 'react-router-dom'
 
-export const Torno = () => {
+export const Maquinas = () => {
 
   return (
     <div>
 
       <div className="containerM">
-        <div className="navHorizontal hidden md:flex">
+        <div className="navHorizontal grid-cols-none">
           <h2 id='active'>Informacion</h2>
         </div>
 

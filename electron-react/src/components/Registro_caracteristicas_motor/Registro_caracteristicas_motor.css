@@ -19,6 +19,7 @@
 }
 
 .titulo-registro-CM {
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,4 +38,13 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+@media (max-width: 768px) {
+    
+    .rg-caracteristicasM {
+        width: 90%;
+        height: fit-content;
+    }
+
 }

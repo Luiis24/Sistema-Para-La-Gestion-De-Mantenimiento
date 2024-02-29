@@ -1,9 +1,9 @@
 import React from 'react'
+import logoSena from '../../img/logo.png'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
 export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
-    console.log(ordenTrabajo);
 
     const downloadPDF = () => {
         const capture = document.querySelector('.info-ot');
@@ -12,6 +12,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
             const doc = new jsPDF('p', 'mm', 'a4');
             const componentWidth = doc.internal.pageSize.getWidth();
             const componentHeight = doc.internal.pageSize.getHeight();
+            console.log(componentHeight, componentWidth);
             doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
             doc.save('ordenDeTrabajo.pdf');
         })
@@ -30,13 +31,23 @@ export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
                 </div>
 
                 <section className="info-ot">
-                    <div className="tituloSeccionOT">
-                        <h2>Orden de trabajo maquina</h2>
-                    </div>
-                    <hr/>
 
                     {ordenTrabajo.map(ot =>
                         <div key={ot.id_orden_de_trabajo}>
+
+                            <div className="section-logo-MOT">
+                                <div className="nombreEmpresa flex items-center">
+                                    <img src={logoSena}></img>
+                                    <div className="infoEmpresa">
+                                        <h2>SGMI</h2>
+                                    </div>
+                                </div>
+                                <p>Orden de trabajo: {ot.id_orden_de_trabajo}</p>
+                            </div>
+                            <div className="tituloSeccionOT">
+                                <h2>Orden de trabajo "maquina" {ot.id_maquina}</h2>
+                            </div>
+                            <hr />
                             <div className="containerOT">
                                 <div className="section-modal-ot">
 

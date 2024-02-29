@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { Torno } from './components/Torno/Torno';
+import { Maquinas } from './components/Maquinas/Maquinas';
 
 import { Checklist_maquina } from './components/Checklist_maquina/Checklist_maquina';
 import { Orden_trabajo_maquina } from './components/Orden_trabajo_maquina/Orden_trabajo_maquina';
@@ -15,11 +15,12 @@ import { Instructores } from './components/Instructores/Instructores';
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 
 import { Almacen } from './components/Almacen/Almacen';
-import { Nueva_salida_almacen } from './components/Nueva_salida_almacen/Nueva_salida_almacen';
+import { Insumos } from './components/Insumos/Insumos';
+import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
+// import { Nueva_salida_almacen } from './components/Nueva_salida_almacen/Nueva_salida_almacen';
 
-import { Cnc } from './components/Cnc/Cnc';
+
 import { Notificaciones } from './components/Notificaciones/Notificaciones';
-import { Fresadora } from './components/Fresadora/Fresadora';
 
 import {Titulo_sena_cb} from './components/Titulo_sena_cb/Titulo_sena_cb';
 import {Animacion_cuadros} from './components/Animacion_cuadros/Animacion_cuadros';
@@ -36,8 +37,7 @@ import { Informes } from './components/Informes/Informes';
 import {Registro_caracteristicas_motor} from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor'
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
 import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
-import { Insumos } from './components/Insumos/Insumos';
-import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
+
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 
 
@@ -52,7 +52,7 @@ const router = createBrowserRouter ([
   },
   {
     path:"/tornos",
-    element: <><Navbars/><Torno/></>
+    element: <><Navbars/><Maquinas/></>
   },
   {
     path:"/checklistMaquina/:id_maquina",
@@ -67,20 +67,8 @@ const router = createBrowserRouter ([
     element: <><Hoja_de_vida/></>
   },
   {
-    path:"/cnc",
-    element: <><Cnc/></>
-  },
-  {
-    path:"/fresadoras",
-    element: <><Fresadora/></>
-  },
-  {
     path:"/almacen",
     element: <><Almacen/></>
-  },
-  {
-    path:"/salidaAlmacen",
-    element: <><Nueva_salida_almacen/></>
   },
   {
     path:"/aprendices",
