@@ -39,6 +39,7 @@ import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caract
 import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
 
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
+import { Registro_componentes_check } from './components/Registro_componentes_check/Registro_componentes_check';
 
 
 const router = createBrowserRouter ([
@@ -114,6 +115,10 @@ const router = createBrowserRouter ([
   {
     path:"/crearDescripcionEquipo",
     element: <><Registro_descripcion_equipo_hv/><Animacion_cuadros/></>
+  },
+  {
+    path:"/crearComponentesCheck",
+    element: <><Registro_componentes_check/><Animacion_cuadros/></>
   },
   {
     path:"/insumos",

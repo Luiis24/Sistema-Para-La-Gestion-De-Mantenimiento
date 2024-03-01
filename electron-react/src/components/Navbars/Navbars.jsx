@@ -120,7 +120,7 @@ export const Navbars = () => {
           </div>
           {rol === 'Instructor' ? <div className="adminMaquina">
             <p className='text-sm text-gray-600 pl-4 font-semibold'>Admin tools</p>
-            <Link to={'/crearTipoMaquina'}>
+            <Link to={'/crearComponentesCheck'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
@@ -148,7 +148,7 @@ export const Navbars = () => {
           <div className='atrasN'>
             <Link to={'/MenuPrincipal'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
-                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                 </svg>
                 <h3 className='text-lg'>Atras</h3>

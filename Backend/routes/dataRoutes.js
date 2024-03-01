@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const dataController = require('../controllers/dataControllers');
 
-
 router.post('/registerInstructor', dataController.registerInstructor);
 router.get('/instructores', dataController.getInstructores);
 
@@ -12,12 +11,18 @@ router.post('/registerAprendiz', dataController.registerAprendiz);
 router.get('/aprendices', dataController.getAprendices);
 
 router.post('/registerHojaInspeccion', dataController.registerHojaInspeccion);
-
 router.post('/registerComponenteChecklist', dataController.registerComponenteChecklist);
 router.get('/componenteChecklist', dataController.getComponenteChecklist);
 
-router.post('/registerCheckList', dataController.registerCheckList);
-router.get('/getUltimosEstados', dataController.getUltimosEstados)
+// Componente segun la id:
+
+router.get('/componenteChecklist/:idMaquina',dataController.getComponentesByMaquina);
+
+router.get('/GetUltimoRegistro/:idMaquina', dataController.getUltimoRegistro);
+router.get('/GetHistorialRegistros/:idMaquina', dataController.getHistorialRegistros);
+
+router.post('/registerChecklist', dataController.registerChecklist);
+router.get('/getUltimosEstados', dataController.getUltimosEstados);
 
 router.post('/crearMaquina',dataController.crearMaquina);
 router.get('/getMaquinas',dataController.getMaquinas);
@@ -45,10 +50,12 @@ router.post('/crear_caracteristica_maquina',dataController.crear_caracteristica_
 router.post('/actualizar_funcion_maquina',dataController.actualizar_funcion_maquina)
 router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquina)
 
+// informes
 router.get('/getOrdenesTrabajo', dataController.GetOrdenesTrabajo);
 router.post('/getOrdenTrabajo', dataController.GetOrdenTrabajo);
 
-
+//Ultima maquina:
+router.get('/ultimaMaquina', dataController.ultimaMaquina)
 
 
 const {

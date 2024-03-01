@@ -210,189 +210,238 @@ const loginAprendiz = (req, res) => {
 
 // Registro hoja de inspeccion (Post):
 
+// Hoja de inspeccion:
 
+// Registro hoja de inspeccion (Post):
 
+const registerHojaInspeccion = async (req, res) => {
+  console.log(req.body);
+  const { fecha, hora_inicio, hora_fin, estadosComponentes, id_maquina } =
+    req.body;
 
-
-const registerHojaInspeccion = (req, res) => {
-    console.log(req.body);
-    const { fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
-
-    if (!fecha || !hora_inicio || !hora_fin || !estadosComponentes || estadosComponentes.length === 0) {
-        return res.status(400).json({ error: 'Falta información requerida' });
+  if (
+    !fecha ||
+    !hora_inicio ||
+    !hora_fin ||
+    !estadosComponentes ||
+    estadosComponentes.length === 0
+  ) {
+    return res.status(400).json({ error: "Falta información requerida" });
+  }
+  pool.query("BEGIN", async (error) => {
+    if (error) {
+      console.error("Error al iniciar la transacción", error);
+      return res.status(500).json({
+        error:
+          "Error al registrar el Hoja de inspección y estados de componentes",
+      });
     }
 
-    // Iniciar transacción
-    pool.query('BEGIN', async (error) => {
+    try {
+      const result = await pool.query(
+        "INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin, id_maquina) VALUES ($1, $2, $3, $4) RETURNING id_inspeccion",
+        [fecha, hora_inicio, hora_fin, id_maquina]
+      );
+
+      const idInspeccion = result.rows[0].id_inspeccion;
+
+      const estadosQuery = estadosComponentes.map(
+        ({ id_componente, estado_componente }) =>
+          pool.query(
+            "INSERT INTO checklist (estado_componente, id_inspeccion, id_componente) VALUES ($1, $2, $3)",
+            [estado_componente, idInspeccion, id_componente]
+          )
+      );
+
+      await Promise.all(estadosQuery);
+
+      pool.query("COMMIT", (error) => {
         if (error) {
-            console.error('Error al iniciar la transacción', error);
-            return res.status(500).json({ error: 'Error al registrar el Hoja de inspección y estados de componentes' });
+          console.error("Error al confirmar la transacción", error);
+          return res
+            .status(500)
+            .json({ error: "Error al confirmar la transacción" });
         }
 
-        try {
-            // Insertar información en la tabla hoja_inspeccion
-            await pool.query(
-                'INSERT INTO hoja_inspeccion (fecha, hora_inicio, hora_fin) VALUES ($1, $2, $3) RETURNING id_inspeccion',
-                [fecha, hora_inicio, hora_fin],
-                async (error, result) => {
-                    if (error) {
-                        console.error('Error al insertar la Hoja de inspección en la base de datos', error);
-                        throw new Error('Error al registrar la Hoja de inspección');
-                    }
-
-                    const idInspeccion = result.rows[0].id_inspeccion;
-
-                    // Insertar información en la tabla checklist
-                    const estadosQuery = estadosComponentes.map(({ id_componente, estado_componente }) => (
-                        pool.query(
-                            'INSERT INTO checklist (estado_componente, id_inspeccion, id_componente) VALUES ($1, $2, $3)',
-                            [estado_componente, idInspeccion, id_componente]
-                        )
-                    ));
-
-                    // Ejecutar todas las consultas de inserción de estados de componentes en paralelo
-                    await Promise.all(estadosQuery);
-
-                    // Confirmar la transacción
-                    pool.query('COMMIT', (error) => {
-                        if (error) {
-                            console.error('Error al confirmar la transacción', error);
-                            return res.status(500).json({ error: 'Error al confirmar la transacción' });
-                        }
-
-                        res.status(201).json({ message: 'Hoja de inspección y estados de componentes registrados exitosamente' });
-                    });
-                }
-            );
-        } catch (error) {
-            // Si hay algún error en el bloque try, realizar un rollback
-            pool.query('ROLLBACK', (rollbackError) => {
-                if (rollbackError) {
-                    console.error('Error al realizar rollback', rollbackError);
-                }
-                console.error('Error en la transacción', error);
-                res.status(500).json({ error: 'Error en la transacción' });
-            });
+        res.status(201).json({
+          message:
+            "Hoja de inspección y estados de componentes registrados exitosamente",
+        });
+      });
+    } catch (error) {
+      pool.query("ROLLBACK", (rollbackError) => {
+        if (rollbackError) {
+          console.error("Error al revertir la transacción", rollbackError);
         }
-    });
+
+        console.error(
+          "Error al registrar el Hoja de inspección y estados de componentes",
+          error
+        );
+        res.status(500).json({
+          error:
+            "Error al registrar el Hoja de inspección y estados de componentes",
+        });
+      });
+    }
+  });
 };
-
-
 
 // ComponentesChecklist (Post)
 
-
 // Registrar un componente en la tabla componentes_checklist
 const registerComponenteChecklist = (req, res) => {
-    console.log(req.body);
-    const { tipo_componente, nombre_componente } = req.body;
+  console.log(req.body);
+  const { tipo_componente, nombre_componente } = req.body;
 
-    if (!tipo_componente || !nombre_componente) {
-        return res.status(400).json({ error: 'Falta información requerida' });
-    }
+  if (!tipo_componente || !nombre_componente) {
+    return res.status(400).json({ error: "Falta información requerida" });
+  }
 
-    pool.query(
-        'INSERT INTO componentes_checklist (tipo_componente, nombre_componente) VALUES ($1, $2)',
-        [tipo_componente, nombre_componente],
-        (error) => {
-            if (error) {
-                console.error('Error al insertar el componente del checklist en la base de datos', error);
-                return res.status(500).json({ error: 'Error al registrar el componente del checklist' });
-            }
+  // Obtener la id de la última máquina creada
+  pool.query(
+    "SELECT id_maquina FROM maquinas ORDER BY id_maquina DESC LIMIT 1",
+    (selectError, selectResult) => {
+      if (selectError) {
+        console.error("Error al obtener la última máquina", selectError);
+        return res.status(500).json({ error: "Error al registrar el componente del checklist" });
+      }
 
-            res.status(201).json({ message: 'Componente del checklist registrado exitosamente' });
+      const idMaquina = selectResult.rows[0].id_maquina;
+
+      // Insertar el componente del checklist con la id de la última máquina
+      pool.query(
+        "INSERT INTO componentes_checklist (tipo_componente, nombre_componente, id_maquina) VALUES ($1, $2, $3)",
+        [tipo_componente, nombre_componente, idMaquina],
+        (insertError) => {
+          if (insertError) {
+            console.error(
+              "Error al insertar el componente del checklist en la base de datos",
+              insertError
+            );
+            return res
+              .status(500)
+              .json({ error: "Error al registrar el componente del checklist" });
+          }
+
+          res
+            .status(201)
+            .json({ message: "Componente del checklist registrado exitosamente" });
         }
-    );
+      );
+    }
+  );
 };
 
 
 // Obtener la lista de componentes de la tabla componentes_checklist
 
-   const getComponenteChecklist = (req, res) => {
-    pool.query('SELECT * FROM componentes_checklist', (error, result) => {
-        if (error) {
-            console.error('Error al consultar la base de datos', error);
-            return res.status(500).json({ error: 'Error al obtener la lista de componentes' });
-        }
+const getComponenteChecklist = (req, res) => {
+  pool.query("SELECT * FROM componentes_checklist", (error, result) => {
+    if (error) {
+      console.error("Error al consultar la base de datos", error);
+      return res
+        .status(500)
+        .json({ error: "Error al obtener la lista de componentes" });
+    }
 
-        res.status(200).json(result.rows);
-    });
+    res.status(200).json(result.rows);
+  });
 };
-      
+
 // Check List - Estado de los componentes (Post):
 
-// ...
+const registerChecklist = async (req, res) => {
+  try {
+    const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes } = req.body;
 
-const registerCheckList = async (req, res) => {
-    try {
-        const { checklistData, fecha, horaInicio, horaFin } = req.body;
+    console.log('Datos recibidos en el controlador:', {
+      id_maquina,
+      fecha,
+      hora_inicio,
+      hora_fin,
+      estadosComponentes,
+    });
 
-        if (!checklistData || !Array.isArray(checklistData)) {
-            return res.status(400).json({ error: 'Datos de checklist no proporcionados correctamente' });
-        }
+    // Obtener el número de inspección actual para esa máquina
+    const { rows } = await pool.query(
+      'SELECT COALESCE(MAX(num_inspeccion), 0) + 1 AS nuevo_num_inspeccion FROM checklist WHERE id_maquina = $1',
+      [id_maquina]
+    );
 
-        for (const { id_componente, estado_componente } of checklistData) {
-            await pool.query(
-                'INSERT INTO checklist (id_componente, estado_componente, id_inspeccion) VALUES ($1, $2, (SELECT id_inspeccion FROM hoja_inspeccion WHERE fecha = $3 AND hora_inicio = $4))',
-                [id_componente, estado_componente, fecha, horaInicio]
-            );
-        }
+    const nuevoNumInspeccion = rows[0].nuevo_num_inspeccion;
 
-        res.status(201).json({ message: 'Estados de componentes registrados exitosamente' });
-    } catch (error) {
-        console.error('Error al registrar estados de componentes', error);
-        res.status(500).json({ error: 'Error interno del servidor al registrar estados de componentes' });
+    // Construir la consulta SQL para insertar en la tabla checklist
+    const query = `
+      INSERT INTO checklist (id_maquina, num_inspeccion, fecha, hora_inicio, hora_fin, estado_componente, id_componente)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+
+    // Ejecutar la consulta para cada estadoComponente
+    for (const estadoComponente of estadosComponentes) {
+      const values = [
+        id_maquina,
+        nuevoNumInspeccion,
+        fecha,
+        hora_inicio,
+        hora_fin,
+        estadoComponente.estado_componente,
+        estadoComponente.id_componente,
+      ];
+
+      await pool.query(query, values);
     }
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Error al registrar en checklist:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 };
+
+
+
+
 
 // ...
 
 const getUltimosEstados = (req, res) => {
-    pool.query(
-        'SELECT c.id_componente, c.tipo_componente, c.nombre_componente, cl.estado_componente, hi.fecha, hi.hora_inicio, hi.hora_fin ' +
-        'FROM checklist cl ' +
-        'JOIN componentes_checklist c ON cl.id_componente = c.id_componente ' +
-        'JOIN hoja_inspeccion hi ON cl.id_inspeccion = hi.id_inspeccion ' +
-        'WHERE cl.id_checklist IN (' +
-            'SELECT MAX(id_checklist) ' +
-            'FROM checklist ' +
-            'GROUP BY id_componente' +
-        ')',
-        (error, results) => {
-            if (error) {
-                console.error('Error al obtener los últimos estados', error);
-                return res.status(500).json({ error: 'Error al obtener los últimos estados' });
-            }
+  pool.query(
+    "SELECT c.id_componente, c.tipo_componente, c.nombre_componente, cl.estado_componente, hi.fecha, hi.hora_inicio, hi.hora_fin " +
+      "FROM checklist cl " +
+      "JOIN componentes_checklist c ON cl.id_componente = c.id_componente " +
+      "JOIN hoja_inspeccion hi ON cl.id_inspeccion = hi.id_inspeccion " +
+      "WHERE cl.id_checklist IN (" +
+      "SELECT MAX(id_checklist) " +
+      "FROM checklist " +
+      "GROUP BY id_componente" +
+      ")",
+    (error, results) => {
+      if (error) {
+        console.error("Error al obtener los últimos estados", error);
+        return res
+          .status(500)
+          .json({ error: "Error al obtener los últimos estados" });
+      }
 
-            const ultimosEstados = {};
-            results.rows.forEach((row) => {
-                const componenteInfo = {
-                    tipo: row.tipo_componente,
-                    nombre: row.nombre_componente,
-                    estado: row.estado_componente,
-                    fecha: row.fecha,
-                    horaInicio: row.hora_inicio,
-                    horaFin: row.hora_fin,  
-                };
+      const ultimosEstados = {};
+      results.rows.forEach((row) => {
+        const componenteInfo = {
+          tipo: row.tipo_componente,
+          nombre: row.nombre_componente,
+          estado: row.estado_componente,
+          fecha: row.fecha,
+          horaInicio: row.hora_inicio,
+          horaFin: row.hora_fin,
+        };
 
-                ultimosEstados[row.id_componente] = componenteInfo;
-            });
+        ultimosEstados[row.id_componente] = componenteInfo;
+      });
 
-            res.status(200).json(ultimosEstados);
-        }
-    );
+      res.status(200).json(ultimosEstados);
+    }
+  );
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1098,6 +1147,78 @@ const RegistrarInsumo = (req, res) => {
       res.status(500).json({ message: 'Error interno del servidor' });
     }
   };
+
+
+
+  const ultimaMaquina = (req, res) => {
+    pool.query(
+      "SELECT * FROM maquinas ORDER BY id_maquina DESC LIMIT 1",
+      (error, result) => {
+        if (error) {
+          console.error("Error al obtener la última máquina registrada", error);
+          return res
+            .status(500)
+            .json({ error: "Error al obtener la última máquina registrada" });
+        }
+  
+        res.status(200).json(result.rows[0]);
+      }
+    );
+  };
+  
+  // Coimponenetes de la maquina por ID
+  
+  const getComponentesByMaquina = async (req, res) => {
+    const idMaquina = req.params.idMaquina;
+  
+    try {
+      // Realiza la consulta a la base de datos para obtener los componentes de la máquina específica
+      const response = await pool.query(
+        'SELECT * FROM componentes_checklist WHERE id_maquina = $1',
+        [idMaquina]
+      );
+  
+      res.json(response.rows);
+    } catch (error) {
+      console.error('Error al obtener los componentes de la máquina', error);
+      res.status(500).json({ error: 'Error al obtener los componentes de la máquina' });
+    }
+  };
+  
+  // Ver registros del checklist
+  
+  const getUltimoRegistro = async (req, res) => {
+    const { idMaquina } = req.params; 
+  
+    try {
+      const response = await pool.query(
+        'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC LIMIT 1',
+        [idMaquina]
+      );
+  
+      res.json(response.rows[0]);
+    } catch (error) {
+      console.error('Error al obtener el último registro', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  };
+  
+  const getHistorialRegistros = async (req, res) => {
+    const { idMaquina } = req.params; 
+  
+    try {
+      const response = await pool.query(
+        'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC',
+        [idMaquina]
+      );
+  
+      res.json(response.rows);
+    } catch (error) {
+      console.error('Error al obtener el historial de registros', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  };
+  
   
 
 
@@ -1112,7 +1233,7 @@ const RegistrarInsumo = (req, res) => {
     registerHojaInspeccion,
     registerComponenteChecklist,
     getComponenteChecklist,
-    registerCheckList,
+    registerChecklist,
     getInsumos,
     getMaquinas,
     getOrdenTrabajoById,
@@ -1146,6 +1267,10 @@ const RegistrarInsumo = (req, res) => {
     UsarInsumo,
     getInsumoById,
     devolverInsumo, 
+    ultimaMaquina,
+    getComponentesByMaquina,
+    getHistorialRegistros,
+    getUltimoRegistro,
 
     GetOrdenesTrabajo,
     GetOrdenTrabajo

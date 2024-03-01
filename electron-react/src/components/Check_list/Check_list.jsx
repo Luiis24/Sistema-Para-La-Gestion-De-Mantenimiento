@@ -4,26 +4,34 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input, Button } from '@nextui-org/react';
 
-// ... (importaciones)
-
-export const Check_list = () => {
+export const Check_list = ({ id_maquina }) => {
+    const [maquinas, setMaquinas] = useState([]);
     const [componentes, setComponentes] = useState([]);
     const [estadosComponentes, setEstadosComponentes] = useState({});
     const [fecha, setFecha] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [horaFin, setHoraFin] = useState('');
+    const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
 
     useEffect(() => {
-        // Llamada a la API para obtener los componentes del checklist
-        fetchComponentesChecklist();
+        fetchComponentesByMaquina();
     }, []);
 
-    const fetchComponentesChecklist = async () => {
+    // const fetchMaquinas = async () => {
+    //     try {
+    //         const response = await axios.get('http://localhost:4002/GetMaquinas');
+    //         setMaquinas(response.data);
+    //     } catch (error) {
+    //         console.error('Error al obtener la lista de máquinas', error);
+    //     }
+    // };
+
+    const fetchComponentesByMaquina = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/componenteChecklist');
+            const response = await axios.get(`http://localhost:4002/componenteChecklist/${selectedMaquina}`);
             const initialEstados = {};
             response.data.forEach((componente) => {
-                initialEstados[componente.id_componente] = ''; // Estado inicial: vacío
+                initialEstados[componente.id_componente] = '';
             });
             setEstadosComponentes(initialEstados);
 
@@ -36,6 +44,7 @@ export const Check_list = () => {
                 return acc;
             }, {});
             setComponentes(groupedComponentes);
+            console.log(componentes)
         } catch (error) {
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
@@ -70,58 +79,69 @@ export const Check_list = () => {
     };
 
     const handleFormSubmit = async (event) => {
+        console.log('enviando')
         event.preventDefault();
 
+        // Verificar que los valores necesarios estén presentes
+        if (!selectedMaquina || !fecha || !horaInicio || !horaFin) {
+            toast.error('Por favor, complete todos los campos antes de enviar.');
+            return;
+        }
+
         try {
-            // Enviar estados a la API para registrarlos
             const estadosRegistrados = Object.entries(estadosComponentes).map(([id_componente, estado_componente]) => ({
                 id_componente,
                 estado_componente,
             }));
 
-            // Enviar información de hoja de inspección y estados de componentes
-            await axios.post('http://localhost:4002/registerHojaInspeccion', {
+            console.log('Datos a enviar:', {
+                id_maquina: selectedMaquina,
                 fecha,
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
             });
 
-            toast.success('Hoja de inspección y estados de componentes registrados exitosamente');
+            // await axios.post('http://localhost:4002/registerChecklist', {
+            //     id_maquina: selectedMaquina,
+            //     fecha,
+            //     hora_inicio: horaInicio,
+            //     hora_fin: horaFin,
+            //     estadosComponentes: estadosRegistrados,
+            // });
 
-            // Limpiar estados y fechas después del registro
+            toast.success('Registro en la checklist exitoso');
             setEstadosComponentes({});
             setFecha('');
             setHoraInicio('');
             setHoraFin('');
 
+
+
         } catch (error) {
-            console.error('Error al registrar hoja de inspección y estados de componentes', error);
-            toast.error('Error al registrar hoja de inspección y estados de componentes');
+            console.error('Error al registrar en la checklist', error);
+            toast.error('Error al registrar en la checklist. Por favor, inténtelo nuevamente.');
         }
     };
+
 
     return (
         <div>
             <ToastContainer />
 
             <form onSubmit={handleFormSubmit}>
-                {/* <div className="sectionFormCheck">
-                    <label className='flex flex-col gap-3 mb-5'>
-                        Fecha:
-                        <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
-                    </label>
-                    <label className='flex flex-col gap-3 mb-5'>
-                        Hora de Inicio:
-                        <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
-                    </label>
-                    <label className='flex flex-col gap-3'>
-                        Hora de Fin:
-                        <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
-                    </label>
-                </div> */}
-
-
+                <label>
+                    Fecha:
+                    <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                </label>
+                <label>
+                    Hora de Inicio:
+                    <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+                </label>
+                <label>
+                    Hora de Fin:
+                    <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
+                </label>
 
                 {Object.entries(componentes).map(([tipo, componentesTipo]) => (
                     <div key={tipo}>
@@ -135,10 +155,11 @@ export const Check_list = () => {
                                         {componente.nombre_componente}
                                     </label>
                                     <select
-                                        value={estadosComponentes[componente.id_componente] || ''}
+                                        // value={estadosComponentes[componente.id_componente] || ''}
                                         onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
                                         className='2xl:w-72 w-64 h-14'
                                     >
+                                        <option selected hidden>{estadosComponentes[componente.id_componente] || ''}</option>
                                         {renderEstadoOptions(componente.nombre_componente)}
                                     </select>
                                 </div>
@@ -146,11 +167,11 @@ export const Check_list = () => {
                         </div>
                     </div>
                 ))}
-
                 <div className="button-inp flex justify-center btn-registrarIOT">
-                    <Button className='rgCheckList' type='submit'>Registrar</Button>
+                    <Button className='rgCheckList' type='submit' onClick={() => handleFormSubmit}>Registrar</Button>
                 </div>
             </form>
+
         </div>
     );
 };
