@@ -58,7 +58,7 @@ export const Registro_componentes_check = () => {
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
 
-            <form className='rg-caracteristicasM'>
+            <form className='rg-caracteristicasM' onSubmit={RegistrarComponente}>
                 <div className="titulo-registro-CM">
                     <h2>Registro de Componentes del Checklist para maquina {ultimaMaquina}</h2>
                 </div>

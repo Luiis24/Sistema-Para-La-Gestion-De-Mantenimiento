@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { button } from "@nextui-org/react";
 
-export const Estado_componentes = () => {
+export const Estado_componentes = ({id_maquina}) => {
   const [maquinas, setMaquinas] = useState([]);
   const [ultimoRegistro, setUltimoRegistro] = useState({});
   const [historialRegistros, setHistorialRegistros] = useState([]);
   const [componentesNombres, setComponentesNombres] = useState([]);
   const [registrosAgrupados, setRegistrosAgrupados] = useState({});
-  const [selectedMaquina, setSelectedMaquina] = useState(null);
+  const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
 
   useEffect(() => {
     fetchMaquinas();
@@ -22,10 +23,10 @@ export const Estado_componentes = () => {
     }
   };
 
-  const fetchUltimoRegistro = async (idMaquina) => {
+  const fetchUltimoRegistro = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/GetUltimoRegistro/${idMaquina}`
+        `http://localhost:4002/GetUltimoRegistro/${selectedMaquina}`
       );
       setUltimoRegistro(response.data);
     } catch (error) {
@@ -33,10 +34,10 @@ export const Estado_componentes = () => {
     }
   };
 
-  const fetchHistorialRegistros = async (idMaquina) => {
+  const fetchHistorialRegistros = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/GetHistorialRegistros/${idMaquina}`
+        `http://localhost:4002/GetHistorialRegistros/${selectedMaquina}`
       );
       setHistorialRegistros(response.data);
 
@@ -48,10 +49,10 @@ export const Estado_componentes = () => {
     }
   };
 
-  const fetchComponentesNombres = async (idMaquina) => {
+  const fetchComponentesNombres = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/componenteChecklist/${idMaquina}`
+        `http://localhost:4002/componenteChecklist/${selectedMaquina}`
       );
       setComponentesNombres(response.data);
     } catch (error) {
@@ -128,7 +129,7 @@ export const Estado_componentes = () => {
   return (
     <div>
       <h2>Estado de Componentes</h2>
-      <ul>
+      {/* <ul>
         {maquinas.map((maquina) => (
           <div key={maquina.id_maquina}>
             <p>{maquina.nombre_maquina}</p>
@@ -150,26 +151,25 @@ export const Estado_componentes = () => {
             </button>
           </div>
         ))}
-      </ul>
+      </ul> */}
+            <button
+              onClick={() => {
+                fetchHistorialRegistros();
+              }}
+            >
+              Ver Historial de Registros
+            </button>
 
       {selectedMaquina && (
         <div>
-          <h3>
-            Información para la Máquina:{" "}
-            {
-              maquinas.find((maquina) => maquina.id_maquina === selectedMaquina)
-                ?.nombre_maquina
-            }
-          </h3>
 
           {renderUltimoRegistroInfo()}
 
           <div>
-            <h4>Historial de Registros</h4>
             {Object.keys(registrosAgrupados)
               .sort((a, b) => b - a) // Ordenar las inspecciones en orden descendente
               .map((numInspeccion) => (
-                <div key={numInspeccion}>
+                <div key={numInspeccion} className="mb-3">
                   <h5>Número de Inspección: {numInspeccion}</h5>
                   {registrosAgrupados[numInspeccion].map((registro, index) => (
                     <div key={registro.id_checklist}>

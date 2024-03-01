@@ -77,7 +77,7 @@ export const Checklist_maquina = () => {
                             // <Componentes_check/> */}
      
                         <Check_list id_maquina={id_maquina}/>
-                        {/* <Estado_componentes/> */}
+                        <Estado_componentes id_maquina={id_maquina}/>
 
 
 

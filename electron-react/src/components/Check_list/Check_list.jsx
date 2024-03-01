@@ -3,28 +3,20 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input, Button } from '@nextui-org/react';
+import { useAuth } from '../../estados/usuario';
 
 export const Check_list = ({ id_maquina }) => {
-    const [maquinas, setMaquinas] = useState([]);
     const [componentes, setComponentes] = useState([]);
     const [estadosComponentes, setEstadosComponentes] = useState({});
     const [fecha, setFecha] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [horaFin, setHoraFin] = useState('');
     const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
+    const {user} = useAuth();
 
     useEffect(() => {
         fetchComponentesByMaquina();
     }, []);
-
-    // const fetchMaquinas = async () => {
-    //     try {
-    //         const response = await axios.get('http://localhost:4002/GetMaquinas');
-    //         setMaquinas(response.data);
-    //     } catch (error) {
-    //         console.error('Error al obtener la lista de máquinas', error);
-    //     }
-    // };
 
     const fetchComponentesByMaquina = async () => {
         try {
@@ -102,13 +94,13 @@ export const Check_list = ({ id_maquina }) => {
                 estadosComponentes: estadosRegistrados,
             });
 
-            // await axios.post('http://localhost:4002/registerChecklist', {
-            //     id_maquina: selectedMaquina,
-            //     fecha,
-            //     hora_inicio: horaInicio,
-            //     hora_fin: horaFin,
-            //     estadosComponentes: estadosRegistrados,
-            // });
+            await axios.post('http://localhost:4002/registerChecklist', {
+                id_maquina: selectedMaquina,
+                fecha,
+                hora_inicio: horaInicio,
+                hora_fin: horaFin,
+                estadosComponentes: estadosRegistrados,
+            });
 
             toast.success('Registro en la checklist exitoso');
             setEstadosComponentes({});
@@ -130,18 +122,44 @@ export const Check_list = ({ id_maquina }) => {
             <ToastContainer />
 
             <form onSubmit={handleFormSubmit}>
-                <label>
-                    Fecha:
-                    <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
-                </label>
-                <label>
-                    Hora de Inicio:
-                    <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
-                </label>
-                <label>
-                    Hora de Fin:
-                    <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
-                </label>
+                <div className="containerOT">
+                    <div className="sectionOT">
+                        <div className="valueOT">
+                            <label>Fecha:</label>
+                            <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                        </div>
+                        <div className="valueOT">
+                            <label> Hora de Inicio:</label>
+                            <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+                        </div>
+                        <div className="valueOT">
+                            <label>Hora de Fin:</label>
+                            <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
+                        </div>
+                        <div className="valueOT">
+                            <label>Ficha:</label>
+                            <Input value={user.ficha_aprendiz} readOnly/>
+                        </div>
+                    </div>
+                    <div className="sectionOT">
+                        <div className="valueOT">
+                            <label>Operario:</label>
+                            <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : 'instructor'} readOnly/>
+                        </div>
+                        <div className="valueOT">
+                            <label>N.Identificacion:</label>
+                            <Input value={user.num_doc_aprendiz} readOnly/>
+                        </div>
+                        <div className="valueOT">
+                            <label>Programa Formacion:</label>
+                            <Input value={user.programa_aprendiz} readOnly/>
+                        </div>
+                        <div className="valueOT">
+                            <label>Equipo:</label>
+                            <Input value={user.equipo_aprendiz} readOnly />
+                        </div>
+                    </div>
+                </div>
 
                 {Object.entries(componentes).map(([tipo, componentesTipo]) => (
                     <div key={tipo}>

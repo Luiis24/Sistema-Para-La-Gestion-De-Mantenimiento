@@ -120,7 +120,7 @@ export const Navbars = () => {
           </div>
           {rol === 'Instructor' ? <div className="adminMaquina">
             <p className='text-sm text-gray-600 pl-4 font-semibold'>Admin tools</p>
-            <Link to={'/crearComponentesCheck'}>
+            <Link to={'/crearTipoMaquina'}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
