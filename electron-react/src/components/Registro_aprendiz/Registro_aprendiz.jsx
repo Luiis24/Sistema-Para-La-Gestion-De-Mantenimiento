@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "./Registro_aprendiz.css";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Input } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem,Button, Input } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
 export const Registro_aprendiz = () => {
@@ -31,7 +30,7 @@ export const Registro_aprendiz = () => {
     });
   };
   const mensajeRegistrado = () => {
-    toast.error("Un nuevo Aprendiz fue registrado", {
+    toast.error("Un nuevo aprendiz fue registrado", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -171,23 +170,25 @@ export const Registro_aprendiz = () => {
   return (
     <div className="registro-aprendiz-componente">
       <div className="registrar-nuevo-aprendiz">
-        <form onSubmit={enviarAP}>
-          <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
+          <h2 className="titulo-registro">Registro de nuevos aprendices</h2>
+          <form className="form-apr" onSubmit={enviarAP}>
           <div className="inputs-registro-aprendiz">
             <div className="inputs-primer-fila-registro-aprendiz">
               {/*NOMBRE*/}
-              <h3 className="h3-fila-1">Nombre</h3>
+              
+              <h3 className="h3-fila">Nombre</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Nombre completo"
                 type="text"
                 name="nombre_aprendiz"
                 onChange={(express) => setNombre_aprendiz(express.target.value)}
               />
+             
               {/*TELÉFONO*/}
-              <h3 className="h3-fila-1">Teléfono</h3>
+              <h3 className="h3-fila mt-7">Teléfono</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Número de teléfono"
                 type="number"
                 name=""
@@ -196,9 +197,9 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*DOCUMENTO/SELECT */}
-              <h3 className="h3-fila-1">Tipo de documento</h3>            
+              <h3 className="h3-fila mt-7">Tipo de documento</h3>            
               <Select
-                className="max-w-xs"
+                className="w-72 mt-7"
                 placeholder="Seleccione tipo documento"
                 onChange={(express) =>
                   setTipo_doc_aprendiz(express.target.value)
@@ -211,9 +212,9 @@ export const Registro_aprendiz = () => {
                 ))}
               </Select>
               {/*NUM-DOCUMENTO*/}
-              <h3 className="h3-fila-1">Número de documento</h3>
+              <h3 className="h3-fila mt-7">Número de documento</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Número de documento"
                 type="number"
                 name=""
@@ -222,9 +223,9 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*EMAIL*/}
-              <h3 className="h3-fila-1">Correo Electrónico</h3>
+              <h3 className="h3-fila mt-7">Correo Electrónico</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Ingresa tú email "
                 type="email"
                 name=""
@@ -234,9 +235,9 @@ export const Registro_aprendiz = () => {
             {/*FILA #2*/}
             <div className="inputs-segunda-fila-registro-aprendiz">
               {/*INSTRUCTOR*/}
-              <h3 className="h3-fila-2">Instructor</h3>
+              <h3 className="h3-fila">Instructor</h3>
               <Select
-                className="max-w-xs"
+                className="w-72 mt-7"
                 placeholder="Instructor"
                 onChange={(express) =>
                   setPrograma_aprendiz(express.target.value)
@@ -249,18 +250,18 @@ export const Registro_aprendiz = () => {
                 ))}
               </Select>
               {/*FICHA*/}
-              <h3 className="h3-fila-2">Ficha</h3>
+              <h3 className="h3-fila mt-7">Ficha</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Ficha"
                 type="number"
                 name=""
                 onChange={(express) => setFicha_aprendiz(express.target.value)}
               />
               {/*PROGRAMA/SELECT*/}
-              <h3 className="h3-fila-2">Programa</h3>
+              <h3 className="h3-fila mt-7">Programa</h3>
               <Select
-                className="max-w-xs"
+                className="w-72 mt-7"
                 placeholder="Programa de formación"
                 onChange={(express) =>
                   setPrograma_aprendiz(express.target.value)
@@ -273,9 +274,9 @@ export const Registro_aprendiz = () => {
                 ))}
               </Select>
               {/*EQUIPO*/}
-              <h3 className="h3-fila-2">Equipo</h3>
+              <h3 className="h3-fila mt-7">Equipo</h3>
               <Input
-                className="w-64"
+                className="w-72 mt-7"
                 placeholder="Equipo de trabajo"
                 type="number"
                 name=""
@@ -283,8 +284,9 @@ export const Registro_aprendiz = () => {
               />
 
               {/*PASSWORD*/}
-              <h3 className="h3-fila-2">Contraseña</h3>
+              <h3 className="h3-fila mt-7">Contraseña</h3>
               <Input
+              className="w-72 mt-7"
                 onChange={(express) =>
                   setPassword_aprendiz(express.target.value)
                 }
@@ -304,20 +306,19 @@ export const Registro_aprendiz = () => {
                   </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="max-w-xs"
+                
               />
             </div>
           </div>
           <div className="btn-terminar-registro">
             <Link to={"/aprendices"}>
-              {" "}
               <button className="boton-cancelar-aprendices" type="submit">
                 ⮜ ‎ Atrás
               </button>
             </Link>
-            <button className="boton-registrar" type="submit">
+            <Button className="boton-registrar" type="submit">
               Registrar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

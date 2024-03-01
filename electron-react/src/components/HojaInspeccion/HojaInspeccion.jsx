@@ -123,7 +123,6 @@ export const HojaInspeccion = () => {
                             <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar hoja de inspección</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <form onSubmit={RegistrarCheckList} className='formHojaInspeccion'>
-                                    <h2 className='h2-inp'>Check list torno Wiston 1</h2>
                                     <div className='campoHI'>
                                         <label className='w-2/4 text-base'>Fecha:</label>
                                         <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />

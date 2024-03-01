@@ -8,7 +8,7 @@
 
 .navVertical {
     width: 200px;
-    min-height: 100vh;
+    height: 100%;
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,6 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    margin-bottom: 20px;
     padding: 2px;
     border-bottom: 1px solid #cbcbcb;
     padding: 5px;
@@ -34,6 +33,9 @@
 .principal .logoSena {
     width: 65px;
 }
+.logoSena-2{
+    display: none;
+}
 
 .principal:hover {
     transform: scale(1.01);
@@ -43,6 +45,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .tipoMaquinaN {
@@ -64,18 +68,12 @@
     padding: 10px 15px 10px 25px;
 }
 
-/* .maquinaN a {
-    margin: 10px 15px 10px 25px;
-} */
-
 .maquinaN:hover {
     background-color: #30944B;
     color: #fff;
-    border-radius: 5px;
 }
 
 .adminMaquina {
-    margin-top: 4rem;
     padding-top: 1rem;
     border-top: 1px solid #cbcbcb;
 }
@@ -92,7 +90,39 @@
 .herramientaMaquinaN:hover {
     background-color: #30944B;
     color: #fff;
-    border-radius: 5px;
+}
+
+.containerSectionN {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.atrasN{
+    border-top: 1px solid #cbcbcb;
+}
+
+/* scroll */
+
+.listMaquinas::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.listMaquinas::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+    border-radius: 4px;
+}
+
+.listMaquinas::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.listMaquinas::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
 }
 
 /* nav Usuarios, Informes, Almacen */
@@ -115,7 +145,6 @@
 .navList li:hover {
     background-color: #30944B;
     color: #fff;
-    
 }
 
 /* Todos los container */
@@ -171,6 +200,11 @@
     color: #fff;
 }
 
+.activeMaquina {
+    background-color: #30944B;
+    color: #fff;
+}
+
 
 /* Responsive */
 
@@ -192,54 +226,75 @@
 
 @media (max-width: 700px) {
     .navVertical {
+        position: fixed;
+        top: 0;
+        width: 20%;
+        height: 50px;
+        background-color: #34A853;
+        z-index: 1;
+    }
+    .navHorizontal a{
         display: none;
     }
-
+    .principal {
+        height: 50px;
+    }
+    .logoSena{
+        display: none;
+    }
+    .principal .logoSena-2{
+        margin-left: -15px;
+        display: block;
+        width: 90px;
+    }
+    .principal h2{
+        margin-left: -10px;
+        color: #ffff;
+        display: block;
+    }
+    .containerSectionN {
+        display: none;
+    }
     .containerM {
         width: 100%;
-        margin:0;
+        margin: 0px 0 0 0;
     }
-
     .navHorizontal {
-        position: fixed;
-        width: 100%;
-        padding: 0;
-        justify-content: space-around;
+        display: none;
     }
-
     .homeR {
         display: block;
         position: fixed;
         left: 0px;
     }
-
     .logoSenaR {
         width: 60px;
         filter: brightness(100);
     }
-
     .menu-responsive {
         display: block;
         position: fixed;
         right: 10px;
+        top: 5px;
+        cursor: pointer;
     }
-
     .menuR {
         filter: invert(1);
         width: 35px;
     }
 
-    #navbar-toggle:checked~.navListR {
+    #navbar-toggle:checked~.containerSectionN {
         display: block;
         position: fixed;
         width: 100%;
         top: 50px;
         left: 0;
         bottom: 0;
-        background-color: #000000;
+        background-color: #ffffff;
+        margin: 0;
     }
 
-    #navbar-toggle:checked~ h2 {
+    #navbar-toggle:checked~ h3 {
         flex-direction: column;
         display: block;
         position: fixed;
@@ -267,6 +322,11 @@
 @media (max-width: 1040px) {
     .navHorizontal h2{
         gap: 0;
+        overflow: hidden;
+        font-size: 1rem;
+    }
+
+    .navHorizontal svg {
+        width: 1.2rem;
     }
 }
-

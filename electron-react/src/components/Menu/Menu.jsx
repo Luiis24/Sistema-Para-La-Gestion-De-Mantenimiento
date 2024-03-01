@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Menu.css";
-import axios from 'axios'
-
-import imagen_aprendices from "./Imagenes_Menu/aprendices.jpg";
-import imagen_informes from "./Imagenes_Menu/informes.jpg";
-import imagen_almacen from "./Imagenes_Menu/almacen.jpg";
-import imagen_maquinas from "./Imagenes_Menu/maquinas.jpg"
 
 import cerrarSesion from './Imagenes_Menu/cerrar-sesion.png';
 import campana from './Imagenes_Menu/campana.png';
@@ -19,18 +13,7 @@ import { Titulo_sena_cb } from "../Titulo_sena_cb/Titulo_sena_cb";
 
 export const Menu = () => {
 
-    const { user } = useAuth();
-
-
-    // useEffect(() => {
-    //     console.log(user)
-    //     if (user.hasOwnProperty('num_doc_aprendiz')) {
-    //         console.log('aprendiz')
-    //     } else if (user.hasOwnProperty('cc_instructor')) {
-    //         console.log('instructor')
-    //     }
-    // }, []);
-
+    const { rol, nombre, programaFormacion } = useAuth();
 
 
     const hiddenHerramientas = () => {
@@ -50,39 +33,40 @@ export const Menu = () => {
             <Titulo_sena_cb />
             <div className="menu-principal">
 
-
                 <div className="containerMenu">
                     <div className="maquinasMenu">
-                        <Link to={'/tornos'}>
-                            <img src={imagen_maquinas} className="imgSectionMenu"></img>
+                        <Link to={'/tornos'} className="a-menu">
                             <p className="text-menu">Maquinas</p>
                         </Link>
                     </div>
                     <div className="informesMenu">
-                        <Link to={'/informes'}>
-                            <img src={imagen_informes} className="imgSectionMenu"></img>
+                        {rol === 'Instructor' ? <Link to={'/informes'} className="a-menu">
                             <p className="text-menu">Informes</p>
-                        </Link>
+                        </Link> : <div className="a-menu cursor-not-allowed">
+                            <p className="text-menu">Informes</p>
+                        </div>}
                     </div>
                     <div className="almacenMenu">
-                        <Link to={'/almacen'}>
-                            <img src={imagen_almacen} className="imgSectionMenu"></img>
-                            <p className="text-menu-almacen">Almacen</p>
-                        </Link>
+                        {rol === 'Instructor' ? <Link to={'/almacen'} className="a-menu">
+                            <p className="text-menu">Almacen</p>
+                        </Link> : <div className="a-menu cursor-not-allowed">
+                            <p className="text-menu">Almacen</p>
+                        </div>}
                     </div>
                     <div className="usuariosMenu">
-                        <Link to={'/aprendices'}>
-                            <img src={imagen_aprendices} className="imgSectionMenu"></img>
+                        {rol === 'Instructor' ? <Link to={'/aprendices'} className="a-menu">
                             <p className="text-menu">Usuarios</p>
-                        </Link>
+                        </Link> : <div className="a-menu cursor-not-allowed">
+                            <p className="text-menu">Usuarios</p>
+                        </div>}
                     </div>
                 </div>
 
 
-                {/* <div className="containerUserName">
-          <p className="nombreUser">{userEnTabla}</p>
-          <p className="rolUser">Aprendiz</p>
-        </div> */}
+                <div className="containerUserName">
+                    <p className="nombreUser">{nombre ? nombre : ''}</p>
+                    <p className="rolUser text-center">{rol ? rol : ''} { programaFormacion ? `- ${programaFormacion}`: ''}</p>
+                </div>
 
 
                 <div className="IconsPrincipal">
@@ -115,6 +99,7 @@ export const Menu = () => {
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     );

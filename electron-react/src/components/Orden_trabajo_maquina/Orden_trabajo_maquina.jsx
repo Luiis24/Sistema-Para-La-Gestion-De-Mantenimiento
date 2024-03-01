@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import './Orden_trabajo_maquina.css'
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios'
-import logoSena from '../../img/logo.png'
-import menu from '../../img/menu.png'
 import { Tabla_insumos_ot } from '../Tabla_insumos_ot/Tabla_insumos_ot'
 import { Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react'
 import { Tabla_mecanicos_ot } from '../Tabla_mecanicos_ot/Tabla_mecanicos'

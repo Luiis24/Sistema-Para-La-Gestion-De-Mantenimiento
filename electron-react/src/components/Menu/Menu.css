@@ -27,24 +27,40 @@
     grid-area: maquinasMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
     border-radius: 7px;
+    background-image: url('./Imagenes_Menu/maquinas.jpg');
+    background-size: 100%;
 }
 
 .informesMenu {
     grid-area: informesMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
     border-radius: 7px;
+    background-image: url('./Imagenes_Menu/informes.jpg');
+    background-size: cover;
 }
 
 .almacenMenu {
     grid-area: almacenMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
     border-radius: 7px;
+    background-image: url('./Imagenes_Menu/almacen.jpg');
+    background-size: cover;
 }
 
 .usuariosMenu {
     grid-area: usuariosMenu;
     box-shadow: 7px 3px 21px -4px rgba(0,0,0,0.75);
     border-radius: 7px;
+    background-image: url('./Imagenes_Menu/aprendices.jpg');
+    background-size: 100%;
+}
+
+.a-menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .imgSectionMenu{
@@ -55,7 +71,7 @@
     z-index: -1;
 }
 
-.imgSectionMenu:hover{
+.maquinasMenu:hover, .almacenMenu:hover, .informesMenu:hover, .usuariosMenu:hover{
     filter: blur(1px)  invert(5%);
 }
 
@@ -69,20 +85,6 @@
     color: white;
     font-size: 25px;
     text-align: center;
-    position: relative;
-    z-index: 1;
-    top: -55%;
-}
-
-.text-menu-almacen{
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-weight: bold;
-    color: white;
-    font-size: 25px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    top: -55%;
 }
 
 @media (max-width: 1500px) and (min-width: 1350px){
@@ -110,120 +112,25 @@
     }
 }
 
-/* Animacion de fondo */
-
-/* .cuadros{
-    position: absolute;
-    top: -153px;
-    left: 0;
-    width: 90%;
-    height: 120%;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.cuadros li{
-    position: absolute;
-    list-style: none;
-    width: 20px;
-    height: 20px;
-    background: rgb(0, 163, 0);
-    animation: animate 25s linear infinite;
-    bottom: -150px;
-    
-}
-
-.cuadros li:nth-child(1){
-    left: 25%;
-    width: 80px;
-    height: 80px;
-    animation-delay: 0s;
-}
-
-
-.cuadros li:nth-child(2){
-    left: 10%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 2s;
-    animation-duration: 12s;
-}
-
-.cuadros li:nth-child(3){
-    left: 70%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 4s;
-}
-
-.cuadros li:nth-child(4){
-    left: 40%;
-    width: 60px;
-    height: 60px;
-    animation-delay: 0s;
-    animation-duration: 18s;
-}
-
-.cuadros li:nth-child(5){
-    left: 65%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 0s;
-}
-
-.cuadros li:nth-child(6){
-    left: 75%;
-    width: 110px;
-    height: 110px;
-    animation-delay: 3s;
-}
-
-.cuadros li:nth-child(7){
-    left: 35%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 7s;
-}
-
-.cuadros li:nth-child(8){
-    left: 50%;
-    width: 25px;
-    height: 25px;
-    animation-delay: 15s;
-    animation-duration: 45s;
-}
-
-.cuadros li:nth-child(9){
-    left: 20%;
-    width: 15px;
-    height: 15px;
-    animation-delay: 2s;
-    animation-duration: 35s;
-}
-
-.cuadros li:nth-child(10){
-    left: 85%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 0s;
-    animation-duration: 11s;
-}
-
-@keyframes animate {
-
-    0%{
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-        border-radius: 0;
+@media (max-width: 500px){
+    .containerMenu{
+        width: 90%;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "maquinasMenu"
+        "informesMenu"
+        "usuariosMenu"
+        "almacenMenu";
+        grid-template-rows: repeat(4, 150px);
     }
 
-    100%{
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
-        border-radius: 50%;
+    .titulo-sena {
+        font-size: 15px;
     }
-
-} */
+    .titulo-taller {
+        font-size: 14px;
+    }
+}
 
 
 /* iconos flotantes */
@@ -256,19 +163,19 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    
     position: absolute;
-    right: 65px;
-    top: 25px;
+    right: 80px;
+    top: 19px;
 }
 
 .nombreUser {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .rolUser {
-    font-size: 14px;
+    margin-top: -5px;
+    font-size: 15px;
 }
 
 

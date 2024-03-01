@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import axios from 'axios';
+import './Informes.css'
 
 export const Informes = () => {
+    const [ordenesTrabajo, setOrdenesTrabajo] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:4002/getOrdenesTrabajo')
+            .then(datos => {
+                setOrdenesTrabajo(datos.data);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+    }, []);
+
+
     return (
         <div>
             <div className="navVertical">
@@ -23,16 +38,41 @@ export const Informes = () => {
                 <div className="navHorizontal">
                     <h2 id='active'>Informes</h2>
                 </div>
-                <Table>
-                    <TableHeader>
-                        <TableColumn className='text-lg'>Nombre</TableColumn>
-                        <TableColumn className='text-lg'>Documento</TableColumn>
-                        <TableColumn className='text-lg'>Fecha</TableColumn>
-                    </TableHeader>
-                    <TableBody emptyContent={"No disponible."}>
-                    </TableBody>
-                </Table>
+
+                <div className="containerInformes">
+                    <Table>
+                        <TableHeader>
+                            <TableColumn className='text-lg'>Maquina</TableColumn>
+                            <TableColumn className='text-lg'>Tipo de trabajo</TableColumn>
+                            <TableColumn className='text-lg'>Tipo de mantenimiento</TableColumn>
+                            <TableColumn className='text-lg'>Tipo de sistema</TableColumn>
+                            <TableColumn className='text-lg'>Fecha inicio</TableColumn>
+                            <TableColumn className='text-lg'>Fecha fin</TableColumn>
+                            <TableColumn className='text-lg'>Costo</TableColumn>
+                        </TableHeader>
+                        <TableBody emptyContent={"No disponible."}>
+                            {ordenesTrabajo.map((orden) => {
+                                return (
+                                    <TableRow key={orden.id_orden_de_trabajo}>
+                                        <TableCell>{orden.id_maquina}</TableCell>
+                                        <TableCell>{orden.tipo_de_trabajo}</TableCell>
+                                        <TableCell>{orden.tipo_de_mantenimiento}</TableCell>
+                                        <TableCell>{orden.tipo_de_sistema}</TableCell>
+                                        <TableCell>{orden.fecha_inicio_ot}</TableCell>
+                                        <TableCell>{orden.fecha_fin_ot}</TableCell>
+                                        <TableCell>{orden.costo_mantenimiento}</TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </div>
+
             </div>
         </div>
     )
 }
+
+// INSERT INTO public.orden_de_trabajo(
+// 	fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz)
+// 	VALUES ('24-02-2024', '16:00', '29-02-2024', '18:00', '36', '4000', '50000', 'Inspeccion', 'Correctivo no planificado', 'Mecanico', 'reparacion del sistema mecanico', '456000', '50000', '900000', '99380498', '2', '23');

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Registro_instructor.css";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
 import { Link } from "react-router-dom";
@@ -140,14 +140,14 @@ export const Registro_instructor = () => {
           />
           <Input
             className="w-9/12 mt-8"
-            placeholder="Correo Electrónico"
+            placeholder="Correo electrónico"
             type="text"
             name="email_instructor"
             onChange={(express) => setEmail_instructor(express.target.value)}
           />
           <Input
             className="w-9/12 mt-8"
-            placeholder="Número de Teléfono"
+            placeholder="Número de teléfono"
             type="number"
             name="telefono_intructor"
             onChange={(express) => setTelefono_instructor(express.target.value)}

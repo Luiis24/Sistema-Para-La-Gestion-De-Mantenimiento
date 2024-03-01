@@ -1,28 +1,97 @@
-.containerHv {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  gap: 10px;
-  margin: 10px 0 20px 0;
+.containerHv{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    margin: 10px 0 20px 0;
 }
-.sectionHv {
-  width: 40%;
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
+.sectionHv{
+    width: 40%;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
-.valueHv {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 25px;
+.principal-2{
+    display: none;
 }
-.valueHv label {
-  width: 50%;
-  font-size: 17px;
+.valueHv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+.valueHv label{
+    width: 50%;
+    font-size: 17px;
 }
 .container-table-hv {
-  width: 88%;
-  margin: auto;
+    width: 88%;
+    margin: 0 auto 40px;
+
+  }
+
+/* carcateristicas maquina */
+.titulo-cm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    font-family: sans-serif;
+    color: rgb(70, 70, 70);
+    user-select: none;
+    margin-bottom: 3%;
+}
+
+/*Responsive*/
+
+@media (max-width:1310px){
+    .valueHv{
+        gap: 20px;
+    }
+}
+@media (max-width:1270px){
+    .valueHv{
+        gap: 20px;
+    }
+}
+@media (max-width:1053px){
+    .navHorizontal h2{
+        padding: 6px;
+    }
+}
+@media (max-width:879px){
+    .navHorizontal h2{
+        padding: 0px;
+    }
+    .containerHv{
+        flex-direction: column;
+    }
+    .sectionHv{
+        width: 88%;
+        margin-left: 6%;
+    }
+}
+@media (max-width:843px){
+    .navHorizontal h2{
+        font-size: 20px;
+    }
+}
+@media (max-width:752px){
+    .navHorizontal h2{
+        font-size: 17px;
+    }
+}
+@media (max-width:700px){
+    .menu-responsive{
+        display: block;
+        right: 10px;
+        top: 5px;
+    }
+    .navHorizontal {
+        z-index: 1;
+    }
+    
 }

@@ -1,12 +1,36 @@
-.titulo-cm{
+.rg-caracteristicasMq {
+    background-color: rgb(247, 247, 247);
+    width: 40%;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+    z-index: 1;
+}
+
+.col-carcateristicasM {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.container-col-CM {
+    height: 90px;
+}
+
+.col-carcateristicasM textarea{
+    resize: none;
+}
+
+.boton-cancelar-registro {
+    width: 150px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-    font-family: sans-serif;
-    color: rgb(70, 70, 70);
-    user-select: none;
-    margin-bottom: 3%;
+}
+
+.boton-cancelar-registro:hover {
+    background-color: #dedede;
+    border-radius: 10px;
 }
