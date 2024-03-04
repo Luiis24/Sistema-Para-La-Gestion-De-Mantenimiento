@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { button } from "@nextui-org/react";
+import { Input, Pagination } from "@nextui-org/react";
+import './Estado_componentes.css'
+import logoSena from '../../img/logo.png'
 
-export const Estado_componentes = ({id_maquina}) => {
+export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
   const [maquinas, setMaquinas] = useState([]);
   const [ultimoRegistro, setUltimoRegistro] = useState({});
   const [historialRegistros, setHistorialRegistros] = useState([]);
@@ -10,8 +12,13 @@ export const Estado_componentes = ({id_maquina}) => {
   const [registrosAgrupados, setRegistrosAgrupados] = useState({});
   const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
 
+  const [paginaActual, setPaginaActual] = useState(1);
+  const itemsPorPagina = 1;
+
+
   useEffect(() => {
     fetchMaquinas();
+    fetchHistorialRegistros();
   }, []);
 
   const fetchMaquinas = async () => {
@@ -89,114 +96,160 @@ export const Estado_componentes = ({id_maquina}) => {
     const nombreComponente = componente
       ? componente.nombre_componente
       : "Nombre no disponible";
-    return `${nombreComponente} - ${estadoComponente}`;
+    return (
+      <div className="componentesEstado">
+        <h3>{nombreComponente}</h3>
+        <h3>{estadoComponente}</h3>
+      </div>
+    )
   };
 
-  const renderUltimoRegistroInfo = () => {
-    if (!ultimoRegistro || !ultimoRegistro.estadosComponentes) {
-      return null;
+  // const renderUltimoRegistroInfo = () => {
+  //   if (!ultimoRegistro || !ultimoRegistro.estadosComponentes) {
+  //     return null;
+  //   }
+
+  //   const componentesUltimoRegistro = ultimoRegistro.estadosComponentes;
+  //   const ultimoNumInspeccion = Math.max(
+  //     ...componentesUltimoRegistro.map((comp) => comp.num_inspeccion)
+  //   );
+  //   const componentesFiltrados = componentesUltimoRegistro.filter(
+  //     (comp) => comp.num_inspeccion === ultimoNumInspeccion
+  //   );
+
+
+  //   return (
+  //     <div>
+  //       <h4>Último Registro</h4>
+  //       {componentesFiltrados.map((componente) => (
+  //         <div key={componente.id_componente}>
+  //           <p>
+  //             Nombre del componente:{" "}
+  //             {obtenerNombreEstadoComponente(
+  //               componente.id_componente,
+  //               componente.estado_componente
+  //             )}
+  //           </p>
+  //         </div>
+  //       ))}
+  //       <p>Fecha: {ultimoRegistro.fecha}</p>
+  //       <p>Hora Inicio: {ultimoRegistro.hora_inicio}</p>
+  //       <p>Hora Fin: {ultimoRegistro.hora_fin}</p>
+  //     </div>
+  //   );
+  // };
+
+  // modal
+  const renderGruposPorPagina = () => {
+    const startIndex = (paginaActual - 1) * itemsPorPagina;
+    const endIndex = startIndex + itemsPorPagina;
+    const numInspecciones = Object.keys(registrosAgrupados)
+      .sort((a, b) => b - a); // Ordenar las inspecciones en orden descendente
+
+    // Obtener los grupos de inspecciones en la página actual
+    const gruposPagina = numInspecciones.slice(startIndex, endIndex);
+
+    if (gruposPagina.length === 0) {
+      return null; // No hay grupos de inspección, por lo tanto, no renderizar el modal
     }
 
-    const componentesUltimoRegistro = ultimoRegistro.estadosComponentes;
-    const ultimoNumInspeccion = Math.max(
-      ...componentesUltimoRegistro.map((comp) => comp.num_inspeccion)
-    );
-    const componentesFiltrados = componentesUltimoRegistro.filter(
-      (comp) => comp.num_inspeccion === ultimoNumInspeccion
-    );
-
     return (
-      <div>
-        <h4>Último Registro</h4>
-        {componentesFiltrados.map((componente) => (
-          <div key={componente.id_componente}>
-            <p>
-              Nombre del componente:{" "}
-              {obtenerNombreEstadoComponente(
-                componente.id_componente,
-                componente.estado_componente
-              )}
-            </p>
+      <div className={modalVisible ? 'modal-EC' : 'hidden'}>
+      <div className={modalVisible ? 'container-modal-EC' : 'hidden'}>
+
+        <div className="headModal">
+          <div className="flex items-center">
+          <img src={logoSena}></img>
+          <h2 className="text-lg font-semibold">SGMI</h2>
+          </div>
+          <button onClick={onClose} className="cerrarModal">cerrar</button>
+        </div>
+
+        {gruposPagina.map((numInspeccion) => (
+
+          <div key={numInspeccion} className="mb-3">
+            <h5 className="px-2 mb-2">Número de Inspección: {numInspeccion}</h5>
+            <hr/>
+            {registrosAgrupados[numInspeccion].map((registro, index) => (
+              <div key={registro.id_checklist} className="registro">
+                {index === 0 && (
+                  <>
+                    <div className="containerOT">
+                      <div className="sectionOT">
+                        <div className="valueOT">
+                          <label>Fecha:</label>
+                          <Input value={new Date(registro.fecha).toLocaleDateString()} required />
+                        </div>
+                        <div className="valueOT">
+                          <label>Hora de Inicio:</label>
+                          <Input value={registro.hora_inicio} required />
+                        </div>
+                        <div className="valueOT">
+                          <label>Hora de Fin:</label>
+                          <Input value={registro.hora_fin} required />
+                        </div>
+                        <div className="valueOT">
+                          <label>Ficha:</label>
+                          <Input value={registro.ficha_aprendiz} readOnly />
+                        </div>
+                      </div>
+                      <div className="sectionOT">
+                        <div className="valueOT">
+                          <label>Operario:</label>
+                          <Input value={registro.operario} readOnly />
+                        </div>
+                        <div className="valueOT">
+                          <label>Número de Identificación:</label>
+                          <Input value={registro.num_doc_aprendiz} readOnly />
+                        </div>
+                        <div className="valueOT">
+                          <label>Programa de Formación:</label>
+                          <Input value={registro.programa_aprendiz} readOnly />
+                        </div>
+                        <div className="valueOT">
+                          <label>Equipo:</label>
+                          <Input value={registro.equipo_aprendiz} readOnly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="txEstados">
+                      <h3>Estado de los componentes</h3>
+                    </div>
+                  </>
+                )}
+                    {obtenerNombreEstadoComponente(
+                      registro.id_componente,
+                      registro.estado_componente
+                    )}
+              </div>
+            ))}
           </div>
         ))}
-        <p>Fecha: {ultimoRegistro.fecha}</p>
-        <p>Hora Inicio: {ultimoRegistro.hora_inicio}</p>
-        <p>Hora Fin: {ultimoRegistro.hora_fin}</p>
+        {renderPaginador()}
+      </div>
       </div>
     );
   };
 
+  // paginador
+  const cambiarPagina = (pagina) => {
+    setPaginaActual(pagina);
+  }
+
+  const renderPaginador = () => {
+    const totalPaginas = Math.ceil(Object.keys(registrosAgrupados).length / itemsPorPagina);
+
+    return (
+      <div className="paginador">
+        <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default"></Pagination>
+      </div>
+    );
+  };
+  
+
   return (
-    <div>
-      <h2>Estado de Componentes</h2>
-      {/* <ul>
-        {maquinas.map((maquina) => (
-          <div key={maquina.id_maquina}>
-            <p>{maquina.nombre_maquina}</p>
-            <button
-              onClick={() => {
-                setSelectedMaquina(maquina.id_maquina);
-                fetchUltimoRegistro(maquina.id_maquina);
-              }}
-            >
-              Ver Último Registro
-            </button>
-            <button
-              onClick={() => {
-                setSelectedMaquina(maquina.id_maquina);
-                fetchHistorialRegistros(maquina.id_maquina);
-              }}
-            >
-              Ver Historial de Registros
-            </button>
-          </div>
-        ))}
-      </ul> */}
-            <button
-              onClick={() => {
-                fetchHistorialRegistros();
-              }}
-            >
-              Ver Historial de Registros
-            </button>
 
-      {selectedMaquina && (
-        <div>
-
-          {renderUltimoRegistroInfo()}
-
-          <div>
-            {Object.keys(registrosAgrupados)
-              .sort((a, b) => b - a) // Ordenar las inspecciones en orden descendente
-              .map((numInspeccion) => (
-                <div key={numInspeccion} className="mb-3">
-                  <h5>Número de Inspección: {numInspeccion}</h5>
-                  {registrosAgrupados[numInspeccion].map((registro, index) => (
-                    <div key={registro.id_checklist}>
-                      {index === 0 && (
-                        <>
-                          <p>
-                            Fecha:{" "}
-                            {new Date(registro.fecha).toLocaleDateString()}
-                          </p>
-                          <p>Hora Inicio: {registro.hora_inicio}</p>
-                          <p>Hora Fin: {registro.hora_fin}</p>
-                        </>
-                      )}
-                      <p>
-                        {obtenerNombreEstadoComponente(
-                          registro.id_componente,
-                          registro.estado_componente
-                        )}
-                      </p>
-                      {/* Otros campos del registro */}
-                    </div>
-                  ))}
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
-    </div>
+      renderGruposPorPagina()
   );
 };

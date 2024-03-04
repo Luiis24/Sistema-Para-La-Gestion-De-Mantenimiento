@@ -41,9 +41,8 @@ export const Registro_componentes_check = () => {
                 nombre_componente: nombreComponente
             });
 
-            console.log(response.data);
-            toast.success('Componente registrado exitosamente');
 
+            toast.success('Componente registrado exitosamente');
 
             fetchComponentes();
 
@@ -94,7 +93,7 @@ export const Registro_componentes_check = () => {
                 </div>
                 </div>
                 <div className='btn-terminar-registro'>
-                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
+                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Terminar</h3></Link>
                     <button type="submit" className='boton-registrar'>Registrar</button>
                 </div>
             </form>

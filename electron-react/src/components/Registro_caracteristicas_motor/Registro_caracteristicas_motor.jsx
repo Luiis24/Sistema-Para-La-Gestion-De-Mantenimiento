@@ -3,6 +3,8 @@ import axios from 'axios';
 import './Registro_caracteristicas_motor.css'
 import { Link } from 'react-router-dom';
 import { Input } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Registro_caracteristicas_motor = () => {
     const [maquinas, setMaquinas] = useState([]);
@@ -51,15 +53,17 @@ export const Registro_caracteristicas_motor = () => {
                 amp_motor,
             });
 
-            console.log('Características del motor registradas exitosamente');
-            window.location.href = '/tornos'
+            toast.success('Características registradas exitosamente');
+            window.location.href = '/crearComponentesCheck'
         } catch (error) {
+            toast.error('Error al registrar carcaterísticas')
             console.error('Error al registrar las características del motor', error);
         }
     };
 
     return (
         <div className='container-rg-caracteristicasM'>
+            <ToastContainer/>
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
                 <div className="titulo-registro-CM">
                     <h1>Agrega las características del motor</h1>
@@ -151,7 +155,6 @@ export const Registro_caracteristicas_motor = () => {
                         />
                     </div>
                     <div className='btn-terminar-registro'>
-                        <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
                         <button type="submit" className='boton-registrar'>Registrar</button>
                     </div>
 

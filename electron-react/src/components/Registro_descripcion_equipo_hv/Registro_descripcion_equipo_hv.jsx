@@ -3,6 +3,8 @@ import axios from "axios";
 import "./Registro_descripcion_equipo_hv.css";
 import { Input, Textarea, Button, Select, SelectItem } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Registro_descripcion_equipo_hv = () => {
     const fechaActual = new Date().toISOString().split("T")[0];
@@ -53,9 +55,10 @@ export const Registro_descripcion_equipo_hv = () => {
             );
 
 
-            console.log(response.data);
+            toast.success('Registro exitoso')
             window.location.href = '/crearCaracteristicasMaquina'
         } catch (error) {
+            toast.error('Error al registrar equipo')
             console.error("Error al registrar equipo", error);
         }
     };
@@ -94,6 +97,7 @@ export const Registro_descripcion_equipo_hv = () => {
 
     return (
         <div className="registro-hv-componente">
+            <ToastContainer/>
             <div className="Registro-descripcion-hv">
                 <div className="titulo-registro">
                     <h1>Descripción del equipo</h1>
@@ -365,13 +369,16 @@ export const Registro_descripcion_equipo_hv = () => {
                         </div>
                     </div>
 
-                    <div className="buttons-hv">
+                    {/* <div className="buttons-hv">
                         <div className="button-cancelar-hv">
                             <Button type="submit"><Link to={'/MenuPrincipal'}>⮜ ‎ Atrás</Link></Button>
                         </div>
                         <div className="button-registrar-hv">
                             <Button type="submit">Registrar equipo</Button>
                         </div>
+                    </div> */}
+                    <div className='btn-terminar-registro'>
+                        <button type="submit" className='boton-registrar'>Registrar</button>
                     </div>
                 </form>
             </div>

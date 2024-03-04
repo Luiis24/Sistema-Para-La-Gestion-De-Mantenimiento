@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Input } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Crear_maquina = () => {
     const [nombre_maquina, setNombre_maquina] = useState('');
@@ -33,17 +35,17 @@ export const Crear_maquina = () => {
                 id_tipo_maquina: selectedTipoMaquina,
             });
 
-            console.log('Máquina registrada exitosamente');
+            toast.success('Máquina registrada exitosamente');
             window.location.href = '/crearDescripcionEquipo'
             
         } catch (error) {
-            console.error('Error al registrar la máquina', error);
+            toast.error('Error al registrar la máquina');
         }
     };
 
     return (
         <div className='container-rg-caracteristicasM'>
-
+            <ToastContainer/>
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">

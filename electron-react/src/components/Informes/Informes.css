@@ -6,7 +6,7 @@
 /* Modal orden de trabajo */
 
 .modal-ot{
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;

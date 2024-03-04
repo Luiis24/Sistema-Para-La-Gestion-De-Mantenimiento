@@ -68,81 +68,72 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className="Historial-rp">
-      <div className="Historial-rp-bq">
-        <h1 className="Titulo-hlp">Historial de reparaciones</h1>
-        <form onSubmit={handleFormSubmit}>
-          <div className="container-hlp">
-            <div className="section-hlp">
-              <div className="value-hr">
-                <Select
-                  placeholder="Selecciona una máquina"
-                  selectedKeys={selectedMaquina}
-                  onChange={handleselected}
+    <div className='container-rg-caracteristicasM'>
+      <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
+        <div className="titulo-registro-CM">
+          <h2 className="Titulo-hlp">Historial de reparaciones</h2>
+        </div>
+        <div className='inp-registro-CM'>
+          <div className="value-hr">
+            <Select
+              placeholder="Selecciona una máquina"
+              selectedKeys={selectedMaquina}
+              onChange={handleselected}
+            >
+              {maquinas.map((maquina) => (
+                <SelectItem
+                  key={maquina.id_maquina}
+                  value={maquina.id_maquina}
                 >
-                  <SelectItem disable selected hidden>
-                    Maquinas registradas
-                  </SelectItem>
-                  {maquinas.map((maquina) => (
-                    <SelectItem
-                      key={maquina.id_maquina}
-                      value={maquina.id_maquina}
-                    >
-                      {maquina.nombre_maquina}
-                    </SelectItem>
-                  ))}
-                </Select>
-              </div>
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Describe el procedimiento realizado"
-                  value={procedimiento_historial}
-                  onChange={(event) =>
-                    setProcedimiento_historial(event.target.value)
-                  }
-                />
-              </div>
-            </div>
+                  {maquina.nombre_maquina}
+                </SelectItem>
+              ))}
+            </Select>
           </div>
-          <div className="container-hlp">
-            <div className="section-hlp">
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Escribe los repuestos involucrados"
-                  value={insumos_usados_historial}
-                  onChange={(event) =>
-                    setinsumos_usados_historial(event.target.value)
-                  }
-                />
-              </div>
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Escribe las observaciones"
-                  value={observaciones_historial}
-                  onChange={(event) =>
-                    setObservaciones_historial(event.target.value)
-                  }
-                />
-              </div>
-              <div className="value-hr">
-                <Input
-                  type="text"
-                  placeholder="Fecha:"
-                  value={formatFecha(fecha_historial)}
-                  readOnly
-                />
-              </div>
-            </div>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Describe el procedimiento realizado"
+              value={procedimiento_historial}
+              onChange={(event) =>
+                setProcedimiento_historial(event.target.value)
+              }
+            />
           </div>
-          <div className="Button-registrar-hlp">
-            <Button type="submit">Registrar reparación</Button>
-            <p><Link to={'/MenuPrincipal'}>wkcml</Link></p>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Escribe los repuestos involucrados"
+              value={insumos_usados_historial}
+              onChange={(event) =>
+                setinsumos_usados_historial(event.target.value)
+              }
+            />
           </div>
-        </form>
-      </div>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Escribe las observaciones"
+              value={observaciones_historial}
+              onChange={(event) =>
+                setObservaciones_historial(event.target.value)
+              }
+            />
+          </div>
+          <div className="value-hr">
+            <Input
+              type="text"
+              placeholder="Fecha:"
+              value={formatFecha(fecha_historial)}
+              readOnly
+            />
+          </div>
+        </div>
+        <div className='btn-terminar-registro'>
+          <Link to={'/informes'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
+          <button type="submit" className='boton-registrar'>Registrar</button>
+        </div>
+      </form>
     </div>
   );
 };

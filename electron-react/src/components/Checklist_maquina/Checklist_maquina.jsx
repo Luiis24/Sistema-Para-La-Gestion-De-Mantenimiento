@@ -4,15 +4,15 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 
 import { Navbars } from '../Navbars/Navbars'
-import { HojaInspeccion } from '../HojaInspeccion/HojaInspeccion';
-import { Componentes_check } from '../Componentes_check/Componentes_check'
 import { Check_list } from '../Check_list/Check_list';
 import { useAuth } from '../../estados/usuario';
 import { Estado_componentes } from '../Estado_componentes/Estado_componentes';
+
 export const Checklist_maquina = () => {
     const [maquinaid, setMaquinaid] = useState();
     const { id_maquina } = useParams();
     const { programaFormacion } = useAuth();
+    const [modalVisible, setModalVisible] = useState(false);
 
 
     useEffect(() => {
@@ -26,6 +26,15 @@ export const Checklist_maquina = () => {
                 console.error("Error al obtener los datos:", error);
             });
     }, [id_maquina]);
+
+    const openModal = () => {
+        setModalVisible(true);
+      };
+    
+      const closeModal = () => {
+        setModalVisible(false);
+      };
+    
 
     return (
         <div>
@@ -66,23 +75,22 @@ export const Checklist_maquina = () => {
                 </div>
 
 
-                    <div className="componentesChecklist">
+                <div className="componentesChecklist">
 
-                        <div className="nombreSistema">
-                            <h2>Checklist {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
-                        </div>
-
-
-                        {/* <HojaInspeccion/>
-                            // <Componentes_check/> */}
-     
-                        <Check_list id_maquina={id_maquina}/>
-                        <Estado_componentes id_maquina={id_maquina}/>
-
-
-
-
+                    <div className="nombreSistema">
+                        <h2>Checklist {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
                     </div>
+
+                    <Check_list id_maquina={id_maquina} />
+
+                    <div className="button-HR">
+                        <button onClick={openModal}>
+                            Historial
+                        </button>
+                    </div>
+                    <Estado_componentes id_maquina={id_maquina} modalVisible={modalVisible} onClose={closeModal}/>
+
+                </div>
             </div>
         </div>
     )

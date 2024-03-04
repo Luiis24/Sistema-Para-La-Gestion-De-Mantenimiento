@@ -53,6 +53,12 @@
     font-size: 20px;
 }
 
+.button-HR {
+    position: absolute;
+    top: 80px;
+    right: 10px;
+}
+
 .rgCheckList {
     width: 15%;
     border: none;

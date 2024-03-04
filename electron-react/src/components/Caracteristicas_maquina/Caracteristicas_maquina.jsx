@@ -155,7 +155,6 @@ const Caracteristicas_maquina = () => {
                     </div>
                 </div>
                 <div className="flex justify-between mt-5 p-3">
-                    <Link to={'/tornos'} className='boton-cancelar-registro'>⮜ ‎ Atrás</Link>
                     <button type="submit" className='boton-registrar'>Registrar</button>
                 </div>
 

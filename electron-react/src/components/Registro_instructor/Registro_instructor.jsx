@@ -13,30 +13,6 @@ export const Registro_instructor = () => {
   const [telefono_instructor, setTelefono_instructor] = useState("");
   const [password_instructor, setPassword_instructor] = useState("");
 
-  const mensajeNoRegistrado = () => {
-    toast.error("Error al registrar usuario", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  const mensajeRegistrado = () => {
-    toast.error("Un nuevo instructor fue registrado", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
   const enviar = async (event) => {
     event.preventDefault();
 
@@ -52,12 +28,9 @@ export const Registro_instructor = () => {
         }
       );
 
-      if (response) {
-        mensajeRegistrado();
-        // location.href = './sesion'
-      }
+      toast.success('Registro de instructor exitoso')
     } catch (error) {
-      mensajeNoRegistrado();
+      toast.error('Error al registrar instructor')
     }
   };
 
@@ -121,6 +94,7 @@ export const Registro_instructor = () => {
 
   return (
     <div className="Registro_instructor_componente">
+      <ToastContainer/>
       <div className="Registro_instructor">
         <h2 className="titulo-inst">Registro de instructores</h2>
         <form className="form_inst" onSubmit={enviar}>

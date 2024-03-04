@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Inicio_sesion_aprendiz.css';
-import { Button, Input } from '@nextui-org/react';
-import { Link } from 'react-router-dom'
+import { Input } from '@nextui-org/react';
 import { useAuth } from "../../estados/usuario";
 import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Inicio_sesion_aprendiz = () => {
   const [nId, setNId] = useState('');
@@ -30,19 +31,22 @@ export const Inicio_sesion_aprendiz = () => {
       }
 
       if (response.status === 200) {
-        userRegister()
+        userRegister();
+        toast.success('Inicio de sesión exitoso')
       }
 
 
       console.log(response.data);
 
     } catch (error) {
+      toast.error('Usuario incorrecto')
       console.error('Error al iniciar sesión', error);
     }
   };
 
   return (
     <div className='todo'>
+      <ToastContainer/>
       <div className='complete'>
         <div className='inicio_sesion'>
           <div className='titulo-sesion'>Iniciar Sesión</div>

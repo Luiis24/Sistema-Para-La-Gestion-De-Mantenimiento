@@ -18,30 +18,6 @@ export const Registro_aprendiz = () => {
   const [equipo_aprendiz, setEquipo_aprendiz] = useState("");
   const [password_aprendiz, setPassword_aprendiz] = useState("");
 
-  const mensajeNoRegistrado = () => {
-    toast.error("Error al registrar", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  const mensajeRegistrado = () => {
-    toast.error("Un nuevo Aprendiz fue registrado", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   const enviarAP = async (event) => {
     event.preventDefault();
@@ -62,10 +38,9 @@ export const Registro_aprendiz = () => {
         }
       );
 
-      console.log(response.data);
       toast.success("Aprendiz Registrado Exitosamente");
+
     } catch (error) {
-      console.error("Error al registrar el Aprendiz", error);
       toast.error("Error de registro");
     }
   };
@@ -170,6 +145,7 @@ export const Registro_aprendiz = () => {
 
   return (
     <div className="registro-aprendiz-componente">
+      <ToastContainer />
       <div className="registrar-nuevo-aprendiz">
         <form onSubmit={enviarAP}>
           <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
@@ -196,7 +172,7 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*DOCUMENTO/SELECT */}
-              <h3 className="h3-fila-1">Tipo de documento</h3>            
+              <h3 className="h3-fila-1">Tipo de documento</h3>
               <Select
                 className="max-w-xs"
                 placeholder="Seleccione tipo documento"

@@ -223,7 +223,6 @@ export const Almacen = () => {
                 </Link>
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
-                    <li><Link to={'/insumos'}>Uso</Link></li>
                 </ul>
             </div>
 

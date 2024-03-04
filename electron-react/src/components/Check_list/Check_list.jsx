@@ -36,7 +36,6 @@ export const Check_list = ({ id_maquina }) => {
                 return acc;
             }, {});
             setComponentes(groupedComponentes);
-            console.log(componentes)
         } catch (error) {
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
@@ -92,6 +91,11 @@ export const Check_list = ({ id_maquina }) => {
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
+                ficha_aprendiz: user.ficha_aprendiz,
+                operario: user.nombre_aprendiz,
+                num_doc_aprendiz: user.num_doc_aprendiz,
+                programa_aprendiz: user.programa_aprendiz,
+                equipo_aprendiz: user.equipo_aprendiz
             });
 
             await axios.post('http://localhost:4002/registerChecklist', {
@@ -100,6 +104,11 @@ export const Check_list = ({ id_maquina }) => {
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
+                ficha_aprendiz: user.ficha_aprendiz,
+                operario: user.nombre_aprendiz,
+                num_doc_aprendiz: user.num_doc_aprendiz,
+                programa_aprendiz: user.programa_aprendiz,
+                equipo_aprendiz: user.equipo_aprendiz
             });
 
             toast.success('Registro en la checklist exitoso');
@@ -193,3 +202,18 @@ export const Check_list = ({ id_maquina }) => {
         </div>
     );
 };
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN ficha_aprendiz integer;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN operario character varying;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN num_doc_aprendiz integer;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN programa_aprendiz character varying;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN equipo_aprendiz integer;

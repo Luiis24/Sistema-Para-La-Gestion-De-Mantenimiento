@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Input } from "@nextui-org/react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Registro_almacen = () => {
     const [nombreInsumo, setNombreInsumo] = useState("");
@@ -25,22 +27,18 @@ export const Registro_almacen = () => {
                 }
             );
 
-            console.log(response.data);
-
-            // setNombreInsumo("");
-            // setFechaLlegadaInsumo(new Date().toISOString().split("T")[0]);
-            // setCantidadInsumo("");
-            // setProveedorInsumo("");
+            toast.success('Registro exitoso')
             window.location.href = "/almacen"
 
         } catch (error) {
+            toast.error('Error al registrar insumo')
             console.error("Error al registrar insumos", error);
         }
     };
 
     return (
         <div className='container-rg-caracteristicasM'>
-
+            <ToastContainer/>
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
