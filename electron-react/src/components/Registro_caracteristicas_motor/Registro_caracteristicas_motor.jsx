@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Registro_caracteristicas_motor.css'
 import { Link } from 'react-router-dom';
-import { Input } from '@nextui-org/react';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,7 +24,7 @@ export const Registro_caracteristicas_motor = () => {
     useEffect(() => {
         const fetchMaquinas = async () => {
             try {
-                const response = await axios.get('http://localhost:4002/getMaquinas');
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
                 // Ordenar las máquinas por ID de forma descendente
                 const maquinasOrdenadas = response.data.sort((a, b) => b.id_maquina - a.id_maquina);
                 setMaquinas(maquinasOrdenadas);
@@ -40,7 +40,7 @@ export const Registro_caracteristicas_motor = () => {
         event.preventDefault();
 
         try {
-            await axios.post('http://localhost:4002/crearCaracteristicasMotor', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearCaracteristicasMotor`, {
                 id_maquina: selectedMaquina,
                 marca_motor,
                 modelo_motor,
@@ -69,18 +69,18 @@ export const Registro_caracteristicas_motor = () => {
                     <h1>Agrega las características del motor</h1>
                 </div>
                 <div className='inp-registro-CM'>
-                    <select
-                        value={selectedMaquina}
+                    <Select
+                        selectedKeys={selectedMaquina}
                         onChange={(event) => setSelectedMaquina(event.target.value)}
                         className=' h-14 bg-gray-100 rounded-md p-3'
                     >
-                        <option disable selected hidden>Maquinas registradas</option>
+                        <SelectItem disable selected hidden>Maquinas registradas</SelectItem>
                         {maquinas.map((maquina) => (
-                            <option key={maquina.id_maquina} value={maquina.id_maquina}>
+                            <SelectItem key={maquina.id_maquina} value={maquina.id_maquina}>
                                 {maquina.nombre_maquina}
-                            </option>
+                            </SelectItem>
                         ))}
-                    </select>
+                    </Select>
                     <div>
                         <Input
                             className="mt-4"

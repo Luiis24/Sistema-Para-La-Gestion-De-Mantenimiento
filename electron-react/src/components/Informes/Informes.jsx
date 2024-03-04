@@ -5,6 +5,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import axios from 'axios';
 import './Informes.css'
 import { Orden_trabajo_modal } from './Orden_trabajo_modal';
+import menu from '../../img/menu.png'
 
 export const Informes = () => {
     const [ordenesTrabajo, setOrdenesTrabajo] = useState([]);
@@ -12,7 +13,7 @@ export const Informes = () => {
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:4002/getOrdenesTrabajo')
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/getOrdenesTrabajo`)
             .then(datos => {
                 setOrdenesTrabajo(datos.data);
             })
@@ -24,7 +25,7 @@ export const Informes = () => {
     // informacion orden de trabajo modal
     const handleInfoOT = async (id) => {
         try {
-            const response = await axios.post('http://localhost:4002/getOrdenTrabajo', { id });
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/getOrdenTrabajo`, { id });
             const ot = await response.data
             setOrdenTrabajo(ot);    
             setModalVisible(true);
@@ -43,9 +44,23 @@ export const Informes = () => {
                         <h2>Principal</h2>
                     </div>
                 </Link>
-                <ul className='navList'>
-                    <li id='activeMaquina'>Informes</li>
-                    <li><Link to={'/registroReparacion'}>Reparaciones</Link></li>
+                <input type="checkbox" id="navbar-toggle"></input>
+                <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
+                <ul className="navList">
+                    <li id="activeMaquina">Informes</li>
+                    <li>
+                        <Link to={"/registroReparacion"}>Reparacion</Link>
+                    </li>
+                    <div className='atrasN'>
+                        <Link to={'/MenuPrincipal'}>
+                            <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
+                                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                </svg>
+                                <h3 className='text-lg'>Atrás</h3>
+                            </div>
+                        </Link>
+                    </div>
                 </ul>
             </div>
 

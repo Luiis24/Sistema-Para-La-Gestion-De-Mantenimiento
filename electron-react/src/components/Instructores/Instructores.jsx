@@ -26,7 +26,7 @@ export const Instructores = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4002/instructores")
+      .get(`${process.env.REACT_APP_API_BASE_URL}/instructores`)
       .then((datos) => {
         setUsers(datos.data);
       })

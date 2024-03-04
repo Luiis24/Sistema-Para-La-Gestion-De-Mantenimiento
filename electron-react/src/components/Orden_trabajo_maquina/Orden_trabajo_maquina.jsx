@@ -17,7 +17,7 @@ export const Orden_trabajo_maquina = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4002/ordenDeTrabajo/${id_maquina}`)
+      .get(`${process.env.REACT_APP_API_BASE_URL}/ordenDeTrabajo/${id_maquina}`)
       .then((datos) => {
         const maquina = datos.data;
         setMaquinaid(maquina);

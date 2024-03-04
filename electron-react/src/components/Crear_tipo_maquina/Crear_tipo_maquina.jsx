@@ -13,7 +13,7 @@ const CrearTipoMaquina = () => {
         event.preventDefault();
 
         try {
-            await axios.post('http://localhost:4002/crearTipoMaquina', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearTipoMaquina`, {
                 nombre_tipo_maquina: nombreTipoMaquina,
                 descripcion_tipo_maquina: descripcionTipoMaquina,
             });

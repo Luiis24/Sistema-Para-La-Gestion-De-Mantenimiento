@@ -20,7 +20,7 @@ export const Check_list = ({ id_maquina }) => {
 
     const fetchComponentesByMaquina = async () => {
         try {
-            const response = await axios.get(`http://localhost:4002/componenteChecklist/${selectedMaquina}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/componenteChecklist/${selectedMaquina}`);
             const initialEstados = {};
             response.data.forEach((componente) => {
                 initialEstados[componente.id_componente] = '';
@@ -98,7 +98,7 @@ export const Check_list = ({ id_maquina }) => {
                 equipo_aprendiz: user.equipo_aprendiz
             });
 
-            await axios.post('http://localhost:4002/registerChecklist', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerChecklist`, {
                 id_maquina: selectedMaquina,
                 fecha,
                 hora_inicio: horaInicio,

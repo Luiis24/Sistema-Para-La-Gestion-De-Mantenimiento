@@ -1,6 +1,6 @@
 import React from 'react';
 import './Titulo_sena_cb.css';
-import logo from './Sena_logo.png';
+import logo from '../../img/logo1.png';
 
 export const Titulo_sena_cb = () => {
   return (

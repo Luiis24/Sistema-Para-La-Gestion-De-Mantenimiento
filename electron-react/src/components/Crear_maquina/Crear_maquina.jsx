@@ -15,7 +15,7 @@ export const Crear_maquina = () => {
         // Cargar tipos de máquina al montar el componente
         const fetchTiposMaquina = async () => {
             try {
-                const response = await axios.get('http://localhost:4002/tipoMaquinas');
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/tipoMaquinas`);
                 setTiposMaquina(response.data);
             } catch (error) {
                 console.error('Error al obtener los tipos de máquina', error);
@@ -29,7 +29,7 @@ export const Crear_maquina = () => {
         event.preventDefault();
 
         try {
-            await axios.post('http://localhost:4002/crearMaquina', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearMaquina`, {
                 nombre_maquina: nombre_maquina,
                 manual_maquina: manual_maquina,
                 id_tipo_maquina: selectedTipoMaquina,

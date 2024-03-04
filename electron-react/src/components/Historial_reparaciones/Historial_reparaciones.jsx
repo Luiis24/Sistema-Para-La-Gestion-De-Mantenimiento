@@ -25,7 +25,7 @@ export const Historial_reparaciones = () => {
 
   const fetchMaquinas = async () => {
     try {
-      const response = await axios.get("http://localhost:4002/getMaquinas");
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
       setMaquinas(response.data.reverse());
     } catch (error) {
       console.error("Error al obtener las máquinas", error);
@@ -37,7 +37,7 @@ export const Historial_reparaciones = () => {
     console.log(selectedMaquina)
 
     try {
-      await axios.post("http://localhost:4002/crearHistorialReparaciones", {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}2/crearHistorialReparaciones`, {
         id_maquina: selectedMaquina,
         procedimiento_historial,
         insumos_usados_historial,

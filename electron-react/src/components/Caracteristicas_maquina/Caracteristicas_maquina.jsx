@@ -19,7 +19,7 @@ const Caracteristicas_maquina = () => {
 
     const fetchMaquinas = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/getMaquinas');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
             setMaquinas(response.data.reverse());
         } catch (error) {
             console.error('Error al obtener las máquinas', error);
@@ -35,13 +35,13 @@ const Caracteristicas_maquina = () => {
                 caracteristicas.map(async (caracteristica) => {
                     if (caracteristica.id !== '') {
                         // Existing characteristic, update it
-                        await axios.put(`http://localhost:4002/Actualizar_Caracteristica_Maquina/${caracteristica.id}`, {
+                        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/Actualizar_Caracteristica_Maquina/${caracteristica.id}`, {
                             nombre_caracteristica: caracteristica.nombre,
                             descripcion_caracteristica: caracteristica.descripcion,
                         });
                     } else {
                         // New characteristic, create it
-                        await axios.post('http://localhost:4002/Crear_Caracteristica_Maquina', {
+                        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/Crear_Caracteristica_Maquina`, {
                             id_maquina: selectedMaquina,
                             nombre_caracteristica: caracteristica.nombre,
                             descripcion_caracteristica: caracteristica.descripcion,
@@ -51,7 +51,7 @@ const Caracteristicas_maquina = () => {
             );
 
             // Update or create function
-            await axios.post('http://localhost:4002/Actualizar_Funcion_Maquina', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/Actualizar_Funcion_Maquina`, {
                 id_maquina: selectedMaquina,
                 funcion_maquina: funcionMaquina,
             });
@@ -68,7 +68,7 @@ const Caracteristicas_maquina = () => {
 
     const handleDeleteCaracteristica = async (caracteristicaId) => {
         try {
-            await axios.delete(`http://localhost:4002/Eliminar_Caracteristica_Maquina/${caracteristicaId}`);
+            await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/Eliminar_Caracteristica_Maquina/${caracteristicaId}`);
             toast.success('Característica eliminada exitosamente');
         } catch (error) {
             console.error('Error al eliminar la característica de la máquina', error);

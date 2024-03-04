@@ -10,7 +10,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
 
     const [insumos, setInsumos] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:4002/insumos')
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/insumos`)
             .then(datos => {
                 setInsumos(datos.data);
             })
@@ -56,24 +56,24 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
             <div className="containerTIOT">
                 <Table className="tablaOT">
                     <TableHeader>
-                        <TableColumn className="text-lg">Cantidad</TableColumn>
-                        <TableColumn className="text-lg">Nombre</TableColumn>
-                        <TableColumn className="text-lg">Unidad</TableColumn>
-                        <TableColumn className="text-lg">Valor unidad</TableColumn>
-                        <TableColumn className="text-lg">Consumible</TableColumn>
-                        <TableColumn className="text-lg">SubTotal</TableColumn>
-                        <TableColumn className="text-lg">Eliminar</TableColumn>
+                        <TableColumn className="md:text-lg">Cantidad</TableColumn>
+                        <TableColumn className="md:text-lg">Nombre</TableColumn>
+                        <TableColumn className="md:text-lg">Unidad</TableColumn>
+                        <TableColumn className="md:text-lg">Valor unidad</TableColumn>
+                        <TableColumn className="md:text-lg">Consumible</TableColumn>
+                        <TableColumn className="md:text-lg">SubTotal</TableColumn>
+                        <TableColumn className="md:text-lg">Eliminar</TableColumn>
                     </TableHeader>
                     <TableBody emptyContent={"No hay insumos registrados."}>
                         {rows.map((row, id) => {
                             return (
                                 <TableRow key={id + 1}>
-                                    <TableCell className="text-lg">{row.cantidad}</TableCell>
-                                    <TableCell className="text-lg">{row.nombre}</TableCell>
-                                    <TableCell className="text-lg">{row.unidad}</TableCell>
-                                    <TableCell className="text-lg">{row.valorUnidad}</TableCell>
-                                    <TableCell className="text-lg">{row.consumible}</TableCell>
-                                    <TableCell className="text-lg">
+                                    <TableCell className="md:text-lg">{row.cantidad}</TableCell>
+                                    <TableCell className="md:text-lg">{row.nombre}</TableCell>
+                                    <TableCell className="md:text-lg">{row.unidad}</TableCell>
+                                    <TableCell className="md:text-lg">{row.valorUnidad}</TableCell>
+                                    <TableCell className="md:text-lg">{row.consumible}</TableCell>
+                                    <TableCell className="md:text-lg">
                                         ${parseInt(row.cantidad) * parseInt(row.valorUnidad)}
                                     </TableCell>
                                     <TableCell onClick={() => deleteRow(id)}>
@@ -128,6 +128,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                                         onChange={handleChange}
                                         className="select_insumosOT"
                                     >
+                                        <option selected disabled hidden>Nombre</option>
                                         {insumos.map((insumo) => {
                                             return (
                                                 <option value={insumo.nombre} key={insumo.id_insumos}>

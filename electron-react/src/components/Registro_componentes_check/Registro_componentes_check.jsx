@@ -18,7 +18,7 @@ export const Registro_componentes_check = () => {
 
     const fetchUltimaMaquina = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/ultimaMaquina');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/ultimaMaquina`);
             setUltimaMaquina(response.data.nombre_maquina);
         } catch (error) {
             console.error('Error al obtener la última máquina registrada', error);
@@ -27,7 +27,7 @@ export const Registro_componentes_check = () => {
 
     const fetchComponentes = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/componenteChecklist');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/componenteChecklist`);
             setComponentes(response.data);
         } catch (error) {
             console.error('Error al obtener la lista de componentes del checklist', error);
@@ -36,7 +36,7 @@ export const Registro_componentes_check = () => {
 
     const RegistrarComponente = async () => {
         try {
-            const response = await axios.post('http://localhost:4002/registerComponenteChecklist', {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerComponenteChecklist`, {
                 tipo_componente: tipoComponente,
                 nombre_componente: nombreComponente
             });

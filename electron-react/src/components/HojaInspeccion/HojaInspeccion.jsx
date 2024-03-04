@@ -25,7 +25,7 @@ export const HojaInspeccion = () => {
 
     const fetchComponentes = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/getComponentesChecklist');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getComponentesChecklist`);
             setComponentes(response.data);
 
             // Inicializar estados de componentes
@@ -41,7 +41,7 @@ export const HojaInspeccion = () => {
 
     const fetchRegistros = async () => {
         try {
-            const response = await axios.get('http://localhost:4002/getRegistrosEstados');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getRegistrosEstados`);
             setRegistros(response.data);
         } catch (error) {
             console.error('Error al obtener los registros de estados', error);
@@ -66,7 +66,7 @@ export const HojaInspeccion = () => {
             }));
 
             // Enviar datos al servidor
-            await axios.post('http://localhost:4002/registerCheck_list', checklistData);
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerCheck_list`, checklistData);
 
             // Limpiar estados después de enviar
             const resetEstados = Object.keys(estadosComponentes).reduce((acc, componenteId) => {

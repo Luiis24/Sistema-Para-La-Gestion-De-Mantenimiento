@@ -21,7 +21,7 @@ export const Insumos = () => {
     useEffect(() => {
         const fetchInsumos = async () => {
             try {
-                const response = await axios.get('http://localhost:4002/GetInsumos');
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/GetInsumos`);
                 const insumosOrdenados = response.data.sort((a, b) =>
                     ordenNombreAscendente
                         ? a.nombre_insumo.localeCompare(b.nombre_insumo)
@@ -93,7 +93,7 @@ export const Insumos = () => {
                 return;
             }
 
-            await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadUsar,
             });
@@ -121,7 +121,7 @@ export const Insumos = () => {
                 return;
             }
 
-            await axios.post(`http://localhost:4002/DevolverInsumo/${selectedInsumoId}`, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/DevolverInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadDevolver,
             });

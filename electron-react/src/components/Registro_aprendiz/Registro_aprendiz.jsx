@@ -24,7 +24,7 @@ export const Registro_aprendiz = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4002/registerAprendiz",
+        `${process.env.REACT_APP_API_BASE_URL}/registerAprendiz`,
         {
           tipo_doc_aprendiz,
           num_doc_aprendiz,

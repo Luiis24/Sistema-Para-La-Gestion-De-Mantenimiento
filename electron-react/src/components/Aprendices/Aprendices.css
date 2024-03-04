@@ -1,49 +1,108 @@
-
-
 /* Aprendices css */
 
-.BDAprendicesTabla{
+.BDAprendicesTabla {
     width: 100%;
-}
-
-.BDAprendicesTabla thead {
-    background-color: #D9D9D9;
+  }
+  .atrasN {
+    display: none;
+  }
+  .BDAprendicesTabla thead {
+    background-color: #d9d9d9;
     height: 50px;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-}
-
-.BDAprendicesTabla tbody td {
+  }
+  .BDAprendicesTabla tbody td {
     text-align: center;
     height: 40px;
     font-size: 18px;
-}
-
-.filtersUsuarios {
+  }
+  
+  .filtersUsuarios {
     display: flex;
     justify-content: space-between;
     padding: 20px;
     gap: 10px;
     align-items: center;
-}
-
-.filterU {
+  }
+  .filtersUsuarios Input::placeholder{
+    font-size: 14.5px;
+  }
+  .filtersUsuarios Input:focus{
+    font-size: 15px;
+  }
+  .filterU {
     background-color: #f1f1f1;
     border: 1px solid #ececec;
     width: 25%;
     height: 50px;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 10px;
-}
-
-.filterU option {
+  }
+  .filterU option {
     border-radius: 5px;
-    padding: 5px;
-}
-
-.containerUsuarios {
+    padding: 50px;
+  }
+  .containerUsuarios {
     padding: 20px 50px;
-}
+  }
+  
+  /*----Responsive----*/
+  
+  @media (max-width: 1490px) {
+    .filtersUsuarios {
+      gap: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .filterU {
+      width: 100%;
+    }
+    .filtersUsuarios Button {
+      width: 100%;
+      display: flex;
+      font-size: 14px;
+      justify-content: space-between;
+    }
+  }
 
-
+  @media (max-width: 700px) {
+    .navList {
+      display: none;
+    }
+    #navbar-toggle:checked ~ .navList {
+      display: block;
+      position: fixed;
+      width: 100%;
+      top: 50px;
+      left: 0;
+      bottom: 0;
+      background-color: #ffffff;
+      margin: 0;
+    }
+    .filtersUsuarios {
+      gap: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .filterU {
+      width: 100%;
+    }
+    .filtersUsuarios Button {
+      width: 100%;
+      display: flex;
+      font-size: 14px;
+      justify-content: space-between;
+    }
+    .atrasN {
+      display: block;
+    }
+  }
+  @media (max-width: 570px) {
+    .filtersUsuarios {
+      gap: 20px;
+      display: grid;
+      grid-template-columns: 1fr
+    }
+  }

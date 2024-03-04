@@ -18,7 +18,7 @@ export const Registro_almacen = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:4002/RegistrarInsumo",
+                `${process.env.REACT_APP_API_BASE_URL}/RegistrarInsumo`,
                 {
                     nombre_insumo: nombreInsumo,
                     fecha_llegada_insumo: fechaLlegadaInsumo,

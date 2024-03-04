@@ -17,7 +17,7 @@ export const Checklist_maquina = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:4002/checklist/${id_maquina}`)
+            .get(`${process.env.REACT_APP_API_BASE_URL}/checklist/${id_maquina}`)
             .then((datos) => {
                 const maquina = datos.data;
                 setMaquinaid(maquina);

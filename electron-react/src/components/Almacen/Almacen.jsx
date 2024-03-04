@@ -7,6 +7,7 @@ import logoSena from '../../img/logo.png'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination } from "@nextui-org/react";
 import { SearchIcon } from '../Aprendices/SearchIcon';
 import { PlusIcon } from '../Aprendices/PlusIcon';
+import menu from '../../img/menu.png'
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
@@ -35,7 +36,7 @@ export const Almacen = () => {
 
     // get insumos
     useEffect(() => {
-        axios.get('http://localhost:4002/insumos')
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/insumos`)
             .then(datos => {
                 const sortedInsumos = datos.data.sort(
                     (a, b) =>
@@ -170,7 +171,7 @@ export const Almacen = () => {
                 return;
             }
 
-            await axios.post(`http://localhost:4002/UsarInsumo/${selectedInsumoId}`, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadUsar,
             });
@@ -199,7 +200,7 @@ export const Almacen = () => {
                 return;
             }
 
-            await axios.post(`http://localhost:4002/DevolverInsumo/${selectedInsumoId}`, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/DevolverInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadDevolver,
             });
@@ -221,6 +222,8 @@ export const Almacen = () => {
                         <h2>Principal</h2>
                     </div>
                 </Link>
+                <input type="checkbox" id="navbar-toggle"></input>
+                <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
                 </ul>

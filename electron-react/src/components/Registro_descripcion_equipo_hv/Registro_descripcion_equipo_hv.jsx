@@ -40,7 +40,7 @@ export const Registro_descripcion_equipo_hv = () => {
 
     const fetchMaquinas = async () => {
         try {
-            const response = await axios.get("http://localhost:4002/getMaquinas");
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
             setMaquinas(response.data.reverse()); // Reversing the order to display newer machines first
         } catch (error) {
             console.error("Error al obtener las máquinas", error);
@@ -50,7 +50,7 @@ export const Registro_descripcion_equipo_hv = () => {
     const registrarEquipo = async (equipo) => {
         try {
             const response = await axios.post(
-                "http://localhost:4002/registrarEquipo",
+                `${process.env.REACT_APP_API_BASE_URL}/registrarEquipo`,
                 equipo
             );
 

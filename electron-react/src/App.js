@@ -41,7 +41,6 @@ import Registro_descripcion_equipo_hv from './components/Registro_descripcion_eq
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 import { Registro_componentes_check } from './components/Registro_componentes_check/Registro_componentes_check';
 
-
 const router = createBrowserRouter ([
   {
     path:"/MenuPrincipal",

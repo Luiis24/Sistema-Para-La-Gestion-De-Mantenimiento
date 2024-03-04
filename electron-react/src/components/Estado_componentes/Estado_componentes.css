@@ -20,6 +20,7 @@
     padding: 30px;
     overflow-y: scroll;
     z-index: 1;
+    position: relative;
 }
 
 .componentesEstado {
@@ -69,4 +70,15 @@
 
 .container-modal-EC::-webkit-scrollbar-thumb:active {
     background-color: #999999;
+}
+
+.paginadorEC {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid rgba(246, 246, 246, 0.92);
+    margin: 20px;
 }

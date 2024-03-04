@@ -23,7 +23,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
 
   const fetchMaquinas = async () => {
     try {
-      const response = await axios.get("http://localhost:4002/GetMaquinas");
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/GetMaquinas`);
       setMaquinas(response.data);
     } catch (error) {
       console.error("Error al obtener la lista de máquinas", error);
@@ -33,7 +33,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
   const fetchUltimoRegistro = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/GetUltimoRegistro/${selectedMaquina}`
+        `${process.env.REACT_APP_API_BASE_URL}/GetUltimoRegistro/${selectedMaquina}`
       );
       setUltimoRegistro(response.data);
     } catch (error) {
@@ -44,7 +44,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
   const fetchHistorialRegistros = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/GetHistorialRegistros/${selectedMaquina}`
+        `${process.env.REACT_APP_API_BASE_URL}/GetHistorialRegistros/${selectedMaquina}`
       );
       setHistorialRegistros(response.data);
 
@@ -59,7 +59,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
   const fetchComponentesNombres = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/componenteChecklist/${selectedMaquina}`
+        `${process.env.REACT_APP_API_BASE_URL}/componenteChecklist/${selectedMaquina}`
       );
       setComponentesNombres(response.data);
     } catch (error) {
@@ -241,7 +241,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
     const totalPaginas = Math.ceil(Object.keys(registrosAgrupados).length / itemsPorPagina);
 
     return (
-      <div className="paginador">
+      <div className="paginadorEC">
         <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default"></Pagination>
       </div>
     );

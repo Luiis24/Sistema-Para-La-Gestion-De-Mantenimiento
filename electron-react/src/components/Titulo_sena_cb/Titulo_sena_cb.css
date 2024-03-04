@@ -1,6 +1,5 @@
 .img-logo-sena{
-    width: 70px;
-    filter: invert(37%) sepia(94%) saturate(1723%) hue-rotate(93deg) brightness(92%) contrast(104%);
+    width: 100px;
 }
 .logo-sena{
     display: flex;

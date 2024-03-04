@@ -13,12 +13,15 @@ export const Inicio_sesion_aprendiz = () => {
   const [password, setPassword] = useState('');
   const { setUser } = useAuth();
   const [isVisible, setIsVisible] = React.useState(false);
+  const url = process.env.REACT_APP_API_BASE_URL
+  console.log(process.env.REACT_APP_API_BASE_URL)
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  const Iniciar_Sesion = async () => {
+  const Iniciar_Sesion = async (event) => {
+    event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4002/login', {
+      const response = await axios.post(`${url}/login`, {
         nId: nId,
         password: password
       });
@@ -47,6 +50,7 @@ export const Inicio_sesion_aprendiz = () => {
   return (
     <div className='todo'>
       <ToastContainer/>
+      <form onSubmit={Iniciar_Sesion}>
       <div className='complete'>
         <div className='inicio_sesion'>
           <div className='titulo-sesion'>Iniciar Sesión</div>
@@ -78,12 +82,13 @@ export const Inicio_sesion_aprendiz = () => {
             />
           </div>
           <div className='btn-iniciar-ses'>
-            <button className='boton-iniciar' type='button' onClick={Iniciar_Sesion}>
+            <button className='boton-iniciar' type='submit'>
               Ingresar
             </button>
           </div>
         </div>
       </div>
+      </form>
     </div>
   );
 };
