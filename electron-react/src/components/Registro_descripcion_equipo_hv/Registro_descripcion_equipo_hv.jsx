@@ -108,7 +108,7 @@ export const Registro_descripcion_equipo_hv = () => {
                             <div>
                                 <label className="label-hv">Seleccionar máquina:</label>
                                 <select
-                                    className="w-64"
+                                    className="w-64 filterDE"
                                     placeholder="Selecciona máquina"
                                     value={selectedMaquina}
                                     onChange={(event) => setSelectedMaquina(event.target.value)}

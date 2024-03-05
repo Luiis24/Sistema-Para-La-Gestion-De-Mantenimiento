@@ -19,6 +19,7 @@ const CrearTipoMaquina = () => {
             });
 
             toast.success('Tipo de máquina registrado exitosamente');
+            window.location.href = '/tornos'
         } catch (error) {
             toast.error('Error al registrar el tipo de máquina');
         }

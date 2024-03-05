@@ -90,7 +90,7 @@ export const Menu = () => {
                             </Link>
                         </div>
                         <div className="iconP">
-                            <Link to={'/'}>
+                            <Link>
                                 <img src={campana} alt='Notificaciones' />
                             </Link>
                         </div>

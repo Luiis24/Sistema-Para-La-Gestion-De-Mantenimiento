@@ -3,6 +3,8 @@ import axios from "axios";
 import { Input, Pagination } from "@nextui-org/react";
 import './Estado_componentes.css'
 import logoSena from '../../img/logo.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
   const [maquinas, setMaquinas] = useState([]);
@@ -150,7 +152,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
     const gruposPagina = numInspecciones.slice(startIndex, endIndex);
 
     if (gruposPagina.length === 0) {
-      return null; // No hay grupos de inspección, por lo tanto, no renderizar el modal
+      return null // No hay grupos de inspección, por lo tanto, no renderizar el modal
     }
 
     return (

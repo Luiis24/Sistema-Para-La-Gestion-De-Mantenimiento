@@ -298,7 +298,7 @@ export const Almacen = () => {
                                     <TableCell className='text-lg'>{format(new Date(insumo.fecha_llegada_insumo), "dd/MM/yyyy")}</TableCell>
                                     <TableCell className='text-lg'>{insumo.proveedor_insumo}</TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer'>
+                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer mt-2'>
                                         {insumo.insumos_en_uso || 0}
                                         <svg className="w-6 h-6 text-gray-800 hover:text-lime-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokWidth="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />

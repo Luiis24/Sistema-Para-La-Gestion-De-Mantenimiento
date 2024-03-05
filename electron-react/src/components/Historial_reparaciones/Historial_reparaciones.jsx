@@ -68,8 +68,8 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className='container-rg-caracteristicasM'>
-      <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
+    <div className='container-rg-caracteristicasMotor'>
+      <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
         <div className="titulo-registro-CM">
           <h2 className="Titulo-hlp">Historial de reparaciones</h2>
         </div>

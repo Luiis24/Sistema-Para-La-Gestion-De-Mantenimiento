@@ -154,7 +154,7 @@ const Caracteristicas_maquina = () => {
                         />
                     </div>
                 </div>
-                <div className="flex justify-between mt-5 p-3">
+                <div className="flex justify-center mt-5 p-3">
                     <button type="submit" className='boton-registrar'>Registrar</button>
                 </div>
 

@@ -10,6 +10,18 @@
     overflow-y: scroll;
 }
 
+.container-rg-caracteristicasMotor {
+    display: flex;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    align-items: start;
+    overflow-y: scroll;
+}
+
 .rg-caracteristicasM {
     background-color: rgb(247, 247, 247);
     width: 35%;
@@ -51,7 +63,7 @@
 
 }
 
-@media (max-height: 680px) {
+@media (max-height: 500px) {
     .container-rg-caracteristicasM{
         align-items: flex-start;
     }

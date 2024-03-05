@@ -62,9 +62,9 @@ export const Registro_caracteristicas_motor = () => {
     };
 
     return (
-        <div className='container-rg-caracteristicasM'>
+        <div className='container-rg-caracteristicasMotor'>
             <ToastContainer/>
-            <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
+            <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
                 <div className="titulo-registro-CM">
                     <h1>Agrega las características del motor</h1>
                 </div>
@@ -73,8 +73,8 @@ export const Registro_caracteristicas_motor = () => {
                         selectedKeys={selectedMaquina}
                         onChange={(event) => setSelectedMaquina(event.target.value)}
                         className=' h-14 bg-gray-100 rounded-md p-3'
+                        placeholder='Maquinas registradas'
                     >
-                        <SelectItem disable selected hidden>Maquinas registradas</SelectItem>
                         {maquinas.map((maquina) => (
                             <SelectItem key={maquina.id_maquina} value={maquina.id_maquina}>
                                 {maquina.nombre_maquina}
