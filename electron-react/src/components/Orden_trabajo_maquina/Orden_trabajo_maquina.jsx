@@ -3,7 +3,7 @@ import './Orden_trabajo_maquina.css'
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios'
 import { Tabla_insumos_ot } from '../Tabla_insumos_ot/Tabla_insumos_ot'
-import { Button, Input, Select, SelectItem, Textarea } from '@nextui-org/react'
+import { Input, Select, SelectItem, Textarea } from '@nextui-org/react'
 import { Tabla_mecanicos_ot } from '../Tabla_mecanicos_ot/Tabla_mecanicos'
 import { useAuth } from "../../estados/usuario";
 
@@ -56,7 +56,7 @@ export const Orden_trabajo_maquina = () => {
 
       // console.log(response.data)
 
-      console.log(formOT.fecha_inicio_ot)
+      console.log(formOT)
 
     } catch (error) {
       console.log(error)
@@ -134,7 +134,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='p_formacion'>Programa de Formacion</label>
-                <Input type='search' className='w-11/12 h-11 text-2xl' name='p_formacion' onChange={handleChange}></Input>
+                <Input type='search' className='w-11/12 h-11 text-2xl' name='p_formacion' value={user.programa_aprendiz} disabled></Input>
               </div>
 
             </div>
@@ -158,7 +158,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_mano_obra'>Total Mano De Obra</label>
-                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' disabled onChange={handleChange}
+                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' disabled  value={formOT?.precio_hora * formOT?.total_horas_ot} onChange={handleChange}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -169,7 +169,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='ficha_ot'>Ficha</label>
-                <Input type='search' className='w-11/12 h-11' name='ficha_ot' onChange={handleChange}></Input>
+                <Input type='search' className='w-11/12 h-11' name='ficha_ot' value={user.ficha_aprendiz} disabled></Input>
               </div>
 
             </div>

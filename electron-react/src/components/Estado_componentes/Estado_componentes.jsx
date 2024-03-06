@@ -244,7 +244,7 @@ export const Estado_componentes = ({ id_maquina, modalVisible, onClose }) => {
 
     return (
       <div className="paginadorEC">
-        <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default"></Pagination>
+        <Pagination total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default"></Pagination>
       </div>
     );
   };

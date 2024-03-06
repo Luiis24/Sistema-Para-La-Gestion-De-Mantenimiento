@@ -155,7 +155,7 @@ export const Registro_caracteristicas_motor = () => {
                         />
                     </div>
                     <div className='btn-terminar-registro'>
-                        <button type="submit" className='boton-registrar'>Registrar</button>
+                        <button type="submit" className='boton-registrar'>Siguiente</button>
                     </div>
 
                 </div>

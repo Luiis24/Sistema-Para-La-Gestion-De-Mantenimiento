@@ -39,7 +39,7 @@ export const Registro_aprendiz = () => {
       );
 
       toast.success("Aprendiz Registrado Exitosamente");
-
+      window.location.href = '/aprendices'
     } catch (error) {
       toast.error("Error de registro");
     }
@@ -144,9 +144,9 @@ export const Registro_aprendiz = () => {
   );
 
   return (
-    <div className="registro-aprendiz-componente">
+    <div className="container-rg-caracteristicasMotor">
       <ToastContainer />
-      <div className="registrar-nuevo-aprendiz">
+      <div className="registrar-nuevo-aprendiz my-5">
         <form onSubmit={enviarAP}>
           <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
           <div className="inputs-registro-aprendiz">

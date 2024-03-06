@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Navbars } from '../Navbars/Navbars'
 import './Hoja_de_vida.css'
 import axios from 'axios'
+import { format } from "date-fns";
 import { Input, Textarea, Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from '@nextui-org/react'
 
 export const Hoja_de_vida = () => {
@@ -134,7 +135,7 @@ export const Hoja_de_vida = () => {
                                                     type="Text"
                                                     className="w-11/12 h-11"
                                                     name="Frecuencia-hv"
-                                                    placeholder={item.fecha_fabricacion_equipo}
+                                                    placeholder={format(new Date(item.fecha_fabricacion_equipo), "dd/MM/yyyy")}
                                                     readOnly
                                                 ></Input>
                                             </div>

@@ -6,6 +6,7 @@ import axios from 'axios';
 import './Informes.css'
 import { Orden_trabajo_modal } from './Orden_trabajo_modal';
 import menu from '../../img/menu.png'
+import { format } from "date-fns";
 
 export const Informes = () => {
     const [ordenesTrabajo, setOrdenesTrabajo] = useState([]);
@@ -89,8 +90,8 @@ export const Informes = () => {
                                         <TableCell>{orden.tipo_de_trabajo}</TableCell>
                                         <TableCell>{orden.tipo_de_mantenimiento}</TableCell>
                                         <TableCell>{orden.tipo_de_sistema}</TableCell>
-                                        <TableCell>{orden.fecha_inicio_ot}</TableCell>
-                                        <TableCell>{orden.fecha_fin_ot}</TableCell>
+                                        <TableCell>{format(new Date(orden.fecha_inicio_ot), "dd/MM/yyyy")}</TableCell>
+                                        <TableCell>{format(new Date(orden.fecha_fin_ot), "dd/MM/yyyy")}</TableCell>
                                         <TableCell>{orden.costo_mantenimiento}</TableCell>
                                     </TableRow>
                                 )

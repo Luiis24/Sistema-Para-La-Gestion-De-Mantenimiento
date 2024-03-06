@@ -13,15 +13,13 @@ export const Inicio_sesion_aprendiz = () => {
   const [password, setPassword] = useState('');
   const { setUser } = useAuth();
   const [isVisible, setIsVisible] = React.useState(false);
-  const url = process.env.REACT_APP_API_BASE_URL
-  console.log(process.env.REACT_APP_API_BASE_URL)
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const Iniciar_Sesion = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${url}/login`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, {
         nId: nId,
         password: password
       });

@@ -116,7 +116,7 @@ export const Check_list = ({ id_maquina }) => {
             setFecha('');
             setHoraInicio('');
             setHoraFin('');
-
+            window.location.href = "/tornos"
 
 
         } catch (error) {

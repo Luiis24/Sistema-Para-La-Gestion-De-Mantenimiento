@@ -155,25 +155,10 @@ const Caracteristicas_maquina = () => {
                     </div>
                 </div>
                 <div className="flex justify-center mt-5 p-3">
-                    <button type="submit" className='boton-registrar'>Registrar</button>
+                    <button type="submit" className='boton-registrar'>Siguiente</button>
                 </div>
 
             </form>
-
-            {/* <div>
-                <h3>Características de máquina registradas:</h3>
-                <ul>
-                    {caracteristicasMaquina.map((caracteristica) => (
-                        <li key={caracteristica.id}>
-                            <p>Nombre: {caracteristica.nombre_caracteristica}</p>
-                            <p>Descripción: {caracteristica.descripcion_caracteristica}</p>
-                            <hr />
-                        </li>
-                    ))}
-                </ul>
-                <h3>Función de la máquina:</h3>
-                <p>{funcionMaquina}</p>
-            </div> */}
         </div>
     );
 };

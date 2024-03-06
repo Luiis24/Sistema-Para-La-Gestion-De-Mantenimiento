@@ -96,7 +96,7 @@ export const Registro_descripcion_equipo_hv = () => {
     };
 
     return (
-        <div className="registro-hv-componente">
+        <div className="container-rg-caracteristicasMotor">
             <ToastContainer/>
             <div className="Registro-descripcion-hv">
                 <div className="titulo-registro">
@@ -368,17 +368,8 @@ export const Registro_descripcion_equipo_hv = () => {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="buttons-hv">
-                        <div className="button-cancelar-hv">
-                            <Button type="submit"><Link to={'/MenuPrincipal'}>⮜ ‎ Atrás</Link></Button>
-                        </div>
-                        <div className="button-registrar-hv">
-                            <Button type="submit">Registrar equipo</Button>
-                        </div>
-                    </div> */}
                     <div className='btn-terminar-registro'>
-                        <button type="submit" className='boton-registrar'>Registrar</button>
+                        <button type="submit" className='boton-registrar'>Siguiente</button>
                     </div>
                 </form>
             </div>
