@@ -108,7 +108,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                 </Table>
             </div>
             <div className="btn-registrarIOT">
-                <Button onPress={onOpen} className="mr-3 w-1/6">
+                <Button onPress={onOpen} className="w-1/6">
                     Agregar Insumo
                 </Button>
             </div>

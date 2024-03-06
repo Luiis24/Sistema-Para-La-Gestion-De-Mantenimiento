@@ -54,9 +54,15 @@
 }
 
 .button-HR {
-    position: fixed;
-    bottom: 10px;
+    position: absolute;
+    top: 65px;
     right: 10px;
+}
+
+@media (max-width: 768px) {
+    .button-HR {
+        top: 120px;
+    }
 }
 
 .rgCheckList {

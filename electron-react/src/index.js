@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NextUIProvider } from "@nextui-org/react";
 import { UsuarioProvider } from './estados/usuario';
+import { Registro_caracteristicas_motor } from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor';
+import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

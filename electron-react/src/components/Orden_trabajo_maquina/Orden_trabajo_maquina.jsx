@@ -3,15 +3,20 @@ import './Orden_trabajo_maquina.css'
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios'
 import { Tabla_insumos_ot } from '../Tabla_insumos_ot/Tabla_insumos_ot'
-import { Input, Select, SelectItem, Textarea } from '@nextui-org/react'
+import { Input, Select, SelectItem, Textarea, Button } from '@nextui-org/react'
 import { Tabla_mecanicos_ot } from '../Tabla_mecanicos_ot/Tabla_mecanicos'
 import { useAuth } from "../../estados/usuario";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Orden_trabajo_maquina = () => {
   const [maquinaid, setMaquinaid] = useState();
   const [formOT, setFormOT] = useState();
   const [formMecanicos, setFormMecanicos] = useState()
   const [formInsumos, setformInsumos] = useState()
+  const [tipoTrabajo, setTipoTrabajo] = useState()
+  const [tipoMantenimiento, setTipoMantenimiento] = useState()
+  const [tipoSistema, setTipoSistema] = useState()
   const { id_maquina } = useParams();
   const { user } = useAuth();
 
@@ -28,37 +33,41 @@ export const Orden_trabajo_maquina = () => {
   }, [id_maquina]);
 
   const registrarOrdenDeTrabajo = async () => {
+    const userId = user.id_aprendiz? user.id_aprendiz : user.id_instructor;
     try {
-      // const response = await axios.post('http://localhost:4002/registerOrdenTrabajo', {
-      //   id_orden_de_trabajo: 1, 
-      //   fecha_inicio_ot: formOT.fecha_inicio_ot, 
-      //   hora_inicio_ot: formOT.hora_inicio_ot, 
-      //   fecha_fin_ot: formOT.fecha_fin_ot, 
-      //   hora_fin_ot: formOT.hora_fin_ot, 
-      //   p_formacion:, 
-      //   total_horas_ot: formOT.total_horas_ot, 
-      //   precio_hora: formOT.precio_hora, 
-      //   total_mano_obra: formOT.total_mano_obra, 
-      //   ficha_ot:, 
-      //   ubicacion_ot: formOT.ubicacion_ot, 
-      //   nombre_maquina_ot: maquinaid.nombre_maquina, 
-      //   id_maquina: maquinaid.id_maquina, 
-      //   tipo_de_trabajo: formOT.tipo_de_trabajo, 
-      //   tipo_de_mantenimiento: formOT.tipo_de_mantenimiento, 
-      //   tipo_de_sistema: formOT.tipo_de_sistema,
-      //   mecanicos_responsables: formMecanicos, 
-      //   descripcion_de_trabajo: formOT.descripcion_de_trabajo, 
-      //   insumos_utilizados: formInsumos, 
-      //   subtotal, 
-      //   iva, 
-      //   costo_mantenimiento
-      // });
+      const response = await axios.post('http://localhost:4002/registerOrdenTrabajo', {
+        fecha_inicio_ot: formOT.fecha_inicio_ot, 
+        hora_inicio_ot: formOT.hora_inicio_ot, 
+        fecha_fin_ot: formOT.fecha_fin_ot, 
+        hora_fin_ot: formOT.hora_fin_ot, 
+        // p_formacion: user.programa_aprendiz, 
+        total_horas_ot: formOT.total_horas_ot, 
+        precio_hora: formOT.precio_hora, 
+        total_mano_obra: 1, 
+        // ficha_ot: user.ficha_aprendiz, 
+        tipo_de_trabajo: tipoTrabajo, 
+        tipo_de_mantenimiento: tipoMantenimiento, 
+        tipo_de_sistema: tipoSistema,
+        descripcion_de_trabajo: formOT.descripcion_de_trabajo, 
+        // ubicacion_ot: formOT.ubicacion_ot, 
+        // nombre_maquina_ot: maquinaid.nombre_maquina, 
+        // mecanicos_responsables: formMecanicos, 
+        // insumos_utilizados: formInsumos, 
+        subtotal_ot:1, 
+        iva:1, 
+        total_precio_horas:1,
+        costo_mantenimiento:1,
+        id_maquina: maquinaid.id_maquina, 
+        id_aprendiz: userId
+      });
 
-      // console.log(response.data)
+
 
       console.log(formOT)
-
+      toast.success('Orden de trabajo registrada')
+      window.location.href = '/informes'
     } catch (error) {
+      toast.error('Error al registrar en la orden de trabajo. Por favor, inténtelo nuevamente.')
       console.log(error)
     }
   }
@@ -71,6 +80,16 @@ export const Orden_trabajo_maquina = () => {
     });
   }
 
+  const handleChangeTT = (e) => {
+    setTipoTrabajo(e.target.value)
+  }
+  const handleChangeTM = (e) => {
+    setTipoMantenimiento(e.target.value)
+  }
+  const handleChangeTS = (e) => {
+    setTipoSistema(e.target.value)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -79,7 +98,6 @@ export const Orden_trabajo_maquina = () => {
 
   return (
     <div>
-
       <div className="containerM">
         <div className="navHorizontal">
           <Link to={`/checklistMaquina/${id_maquina}`}>
@@ -102,7 +120,7 @@ export const Orden_trabajo_maquina = () => {
             </h2>
           </Link>
         </div>
-
+        <ToastContainer/>
         <div className="tituloSeccionOT">
           <h2>Formato Orden de trabajo {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
         </div>
@@ -202,48 +220,48 @@ export const Orden_trabajo_maquina = () => {
             <div className="sectionOT">
               <div className="valueOT">
                 <label>Tipo De Trabajo</label>
-                <Select className='w-11/12 h-11' placeholder='Inspeccion' name='tipo_de_trabajo' onChange={handleChange}>
-                  <SelectItem>Inspeccion</SelectItem>
-                  <SelectItem>Servicio</SelectItem>
-                  <SelectItem>Reparacion</SelectItem>
-                  <SelectItem>Modificacion</SelectItem>
-                  <SelectItem>Fabricacion</SelectItem>
-                  <SelectItem>Montaje</SelectItem>
-                  <SelectItem>Desmontaje</SelectItem>
-                  <SelectItem>Cambio</SelectItem>
+                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={handleChangeTT} selectedKeys={tipoTrabajo}>
+                  <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
+                  <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
+                  <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
+                  <SelectItem value='modificacion' key='modificacion'>Modificacion</SelectItem>
+                  <SelectItem value='fabricacion' key='fabricacion'>Fabricacion</SelectItem>
+                  <SelectItem value='montaje' key='montaje'>Montaje</SelectItem>
+                  <SelectItem value='desmontaje' key='desmontaje'>Desmontaje</SelectItem>
+                  <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
                 </Select>
               </div>
               <div className="valueOT">
                 <label>Tipo De Mantenimiento</label>
-                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' name='tipo_de_mantenimiento' onChange={handleChange}>
-                  <SelectItem>Correctivo no planificado</SelectItem>
-                  <SelectItem>Correctivo planificado</SelectItem>
-                  <SelectItem>Mantenimiento preventivo</SelectItem>
-                  <SelectItem>Basado en el tiempo</SelectItem>
-                  <SelectItem>Basado en el uso o contador</SelectItem>
-                  <SelectItem>Basado en condicion</SelectItem>
-                  <SelectItem>Predictivo</SelectItem>
-                  <SelectItem>Proactivo</SelectItem>
-                  <SelectItem>Detectivo</SelectItem>
-                  <SelectItem>De emergencia</SelectItem>
-                  <SelectItem>Autonomo</SelectItem>
-                  <SelectItem>De reacondicionamiento</SelectItem>
-                  <SelectItem>De reemplazo</SelectItem>
+                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={handleChangeTM} selectedKeys={tipoMantenimiento}>
+                  <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
+                  <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
+                  <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
+                  <SelectItem value='basado en el tiempo' key='basado en el tiempo'>Basado en el tiempo</SelectItem>
+                  <SelectItem value='basado en el uso o contador' key='basado en el uso o contador'>Basado en el uso o contador</SelectItem>
+                  <SelectItem value='basado en condicion' key='basado en condicion'>Basado en condicion</SelectItem>
+                  <SelectItem value='predictivo' key='predictivo'>Predictivo</SelectItem>
+                  <SelectItem value='proactivo' key='proactivo'>Proactivo</SelectItem>
+                  <SelectItem value='detectivo' key='detectivo'>Detectivo</SelectItem>
+                  <SelectItem value='de emergencia' key='de emergencia'>De emergencia</SelectItem>
+                  <SelectItem value='autonomo' key='autonomo'>Autonomo</SelectItem>
+                  <SelectItem value='de reacondicionamiento' key='de reacondicionamiento'>De reacondicionamiento</SelectItem>
+                  <SelectItem value='de reemplazo' key='de reemplazo'>De reemplazo</SelectItem>
                 </Select>
               </div>
               <div className="valueOT">
                 <label>Tipo De Sistema</label>
-                <Select className='w-11/12 h-11' placeholder='Mecanico' name='tipo_de_sistema' onChange={handleChange}>
-                  <SelectItem>Mecanico</SelectItem>
-                  <SelectItem>Electrico</SelectItem>
-                  <SelectItem>Hidraulico</SelectItem>
-                  <SelectItem>Neumatico</SelectItem>
-                  <SelectItem>De control</SelectItem>
-                  <SelectItem>De refrigeracion</SelectItem>
-                  <SelectItem>De lubricacion</SelectItem>
-                  <SelectItem>De alimentacion</SelectItem>
-                  <SelectItem>De seguridad</SelectItem>
-                  <SelectItem>De comunicacion</SelectItem>
+                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={handleChangeTS} selectedKeys={tipoSistema}>
+                  <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
+                  <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
+                  <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>
+                  <SelectItem value='neumatico' key='neumatico'>Neumatico</SelectItem>
+                  <SelectItem value='de control' key='de control'>De control</SelectItem>
+                  <SelectItem value='de refrigeracion' key='de refrigeracion'>De refrigeracion</SelectItem>
+                  <SelectItem value='de lubricacion' key='de lubricacion'>De lubricacion</SelectItem>
+                  <SelectItem value='de alimentacion' key='de alimentacion'>De alimentacion</SelectItem>
+                  <SelectItem value='de seguridad' key='de seguridad'>De seguridad</SelectItem>
+                  <SelectItem value='de comunicacion' key='de comunicacion'>De comunicacion</SelectItem>
                 </Select>
               </div>
             </div>
@@ -273,8 +291,11 @@ export const Orden_trabajo_maquina = () => {
           <hr />
 
           <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} />
-
+<hr></hr>
           {/* <Button type='submit'>Registrar orden de trabajo</Button> */}
+          <div className="button-inp flex justify-center btn-registrarIOT">
+              <Button className='rgCheckList' type='submit'>Terminar orden</Button>
+          </div>
 
         </form>
 

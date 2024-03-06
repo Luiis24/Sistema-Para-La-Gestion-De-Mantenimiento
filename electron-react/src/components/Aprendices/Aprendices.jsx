@@ -58,7 +58,7 @@ export const Aprendices = () => {
                 (filters.equipo === 'all' ||
                     user.equipo_aprendiz === filters.equipo) &&
                 (filters.nombre === '' ||
-                    user.nombre_aprendiz === filters.nombre)
+                    user.num_doc_aprendiz === parseInt(filters.nombre))
             )
         })
     }
@@ -145,7 +145,7 @@ export const Aprendices = () => {
                             base: "w-full sm:max-w-[44%]",
                             inputWrapper: "border-1",
                         }}
-                            placeholder="Buscar por nombre..."
+                            placeholder="Buscar por numero de documento..."
                             size="sm"
                             startContent={<SearchIcon className="text-default-300" />}
                             onChange={handleNombre}

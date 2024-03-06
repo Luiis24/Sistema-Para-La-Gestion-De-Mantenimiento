@@ -532,22 +532,18 @@ const getOrdenTrabajoById = (req, res) => {
 
   const registerOrdenTrabajo = (req, res) => {
     console.log(req.body);
-    const { id_orden_de_trabajo, fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, p_formacion, total_horas_ot, precio_hora, total_mano_obra, ficha_ot, ubicacion_ot, nombre_maquina_ot, id_maquina, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, mecanicos_responsables, descripcion_de_trabajo, insumos_utilizados, subtotal, iva, costo_mantenimiento } = req.body;
-
-    if (!tipo_componente || !nombre_componente) {
-        return res.status(400).json({ error: 'Falta información requerida' });
-    }
+    const { fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz } = req.body;
 
     pool.query(
-        'INSERT INTO public.orden_de_trabajo(id_orden_de_trabajo, fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, p_formacion, total_horas_ot, precio_hora, total_mano_obra, ficha_ot, ubicacion_ot, nombre_maquina_ot, id_maquina, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, mecanicos_responsables, descripcion_de_trabajo, insumos_utilizados, subtotal, iva, costo_mantenimiento) VALUES ($1, $2, $3,$4, $5, $6,$7, $8, $9,$10, $11, $12,$13, $14, $15,$16, $17, $18, $19, $20, $21, $22)',
-        [id_orden_de_trabajo, fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, p_formacion, total_horas_ot, precio_hora, total_mano_obra, ficha_ot, ubicacion_ot, nombre_maquina_ot, id_maquina, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, mecanicos_responsables, descripcion_de_trabajo, insumos_utilizados, subtotal, iva, costo_mantenimiento],
+        'INSERT INTO public.orden_de_trabajo(fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz) VALUES ($1, $2, $3,$4, $5, $6,$7, $8, $9,$10, $11, $12,$13, $14, $15, $16, $17)',
+        [fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz],
         (error) => {
             if (error) {
                 console.error('Error al registrar orden de trabajo en la base de datos', error);
                 return res.status(500).json({ error: 'Error al registrar la orden detrabajo' });
             }
 
-            res.status(201).json({ message: 'COrden de trabajo registrado exitosamente' });
+            res.status(201).json({ message: 'Orden de trabajo registrado exitosamente' });
         }
     );
 };

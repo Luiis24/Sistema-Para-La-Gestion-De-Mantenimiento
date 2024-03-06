@@ -9,6 +9,8 @@ import {
 } from "@nextui-org/react";
 import "./Historial_reparaciones.css";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Historial_reparaciones = () => {
   const fechaActual = new Date().toISOString().split("T")[0]; // Cambiar el formato de fecha para postgres
@@ -37,7 +39,7 @@ export const Historial_reparaciones = () => {
     console.log(selectedMaquina)
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}2/crearHistorialReparaciones`, {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearHistorialReparaciones`, {
         id_maquina: selectedMaquina,
         procedimiento_historial,
         insumos_usados_historial,
@@ -45,8 +47,9 @@ export const Historial_reparaciones = () => {
         fecha_historial,
       });
 
-      console.log("Registro en el historial de reparaciones exitoso");
+      toast.success('Registro en el historial de reparaciones exitoso')
     } catch (error) {
+      toast.error('Error al registrar en el historial de reparaciones')
       console.error(
         "Error al registrar en el historial de reparaciones",
         error
@@ -69,6 +72,7 @@ export const Historial_reparaciones = () => {
 
   return (
     <div className='container-rg-caracteristicasMotor'>
+      <ToastContainer/>
       <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
         <div className="titulo-registro-CM">
           <h2 className="Titulo-hlp">Historial de reparaciones</h2>

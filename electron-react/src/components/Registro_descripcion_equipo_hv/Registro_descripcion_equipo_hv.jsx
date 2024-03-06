@@ -102,276 +102,244 @@ export const Registro_descripcion_equipo_hv = () => {
                 <div className="titulo-registro">
                     <h1>Descripción del equipo</h1>
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <div className="inputs-registro-hv">
-                        <div className="Primera-fila-input">
-                            <div>
-                                <label className="label-hv">Seleccionar máquina:</label>
-                                <select
-                                    className="w-64 filterDE"
-                                    placeholder="Selecciona máquina"
-                                    value={selectedMaquina}
-                                    onChange={(event) => setSelectedMaquina(event.target.value)}
-                                >
-                                    <option disable selected hidden>
-                                        Maquinas registradas
-                                    </option>
-                                    {maquinas.map((maquina) => (
-                                        <option
-                                            key={maquina.id_maquina}
-                                            value={maquina.id_maquina}
-                                        >
-                                            {maquina.nombre_maquina}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div>
-                                <label className="label-hv">Nombre del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Nombre equipo"
-                                    value={nombre}
-                                    onChange={(e) => setNombre(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Marca del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Marca"
-                                    value={marca}
-                                    onChange={(e) => setMarca(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">
-                                    Fecha de fabricación del equipo:
-                                </label>
-                                <Input
-                                    type="date"
-                                    className="w-64"
-                                    value={fechaFabricacion}
-                                    onChange={(e) => setFechaFabricacion(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Fabricante del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Fabricante del equipo"
-                                    value={fabricante_equipo}
-                                    onChange={(e) => setFabricante_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Ubicacion del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Ubicación del equipo"
-                                    value={ubicacion_equipo}
-                                    onChange={(e) => setUbicacion_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Características del equipo:</label>
-                                <Textarea
-                                    placeholder="Escribe sus características"
-                                    value={caracteristicas_equipo}
-                                    onChange={(e) => setCaracteristicas_equipo(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        {/*Segunda fila*/}
-                        <div className="segunda-fila-input">
-                            <div>
-                                <label className="label-hv">Código del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Codigo del equipo"
-                                    value={codigo_equipo}
-                                    onChange={(e) => setCodigo_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Modelo del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Modelo del equipo"
-                                    value={modelo_equipo}
-                                    onChange={(e) => setModelo_equipo(e.target.value)}
-                                />
-                            </div>
+                <form className="form-equip" onSubmit={handleSubmit}>
+          <div className="inputs-registro-hv">
+            <div className="fila-1-responsive">
+              <div>
+                <Select
+                  className="sel-equip"
+                  placeholder="Selecciona máquina"
+                  selectedKeys={selectedMaquina}
+                  onChange={(event) => setSelectedMaquina(event.target.value)}
+                >
+                  <SelectItem disable selected hidden>
+                    Maquinas registradas
+                  </SelectItem>
+                  {maquinas.map((maquina) => (
+                    <SelectItem
+                      key={maquina.id_maquina}
+                      value={maquina.id_maquina}
+                    >
+                      {maquina.nombre_maquina}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Nombre equipo"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Marca"
+                  value={marca}
+                  onChange={(e) => setMarca(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="date"
+                  className="w-full mt-8"
+                  value={fechaFabricacion}
+                  onChange={(e) => setFechaFabricacion(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Fabricante del equipo"
+                  value={fabricante_equipo}
+                  onChange={(e) => setFabricante_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Ubicación del equipo"
+                  value={ubicacion_equipo}
+                  onChange={(e) => setUbicacion_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Textarea
+                  className="mt-8"
+                  placeholder="Características del equipo"
+                  value={caracteristicas_equipo}
+                  onChange={(e) => setCaracteristicas_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Codigo del equipo"
+                  value={codigo_equipo}
+                  onChange={(e) => setCodigo_equipo(e.target.value)}
+                />
+              </div>
 
-                            <div>
-                                <label className="label-hv">Número de serie del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Número de serie del equipo"
-                                    value={num_serie_equipo}
-                                    onChange={(e) => setNum_serie_equipo(e.target.value)}
-                                />
-                            </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Modelo del equipo"
+                  value={modelo_equipo}
+                  onChange={(e) => setModelo_equipo(e.target.value)}
+                />
+              </div>
 
-                            <div>
-                                <label className="label-hv">Prioridad del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Prioridad del equipo"
-                                    value={prioridad_equipo}
-                                    onChange={(e) => setPrioridad_equipo(e.target.value)}
-                                />
-                            </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Número de serie del equipo"
+                  value={num_serie_equipo}
+                  onChange={(e) => setNum_serie_equipo(e.target.value)}
+                />
+              </div>
 
-                            <div>
-                                <label className="label-hv">Voltaje del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Escribe el voltaje del equipo"
-                                    value={voltaje_equipo}
-                                    onChange={(e) => setVoltaje_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Corriente del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Escribe la corriente del equipo"
-                                    value={corriente_equipo}
-                                    onChange={(e) => setCorriente_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Frecuencia del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Escribe la frecuencia del equipo"
-                                    value={frecuencia_equipo}
-                                    onChange={(e) => setFrecuencia_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Capacidad del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Escribe la capacidad del equipo"
-                                    value={capacidad_equipo}
-                                    onChange={(e) => setCapacidad_equipo(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                        {/*tercera fila*/}
-                        <div className="tercera-fila-input">
-                            <div>
-                                <label className="label-hv">Peso del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Escribe el peso del equipo"
-                                    value={peso_equipo}
-                                    onChange={(e) => setPeso_equipo(e.target.value)}
-                                />
-                            </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Prioridad del equipo"
+                  value={prioridad_equipo}
+                  onChange={(e) => setPrioridad_equipo(e.target.value)}
+                />
+              </div>
 
-                            <div>
-                                <label className="label-hv">Alimentación del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="Tipo de alimentación del equipo"
-                                    value={alimentacion_equipo}
-                                    onChange={(e) => setAlimentacion_equipo(e.target.value)}
-                                />
-                            </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Voltaje del equipo"
+                  value={voltaje_equipo}
+                  onChange={(e) => setVoltaje_equipo(e.target.value)}
+                />
+              </div>
+            </div>
+            {/*Segunda fila*/}
+            <div className="fila-2-responsive">
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full"
+                  placeholder="Corriente del equipo"
+                  value={corriente_equipo}
+                  onChange={(e) => setCorriente_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Frecuencia del equipo (HZ)"
+                  value={frecuencia_equipo}
+                  onChange={(e) => setFrecuencia_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Tamaño del equipo"
+                  value={capacidad_equipo}
+                  onChange={(e) => setCapacidad_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Peso del equipo"
+                  value={peso_equipo}
+                  onChange={(e) => setPeso_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="Tipo alimentación del equipo"
+                  value={alimentacion_equipo}
+                  onChange={(e) => setAlimentacion_equipo(e.target.value)}
+                />
+              </div>
 
-                            <div>
-                                <label className="label-hv">
-                                    Sistema eléctrico del equipo:
-                                </label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema eléctrico?"
-                                    value={sistema_electrico_equipo}
-                                    onChange={(e) => setSistema_electrico_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">
-                                    Sistema electrónico del equipo:
-                                </label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema electrónico?"
-                                    value={sistema_electronico_equipo}
-                                    onChange={(e) =>
-                                        setSistema_electronico_equipo(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Sistema mecánico del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema mecánico?"
-                                    value={sistema_mecanico_equipo}
-                                    onChange={(e) => setSistema_mecanico_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">
-                                    Sistema neumático del equipo:
-                                </label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema neumático?"
-                                    value={sistema_neumatico_equipo}
-                                    onChange={(e) => setSistema_neumatico_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">
-                                    Sistema hidráulico del equipo:
-                                </label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema hidráulico?"
-                                    value={sistema_hidraulico_equipo}
-                                    onChange={(e) => setSistema_hidraulico_equipo(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label className="label-hv">Sistema térmico del equipo:</label>
-                                <Input
-                                    type="text"
-                                    className="w-64"
-                                    placeholder="¿Cuenta con sistema térmico?"
-                                    value={sistema_termico_equipo}
-                                    onChange={(e) => setSistema_termico_equipo(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='btn-terminar-registro'>
-                        <button type="submit" className='boton-registrar'>Siguiente</button>
-                    </div>
-                </form>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema eléctrico?"
+                  value={sistema_electrico_equipo}
+                  onChange={(e) => setSistema_electrico_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema electrónico?"
+                  value={sistema_electronico_equipo}
+                  onChange={(e) =>
+                    setSistema_electronico_equipo(e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema mecánico?"
+                  value={sistema_mecanico_equipo}
+                  onChange={(e) => setSistema_mecanico_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema neumático?"
+                  value={sistema_neumatico_equipo}
+                  onChange={(e) => setSistema_neumatico_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema hidráulico?"
+                  value={sistema_hidraulico_equipo}
+                  onChange={(e) => setSistema_hidraulico_equipo(e.target.value)}
+                />
+              </div>
+              <div className="section-edp">
+                <Input
+                  type="text"
+                  className="w-full mt-8"
+                  placeholder="¿Tiene sistema térmico?"
+                  value={sistema_termico_equipo}
+                  onChange={(e) => setSistema_termico_equipo(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="btn-hv">
+            <Button type="submit" className="boton-registrar">
+              Siguiente
+            </Button>
+          </div>
+        </form>
             </div>
         </div>
     );

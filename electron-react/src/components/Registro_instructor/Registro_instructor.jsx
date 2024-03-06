@@ -94,7 +94,7 @@ export const Registro_instructor = () => {
   );
 
   return (
-    <div className="container-rg-caracteristicasMotor">
+    <div className="container-rg-caracteristicasM">
       <ToastContainer/>
       <div className="Registro_instructor my-5">
         <h2 className="titulo-inst">Registro de instructores</h2>
