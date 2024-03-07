@@ -1,70 +1,68 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./Registro_caracteristicas_motor.css";
-import { Link } from "react-router-dom";
-import { Input, SelectItem, Select, Button } from "@nextui-org/react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './Registro_caracteristicas_motor.css'
+import { Link } from 'react-router-dom';
+import { Input, Select, SelectItem, Button } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Registro_caracteristicas_motor = () => {
-  const [maquinas, setMaquinas] = useState([]);
-  const [selectedMaquina, setSelectedMaquina] = useState("");
+    const [maquinas, setMaquinas] = useState([]);
+    const [selectedMaquina, setSelectedMaquina] = useState('');
 
-  const [marca_motor, setMarca_motor] = useState("");
-  const [modelo_motor, setModelo_motor] = useState("");
-  const [descripcion_motor, setDescripcion_motor] = useState("");
-  const [serie_motor, setSerie_motor] = useState("");
-  const [tamaño_motor, setTamaño_motor] = useState("");
-  const [potencia_motor, setPotencia_motor] = useState("");
-  const [rpm_motor, setRpm_motor] = useState("");
-  const [voltaje_motor, setVoltaje_motor] = useState("");
-  const [amp_motor, setAmp_motor] = useState("");
+    const [marca_motor, setMarca_motor] = useState('');
+    const [modelo_motor, setModelo_motor] = useState('');
+    const [descripcion_motor, setDescripcion_motor] = useState('');
+    const [serie_motor, setSerie_motor] = useState('');
+    const [tamaño_motor, setTamaño_motor] = useState('');
+    const [potencia_motor, setPotencia_motor] = useState('');
+    const [rpm_motor, setRpm_motor] = useState('');
+    const [voltaje_motor, setVoltaje_motor] = useState('');
+    const [amp_motor, setAmp_motor] = useState('');
 
-  // Cargar la lista de máquinas al montar el componente
-  useEffect(() => {
-    const fetchMaquinas = async () => {
-      try {
-        const response = await axios.get("http://localhost:4002/getMaquinas");
-        // Ordenar las máquinas por ID de forma descendente
-        const maquinasOrdenadas = response.data.sort(
-          (a, b) => b.id_maquina - a.id_maquina
-        );
-        setMaquinas(maquinasOrdenadas);
-      } catch (error) {
-        console.error("Error al obtener la lista de máquinas", error);
-      }
+    // Cargar la lista de máquinas al montar el componente
+    useEffect(() => {
+        const fetchMaquinas = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
+                // Ordenar las máquinas por ID de forma descendente
+                const maquinasOrdenadas = response.data.sort((a, b) => b.id_maquina - a.id_maquina);
+                setMaquinas(maquinasOrdenadas);
+            } catch (error) {
+                console.error('Error al obtener la lista de máquinas', error);
+            }
+        };
+
+        fetchMaquinas();
+    }, []);
+
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearCaracteristicasMotor`, {
+                id_maquina: selectedMaquina,
+                marca_motor,
+                modelo_motor,
+                descripcion_motor,
+                serie_motor,
+                tamaño_motor,
+                potencia_motor,
+                rpm_motor,
+                voltaje_motor,
+                amp_motor,
+            });
+
+            toast.success('Características registradas exitosamente');
+            window.location.href = '/crearComponentesCheck'
+        } catch (error) {
+            toast.error('Error al registrar carcaterísticas')
+            console.error('Error al registrar las características del motor', error);
+        }
     };
 
-    fetchMaquinas();
-  }, []);
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await axios.post("http://localhost:4002/crearCaracteristicasMotor", {
-        id_maquina: selectedMaquina,
-        marca_motor,
-        modelo_motor,
-        descripcion_motor,
-        serie_motor,
-        tamaño_motor,
-        potencia_motor,
-        rpm_motor,
-        voltaje_motor,
-        amp_motor,
-      });
-
-      toast.success("Características registradas exitosamente");
-      window.location.href = "/crearComponentesCheck";
-    } catch (error) {
-      toast.error("Error al registrar caraterísticas");
-      console.error("Error al registrar las características del motor", error);
-    }
-  };
-
-  return (
-    <div className="container-rg-caracteristicasM">
+    return (
+      <div className="container-rg-caracteristicasM">
       <ToastContainer />
       <form onSubmit={handleFormSubmit} className="rg-caracteristicasM">
         <div className="titulo-registro-CM">
@@ -181,5 +179,5 @@ export const Registro_caracteristicas_motor = () => {
         
       </form>
     </div>
-  );
+    );
 };

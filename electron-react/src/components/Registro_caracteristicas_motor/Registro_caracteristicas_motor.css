@@ -44,7 +44,7 @@
     justify-content: center;
   }
   .btn-registrar {
-    width: 20%;
+    width: 25%;
     font-size: 15px;
     color: #ffff;
     background: rgb(0, 173, 0);
@@ -55,12 +55,35 @@
   .btn-mt Button:active {
     background: rgb(0, 173, 0);
   }
+  @media (max-width: 1050px) {
+    .btn-registrar{
+        width: 25%;
+      }
+      .rg-caracteristicasM{
+        width: 70%;
+    }
+    .fila-1{
+      width: 40%;
+    }
+    .fila-2{
+      width: 40%;
+    }
+  }
   @media (max-width: 950px) {
     .btn-registrar{
         width: 25%;
       }
+      .rg-caracteristicasM{
+        width: 70%;
+    }
+    .fila-1{
+      width: 40%;
+    }
+    .fila-2{
+      width: 40%;
+    }
   }
-@media (max-width: 890px) {
+@media (max-width: 700px) {
     .inputs-registo-motor{
         flex-direction: column;
         align-items: center;
@@ -82,14 +105,20 @@
 @media (max-width: 750px) {
     .btn-registrar{
         width: 30%;
-      }
+      }   
   }
   @media (max-width: 500px) {
     .btn-registrar{
         width: 40%;
       }
+      .rg-caracteristicasM{
+        width: 70%;
+    }
   }
   @media (max-width: 420px) {
+    .rg-caracteristicasM{
+        width: 70%;
+    }
     .titulo-registro {
         font-size: 22px;
       }

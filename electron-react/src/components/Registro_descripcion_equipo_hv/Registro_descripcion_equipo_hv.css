@@ -3,7 +3,7 @@
   border-radius: 10px;
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
   width: 55%;
-  height: 1250px;
+  height: 1270px;
   margin: 30px;
 }
 .inputs-registro-hv {
@@ -89,7 +89,7 @@
 }
 @media (max-width: 750px) {
   .btn-hv {
-    margin-top: 10%;
+    margin-top: 5%;
   }
 }
 @media (max-width: 500px) {
@@ -97,6 +97,6 @@
     font-size: 22px;
   }
   .btn-hv {
-    margin-top: 15%;
+    margin-top: 10%;
   }
 }
