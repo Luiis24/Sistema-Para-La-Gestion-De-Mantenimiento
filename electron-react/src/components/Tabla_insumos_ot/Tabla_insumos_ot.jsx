@@ -4,7 +4,7 @@ import axios from 'axios'
 import './Tabla_insumos_ot.css'
 import { DeleteIcon } from "./DeleteIcon";
 
-export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
+export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsados }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rows, setRows] = useState([]);
 
@@ -37,19 +37,37 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setformInsumos({
-            ...formInsumos,
-            [name]: value
-        });
+        if (name === "nombre") {
+            // Buscar el insumo seleccionado
+            const selectedInsumo = insumos.find(insumo => insumo.id_insumos === parseInt(value));
+            // Actualizar el estado con el nombre y el id_insumo seleccionados
+            setformInsumos({
+                ...formInsumos,
+                [name]: value,
+                nombre: selectedInsumo.nombre_insumo,
+                id_insumo: selectedInsumo.id_insumos
+            });
+        } else {
+            // Actualizar el estado con los demás campos y calcular el subtotal
+            const cantidad = name === "cantidad" ? value : formInsumos.cantidad;
+            const valorUnidad = name === "valorUnidad" ? value : formInsumos.valorUnidad;
+            const subtotal = cantidad * valorUnidad;
+            setformInsumos({
+                ...formInsumos,
+                [name]: value,
+                subtotal: subtotal
+            });
+        }
         console.log(formInsumos);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         // if(!validarformInsumos()){return}
 
         addRow(formInsumos);
+        handleInsumosUsados(formInsumos);
     }
     return (
         <div>

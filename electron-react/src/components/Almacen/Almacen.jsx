@@ -12,7 +12,9 @@ import { useAuth } from '../../estados/usuario';
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
-    const {rol} = useAuth();
+    const [insumosUtilizadosAlmacen, setInsumosUtilizadosAlmacen] = useState([]);
+    const [modalVisibleInsumoU, setModalVisibleInsumoU] = useState(false);
+    const { rol } = useAuth();
 
     // filtros
     const [filters, setFilters] = useState({
@@ -51,6 +53,17 @@ export const Almacen = () => {
             });
     }, []);
 
+    const handleInsumosUtilizados = async (id_insumo) => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/getInsumosUtilizadosAlmacen`, { id_insumo });
+            const insumos = await response.data
+            setInsumosUtilizadosAlmacen(insumos);
+            setModalVisibleInsumoU(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     // filtrar insumos
     const filterInsumos = (insumos) => {
         const filtered = insumos.filter(insumo => {
@@ -71,17 +84,17 @@ export const Almacen = () => {
             }
             return true;
         });
-    
+
         if (ordenNombreAscendente) {
             filtered.sort((a, b) => (a.nombre_insumo > b.nombre_insumo) ? 1 : -1);
         } else {
             filtered.sort((a, b) => (a.nombre_insumo < b.nombre_insumo) ? 1 : -1);
         }
-    
+
         if (!ordenCantidadAscendente) {
             filtered.sort((a, b) => b.cantidad_insumo - a.cantidad_insumo);
         }
-    
+
         return filtered;
     }
 
@@ -272,15 +285,15 @@ export const Almacen = () => {
                                 size="sm" >
                                 Nuevo Insumo
                             </Button>
-                        </Link> : '' }
-                        {rol === 'Instructor' ? 
-                        <Button
-                            className="bg-foreground text-background h-12 cursor-not-allowed"
-                            endContent={<PlusIcon style={{ fontSize: 'large' }} />}
-                            size="sm" >
-                            Salida Insumo
-                        </Button>
-                        : ''}
+                        </Link> : ''}
+                        {rol === 'Instructor' ?
+                            <Button
+                                className="bg-foreground text-background h-12 cursor-not-allowed"
+                                endContent={<PlusIcon style={{ fontSize: 'large' }} />}
+                                size="sm" >
+                                Salida Insumo
+                            </Button>
+                            : ''}
                     </div>
 
 
@@ -297,12 +310,12 @@ export const Almacen = () => {
                         </TableHeader>
                         <TableBody emptyContent={"No se encontro insumos."}>
                             {paginatedInsumos.map(insumo => {
-                                return <TableRow key={insumo.id_insumo}>
+                                return <TableRow key={insumo.id_insumos}>
                                     <TableCell className='text-lg'>{insumo.nombre_insumo}</TableCell>
                                     <TableCell className='text-lg'>{format(new Date(insumo.fecha_llegada_insumo), "dd/MM/yyyy")}</TableCell>
                                     <TableCell className='text-lg'>{insumo.proveedor_insumo}</TableCell>
                                     <TableCell className='text-lg'>{insumo.cantidad_insumo}</TableCell>
-                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer mt-2'>
+                                    <TableCell className='text-lg flex items-center gap-3 cursor-pointer mt-2' onClick={() => handleInsumosUtilizados(insumo.id_insumos)}>
                                         {insumo.insumos_en_uso || 0}
                                         <svg className="w-6 h-6 text-gray-800 hover:text-lime-500 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" strokWidth="2" d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
@@ -390,6 +403,43 @@ export const Almacen = () => {
                                 <button type="submit" className='boton-registrar'>Devolver</button>
                             </div>
                         </form>
+
+                    </div>
+                )}
+
+                {modalVisibleInsumoU && insumosUtilizadosAlmacen.length > 0 && (
+                    <div className="modal-insumos">
+
+                        <div className='form-modal-insumos'>
+                            <div className="titulo-form-MI">
+                                <h3>Insumo utilizado en</h3>
+                            </div>
+                            
+                            <Table>
+                                <TableHeader>
+                                    <TableColumn>Nombre</TableColumn>
+                                    <TableColumn>Cantidad</TableColumn>
+                                    <TableColumn>Unidad</TableColumn>
+                                    <TableColumn>Valor unitario</TableColumn>
+                                    <TableColumn>Orden de trabajo</TableColumn>
+                                </TableHeader>
+                                <TableBody>
+                                    {insumosUtilizadosAlmacen.map(insumo =>
+                                        <TableRow>
+                                            <TableCell>{insumo.nombre_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.cantidad_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.unidad_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.valor_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.id_orden_de_trabajo}</TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+
+                            <div className='btn-terminar-registro'>
+                                <a href={'/almacen'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
+                            </div>
+                        </div>
 
                     </div>
                 )}

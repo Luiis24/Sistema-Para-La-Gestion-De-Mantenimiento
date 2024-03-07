@@ -6,11 +6,14 @@ import { PlusIcon } from './PlusIcon'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
 import menu from '../../img/menu.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue, SelectItem, Select } from "@nextui-org/react";
 
 
 export const Aprendices = () => {
     const [users, setUsers] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [estado, setEstado] = useState();
+    const [aprendizSelected, setAprendizSelected] = useState()
     const [filters, setFilters] = useState({
         nombre: '',
         programa_de_formacion: 'all',
@@ -31,8 +34,14 @@ export const Aprendices = () => {
 
     // const loadingState = isLoading || data?.results.length === 0 ? "loading" : "idle";
 
-
-
+    const handleAprendiz = async () => {
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarAprendiz`, { aprendizSelected, estado });
+            setModalVisible(false);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
@@ -45,8 +54,8 @@ export const Aprendices = () => {
     }, []);
 
     const statusColorMap = {
-        active: "success",
-        paused: "danger",
+        activo: "success",
+        inactivo: "danger",
         vacation: "warning",
     };
 
@@ -168,13 +177,15 @@ export const Aprendices = () => {
                             })}
                         </select>
 
-                        <Link to={'/registroAprendiz'}><Button
-                            className="bg-foreground text-background h-12"
-                            endContent={<PlusIcon style={{ fontSize: 'large' }} />}
-                            size="sm"
-                        >
-                            Nuevo Usuario
-                        </Button></Link>
+                        <Link to={'/registroAprendiz'}>
+                            <Button
+                                className="bg-foreground text-background h-12"
+                                endContent={<PlusIcon style={{ fontSize: 'large' }} />}
+                                size="sm"
+                            >
+                                Nuevo Usuario
+                            </Button>
+                        </Link>
                     </div>
 
 
@@ -216,15 +227,39 @@ export const Aprendices = () => {
                                     <TableCell className='text-lg'>{user.equipo_aprendiz}</TableCell>
                                     <TableCell className='text-lg'>{user.telefono_aprendiz}</TableCell>
                                     <TableCell className='text-lg'>{user.ficha_aprendiz}</TableCell>
-                                    <TableCell><Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap['active']} size="sm" variant="flat">
-                                        Activo
-                                    </Chip></TableCell>
+                                    <TableCell>
+                                        <Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap[user.estado]} size="sm" variant="flat" onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }}>
+                                            <p className='w-20 text-center'>{user.estado}</p>
+                                        </Chip>
+                                    </TableCell>
                                 </TableRow>
                             })}
                         </TableBody>
                     </Table>
                 </div>
             </div>
+
+            {modalVisible && (
+                <div className="modal-insumos">
+                    <form className='form-modal-insumos' onSubmit={handleAprendiz}>
+                        <div className="titulo-form-MI">
+                            <h3>Actualizar estado aprendiz</h3>
+                        </div>
+                        <Input value={aprendizSelected} />
+                        <Select name='estado' onChange={(e) => setEstado(e.target.value)} placeholder='Cambiar estado'>
+                            <SelectItem key={'inactivo'} value={'inactivo'}>Inactivo</SelectItem>
+                            <SelectItem key={'activo'} value={'activo'}>Activo</SelectItem>
+                        </Select>
+                        <div className='btn-terminar-registro'>
+                            <a onClick={() => setModalVisible(false)} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
+                            <button type="submit" className='boton-registrar'>Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
     )
 }
+
+// ALTER TABLE IF EXISTS public.aprendices
+//     ADD COLUMN estado character varying(10);

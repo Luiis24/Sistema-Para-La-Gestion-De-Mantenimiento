@@ -39,7 +39,7 @@ export const Actualizar_maquina = () => {
             window.location.href = '/tornos'
             
         } catch (error) {
-            toast.error('Error al registrar la máquina');
+            toast.error('Error al actualizar la máquina');
         }
     };
 

@@ -35,6 +35,7 @@ export const Registro_aprendiz = () => {
           telefono_aprendiz,
           equipo_aprendiz,
           password_aprendiz,
+          estado: 'activo'
         }
       );
 

@@ -1,3 +1,16 @@
+.inputs-registo-motor{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start; 
+}
+.fila-1{
+    width: 32%;
+  }
+  .fila-2{
+    width: 32%;
+  }
+
 .container-rg-caracteristicasM {
     display: flex;
     position: fixed;
@@ -68,3 +81,41 @@
         align-items: flex-start;
     }
 }
+
+@media (max-width: 890px) {
+    .inputs-registo-motor{
+        flex-direction: column;
+        align-items: center;
+    }
+    .fila-1{
+        width: 80%;
+      }
+      .fila-2{
+        width: 80%;
+        margin-top: 32px;
+      }
+      .btn-mt {
+        margin-top: 10%;
+      }
+      .btn-registrar{
+        width: 25%;
+      }
+  }
+@media (max-width: 750px) {
+    .btn-registrar{
+        width: 30%;
+      }
+  }
+  @media (max-width: 500px) {
+    .btn-registrar{
+        width: 40%;
+      }
+  }
+  @media (max-width: 420px) {
+    .titulo-registro {
+        font-size: 22px;
+      }
+    .btn-registrar{
+        width: 40%;
+      }
+  }

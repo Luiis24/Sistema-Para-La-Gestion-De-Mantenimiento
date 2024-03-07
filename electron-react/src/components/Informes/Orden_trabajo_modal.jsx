@@ -2,8 +2,10 @@ import React from 'react'
 import logoSena from '../../img/logo.png'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { format } from "date-fns";
 
-export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
+export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
     const downloadPDF = () => {
         const capture = document.querySelector('.info-ot');
@@ -53,7 +55,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
 
                                     <div className="valueOT">
                                         <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                                        <h3 className='w-11/12 h-11'>{ot.fecha_inicio_ot}</h3>
+                                        <h3 className='w-11/12 h-11'>{format(new Date(ot.fecha_inicio_ot), "dd/MM/yyyy")}</h3>
                                     </div>
 
                                     <div className="valueOT">
@@ -63,7 +65,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
 
                                     <div className="valueOT">
                                         <label htmlFor='fecha_fin_ot'>Fecha Finalizacion</label>
-                                        <h3 className='w-11/12 h-11'>{ot.fecha_fin_ot}</h3>
+                                        <h3 className='w-11/12 h-11'>{format(new Date(ot.fecha_fin_ot), "dd/MM/yyyy")}</h3>
                                     </div>
 
                                     <div className="valueOT">
@@ -164,6 +166,37 @@ export const Orden_trabajo_modal = ({ ordenTrabajo }) => {
                                     {ot.descripcion_de_trabajo}
                                 </div>
                             </div>
+
+                            <hr />
+                            <div className="tituloSeccionOT">
+                                <h3>Insumos utilizados</h3>
+                            </div>
+                            <hr />
+
+                            <Table>
+                                <TableHeader>
+                                    <TableColumn>Nombre</TableColumn>
+                                    <TableColumn>Cantidad</TableColumn>
+                                    <TableColumn>Unidad</TableColumn>
+                                    <TableColumn>Valor unitario</TableColumn>
+                                    <TableColumn>Subtotal</TableColumn>
+                                    <TableColumn>id orden</TableColumn>
+                                </TableHeader>
+                                <TableBody>
+
+                                    {insumosUtilizados.map(insumo =>
+                                        <TableRow>
+                                            <TableCell>{insumo.nombre_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.cantidad_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.unidad_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.valor_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.subtotal_insumo_ot}</TableCell>
+                                            <TableCell>{insumo.id_orden_de_trabajo}</TableCell>
+                                        </TableRow>
+                                    )}
+
+                                </TableBody>
+                            </Table>
                         </div>
                     )}
 

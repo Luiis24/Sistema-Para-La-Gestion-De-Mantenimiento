@@ -8,6 +8,7 @@ router.get('/instructores', dataController.getInstructores);
 router.post('/login', dataController.login);
 
 router.post('/registerAprendiz', dataController.registerAprendiz);
+router.post('/actualizarAprendiz', dataController.actualizarAprendiz);
 router.get('/aprendices', dataController.getAprendices);
 
 router.post('/registerHojaInspeccion', dataController.registerHojaInspeccion);
@@ -35,7 +36,10 @@ router.get('/ordenDeTrabajo/:id_maquina', dataController.getOrdenTrabajoById);
 router.get('/checklist/:id_maquina', dataController.getOrdenTrabajoById);
 router.get('/hojaVida/:id_maquina', dataController.getHojaVidaById);
 
-router.post('/registerOrdenTrabajo', dataController.registerOrdenTrabajo); //no va
+router.post('/registerOrdenTrabajo', dataController.registerOrdenTrabajo);
+router.post('/registerInsumosUtilizados', dataController.registerInsumosUtilizados);
+router.post('/getInsumosUtilizados', dataController.getInsumosUtilizados);
+router.post('/getInsumosUtilizadosAlmacen', dataController.getInsumosUtilizadosAlmacen);
 router.get('/insumos', dataController.getInsumos); //no va
 
 router.post('/crearCaracteristicasMotor',dataController.crearCaracteristicasMotor);

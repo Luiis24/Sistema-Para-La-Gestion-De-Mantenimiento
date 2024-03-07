@@ -21,13 +21,15 @@ export const Orden_trabajo_maquina = () => {
     descripcion_de_trabajo: "",
   });
   const [formMecanicos, setFormMecanicos] = useState()
-  const [formInsumos, setformInsumos] = useState()
+  const [formInsumos, setformInsumos] = useState([])
+  const [formInsumosUtilizados, setformInsumosUtilizados] = useState([])
   const [tipoTrabajo, setTipoTrabajo] = useState()
   const [tipoMantenimiento, setTipoMantenimiento] = useState()
   const [tipoSistema, setTipoSistema] = useState()
   const [totalMO, setTotalMO] = useState()
   const { id_maquina } = useParams();
   const { user } = useAuth();
+
 
   useEffect(() => {
     axios
@@ -70,22 +72,33 @@ export const Orden_trabajo_maquina = () => {
         id_aprendiz: userId
       });
 
-       // Enviar los insumos utilizados
-    await Promise.all(formInsumos.map(async (insumo) => {
-      // Verificar si el insumo tiene un nombre definido
-      if (!insumo.nombre) {
-        console.error('ID del insumo no definida');
-        return;
-      }
+      const ordenDeTrabajoId = response.data.id_orden_de_trabajo;
 
-      // Realizar la solicitud para registrar el uso del insumo
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.nombre}`, {
-        id_insumo: insumo.nombre,
-        cantidad: insumo.cantidad,
-        // id_orden_trabajo: ordenDeTrabajoId  Asociar el insumo a la orden de trabajo creada
-      });
-    }));
+      await Promise.all(formInsumosUtilizados.map(async (insumo) => {
+        // Verificar si el insumo tiene un nombre definido
+        if (!insumo.id_insumo) {
+          console.error('ID del insumo no definida');
+          return;
+        }
 
+        // Realizar la solicitud para registrar el uso del insumo
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
+          id_insumo: insumo.id_insumo,
+          cantidad: insumo.cantidad
+        });
+
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerInsumosUtilizados`, {
+          nombre_insumo_ot: insumo.nombre, 
+          cantidad_insumo_ot: insumo.cantidad, 
+          unidad_insumo_ot: insumo.unidad, 
+          valor_insumo_ot: insumo.valorUnidad, 
+          subtotal_insumo_ot: insumo.subtotal, 
+          total_precio_insumo_ot: 1, 
+          origen_insumo_ot: 1, 
+          id_orden_de_trabajo: ordenDeTrabajoId, 
+          id_insumos: insumo.id_insumo
+        })
+      }));
 
       console.log(formOT)
       toast.success('Orden de trabajo registrada')
@@ -104,16 +117,6 @@ export const Orden_trabajo_maquina = () => {
     });
   }
 
-  const handleChangeTT = (e) => {
-    setTipoTrabajo(e.target.value)
-  }
-  const handleChangeTM = (e) => {
-    setTipoMantenimiento(e.target.value)
-  }
-  const handleChangeTS = (e) => {
-    setTipoSistema(e.target.value)
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -123,6 +126,13 @@ export const Orden_trabajo_maquina = () => {
     setTotalMO(totalManoObra);
 
     registrarOrdenDeTrabajo(formOT);
+  }
+
+  const handleInsumosUsados = async (insumo) => {
+  // Crea una copia del array actual y luego agrega el nuevo insumo
+  const updatedInsumos = [...formInsumosUtilizados, insumo];
+  // Actualiza el estado con la nueva copia del array
+  setformInsumosUtilizados(updatedInsumos);
   }
 
   return (
@@ -249,7 +259,7 @@ export const Orden_trabajo_maquina = () => {
             <div className="sectionOT">
               <div className="valueOT">
                 <label>Tipo De Trabajo</label>
-                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={handleChangeTT} selectedKeys={tipoTrabajo} value={tipoTrabajo}>
+                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={(e) => {setTipoTrabajo(e.target.value)}}>
                   <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                   <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
                   <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
@@ -262,7 +272,7 @@ export const Orden_trabajo_maquina = () => {
               </div>
               <div className="valueOT">
                 <label>Tipo De Mantenimiento</label>
-                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={handleChangeTM} selectedKeys={tipoMantenimiento}>
+                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={(e) => {setTipoMantenimiento(e.target.value)}}>
                   <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                   <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
                   <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
@@ -280,7 +290,7 @@ export const Orden_trabajo_maquina = () => {
               </div>
               <div className="valueOT">
                 <label>Tipo De Sistema</label>
-                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={handleChangeTS} selectedKeys={tipoSistema}>
+                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={(e) => {setTipoSistema(e.target.value)}}>
                   <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
                   <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
                   <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>
@@ -319,7 +329,7 @@ export const Orden_trabajo_maquina = () => {
           </div>
           <hr />
 
-          <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} />
+          <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} handleInsumosUsados={handleInsumosUsados} />
           <hr></hr>
           {/* <Button type='submit'>Registrar orden de trabajo</Button> */}
           <div className="button-inp flex justify-center btn-registrarIOT">

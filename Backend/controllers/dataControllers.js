@@ -105,7 +105,7 @@ const loginInstructor = (req, res) => {
 
 const registerAprendiz = (req, res) => {
   console.log(req.body);
-  const { tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz } = req.body;
+  const { tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, estado } = req.body;
 
   if (!tipo_doc_aprendiz || !num_doc_aprendiz || !ficha_aprendiz || !programa_aprendiz || !nombre_aprendiz || !email_aprendiz || !telefono_aprendiz || !equipo_aprendiz || !password_aprendiz) {
     return res.status(400).json({ error: 'Falta información requerida' });
@@ -142,8 +142,8 @@ const registerAprendiz = (req, res) => {
 
       // Si no hay conflictos, proceder con la inserción
       pool.query(
-        'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-        [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz],
+        'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
+        [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz, estado],
         (error) => {
           if (error) {
             console.error('Error al insertar el Aprendiz en la base de datos', error);
@@ -543,10 +543,69 @@ const registerOrdenTrabajo = (req, res) => {
         return res.status(500).json({ error: 'Error al registrar la orden detrabajo' });
       }
 
-      res.status(201).json({ message: 'Orden de trabajo registrado exitosamente' });
+       // Después de insertar los datos, realizar una consulta para obtener el id_orden_de_trabajo
+       pool.query(
+        'SELECT id_orden_de_trabajo FROM public.orden_de_trabajo WHERE fecha_inicio_ot = $1 AND hora_inicio_ot = $2 AND descripcion_de_trabajo = $3',
+        [fecha_inicio_ot, hora_inicio_ot, descripcion_de_trabajo],
+        (error, result) => {
+          if (error) {
+            console.error('Error al obtener el id_orden_de_trabajo de la base de datos', error);
+            return res.status(500).json({ error: 'Error al obtener el id_orden_de_trabajo' });
+          }
+
+        const id_orden_de_trabajo = result.rows[0].id_orden_de_trabajo;
+
+      res.status(201).json({ message: 'Orden de trabajo registrado exitosamente', id_orden_de_trabajo });
+        });
     }
   );
 };
+
+// registrar insumos utilizados en la base de datos
+
+const registerInsumosUtilizados = (req, res) => {
+  console.log(req.body);
+  const { nombre_insumo_ot, cantidad_insumo_ot, unidad_insumo_ot, valor_insumo_ot, subtotal_insumo_ot, total_precio_insumo_ot, origen_insumo_ot, id_orden_de_trabajo, id_insumos } = req.body;
+
+  pool.query(
+    'INSERT INTO insumos_usados_ot(nombre_insumo_ot, cantidad_insumo_ot, unidad_insumo_ot, valor_insumo_ot, subtotal_insumo_ot, total_precio_insumo_ot, origen_insumo_ot, id_orden_de_trabajo, id_insumos) VALUES ($1, $2, $3 ,$4, $5, $6 ,$7, $8, $9)',
+    [nombre_insumo_ot, cantidad_insumo_ot, unidad_insumo_ot, valor_insumo_ot, subtotal_insumo_ot, total_precio_insumo_ot, origen_insumo_ot, id_orden_de_trabajo, id_insumos],
+    (error) => {
+      if (error) {
+        console.error('Error al registrar los insumos utilizados en la orden de trabajo en la base de datos', error);
+        return res.status(500).json({ error: 'Error al registrar los insumos utilizados en la orden de trabajo' });
+      }
+
+      res.status(201).json({ message: 'Insumo utilizado registrado exitosamente' });
+    }
+  );
+};
+
+// get insumos utilizados
+
+const getInsumosUtilizados = (req, res) => {
+  const {id_orden_de_trabajo} = req.body
+  pool.query('SELECT * FROM insumos_usados_ot WHERE id_orden_de_trabajo = $1', [id_orden_de_trabajo], (error, results) => {
+    if (error) {
+      console.error('Error al obtener los insumos utilizados', error);
+      return res.status(500).json({ error: 'Error al obtener los insumos utilizados' });
+    }
+
+    res.status(200).json(results.rows);
+  });
+}
+
+const getInsumosUtilizadosAlmacen = (req, res) => {
+  const {id_insumo} = req.body
+  pool.query('SELECT * FROM insumos_usados_ot WHERE id_insumos = $1', [id_insumo], (error, results) => {
+    if (error) {
+      console.error('Error al obtener los insumos utilizados', error);
+      return res.status(500).json({ error: 'Error al obtener los insumos utilizados' });
+    }
+
+    res.status(200).json(results.rows);
+  });
+}
 
 
 // obtener checklist por maquina
@@ -1261,6 +1320,29 @@ const actualizarMaquina = async (req, res) => {
   }
 };
 
+const actualizarAprendiz = async (req, res) => {
+  const { aprendizSelected, estado} = req.body;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM aprendices WHERE id_aprendiz = $1",
+      [aprendizSelected]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "aprendiz no encontrado" });
+    }
+
+    await pool.query(
+      "UPDATE aprendices SET estado = $1 WHERE id_aprendiz = $2",
+      [estado, aprendizSelected]
+    );
+
+    res.status(200).json({ message: "Informacion de aprendiz actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
 
 module.exports = {
   registerInstructor,
@@ -1314,6 +1396,10 @@ module.exports = {
   GetOrdenesTrabajo,
   GetOrdenTrabajo,
 
-  actualizarMaquina
+  actualizarMaquina,
+  actualizarAprendiz,
+  registerInsumosUtilizados,
+  getInsumosUtilizados,
+  getInsumosUtilizadosAlmacen
 };
 
