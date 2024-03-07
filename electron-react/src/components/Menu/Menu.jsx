@@ -40,18 +40,14 @@ export const Menu = () => {
                         </Link>
                     </div>
                     <div className="informesMenu">
-                        {rol === 'Instructor' ? <Link to={'/informes'} className="a-menu">
+                        <Link to={'/informes'} className="a-menu">
                             <p className="text-menu">Informes</p>
-                        </Link> : <div className="a-menu cursor-not-allowed">
-                            <p className="text-menu">Informes</p>
-                        </div>}
+                        </Link>
                     </div>
                     <div className="almacenMenu">
-                        {rol === 'Instructor' ? <Link to={'/almacen'} className="a-menu">
+                        <Link to={'/almacen'} className="a-menu">
                             <p className="text-menu">Almacen</p>
-                        </Link> : <div className="a-menu cursor-not-allowed">
-                            <p className="text-menu">Almacen</p>
-                        </div>}
+                        </Link>
                     </div>
                     <div className="usuariosMenu">
                         {rol === 'Instructor' ? <Link to={'/aprendices'} className="a-menu">

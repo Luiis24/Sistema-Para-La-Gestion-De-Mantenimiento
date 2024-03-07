@@ -8,9 +8,11 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, 
 import { SearchIcon } from '../Aprendices/SearchIcon';
 import { PlusIcon } from '../Aprendices/PlusIcon';
 import menu from '../../img/menu.png'
+import { useAuth } from '../../estados/usuario';
 
 export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
+    const {rol} = useAuth();
 
     // filtros
     const [filters, setFilters] = useState({
@@ -263,20 +265,22 @@ export const Almacen = () => {
                         </button>
 
 
-                        <Link to={"/entradaAlmacen"}>
+                        {rol === 'Instructor' ? <Link to={"/entradaAlmacen"}>
                             <Button
                                 className="bg-foreground text-background h-12"
                                 endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                                 size="sm" >
                                 Nuevo Insumo
                             </Button>
-                        </Link>
+                        </Link> : '' }
+                        {rol === 'Instructor' ? 
                         <Button
                             className="bg-foreground text-background h-12 cursor-not-allowed"
                             endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                             size="sm" >
                             Salida Insumo
                         </Button>
+                        : ''}
                     </div>
 
 

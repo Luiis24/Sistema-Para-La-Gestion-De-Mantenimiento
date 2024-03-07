@@ -131,7 +131,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos }) => {
                                         <option selected disabled hidden>Nombre</option>
                                         {insumos.map((insumo) => {
                                             return (
-                                                <option value={insumo.nombre} key={insumo.id_insumos}>
+                                                <option value={insumo.id_insumos} key={insumo.id_insumos}>
                                                     {insumo.nombre_insumo}({insumo.cantidad_insumo})
                                                 </option>
                                             );

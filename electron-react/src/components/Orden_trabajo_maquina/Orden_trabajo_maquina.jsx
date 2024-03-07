@@ -11,12 +11,21 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const Orden_trabajo_maquina = () => {
   const [maquinaid, setMaquinaid] = useState();
-  const [formOT, setFormOT] = useState();
+  const [formOT, setFormOT] = useState({
+    fecha_inicio_ot: "",
+    hora_inicio_ot: "",
+    fecha_fin_ot: "",
+    hora_fin_ot: "",
+    total_horas_ot: "",
+    precio_hora: "",
+    descripcion_de_trabajo: "",
+  });
   const [formMecanicos, setFormMecanicos] = useState()
   const [formInsumos, setformInsumos] = useState()
   const [tipoTrabajo, setTipoTrabajo] = useState()
   const [tipoMantenimiento, setTipoMantenimiento] = useState()
   const [tipoSistema, setTipoSistema] = useState()
+  const [totalMO, setTotalMO] = useState()
   const { id_maquina } = useParams();
   const { user } = useAuth();
 
@@ -33,34 +42,49 @@ export const Orden_trabajo_maquina = () => {
   }, [id_maquina]);
 
   const registrarOrdenDeTrabajo = async () => {
-    const userId = user.id_aprendiz? user.id_aprendiz : user.id_instructor;
+    const userId = user.id_aprendiz ? user.id_aprendiz : user.id_instructor;
     try {
       const response = await axios.post('http://localhost:4002/registerOrdenTrabajo', {
-        fecha_inicio_ot: formOT.fecha_inicio_ot, 
-        hora_inicio_ot: formOT.hora_inicio_ot, 
-        fecha_fin_ot: formOT.fecha_fin_ot, 
-        hora_fin_ot: formOT.hora_fin_ot, 
+        fecha_inicio_ot: formOT.fecha_inicio_ot,
+        hora_inicio_ot: formOT.hora_inicio_ot,
+        fecha_fin_ot: formOT.fecha_fin_ot,
+        hora_fin_ot: formOT.hora_fin_ot,
         // p_formacion: user.programa_aprendiz, 
-        total_horas_ot: formOT.total_horas_ot, 
-        precio_hora: formOT.precio_hora, 
-        total_mano_obra: 1, 
+        total_horas_ot: formOT.total_horas_ot,
+        precio_hora: formOT.precio_hora,
+        total_mano_obra: totalMO || 0,
         // ficha_ot: user.ficha_aprendiz, 
-        tipo_de_trabajo: tipoTrabajo, 
-        tipo_de_mantenimiento: tipoMantenimiento, 
+        tipo_de_trabajo: tipoTrabajo,
+        tipo_de_mantenimiento: tipoMantenimiento,
         tipo_de_sistema: tipoSistema,
-        descripcion_de_trabajo: formOT.descripcion_de_trabajo, 
+        descripcion_de_trabajo: formOT.descripcion_de_trabajo,
         // ubicacion_ot: formOT.ubicacion_ot, 
         // nombre_maquina_ot: maquinaid.nombre_maquina, 
         // mecanicos_responsables: formMecanicos, 
         // insumos_utilizados: formInsumos, 
-        subtotal_ot:1, 
-        iva:1, 
-        total_precio_horas:1,
-        costo_mantenimiento:1,
-        id_maquina: maquinaid.id_maquina, 
+        subtotal_ot: 1,
+        iva: 1,
+        total_precio_horas: 1,
+        costo_mantenimiento: 1,
+        id_maquina: maquinaid.id_maquina,
         id_aprendiz: userId
       });
 
+       // Enviar los insumos utilizados
+    await Promise.all(formInsumos.map(async (insumo) => {
+      // Verificar si el insumo tiene un nombre definido
+      if (!insumo.nombre) {
+        console.error('ID del insumo no definida');
+        return;
+      }
+
+      // Realizar la solicitud para registrar el uso del insumo
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.nombre}`, {
+        id_insumo: insumo.nombre,
+        cantidad: insumo.cantidad,
+        // id_orden_trabajo: ordenDeTrabajoId  Asociar el insumo a la orden de trabajo creada
+      });
+    }));
 
 
       console.log(formOT)
@@ -93,6 +117,11 @@ export const Orden_trabajo_maquina = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    const horasTrabajadas = parseInt(formOT.total_horas_ot);
+    const precioHora = parseInt(formOT.precio_hora);
+    const totalManoObra = horasTrabajadas * precioHora;
+    setTotalMO(totalManoObra);
+
     registrarOrdenDeTrabajo(formOT);
   }
 
@@ -102,9 +131,9 @@ export const Orden_trabajo_maquina = () => {
         <div className="navHorizontal">
           <Link to={`/checklistMaquina/${id_maquina}`}>
             <h2><p className='hidden md:flex'>CheckList</p>
-            <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 21a9 9 0 1 1 3-17.5m-8 6 4 4L19.3 5M17 14v6m-3-3h6" />
-            </svg>
+              <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 21a9 9 0 1 1 3-17.5m-8 6 4 4L19.3 5M17 14v6m-3-3h6" />
+              </svg>
             </h2>
           </Link>
           <h2 id='active'><p className='hidden md:flex'>Orden de trabajo</p>
@@ -114,13 +143,13 @@ export const Orden_trabajo_maquina = () => {
           </h2>
           <Link to={`/hojaVida/${id_maquina}`}>
             <h2><p className='hidden md:flex'>Hoja de vida</p>
-            <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path fillRule="evenodd" d="M8 3c0-.6.4-1 1-1h6c.6 0 1 .4 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2 1 1 0 1 0 0-2Zm2 5c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2 1 1 0 1 0 0-2Z" clipRule="evenodd" />
-            </svg>
+              <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M8 3c0-.6.4-1 1-1h6c.6 0 1 .4 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-3 8c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2 1 1 0 1 0 0-2Zm2 5c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-2-1a1 1 0 1 0 0 2 1 1 0 1 0 0-2Z" clipRule="evenodd" />
+              </svg>
             </h2>
           </Link>
         </div>
-        <ToastContainer/>
+        <ToastContainer />
         <div className="tituloSeccionOT">
           <h2>Formato Orden de trabajo {maquinaid ? maquinaid.nombre_maquina : ''}</h2>
         </div>
@@ -176,7 +205,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_mano_obra'>Total Mano De Obra</label>
-                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' disabled  value={formOT?.precio_hora * formOT?.total_horas_ot} onChange={handleChange}
+                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' disabled value={formOT?.precio_hora * formOT?.total_horas_ot}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -220,7 +249,7 @@ export const Orden_trabajo_maquina = () => {
             <div className="sectionOT">
               <div className="valueOT">
                 <label>Tipo De Trabajo</label>
-                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={handleChangeTT} selectedKeys={tipoTrabajo}>
+                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={handleChangeTT} selectedKeys={tipoTrabajo} value={tipoTrabajo}>
                   <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                   <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
                   <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
@@ -291,10 +320,10 @@ export const Orden_trabajo_maquina = () => {
           <hr />
 
           <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} />
-<hr></hr>
+          <hr></hr>
           {/* <Button type='submit'>Registrar orden de trabajo</Button> */}
           <div className="button-inp flex justify-center btn-registrarIOT">
-              <Button className='rgCheckList' type='submit'>Terminar orden</Button>
+            <Button className='rgCheckList' type='submit'>Terminar orden</Button>
           </div>
 
         </form>
