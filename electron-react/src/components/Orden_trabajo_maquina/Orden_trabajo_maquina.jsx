@@ -54,7 +54,7 @@ export const Orden_trabajo_maquina = () => {
         // p_formacion: user.programa_aprendiz, 
         total_horas_ot: formOT.total_horas_ot,
         precio_hora: formOT.precio_hora,
-        total_mano_obra: totalMO || 0,
+        total_mano_obra: totalMO,
         // ficha_ot: user.ficha_aprendiz, 
         tipo_de_trabajo: tipoTrabajo,
         tipo_de_mantenimiento: tipoMantenimiento,
@@ -66,7 +66,7 @@ export const Orden_trabajo_maquina = () => {
         // insumos_utilizados: formInsumos, 
         subtotal_ot: 1,
         iva: 1,
-        total_precio_horas: 1,
+        total_precio_horas: totalMO,
         costo_mantenimiento: 1,
         id_maquina: maquinaid.id_maquina,
         id_aprendiz: userId

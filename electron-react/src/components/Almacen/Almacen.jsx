@@ -437,7 +437,7 @@ export const Almacen = () => {
                             </Table>
 
                             <div className='btn-terminar-registro'>
-                                <a href={'/almacen'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
+                                <a className='boton-cancelar-registro' onClick={() => setModalVisibleInsumoU(false)}><h3>⮜ ‎ Atrás</h3></a>
                             </div>
                         </div>
 

@@ -56,7 +56,7 @@ export const Actualizar_maquina = () => {
                         onChange={(event) => setSelectedMaquina(event.target.value)}
                         selectedKeys={selectedMaquina}
                         className=' mt-3'
-                        placeholder='Nombre de la máquina'
+                        placeholder='Seleccione la máquina'
                     >
                         {maquina.map((tipo) => (
                             <SelectItem key={tipo.id_maquina} value={tipo.id_maquina}>
@@ -68,7 +68,7 @@ export const Actualizar_maquina = () => {
                     <div>
                         <Input
                             type="text"
-                            placeholder="Nombre de la maquina"
+                            placeholder="Cambiar nombre de la máquina"
                             value={nombre_maquina}
                             onChange={(event) => setNombre_maquina(event.target.value)}
                         />

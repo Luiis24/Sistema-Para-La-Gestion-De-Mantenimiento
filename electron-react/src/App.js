@@ -7,9 +7,9 @@ import { Orden_trabajo_maquina } from './components/Orden_trabajo_maquina/Orden_
 import { Hoja_de_vida } from './components/Hoja_de_vida/Hoja_de_vida';
 
 import { Aprendices } from './components/Aprendices/Aprendices';
-import {Registro_aprendiz} from './components/Registro_aprendiz/Registro_aprendiz'
+import { Registro_aprendiz } from './components/Registro_aprendiz/Registro_aprendiz'
 
-import {Inicio_sesion_aprendiz} from './components/Inicio_sesion_aprendiz/Inicio_sesion_aprendiz'
+import { Inicio_sesion_aprendiz } from './components/Inicio_sesion_aprendiz/Inicio_sesion_aprendiz'
 
 import { Instructores } from './components/Instructores/Instructores';
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
@@ -22,8 +22,8 @@ import { Registro_almacen } from './components/Registro_almacen/Registro_almacen
 
 import { Notificaciones } from './components/Notificaciones/Notificaciones';
 
-import {Titulo_sena_cb} from './components/Titulo_sena_cb/Titulo_sena_cb';
-import {Animacion_cuadros} from './components/Animacion_cuadros/Animacion_cuadros';
+import { Titulo_sena_cb } from './components/Titulo_sena_cb/Titulo_sena_cb';
+import { Animacion_cuadros } from './components/Animacion_cuadros/Animacion_cuadros';
 import { Menu } from './components/Menu/Menu';
 
 import './components/Navbars/navbars.css'
@@ -34,7 +34,7 @@ import { Crear_maquina } from './components/Crear_maquina/Crear_maquina';
 
 import { Informes } from './components/Informes/Informes';
 
-import {Registro_caracteristicas_motor} from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor'
+import { Registro_caracteristicas_motor } from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor'
 import Caracteristicas_maquina from './components/Caracteristicas_maquina/Caracteristicas_maquina';
 import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
 
@@ -42,105 +42,105 @@ import { Historial_reparaciones } from './components/Historial_reparaciones/Hist
 import { Registro_componentes_check } from './components/Registro_componentes_check/Registro_componentes_check';
 import { Actualizar_maquina } from './components/Actualizar_maquina/Actualizar_maquina';
 
-const router = createBrowserRouter ([
+const router = createBrowserRouter([
   {
-    path:"/MenuPrincipal",
-    element: <><Menu/><Animacion_cuadros/></>
+    path: "/MenuPrincipal",
+    element: <><Menu /><Animacion_cuadros /></>
   },
   {
-    path:"/",
-    element: <><Titulo_sena_cb/><Inicio_sesion_aprendiz/><Animacion_cuadros/></>
+    path: "/",
+    element: <><Titulo_sena_cb /><Inicio_sesion_aprendiz /><Animacion_cuadros /></>
   },
   {
-    path:"/tornos",
-    element: <><Navbars/><Maquinas/></>
+    path: "/tornos",
+    element: <><Navbars /><Maquinas /></>
   },
   {
-    path:"/checklistMaquina/:id_maquina",
-    element: <Checklist_maquina/>
+    path: "/checklistMaquina/:id_maquina",
+    element: <Checklist_maquina />
   },
   {
-    path:"/OrdenDeTrabajo/:id_maquina",
-    element: <><Navbars/><Orden_trabajo_maquina/></>
+    path: "/OrdenDeTrabajo/:id_maquina",
+    element: <><Navbars /><Orden_trabajo_maquina /></>
   },
   {
-    path:"/hojaVida/:id_maquina",
-    element: <><Hoja_de_vida/></>
+    path: "/hojaVida/:id_maquina",
+    element: <><Hoja_de_vida /></>
   },
   {
-    path:"/almacen",
-    element: <><Almacen/></>
+    path: "/almacen",
+    element: <><Almacen /></>
   },
   {
-    path:"/aprendices",
-    element: <><Aprendices/></>
+    path: "/aprendices",
+    element: <><Aprendices /></>
   },
   {
-    path:"/notificaciones",
-    element: <><Notificaciones/></>
+    path: "/notificaciones",
+    element: <><Notificaciones /></>
   },
   {
-    path:"/registroAprendiz",
-    element: <><Registro_aprendiz/><Animacion_cuadros/></>
+    path: "/registroAprendiz",
+    element: <><Registro_aprendiz /><Animacion_cuadros /></>
   },
   {
-    path:"/crearTipoMaquina",
-    element: <><CrearTipoMaquina/><Animacion_cuadros/></>
+    path: "/crearTipoMaquina",
+    element: <><CrearTipoMaquina /><Animacion_cuadros /></>
   },
   {
-    path:"/crearMaquina",
-    element: <><Crear_maquina/><Animacion_cuadros/></>
+    path: "/crearMaquina",
+    element: <><Crear_maquina /><Animacion_cuadros /></>
   },
   {
-    path:"/informes",
-    element: <><Informes/></>
+    path: "/informes",
+    element: <><Informes /></>
   },
   {
-    path:"/instructores",
-    element: <><Instructores/></>
+    path: "/instructores",
+    element: <><Instructores /></>
   },
   {
-    path:"/Registroinstructores",
-    element: <><Registro_instructor/><Animacion_cuadros/></>
+    path: "/Registroinstructores",
+    element: <><Registro_instructor /><Animacion_cuadros /></>
   },
   {
-    path:"/crearCaracteristicasMotor",
-    element: <><Registro_caracteristicas_motor/><Animacion_cuadros/></>
+    path: "/crearCaracteristicasMotor",
+    element: <><Registro_caracteristicas_motor /><Animacion_cuadros /></>
   },
   ,
   {
-    path:"/crearCaracteristicasMaquina",
-    element: <><Caracteristicas_maquina/><Animacion_cuadros/></>
+    path: "/crearCaracteristicasMaquina",
+    element: <><Caracteristicas_maquina /><Animacion_cuadros /></>
   },
   {
-    path:"/crearDescripcionEquipo",
-    element: <><Registro_descripcion_equipo_hv/><Animacion_cuadros/></>
+    path: "/crearDescripcionEquipo",
+    element: <><Registro_descripcion_equipo_hv /><Animacion_cuadros /></>
   },
   {
-    path:"/crearComponentesCheck",
-    element: <><Registro_componentes_check/><Animacion_cuadros/></>
+    path: "/crearComponentesCheck",
+    element: <><Registro_componentes_check /><Animacion_cuadros /></>
   },
   {
-    path:"/insumos",
-    element: <><Insumos/></>
+    path: "/insumos",
+    element: <><Insumos /></>
   },
   {
-    path:"/entradaAlmacen",
-    element: <><Registro_almacen/><Animacion_cuadros/></>
+    path: "/entradaAlmacen",
+    element: <><Registro_almacen /><Animacion_cuadros /></>
   },
   {
-    path:"/registroReparacion",
-    element: <><Historial_reparaciones/><Animacion_cuadros/></>
+    path: "/registroReparacion",
+    element: <><Historial_reparaciones /><Animacion_cuadros /></>
   },
   {
-    path:"/actualizarMaquina",
-    element: <><Actualizar_maquina/><Animacion_cuadros/></>
+    path: "/actualizarMaquina",
+    element: <><Actualizar_maquina /><Animacion_cuadros /></>
   }
 ]);
 
 function App() {
   return (
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   );
 }
 

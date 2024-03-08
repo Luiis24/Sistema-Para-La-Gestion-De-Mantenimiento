@@ -69,7 +69,6 @@ export const Menu = () => {
                     <div className="iconP" onMouseOver={() => hiddenHerramientas()} onMouseOut={() => { hiddenActive() }}>
                         <Avatar
                             icon={<AvatarIcon />}
-                            name={nombre}
                             classNames={{
                                 base: "bg-gradient-to-br from-[#30944B] to-[#34A853] w-12 h-12",
                                 icon: "text-white",
@@ -88,11 +87,11 @@ export const Menu = () => {
                         </div>
                         <div className="iconP">
                             <Link>
-                                <img src={campana} alt='Notificaciones' />
+                                <img src={campana} alt='Notificaciones'/>
                             </Link>
                         </div>
                         <div className="iconP">
-                            <img src={informacion} alt='Mas Informacion' />
+                            <img src={informacion} alt='Mas Informacion'/>
                         </div>
                     </div>
                 </div>

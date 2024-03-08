@@ -17,7 +17,6 @@ export const Informes = () => {
     const [tipoMantenimiento, setTipoMantenimiento] = useState()
     const [tipoSistema, setTipoSistema] = useState()
     const [filters, setFilters] = useState({
-        nombre: "",
         tipoTrabajo: "all",
         tipoMantenimiento: "all",
         tipoSistema:"all"
@@ -62,15 +61,17 @@ export const Informes = () => {
                 (filters.tipoTrabajo === "all" ||
                     orden.tipo_de_trabajo === filters.tipoTrabajo) &&
                 (filters.tipoMantenimiento === "all" ||
-                    orden.tipo_de_mantenimiento === filters.tipoMantenimiento)
+                    orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
+                (filters.tipoSistema === "all" ||
+                    orden.tipo_de_sistema === filters.tipoSistema)
             );
         });
     };
 
-    const handleEstado = (event) => {
+    const handleEstado = (key, value) => {
         setFilters((prevState) => ({
             ...prevState,
-            tipoTrabajo: tipoTrabajo
+            [key]: value
         }));
     };
 
@@ -114,7 +115,7 @@ export const Informes = () => {
                 <div className="containerInformes">
 
                     <div className="filtersUsuarios">
-                        <Select placeholder="Tipo de trabajo" onChange={(e) => { setTipoTrabajo(e.target.value); handleEstado() }}>
+                        <Select className='w-11/12 h-11' placeholder="Tipo de trabajo" onChange={(e) => { setTipoTrabajo(e.target.value); handleEstado('tipoTrabajo', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                             <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
@@ -126,7 +127,8 @@ export const Informes = () => {
                             <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={(e) => { setTipoMantenimiento(e.target.value) }}>
+                        <Select className='w-11/12 h-11' placeholder='Tipo de mantenimiento' onChange={(e) => { setTipoMantenimiento(e.target.value); handleEstado('tipoMantenimiento', e.target.value); }}>
+                            <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                             <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
                             <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
@@ -142,7 +144,8 @@ export const Informes = () => {
                             <SelectItem value='de reemplazo' key='de reemplazo'>De reemplazo</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={(e) => { setTipoSistema(e.target.value) }}>
+                        <Select className='w-11/12 h-11' placeholder='Tipo de sistema' onChange={(e) => { setTipoSistema(e.target.value); handleEstado('tipoSistema', e.target.value); }}>
+                            <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
                             <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
                             <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>

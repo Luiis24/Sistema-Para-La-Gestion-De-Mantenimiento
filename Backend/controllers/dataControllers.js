@@ -721,14 +721,15 @@ const crearMaquina = async (req, res) => {
 
 const login = (req, res) => {
   const { nId, password } = req.body;
+  const estado = 'activo'
 
   if (!nId || !password) {
     return res.status(400).json({ error: 'Falta información requerida' });
   }
 
   pool.query(
-    'SELECT * FROM aprendices WHERE num_doc_aprendiz = $1 AND password_aprendiz = $2',
-    [nId, password],
+    'SELECT * FROM aprendices WHERE num_doc_aprendiz = $1 AND password_aprendiz = $2 AND estado = $3',
+    [nId, password, estado],
     (error, aprendizResult) => {
       if (error) {
         console.error('Error al consultar la base de datos', error);
@@ -1343,6 +1344,17 @@ const actualizarAprendiz = async (req, res) => {
   }
 };
 
+const insumosADevolver = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT iuot.id_insumos, iuot.cantidad_insumo_ot FROM insumos_usados_ot iuot JOIN orden_de_trabajo ot ON iuot.id_orden_de_trabajo = ot.id_orden_de_trabajo WHERE ot.fecha_fin_ot <= NOW();"
+    )
+    res.status(200).json(result.rows)
+  } catch(error){
+    res.status(500).json({message: "Error en la base de datos"})
+  }
+}
+
 
 module.exports = {
   registerInstructor,
@@ -1400,6 +1412,7 @@ module.exports = {
   actualizarAprendiz,
   registerInsumosUtilizados,
   getInsumosUtilizados,
-  getInsumosUtilizadosAlmacen
+  getInsumosUtilizadosAlmacen,
+  insumosADevolver
 };
 

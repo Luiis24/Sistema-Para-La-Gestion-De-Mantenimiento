@@ -121,5 +121,7 @@ router.get('/GetInsumoById/:id_insumo', dataController.getInsumoById);
 
 router.post('/DevolverInsumo/:id', dataController.devolverInsumo);
 
+router.get('/insumosADevolver', dataController.insumosADevolver);
+
 
 module.exports = router;
