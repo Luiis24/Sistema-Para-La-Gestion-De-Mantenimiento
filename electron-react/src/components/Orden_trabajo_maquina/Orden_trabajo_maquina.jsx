@@ -46,6 +46,13 @@ export const Orden_trabajo_maquina = () => {
   const registrarOrdenDeTrabajo = async () => {
     const userId = user.id_aprendiz ? user.id_aprendiz : user.id_instructor;
     try {
+
+      // Calcular el total de insumos
+      let totalInsumos = 0;
+      formInsumosUtilizados.forEach(insumo => {
+        totalInsumos += insumo.subtotal; // Sumar el subtotal de cada insumo
+      });
+
       const response = await axios.post('http://localhost:4002/registerOrdenTrabajo', {
         fecha_inicio_ot: formOT.fecha_inicio_ot,
         hora_inicio_ot: formOT.hora_inicio_ot,
@@ -54,7 +61,7 @@ export const Orden_trabajo_maquina = () => {
         // p_formacion: user.programa_aprendiz, 
         total_horas_ot: formOT.total_horas_ot,
         precio_hora: formOT.precio_hora,
-        total_mano_obra: totalMO,
+        total_mano_obra: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
         // ficha_ot: user.ficha_aprendiz, 
         tipo_de_trabajo: tipoTrabajo,
         tipo_de_mantenimiento: tipoMantenimiento,
@@ -64,10 +71,10 @@ export const Orden_trabajo_maquina = () => {
         // nombre_maquina_ot: maquinaid.nombre_maquina, 
         // mecanicos_responsables: formMecanicos, 
         // insumos_utilizados: formInsumos, 
-        subtotal_ot: 1,
+        subtotal_ot: totalInsumos,
         iva: 1,
-        total_precio_horas: totalMO,
-        costo_mantenimiento: 1,
+        total_precio_horas: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
+        costo_mantenimiento: totalInsumos + (parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora)),
         id_maquina: maquinaid.id_maquina,
         id_aprendiz: userId
       });
@@ -88,14 +95,14 @@ export const Orden_trabajo_maquina = () => {
         });
 
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerInsumosUtilizados`, {
-          nombre_insumo_ot: insumo.nombre, 
-          cantidad_insumo_ot: insumo.cantidad, 
-          unidad_insumo_ot: insumo.unidad, 
-          valor_insumo_ot: insumo.valorUnidad, 
-          subtotal_insumo_ot: insumo.subtotal, 
-          total_precio_insumo_ot: 1, 
-          origen_insumo_ot: 1, 
-          id_orden_de_trabajo: ordenDeTrabajoId, 
+          nombre_insumo_ot: insumo.nombre,
+          cantidad_insumo_ot: insumo.cantidad,
+          unidad_insumo_ot: insumo.unidad,
+          valor_insumo_ot: insumo.valorUnidad,
+          subtotal_insumo_ot: insumo.subtotal,
+          total_precio_insumo_ot: 1,
+          origen_insumo_ot: 1,
+          id_orden_de_trabajo: ordenDeTrabajoId,
           id_insumos: insumo.id_insumo
         })
       }));
@@ -120,19 +127,14 @@ export const Orden_trabajo_maquina = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const horasTrabajadas = parseInt(formOT.total_horas_ot);
-    const precioHora = parseInt(formOT.precio_hora);
-    const totalManoObra = horasTrabajadas * precioHora;
-    setTotalMO(totalManoObra);
-
     registrarOrdenDeTrabajo(formOT);
   }
 
   const handleInsumosUsados = async (insumo) => {
-  // Crea una copia del array actual y luego agrega el nuevo insumo
-  const updatedInsumos = [...formInsumosUtilizados, insumo];
-  // Actualiza el estado con la nueva copia del array
-  setformInsumosUtilizados(updatedInsumos);
+    // Crea una copia del array actual y luego agrega el nuevo insumo
+    const updatedInsumos = [...formInsumosUtilizados, insumo];
+    // Actualiza el estado con la nueva copia del array
+    setformInsumosUtilizados(updatedInsumos);
   }
 
   return (
@@ -259,7 +261,7 @@ export const Orden_trabajo_maquina = () => {
             <div className="sectionOT">
               <div className="valueOT">
                 <label>Tipo De Trabajo</label>
-                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={(e) => {setTipoTrabajo(e.target.value)}}>
+                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={(e) => { setTipoTrabajo(e.target.value) }}>
                   <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                   <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
                   <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
@@ -272,7 +274,7 @@ export const Orden_trabajo_maquina = () => {
               </div>
               <div className="valueOT">
                 <label>Tipo De Mantenimiento</label>
-                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={(e) => {setTipoMantenimiento(e.target.value)}}>
+                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={(e) => { setTipoMantenimiento(e.target.value) }}>
                   <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                   <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
                   <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
@@ -290,7 +292,7 @@ export const Orden_trabajo_maquina = () => {
               </div>
               <div className="valueOT">
                 <label>Tipo De Sistema</label>
-                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={(e) => {setTipoSistema(e.target.value)}}>
+                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={(e) => { setTipoSistema(e.target.value) }}>
                   <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
                   <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
                   <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>

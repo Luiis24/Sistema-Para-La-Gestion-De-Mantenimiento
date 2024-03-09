@@ -197,6 +197,43 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
                                 </TableBody>
                             </Table>
+
+                            <div className="containerOT">
+                                <div className="section-modal-ot">
+                                    <div className="valueOT">
+                                        <label htmlFor='ubicacion_ot'>Subtotal</label>
+                                        <h3 className='w-11/12 h-11'>
+
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>
+                                            {ot.subtotal_ot}
+                                        </h3>
+                                    </div>
+                                    <div className="valueOT">
+                                        <label htmlFor='nombre_maquina_ot'>Total precio horas</label>
+                                        <h3 className='w-11/12 h-11' >
+
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>{ot.total_precio_horas}
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <div className="section-modal-ot">
+                                    <div className="valueOT">
+                                        <label>Costo del mantenimiento</label>
+                                        <h3 className='w-11/12 h-11' >
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>
+                                            {ot.costo_mantenimiento}
+                                        </h3>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
 

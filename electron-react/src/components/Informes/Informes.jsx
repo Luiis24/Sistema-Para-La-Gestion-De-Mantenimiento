@@ -159,7 +159,7 @@ export const Informes = () => {
                         </Select>
                     </div>
 
-                    <Table>
+                    <Table selectionMode="single">
                         <TableHeader>
                             <TableColumn className='text-lg'>Maquina</TableColumn>
                             <TableColumn className='text-lg'>Tipo de trabajo</TableColumn>

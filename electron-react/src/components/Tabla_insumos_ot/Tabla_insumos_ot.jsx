@@ -7,6 +7,7 @@ import { DeleteIcon } from "./DeleteIcon";
 export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsados }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rows, setRows] = useState([]);
+    const [maxCantidad, setMaxCantidad] = useState();
 
     const [insumos, setInsumos] = useState([]);
     useEffect(() => {
@@ -27,26 +28,32 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
         setRows([...rows, newRow])
     }
 
-    // const validarformInsumos = () => {
-    //     if(formInsumos.nombre && formInsumos.cantidad && formInsumos.unidad && formInsumos.valorUnitario){
-    //         return true
-    //     } else {
-    //         return false
-    //     }
-    // }
+    const validarformInsumos = () => {
+        const { nombre, cantidad, unidad, valorUnidad } = formInsumos;
+        // Verificar si todos los campos requeridos están llenos
+        if (nombre && cantidad && unidad && valorUnidad) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === "nombre") {
             // Buscar el insumo seleccionado
             const selectedInsumo = insumos.find(insumo => insumo.id_insumos === parseInt(value));
-            // Actualizar el estado con el nombre y el id_insumo seleccionados
+            // Calcular la cantidad máxima permitida
+            const maxCantidad = selectedInsumo.cantidad_insumo - (selectedInsumo.insumos_en_uso || 0);
+            // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
             setformInsumos({
                 ...formInsumos,
                 [name]: value,
                 nombre: selectedInsumo.nombre_insumo,
                 id_insumo: selectedInsumo.id_insumos
             });
+
+            setMaxCantidad(maxCantidad);
         } else {
             // Actualizar el estado con los demás campos y calcular el subtotal
             const cantidad = name === "cantidad" ? value : formInsumos.cantidad;
@@ -64,7 +71,9 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // if(!validarformInsumos()){return}
+        if (!validarformInsumos()) {
+            return;
+        }
 
         addRow(formInsumos);
         handleInsumosUsados(formInsumos);
@@ -95,34 +104,12 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                         ${parseInt(row.cantidad) * parseInt(row.valorUnidad)}
                                     </TableCell>
                                     <TableCell onClick={() => deleteRow(id)}>
-                                        <DeleteIcon className="cursor-pointer"/>
+                                        <DeleteIcon className="cursor-pointer" />
                                     </TableCell>
                                 </TableRow>
                             );
                         })}
                     </TableBody>
-                    {/* <tfoot>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>SubTotal</td>
-                            <td>$130,000</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Iva</td>
-                            <td>$24,000.00</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Total, Recursos($)</td>
-                            <td>$252,200.00</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Total, Hora Hombre($)</td>
-                            <td>$130,000</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={5} className='txt-right'>Costo Total Mantenimiento</td>
-                            <td>$154,700.00</td>
-                        </tr>
-                    </tfoot> */}
                 </Table>
             </div>
             <div className="btn-registrarIOT">
@@ -148,11 +135,16 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                     >
                                         <option selected disabled hidden>Nombre</option>
                                         {insumos.map((insumo) => {
-                                            return (
-                                                <option value={insumo.id_insumos} key={insumo.id_insumos}>
-                                                    {insumo.nombre_insumo}({insumo.cantidad_insumo})
-                                                </option>
-                                            );
+                                            // Verificar si la cantidad disponible es mayor que 0
+                                            if (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) {
+                                                return (
+                                                    <option value={insumo.id_insumos} key={insumo.id_insumos}>
+                                                        {insumo.nombre_insumo}({insumo.cantidad_insumo - insumo.insumos_en_uso})
+                                                    </option>
+                                                );
+                                            } else {
+                                                return null; // No agregar la opción al select si la cantidad es 0
+                                            }
                                         })}
                                     </select>
                                 </div>
@@ -164,10 +156,13 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                 </div>
                                 <div className="formInsumosIOT">
                                     <Input
+                                        id="cantidadInput"
                                         placeholder="Cantidad"
                                         type="number"
                                         name="cantidad"
                                         onChange={handleChange}
+                                        min={1}
+                                        max={maxCantidad}
                                     />
                                 </div>
                                 <div className="formInsumosIOT">
