@@ -9,6 +9,7 @@ router.post('/login', dataController.login);
 
 router.post('/registerAprendiz', dataController.registerAprendiz);
 router.post('/actualizarAprendiz', dataController.actualizarAprendiz);
+router.post('/actualizarFicha', dataController.actualizarFicha);
 router.get('/aprendices', dataController.getAprendices);
 
 router.post('/registerHojaInspeccion', dataController.registerHojaInspeccion);
@@ -112,8 +113,9 @@ const {
 
   // Insumos:
 
-router.post('/RegistrarInsumo', dataController.RegistrarInsumo)
-router.get('/GetInsumos', dataController.GetInsumos)
+router.post('/RegistrarInsumo', dataController.RegistrarInsumo);
+router.post('/SalidaInsumo', dataController.actualizarSalidaInsumo);
+router.get('/GetInsumos', dataController.GetInsumos);
 
 router.post('/UsarInsumo/:id_insumo', dataController.UsarInsumo);
 

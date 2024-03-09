@@ -41,6 +41,8 @@ import Registro_descripcion_equipo_hv from './components/Registro_descripcion_eq
 import { Historial_reparaciones } from './components/Historial_reparaciones/Historial_reparaciones';
 import { Registro_componentes_check } from './components/Registro_componentes_check/Registro_componentes_check';
 import { Actualizar_maquina } from './components/Actualizar_maquina/Actualizar_maquina';
+import { Registro_salida_insumo } from './components/Registro_salida_insumo/Registro_salida_insumo';
+import { Actualizar_estado_ficha } from './components/Actualizar_estado_ficha/Actualizar_estado_ficha';
 
 const router = createBrowserRouter([
   {
@@ -129,12 +131,20 @@ const router = createBrowserRouter([
     element: <><Registro_almacen /><Animacion_cuadros /></>
   },
   {
+    path: "/salidaAlmacen",
+    element: <><Registro_salida_insumo/><Animacion_cuadros/></>
+  },
+  {
     path: "/registroReparacion",
     element: <><Historial_reparaciones /><Animacion_cuadros /></>
   },
   {
     path: "/actualizarMaquina",
     element: <><Actualizar_maquina /><Animacion_cuadros /></>
+  },
+  {
+    path: "/actualizarFicha",
+    element: <><Actualizar_estado_ficha/><Animacion_cuadros/></>
   }
 ]);
 

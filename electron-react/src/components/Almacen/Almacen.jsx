@@ -278,7 +278,8 @@ export const Almacen = () => {
                         </button>
 
 
-                        {rol === 'Instructor' ? <Link to={"/entradaAlmacen"}>
+                        {rol === 'Instructor' ? 
+                        <Link to={"/entradaAlmacen"}>
                             <Button
                                 className="bg-foreground text-background h-12"
                                 endContent={<PlusIcon style={{ fontSize: 'large' }} />}
@@ -287,13 +288,14 @@ export const Almacen = () => {
                             </Button>
                         </Link> : ''}
                         {rol === 'Instructor' ?
+                        <Link to={"/salidaAlmacen"}>
                             <Button
-                                className="bg-foreground text-background h-12 cursor-not-allowed"
+                                className="bg-foreground text-background h-12"
                                 endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                                 size="sm" >
                                 Salida Insumo
                             </Button>
-                            : ''}
+                        </Link> : ''}
                     </div>
 
 
@@ -329,7 +331,6 @@ export const Almacen = () => {
                                         </Chip>
                                     </TableCell>
                                     <TableCell className='flex gap-3'>
-                                        <button onClick={() => handleGestionarInsumo(insumo.id_insumos)}>Usar</button>
                                         <button onClick={() => handleDevolverInsumo(insumo.id_insumos)}>Devolver</button>
                                     </TableCell>
                                 </TableRow>

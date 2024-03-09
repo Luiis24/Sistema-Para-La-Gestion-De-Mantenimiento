@@ -1344,6 +1344,58 @@ const actualizarAprendiz = async (req, res) => {
   }
 };
 
+const actualizarFicha = async (req, res) => {
+  const { ficha_aprendiz, estado} = req.body;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM aprendices WHERE ficha_aprendiz = $1",
+      [ficha_aprendiz]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "ficha no encontrada" });
+    }
+
+    await pool.query(
+      "UPDATE aprendices SET estado = $1 WHERE ficha_aprendiz = $2;",
+      [estado, ficha_aprendiz]
+    );
+
+    res.status(200).json({ message: "Estado de ficha actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+const actualizarSalidaInsumo = async (req, res) => {
+  const { id_insumo, cantidad_insumo } = req.body;
+  try {
+    // Retrieve the current quantity of the insumo from the database
+    const currentInsumo = await pool.query(
+      "SELECT cantidad_insumo FROM insumos WHERE id_insumos = $1",
+      [id_insumo]
+    );
+
+    // Ensure that the insumo exists
+    if (currentInsumo.rows.length === 0) {
+      return res.status(404).json({ message: "Insumo no encontrado" });
+    }
+
+    // Calculate the updated quantity by subtracting cantidad_insumo from the current quantity
+    const updatedQuantity = currentInsumo.rows[0].cantidad_insumo - cantidad_insumo;
+
+    // Update the quantity in the database
+    await pool.query(
+      "UPDATE insumos SET cantidad_insumo = $1 WHERE id_insumos = $2;",
+      [updatedQuantity, id_insumo]
+    );
+
+    res.status(200).json({ message: "Cantidad de insumo actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
 const insumosADevolver = async (req, res) => {
   try {
     const result = await pool.query(
@@ -1410,9 +1462,11 @@ module.exports = {
 
   actualizarMaquina,
   actualizarAprendiz,
+  actualizarFicha,
   registerInsumosUtilizados,
   getInsumosUtilizados,
   getInsumosUtilizadosAlmacen,
-  insumosADevolver
+  insumosADevolver,
+  actualizarSalidaInsumo
 };
 

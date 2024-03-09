@@ -16,7 +16,7 @@ export const Aprendices = () => {
     const [aprendizSelected, setAprendizSelected] = useState()
     const [filters, setFilters] = useState({
         nombre: '',
-        programa_de_formacion: 'all',
+        ficha: 'all',
         equipo: 'all'
     });
 
@@ -62,8 +62,8 @@ export const Aprendices = () => {
 
     const filterUsers = (users) => {
         return users.filter(user => {
-            return ((filters.programa_de_formacion === 'all' ||
-                user.programa_aprendiz === filters.programa_de_formacion) &&
+            return ((filters.ficha === 'all' ||
+                user.ficha_aprendiz === parseInt(filters.ficha)) &&
                 (filters.equipo === 'all' ||
                     user.equipo_aprendiz === filters.equipo) &&
                 (filters.nombre === '' ||
@@ -72,19 +72,12 @@ export const Aprendices = () => {
         })
     }
 
-    const handlePF = (event) => {
-        setFilters(prevState => ({
+    const handleEstado = (key, value) => {
+        setFilters((prevState) => ({
             ...prevState,
-            programa_de_formacion: event.target.value
-        }))
-    }
-
-    const handleEquipo = (event) => {
-        setFilters(prevState => ({
-            ...prevState,
-            equipo: event.target.value
-        }))
-    }
+            [key]: value
+        }));
+    };
 
     const handleNombre = (event) => {
         setFilters(prevState => ({
@@ -94,8 +87,8 @@ export const Aprendices = () => {
     }
 
 
-    const programasFormacion = users.map(user => user.programa_aprendiz);
-    const noRepetidos = [...new Set(programasFormacion)]
+    const fichas = users.map(user => user.ficha_aprendiz);
+    const FichasNORepetidos = [...new Set(fichas)]
 
     const equipos = users.map(user => user.equipo_aprendiz);
     const eqnoRepetidos = [...new Set(equipos)]
@@ -160,30 +153,42 @@ export const Aprendices = () => {
                             onChange={handleNombre}
                         />
 
-                        <select className="filterU" onChange={handlePF}>
-                            <option disable selected hidden>Programa de formacion</option>
-                            <option value="all">Todos</option>
-                            {noRepetidos.map(programaFormacion => (
-                                <option value={programaFormacion}>{programaFormacion}</option>
+                        <Select  placeholder="Fichas" onChange={(e) => { handleEstado('ficha', e.target.value); }}>
+                            <SelectItem value="all" key={'all'}>Todos</SelectItem>
+                            {FichasNORepetidos.map(ficha => (
+                                <SelectItem value={ficha} key={ficha}>{ficha}</SelectItem>
                             ))}
-                        </select>
+                        </Select>
 
 
-                        <select className="filterU" onChange={handleEquipo}>
-                            <option disable selected hidden>Equipo</option>
-                            <option value="all">Todos</option>
+                        <Select placeholder="Equipos" onChange={(e) => { handleEstado('equipo', e.target.value); }}>
+                            <SelectItem value="all" key={'all'}>Todos</SelectItem>
                             {eqnoRepetidos.map(eq => {
-                                return <option value={eq}>{eq}</option>
+                                return <SelectItem value={eq} key={eq}>{eq}</SelectItem>
                             })}
-                        </select>
+                        </Select>
 
                         <Link to={'/registroAprendiz'}>
                             <Button
-                                className="bg-foreground text-background h-12"
+                                className="bg-foreground text-background h-12 md:w-32"
                                 endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                                 size="sm"
                             >
                                 Nuevo Usuario
+                            </Button>
+                        </Link>
+                        <Link to={'/actualizarFicha'}>
+                            <Button
+                                className="bg-foreground text-background h-12 md:w-32"
+                                endContent={
+                                    <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fillRule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clipRule="evenodd" />
+                                        <path fillRule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clipRule="evenodd" />
+                                    </svg>
+                                }
+                                size="sm"
+                            >
+                                Ficha
                             </Button>
                         </Link>
                     </div>

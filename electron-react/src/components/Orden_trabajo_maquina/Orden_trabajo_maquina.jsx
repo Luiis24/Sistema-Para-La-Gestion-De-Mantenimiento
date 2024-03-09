@@ -20,16 +20,35 @@ export const Orden_trabajo_maquina = () => {
     precio_hora: "",
     descripcion_de_trabajo: "",
   });
+
   const [formMecanicos, setFormMecanicos] = useState()
   const [formInsumos, setformInsumos] = useState([])
   const [formInsumosUtilizados, setformInsumosUtilizados] = useState([])
+
   const [tipoTrabajo, setTipoTrabajo] = useState()
   const [tipoMantenimiento, setTipoMantenimiento] = useState()
   const [tipoSistema, setTipoSistema] = useState()
-  const [totalMO, setTotalMO] = useState()
+
   const { id_maquina } = useParams();
   const { user } = useAuth();
 
+  const [formValues, setFormValues] = useState({
+    fecha_inicio_ot: "",
+    hora_inicio_ot: "",
+    fecha_fin_ot: "",
+    hora_fin_ot: "",
+    total_horas_ot: "",
+    precio_hora: "",
+    descripcion_de_trabajo: "",
+  });
+
+  useEffect(() => {
+    // Cargar valores del formulario desde el almacenamiento local o una base de datos
+    const storedFormValues = JSON.parse(localStorage.getItem('formValues'));
+    if (storedFormValues) {
+      setFormOT(storedFormValues); // Actualizar formOT con los valores del localStorage
+    }
+  }, []);
 
   useEffect(() => {
     axios
@@ -69,8 +88,7 @@ export const Orden_trabajo_maquina = () => {
         descripcion_de_trabajo: formOT.descripcion_de_trabajo,
         // ubicacion_ot: formOT.ubicacion_ot, 
         // nombre_maquina_ot: maquinaid.nombre_maquina, 
-        // mecanicos_responsables: formMecanicos, 
-        // insumos_utilizados: formInsumos, 
+        // mecanicos_responsables: formMecanicos,
         subtotal_ot: totalInsumos,
         iva: 1,
         total_precio_horas: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
@@ -122,6 +140,11 @@ export const Orden_trabajo_maquina = () => {
       ...formOT,
       [name]: value
     });
+
+    localStorage.setItem('formValues', JSON.stringify({
+      ...formOT,
+      [name]: value
+    }));
   }
 
   const handleSubmit = (e) => {
@@ -173,22 +196,22 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT? formOT.fecha_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_inicio_ot'>Hora Inicio</label>
-                <Input type='time' className='w-11/12 h-11' placeholder='00:00' name='hora_inicio_ot' onChange={handleChange}></Input>
+                <Input type='time' className='w-11/12 h-11' name='hora_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='fecha_fin_ot'>Fecha Finalizacion</label>
-                <Input type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_fin_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_fin_ot'>Hora Finalizacion</label>
-                <Input type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange}></Input>
+                <Input type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_fin_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
@@ -201,12 +224,12 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_horas_ot'>Total Horas Trabajadas</label>
-                <Input type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange}></Input>
+                <Input type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange} placeholder={formOT ? formOT.total_horas_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='precio_hora'>Precio Hora-Hombre</label>
-                <Input type="number" placeholder="0.00" className='w-11/12 h-11' name='precio_hora' onChange={handleChange}
+                <Input type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : ''}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -217,7 +240,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_mano_obra'>Total Mano De Obra</label>
-                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' disabled value={formOT?.precio_hora * formOT?.total_horas_ot}
+                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' isDisabled value={formOT?.precio_hora * formOT?.total_horas_ot}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -318,7 +341,7 @@ export const Orden_trabajo_maquina = () => {
 
           <div className="containerDOT">
             <Textarea
-              placeholder="Describe el trabajo o acividad a realizar"
+              placeholder={formOT ? formOT.descripcion_de_trabajo : 'Describe el trabajo o acividad a realizar'}
               className="col-span-8 md:col-span-6 mb-6 md:mb-0"
               name='descripcion_de_trabajo'
               onChange={handleChange}
