@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { NextUIProvider } from "@nextui-org/react";
 import { UsuarioProvider } from './estados/usuario';
 import { LoadingProvider } from './estados/spinner';
+import { Registro_componentes_check } from './components/Registro_componentes_check/Registro_componentes_check';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

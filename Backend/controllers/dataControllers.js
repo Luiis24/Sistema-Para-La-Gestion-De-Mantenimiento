@@ -1052,13 +1052,15 @@ const RegistrarInsumo = (req, res) => {
     fecha_llegada_insumo,
     cantidad_insumo,
     proveedor_insumo,
+    tipo
   } = req.body;
 
   if (
     !nombre_insumo ||
     !fecha_llegada_insumo ||
     !cantidad_insumo ||
-    !proveedor_insumo
+    !proveedor_insumo ||
+    !tipo
   ) {
     return res.status(400).json({ error: "Falta información requerida" });
   }
@@ -1097,8 +1099,8 @@ const RegistrarInsumo = (req, res) => {
       } else {
         // Si no existe, inserta un nuevo insumo
         pool.query(
-          "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo) VALUES ($1, $2, $3, $4)",
-          [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo],
+          "INSERT INTO insumos (nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo, tipo) VALUES ($1, $2, $3, $4, $5)",
+          [nombre_insumo, fecha_llegada_insumo, cantidad_insumo, proveedor_insumo, tipo],
           (insertError) => {
             if (insertError) {
               console.error(
@@ -1196,7 +1198,7 @@ const getInsumoById = async (req, res) => {
 
 const devolverInsumo = async (req, res) => {
   const { id } = req.params;
-  const { cantidad } = req.body;
+  const { cantidad, nota } = req.body;
 
   try {
     // Verificar si el insumo existe
@@ -1215,7 +1217,7 @@ const devolverInsumo = async (req, res) => {
     }
 
     // Realizar la devolución de insumo
-    await pool.query('UPDATE insumos SET insumos_en_uso = $1 WHERE id_insumos = $2', [cantidadEnUso - cantidad, id]);
+    await pool.query('UPDATE insumos SET insumos_en_uso = $1 nota_insumo = $2 WHERE id_insumos = $3', [cantidadEnUso - cantidad, nota, id]);
 
     res.status(200).json({ message: 'Insumo devuelto exitosamente' });
   } catch (error) {
@@ -1396,7 +1398,7 @@ const actualizarFicha = async (req, res) => {
 
 // actualizar cantidad Salida
 const actualizarSalidaInsumo = async (req, res) => {
-  const { id_insumo, cantidad_insumo } = req.body;
+  const { id_insumo, cantidad_insumo, nota } = req.body;
   try {
 
     const currentInsumo = await pool.query(
@@ -1413,8 +1415,8 @@ const actualizarSalidaInsumo = async (req, res) => {
     const updatedQuantity = currentInsumo.rows[0].cantidad_insumo - cantidad_insumo;
 
     await pool.query(
-      "UPDATE insumos SET cantidad_insumo = $1 WHERE id_insumos = $2;",
-      [updatedQuantity, id_insumo]
+      "UPDATE insumos SET cantidad_insumo = $1 nota_insumo = $2 WHERE id_insumos = $3;",
+      [updatedQuantity, nota, id_insumo]
     );
 
     res.status(200).json({ message: "Cantidad de insumo actualizada" });

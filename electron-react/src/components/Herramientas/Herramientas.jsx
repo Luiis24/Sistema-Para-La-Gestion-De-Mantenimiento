@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import './Almacen.css'
 import { Link } from 'react-router-dom'
 import { format } from "date-fns";
 import logoSena from '../../img/logo.png'
@@ -10,7 +9,7 @@ import { PlusIcon } from '../Aprendices/PlusIcon';
 import menu from '../../img/menu.png'
 import { useAuth } from '../../estados/usuario';
 
-export const Almacen = () => {
+export const Herramientas = () => {
     const [insumos, setInsumos] = useState([]);
     const [insumosUtilizadosAlmacen, setInsumosUtilizadosAlmacen] = useState([]);
     const [modalVisibleInsumoU, setModalVisibleInsumoU] = useState(false);
@@ -27,13 +26,12 @@ export const Almacen = () => {
     // usar y devolver insumos
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedInsumoId, setSelectedInsumoId] = useState(null);
-
-    const [cantidadConsumida, setCantidadConsumida] = useState(1);
+    const [cantidadUsar, setCantidadUsar] = useState(1);
+    const [maxCantidadUsar, setMaxCantidadUsar] = useState(1);
     const [selectedInsumoNombre, setSelectedInsumoNombre] = useState("");
     const [modalDevolucionVisible, setModalDevolucionVisible] = useState(false);
     const [cantidadDevolver, setCantidadDevolver] = useState(1);
     const [maxCantidadDevolver, setMaxCantidadDevolver] = useState(1);
-    const [nota, setNota] = useState("");
 
     // paginador
     const [paginaActual, setPaginaActual] = useState(1);
@@ -71,19 +69,19 @@ export const Almacen = () => {
             if (filters.estado === 'all') {
                 return (
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (insumo.tipo === 'herramienta')
                 );
             } else if (filters.estado === '1') { // Si se selecciona "Disponible"
                 return (
                     (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) &&
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (insumo.tipo === 'herramienta')
                 );
             } else if (filters.estado === '0') { // Si se selecciona "En uso"
                 return (
                     (insumo.insumos_en_uso > 0) &&
                     (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (insumo.tipo === 'herramienta')
                 );
             }
             return true;
@@ -147,6 +145,20 @@ export const Almacen = () => {
 
     // usar y devolver insumo
 
+    const handleGestionarInsumo = (id) => {
+        console.log("ID del insumo seleccionado:", id);
+        setSelectedInsumoId(id);
+
+        const insumoSeleccionado = insumos.find((insumo) => insumo.id_insumos === id);
+        const maxCantidad = insumoSeleccionado.cantidad_insumo - (insumoSeleccionado.insumos_en_uso || 0);
+        setMaxCantidadUsar(maxCantidad);
+
+        setSelectedInsumoNombre(insumoSeleccionado.nombre_insumo);
+
+        setModalVisible(true);
+        setModalDevolucionVisible(false);
+    };
+
     const handleDevolverInsumo = (id) => {
         console.log("ID del insumo seleccionado para devolver:", id);
         setSelectedInsumoId(id);
@@ -158,6 +170,35 @@ export const Almacen = () => {
 
         setModalDevolucionVisible(true);
         setModalVisible(false);
+    };
+
+    const handleSubmitModal = async (event) => {
+        event.preventDefault();
+
+        try {
+            console.log("ID del insumo a usar:", selectedInsumoId);
+
+            if (selectedInsumoId === null) {
+                console.error('ID del insumo no definida');
+                return;
+            }
+
+            if (cantidadUsar > maxCantidadUsar) {
+                console.error('La cantidad ingresada supera la cantidad disponible');
+                return;
+            }
+
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${selectedInsumoId}`, {
+                id_insumo: selectedInsumoId,
+                cantidad: cantidadUsar,
+            });
+
+            console.log(`Insumo con ID ${selectedInsumoId} usado. Cantidad: ${cantidadUsar}`);
+            setModalVisible(false);
+            window.location.href = "/almacen"
+        } catch (error) {
+            console.error('Error al usar insumo', error);
+        }
     };
 
     const handleSubmitDevolucionModal = async (event) => {
@@ -176,20 +217,10 @@ export const Almacen = () => {
                 return;
             }
 
-            const devolverInsumoPromise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/DevolverInsumo/${selectedInsumoId}`, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/DevolverInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadDevolver,
-                nota: nota || "" // Verificar si la nota existe, si no, enviar una cadena vacía
             });
-    
-            const salidaInsumoPromise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/SalidaInsumo`, {
-                id_insumo: selectedInsumoId,
-                cantidad_insumo: cantidadConsumida,
-                nota: nota || "" // Verificar si la nota existe, si no, enviar una cadena vacía
-            });
-    
-            // Esperar a que ambas solicitudes se completen antes de continuar
-            await Promise.all([devolverInsumoPromise, salidaInsumoPromise]);
 
             console.log(`Insumo con ID ${selectedInsumoId} devuelto. Cantidad: ${cantidadDevolver}`);
             setModalDevolucionVisible(false);
@@ -218,8 +249,8 @@ export const Almacen = () => {
             <div className="containerM">
 
                 <div className="navHorizontal">
-                    <h2 id='active'>Insumos</h2>
-                    <Link to={'/herramientas'}><h2>Herramientas</h2></Link>
+                    <Link to={'/almacen'}><h2>Insumos</h2></Link>
+                    <h2 id='active'>Herramientas</h2>
                 </div>
 
                 <div className="containerAlmacen">
@@ -315,6 +346,37 @@ export const Almacen = () => {
                     </div>
                 </div>
 
+                {modalVisible && (
+                    <div className="modal-insumos">
+
+                        <form onSubmit={handleSubmitModal} className='form-modal-insumos'>
+                            <div className="titulo-form-MI">
+                                <h3>Usar insumo o herramienta "{selectedInsumoNombre}"</h3>
+                            </div>
+                            <div className='inp-registro-CM'>
+                                <label>Nombre
+                                    <Input
+                                        value={selectedInsumoNombre}
+                                        readonly
+                                    />
+                                </label>
+                                <label className='flex gap-2 items-center'>Cantidad a usar <p className='text-lg'>(máximo {maxCantidadUsar})</p></label>
+                                <Input
+                                    type="number"
+                                    value={cantidadUsar}
+                                    onChange={(e) => setCantidadUsar(e.target.value)}
+                                    min={1}
+                                    max={maxCantidadUsar}
+                                />
+                            </div>
+                            <div className='btn-terminar-registro'>
+                                <a href={'/almacen'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
+                                <button type="submit" className='boton-registrar'>Usar insumo</button>
+                            </div>
+                        </form>
+
+                    </div>
+                )}
 
                 {modalDevolucionVisible && (
                     <div className="modal-insumos">
@@ -338,21 +400,6 @@ export const Almacen = () => {
                                     onChange={(e) => setCantidadDevolver(e.target.value)}
                                     min={1}
                                     max={maxCantidadDevolver}
-                                />
-                                <label className='flex gap-2 items-center'>Cantidad consumida <p className='text-lg'>(máximo {maxCantidadDevolver})</p></label>
-                                <Input
-                                    type="number"
-                                    placeholder="Cantidad consumida"
-                                    value={cantidadConsumida}
-                                    onChange={(e) => setCantidadConsumida(e.target.value)}
-                                    min={1}
-                                    max={maxCantidadDevolver}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Registrar nota (opcional)"
-                                    value={nota}
-                                    onChange={(e) => setNota(e.target.value)}
                                 />
                             </div>
                             <div className='btn-terminar-registro'>

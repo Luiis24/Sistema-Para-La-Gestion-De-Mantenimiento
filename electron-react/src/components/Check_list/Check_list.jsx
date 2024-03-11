@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Select, SelectItem } from '@nextui-org/react';
 import { useAuth } from '../../estados/usuario';
 
 export const Check_list = ({ id_maquina }) => {
@@ -12,10 +12,22 @@ export const Check_list = ({ id_maquina }) => {
     const [horaInicio, setHoraInicio] = useState('');
     const [horaFin, setHoraFin] = useState('');
     const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
-    const {user} = useAuth();
+    const [users, setUsers] = useState([]);
+    const [formOperarios, setFormOperarios] = useState()
+    const {user, rol} = useAuth();
 
     useEffect(() => {
         fetchComponentesByMaquina();
+    }, []);
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
+            .then(datos => {
+                setUsers(datos.data);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
     }, []);
 
     const fetchComponentesByMaquina = async () => {
@@ -68,6 +80,30 @@ export const Check_list = ({ id_maquina }) => {
             );
         }
     };
+    const handleOperario = (e) => {
+            const { name, value } = e.target;
+            if (name === "nombre") {
+                // Buscar el aprendiz seleccionado
+                const selectedAprendiz = users.find(user => user.id_aprendiz === parseInt(value));
+                // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
+                setFormOperarios({
+                    ...formOperarios,
+                    [name]: value,
+                    nombre: selectedAprendiz.nombre_aprendiz,
+                    num_doc_aprendiz: selectedAprendiz.num_doc_aprendiz,
+                    ficha_aprendiz: selectedAprendiz.ficha_aprendiz,
+                    programa_aprendiz: selectedAprendiz.programa_aprendiz,
+                    equipo_aprendiz: selectedAprendiz.equipo_aprendiz
+                });
+    
+            } else {
+                // setformInsumos({
+                //     ...formInsumos,
+                //     [name]: value,
+                //     subtotal: subtotal
+                // });
+            }
+    }
 
     const handleFormSubmit = async (event) => {
         console.log('enviando')
@@ -91,11 +127,11 @@ export const Check_list = ({ id_maquina }) => {
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
-                ficha_aprendiz: user.ficha_aprendiz,
-                operario: user.nombre_aprendiz,
-                num_doc_aprendiz: user.num_doc_aprendiz,
-                programa_aprendiz: user.programa_aprendiz,
-                equipo_aprendiz: user.equipo_aprendiz
+                ficha_aprendiz: user.ficha_aprendiz ? user.ficha_aprendiz : formOperarios.ficha_aprendiz,
+                operario: user.nombre_aprendiz ? user.nombre_aprendiz : formOperarios.nombre,
+                num_doc_aprendiz: user.num_doc_aprendiz ? user.num_doc_aprendiz : formOperarios.num_doc_aprendiz,
+                programa_aprendiz: user.programa_aprendiz ? user.programa_aprendiz : formOperarios.programa_aprendiz,
+                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : formOperarios.equipo_aprendiz
             });
 
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerChecklist`, {
@@ -153,7 +189,14 @@ export const Check_list = ({ id_maquina }) => {
                     <div className="sectionOT">
                         <div className="valueOT">
                             <label>Operario:</label>
-                            <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : 'instructor'} readOnly/>
+                            {rol === 'Instructor' ? 
+                            <Select placeholder='operario' name='nombre' onChange={handleOperario}>
+                                {users.map(user => 
+                                    <SelectItem key={user.id_aprendiz} value={user.id_aprendiz}>{user.nombre_aprendiz}</SelectItem>
+                                )}
+
+                            </Select>
+                            : <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : 'instructor'} readOnly/>}
                         </div>
                         <div className="valueOT">
                             <label>N.Identificacion:</label>

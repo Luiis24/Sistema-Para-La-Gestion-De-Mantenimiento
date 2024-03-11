@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input } from "@nextui-org/react";
+import { Input, Select, SelectItem } from "@nextui-org/react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -12,6 +12,7 @@ export const Registro_almacen = () => {
     );
     const [cantidadInsumo, setCantidadInsumo] = useState("");
     const [proveedorInsumo, setProveedorInsumo] = useState("");
+    const [tipo, setTipo] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,6 +25,7 @@ export const Registro_almacen = () => {
                     fecha_llegada_insumo: fechaLlegadaInsumo,
                     cantidad_insumo: cantidadInsumo,
                     proveedor_insumo: proveedorInsumo,
+                    tipo: tipo
                 }
             );
 
@@ -45,7 +47,11 @@ export const Registro_almacen = () => {
                     <h1>Agregar un nuevo insumo</h1>
                 </div>
                 <div className='inp-registro-CM'>
-                    <div className='mt-3'>
+                    <Select onChange={(e) => setTipo(e.target.value)} isRequired placeholder='Insumo o herramienta' className='mt-3'>
+                        <SelectItem key={'insumo'} value={'insumo'}>Insumo</SelectItem>
+                        <SelectItem key={'herramienta'} value={'herramienta'}>Herramienta</SelectItem>
+                    </Select>
+                    <div>
                         <Input
                             type="text"
                             placeholder='Nombre del insumo o herramienta'

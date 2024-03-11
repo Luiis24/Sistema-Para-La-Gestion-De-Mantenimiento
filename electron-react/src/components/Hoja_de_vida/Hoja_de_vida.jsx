@@ -113,10 +113,10 @@ export const Hoja_de_vida = () => {
                                                 <label htmlFor="Nombre-hv">Nombre</label>
                                                 <Input
                                                     type="text"
-                                                    className="w-11/12 h-11"
+                                                    className="w-11/12 h-11 font-semibold"
                                                     name="Nombre-hv"
                                                     placeholder={item.nombre_equipo}
-                                                    readOnly
+                                                    isReadOnly
                                                 ></Input>
                                             </div>
                                             <div className="valueHv">

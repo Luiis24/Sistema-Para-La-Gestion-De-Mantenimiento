@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input } from '@nextui-org/react';
+import { Input, Select, SelectItem, Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
+import './Registro_componente_check.css'
 
 export const Registro_componentes_check = () => {
     const [tipoComponente, setTipoComponente] = useState('');
@@ -57,44 +58,45 @@ export const Registro_componentes_check = () => {
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
 
-            <form className='rg-caracteristicasM' onSubmit={RegistrarComponente}>
+            <form className='rg-componentes' onSubmit={RegistrarComponente}>
                 <div className="titulo-registro-CM">
-                    <h2>Registro de Componentes del Checklist para maquina {ultimaMaquina}</h2>
+                    <h2>Registro de componentes {ultimaMaquina}</h2>
+                    
                 </div>
                 <div className='inp-registro-CM'>
                 <div className='mt-3'>
-                    <label htmlFor="tipoComponente">Tipo de Componente o Sistema:</label>
-                    <select
+                    <Select
+                    placeholder='Tipo de componente o sistema'
                         id="tipoComponente"
-                        value={tipoComponente}
+                        selectedKeys={tipoComponente}
                         onChange={(event) => setTipoComponente(event.target.value)}
-                        className='w-full h-14 bg-gray-100 rounded-md p-3'
+                   
                     >
-                        <option disable selected hidden>Componente o Sistema</option>
-                        <option value="Componente Electrico">Componente Electrico</option>
-                        <option value="Componente Mecanico">Componente Mecánico</option>
-                        <option value="Estados de la Maquina">Estados de la Maquina</option>
-                        <option value="Funcionamiento Electrico">Funcionamiento Electrico</option>
-                        <option value="Motor">Motor</option>
-                        <option value="Niveles de Aceite">Niveles de Aceite</option>
-                        <option value="Sistema de Lubricacion">Sistema de Lubricación</option>
-                        <option value="Sistema Electrico">Sistema Electrico</option>
-                    </select>
+                        <SelectItem value="Componente Electrico">Componente eléctrico</SelectItem>
+                        <SelectItem value="Componente Mecanico">Componente mecánico</SelectItem>
+                        <SelectItem value="Estados de la Maquina">Estados de la máquina</SelectItem>
+                        <SelectItem value="Funcionamiento Electrico">Funcionamiento eléctrico</SelectItem>
+                        <SelectItem value="Motor">Motor</SelectItem>
+                        <SelectItem value="Niveles de Aceite">Niveles de aceite</SelectItem>
+                        <SelectItem value="Sistema de Lubricacion">Sistema de lubricación</SelectItem>
+                        <SelectItem value="Sistema Electrico">Sistema eléctrico</SelectItem>
+                    </Select>
                 </div>
 
-                <div>
-                    <label htmlFor="nombreComponente">Nombre de Componente:</label>
+                <div className='input-check'>
                     <Input
+                    className='mt-8'
                         type="text"
                         id="nombreComponente"
+                        placeholder='Nombre del componente'
                         value={nombreComponente}
                         onChange={(event) => setNombreComponente(event.target.value)}
                     />
                 </div>
                 </div>
                 <div className='btn-terminar-registro'>
-                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Terminar</h3></Link>
-                    <button type="submit" className='boton-registrar'>Registrar</button>
+                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Salir</h3></Link>
+                    <Button type="submit" className='boton-registrar'>Registrar</Button>
                 </div>
             </form>
         </div>

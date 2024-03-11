@@ -44,6 +44,7 @@ import { Actualizar_maquina } from './components/Actualizar_maquina/Actualizar_m
 import { Registro_salida_insumo } from './components/Registro_salida_insumo/Registro_salida_insumo';
 import { Actualizar_estado_ficha } from './components/Actualizar_estado_ficha/Actualizar_estado_ficha';
 import { Actualizar_tipo_maquina } from './components/Actualizar_tipo_maquina/Actualizar_tipo_maquina';
+import { Herramientas } from './components/Herramientas/Herramientas';
 
 const router = createBrowserRouter([
   {
@@ -124,8 +125,8 @@ const router = createBrowserRouter([
     element: <><Registro_componentes_check /><Animacion_cuadros /></>
   },
   {
-    path: "/insumos",
-    element: <><Insumos /></>
+    path: "/herramientas",
+    element: <><Herramientas /></>
   },
   {
     path: "/entradaAlmacen",

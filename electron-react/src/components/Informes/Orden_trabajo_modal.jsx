@@ -178,20 +178,25 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                             </div>
 
                             <div className="containerOT">
-                                <div className="section-modal-ot">
-                                    {operarios && operarios.map((operario, index) => (
-                                        <div key={index}>
-                                            <div className="valueOT">
-                                                <label>Documento</label>
-                                                <h3 className='w-11/12 h-11'>{operario.documento}</h3>
-                                            </div>
-                                            <div className="valueOT">
-                                                <label>Nombre</label>
-                                                <h3 className='w-11/12 h-11'>{operario.nombre}</h3>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                {operarios ?
+                                    <Table className='w-[50%] m-auto'>
+                                        <TableHeader>
+                                            <TableColumn className='text-base'>Nombre</TableColumn>
+                                            <TableColumn className='text-base'>Documento</TableColumn>
+                                        </TableHeader>
+                                        <TableBody>
+
+                                            {operarios.map((operario, index) =>
+                                                <TableRow key={index}>
+                                                    <TableCell className='text-lg'>{operario.nombre}</TableCell>
+                                                    <TableCell className='text-lg'>{operario.documento}</TableCell>
+                                                </TableRow>
+                                            )}
+
+                                        </TableBody>
+                                    </Table>
+                                    : ''}
+
                             </div>
 
                             <hr />
@@ -211,31 +216,33 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                                 <h3>Insumos utilizados</h3>
                             </div>
                             <hr />
+                            {insumosUtilizados ?
+                                <Table className='w-[80%] m-auto'>
+                                    <TableHeader>
+                                        <TableColumn className='text-base'>Nombre</TableColumn>
+                                        <TableColumn className='text-base'>Cantidad</TableColumn>
+                                        <TableColumn className='text-base'>Unidad</TableColumn>
+                                        <TableColumn className='text-base'>Valor unitario</TableColumn>
+                                        <TableColumn className='text-base'>Subtotal</TableColumn>
+                                        <TableColumn className='text-base'>id orden</TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
 
-                            <Table>
-                                <TableHeader>
-                                    <TableColumn>Nombre</TableColumn>
-                                    <TableColumn>Cantidad</TableColumn>
-                                    <TableColumn>Unidad</TableColumn>
-                                    <TableColumn>Valor unitario</TableColumn>
-                                    <TableColumn>Subtotal</TableColumn>
-                                    <TableColumn>id orden</TableColumn>
-                                </TableHeader>
-                                <TableBody>
+                                        {insumosUtilizados.map(insumo =>
+                                            <TableRow>
+                                                <TableCell className='text-lg'>{insumo.nombre_insumo_ot}</TableCell>
+                                                <TableCell className='text-lg'>{insumo.cantidad_insumo_ot}</TableCell>
+                                                <TableCell className='text-lg'>{insumo.unidad_insumo_ot}</TableCell>
+                                                <TableCell className='text-lg'>{insumo.valor_insumo_ot}</TableCell>
+                                                <TableCell className='text-lg'>{insumo.subtotal_insumo_ot}</TableCell>
+                                                <TableCell className='text-lg'>{insumo.id_orden_de_trabajo}</TableCell>
+                                            </TableRow>
+                                        )}
 
-                                    {insumosUtilizados.map(insumo =>
-                                        <TableRow>
-                                            <TableCell>{insumo.nombre_insumo_ot}</TableCell>
-                                            <TableCell>{insumo.cantidad_insumo_ot}</TableCell>
-                                            <TableCell>{insumo.unidad_insumo_ot}</TableCell>
-                                            <TableCell>{insumo.valor_insumo_ot}</TableCell>
-                                            <TableCell>{insumo.subtotal_insumo_ot}</TableCell>
-                                            <TableCell>{insumo.id_orden_de_trabajo}</TableCell>
-                                        </TableRow>
-                                    )}
+                                    </TableBody>
+                                </Table>
+                                : ''}
 
-                                </TableBody>
-                            </Table>
                         </div>
                     )}
 

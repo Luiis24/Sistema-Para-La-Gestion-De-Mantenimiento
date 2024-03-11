@@ -107,6 +107,7 @@ export const Registro_descripcion_equipo_hv = () => {
             <div className="fila-1-responsive">
               <div>
                 <Select
+                isDisabled
                   className="sel-equip"
                   placeholder="Selecciona máquina"
                   selectedKeys={selectedMaquina}

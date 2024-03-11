@@ -28,7 +28,7 @@ export const Orden_trabajo_maquina = () => {
 
 
   const { id_maquina } = useParams();
-  const { user } = useAuth();
+  const { user, rol } = useAuth();
 
   useEffect(() => {
     // Cargar valores del formulario desde el almacenamiento local o una base de datos
@@ -60,7 +60,7 @@ export const Orden_trabajo_maquina = () => {
         totalInsumos += insumo.subtotal; // Sumar el subtotal de cada insumo
       });
 
-      const response = await axios.post('http://localhost:4002/registerOrdenTrabajo', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerOrdenTrabajo`, {
         fecha_inicio_ot: formOT.fecha_inicio_ot,
         hora_inicio_ot: formOT.hora_inicio_ot,
         fecha_fin_ot: formOT.fecha_fin_ot,
@@ -80,7 +80,7 @@ export const Orden_trabajo_maquina = () => {
         costo_mantenimiento: totalInsumos + (parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora)),
         id_maquina: maquinaid.id_maquina,
         id_aprendiz: userId,
-        programa_formacion_ot: user.programa_aprendiz,
+        programa_formacion_ot: user.programa_aprendiz ? user.programa_aprendiz : formOT.programa_formacion,
         ficha_ot: user.ficha_aprendiz,
         operarios_ot: operarios_ot
       });
@@ -95,19 +95,24 @@ export const Orden_trabajo_maquina = () => {
         }
 
         // Verificar si el insumo es consumible o no consumible
-        if (insumo.consumible === "consumible") {
-          // Realizar la salida de insumo Consumible
-          await axios.post(`${process.env.REACT_APP_API_BASE_URL}/SalidaInsumo`, {
-            id_insumo: insumo.id_insumo,
-            cantidad_insumo: insumo.cantidad
-          });
-        } else {
-          // Realizar la solicitud para registrar el uso del insumo No consumible
-          await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
-            id_insumo: insumo.id_insumo,
-            cantidad: insumo.cantidad
-          });
-        }
+        // if (insumo.consumible === "consumible") {
+        //   // Realizar la salida de insumo Consumible
+        //   await axios.post(`${process.env.REACT_APP_API_BASE_URL}/SalidaInsumo`, {
+        //     id_insumo: insumo.id_insumo,
+        //     cantidad_insumo: insumo.cantidad
+        //   });
+        // } else {
+        //   // Realizar la solicitud para registrar el uso del insumo No consumible
+        //   await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
+        //     id_insumo: insumo.id_insumo,
+        //     cantidad: insumo.cantidad
+        //   });
+        // }
+        
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
+          id_insumo: insumo.id_insumo,
+          cantidad: insumo.cantidad
+        });
 
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerInsumosUtilizados`, {
           nombre_insumo_ot: insumo.nombre,
@@ -268,7 +273,13 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='ficha_ot'>Ficha</label>
-                <Input type='search' className='w-11/12 h-11' name='ficha_ot' value={user.ficha_aprendiz} disabled></Input>
+                {rol === 'Instructor' ?
+                <Select>
+                  <SelectItem>sisa</SelectItem>
+                </Select> 
+                : <Input type='search' className='w-11/12 h-11' name='ficha_ot' value={user.ficha_aprendiz} disabled></Input>
+                }
+
               </div>
 
             </div>

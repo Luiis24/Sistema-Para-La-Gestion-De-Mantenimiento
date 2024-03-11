@@ -152,6 +152,7 @@ export const Insumos = () => {
             <div className="containerM">
                 <div className="navHorizontal">
                     <h2 id='active'>Lista de Insumos</h2>
+                    <h2>Herramientas</h2>
                 </div>
 
                 <div className='filtersInsumosUso'>
