@@ -8,24 +8,32 @@ import { Orden_trabajo_modal } from './Orden_trabajo_modal';
 import menu from '../../img/menu.png'
 import { format } from "date-fns";
 
+
 export const Informes = () => {
     const [ordenesTrabajo, setOrdenesTrabajo] = useState([]);
     const [ordenTrabajo, setOrdenTrabajo] = useState([]);
     const [insumosUtilizados, setInsumosUtilizados] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [tipoTrabajo, setTipoTrabajo] = useState()
-    const [tipoMantenimiento, setTipoMantenimiento] = useState()
-    const [tipoSistema, setTipoSistema] = useState()
+    const [maquinas, setMaquinas] = useState()
     const [filters, setFilters] = useState({
         tipoTrabajo: "all",
         tipoMantenimiento: "all",
-        tipoSistema:"all"
+        tipoSistema:"all",
+        maquina:"all"
     });
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/getOrdenesTrabajo`)
             .then(datos => {
                 setOrdenesTrabajo(datos.data);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+
+            axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`)
+            .then(datos => {
+                setMaquinas(datos.data);
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
@@ -63,7 +71,9 @@ export const Informes = () => {
                 (filters.tipoMantenimiento === "all" ||
                     orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
                 (filters.tipoSistema === "all" ||
-                    orden.tipo_de_sistema === filters.tipoSistema)
+                    orden.tipo_de_sistema === filters.tipoSistema) &&
+                (filters.maquina === "all" ||
+                    orden.nombre_maquina === filters.maquina)
             );
         });
     };
@@ -115,7 +125,14 @@ export const Informes = () => {
                 <div className="containerInformes">
 
                     <div className="filtersUsuarios">
-                        <Select className='w-11/12 h-11' placeholder="Tipo de trabajo" onChange={(e) => { setTipoTrabajo(e.target.value); handleEstado('tipoTrabajo', e.target.value); }}>
+                        <Select className='w-11/12 h-11' placeholder="Maquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
+                            <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
+                            {maquinas? maquinas.map(maquina => 
+                                <SelectItem key={maquina.nombre_maquina} value={maquina.nombre_maquina}>{maquina.nombre_maquina}</SelectItem> 
+                                ) : ''}
+                        </Select>
+
+                        <Select className='w-11/12 h-11' placeholder="Tipo de trabajo" onChange={(e) => { handleEstado('tipoTrabajo', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                             <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
@@ -127,7 +144,7 @@ export const Informes = () => {
                             <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Tipo de mantenimiento' onChange={(e) => { setTipoMantenimiento(e.target.value); handleEstado('tipoMantenimiento', e.target.value); }}>
+                        <Select className='w-11/12 h-11' placeholder='Tipo de mantenimiento' onChange={(e) => { handleEstado('tipoMantenimiento', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                             <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
@@ -144,7 +161,7 @@ export const Informes = () => {
                             <SelectItem value='de reemplazo' key='de reemplazo'>De reemplazo</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Tipo de sistema' onChange={(e) => { setTipoSistema(e.target.value); handleEstado('tipoSistema', e.target.value); }}>
+                        <Select className='w-11/12 h-11' placeholder='Tipo de sistema' onChange={(e) => { handleEstado('tipoSistema', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
                             <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
@@ -169,11 +186,11 @@ export const Informes = () => {
                             <TableColumn className='text-lg'>Fecha fin</TableColumn>
                             <TableColumn className='text-lg'>Costo</TableColumn>
                         </TableHeader>
-                        <TableBody emptyContent={"No disponible."}>
+                        <TableBody emptyContent={"No se encontro."}>
                             {filteredOrdenes.map((orden) => {
                                 return (
                                     <TableRow key={orden.id_orden_de_trabajo} onClick={() => { handleInfoOT(orden.id_orden_de_trabajo); handleInfoIU(orden.id_orden_de_trabajo) }} className='cursor-pointer'>
-                                        <TableCell>{orden.id_maquina}</TableCell>
+                                        <TableCell>{orden.nombre_maquina}</TableCell>
                                         <TableCell>{orden.tipo_de_trabajo}</TableCell>
                                         <TableCell>{orden.tipo_de_mantenimiento}</TableCell>
                                         <TableCell>{orden.tipo_de_sistema}</TableCell>
@@ -192,6 +209,7 @@ export const Informes = () => {
             {modalVisible && (
                 <Orden_trabajo_modal ordenTrabajo={ordenTrabajo} insumosUtilizados={insumosUtilizados} />
             )}
+
         </div>
     )
 }

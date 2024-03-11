@@ -4,7 +4,7 @@ import axios from 'axios'
 import './Tabla_insumos_ot.css'
 import { DeleteIcon } from "./DeleteIcon";
 
-export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsados }) => {
+export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsados, handleDeleteInsumos }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rows, setRows] = useState([]);
     const [maxCantidad, setMaxCantidad] = useState();
@@ -21,17 +21,33 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
     }, []);
 
     const deleteRow = (id) => {
-        setRows(rows.filter((_, idx) => idx !== id))
+        setRows(rows.filter((_, idx) => idx !== id));
+
+        handleDeleteInsumos(id);
     }
 
     const addRow = (newRow) => {
         setRows([...rows, newRow])
     }
 
+    // Restablecer el formulario
+    const resetForm = () => {
+        setformInsumos({
+            cantidad: "",
+            consumible: "",
+            id_insumo: null,
+            nombre: "",
+            subtotal: null,
+            unidad: "",
+            valorUnidad: "",
+        });
+        setMaxCantidad(null);
+    }
+
     const validarformInsumos = () => {
-        const { nombre, cantidad, unidad, valorUnidad } = formInsumos;
+        const { nombre, cantidad, unidad, valorUnidad, consumible } = formInsumos;
         // Verificar si todos los campos requeridos están llenos
-        if (nombre && cantidad && unidad && valorUnidad) {
+        if (nombre && cantidad && unidad && valorUnidad && consumible) {
             return true;
         } else {
             return false;
@@ -65,7 +81,6 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                 subtotal: subtotal
             });
         }
-        console.log(formInsumos);
     }
 
     const handleSubmit = async (e) => {
@@ -77,6 +92,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
 
         addRow(formInsumos);
         handleInsumosUsados(formInsumos);
+        resetForm();
     }
     return (
         <div>
@@ -128,31 +144,30 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                             <ModalBody className="modalIOT">
                                 <div className="formInsumosIOT">
                                     <label htmlFor="nombre">Nombre</label>
-                                    <select
+                                    <Select
                                         name="nombre"
                                         onChange={handleChange}
-                                        className="select_insumosOT"
+                                        placeholder="Nombre"
                                     >
-                                        <option selected disabled hidden>Nombre</option>
                                         {insumos.map((insumo) => {
                                             // Verificar si la cantidad disponible es mayor que 0
                                             if (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) {
                                                 return (
-                                                    <option value={insumo.id_insumos} key={insumo.id_insumos}>
+                                                    <SelectItem value={insumo.id_insumos} key={insumo.id_insumos}>
                                                         {insumo.nombre_insumo}({insumo.cantidad_insumo - insumo.insumos_en_uso})
-                                                    </option>
+                                                    </SelectItem>
                                                 );
                                             } else {
                                                 return null; // No agregar la opción al select si la cantidad es 0
                                             }
                                         })}
-                                    </select>
+                                    </Select>
                                 </div>
                                 <div className="formInsumosIOT">
-                                    <select name="consumible" onChange={handleChange} placeholder="Insumo o herramienta" className="select_insumosOT">
-                                        <option value={'consumible'}>Consumible</option>
-                                        <option value={'noConsumible'}>No consumible</option>
-                                    </select>
+                                    <Select name="consumible" onChange={handleChange} placeholder="Es consumible">
+                                        <SelectItem value={'consumible'} key={'consumible'}>Consumible</SelectItem>
+                                        <SelectItem value={'No consumible'} key={'No consumible'}>No consumible</SelectItem>
+                                    </Select>
                                 </div>
                                 <div className="formInsumosIOT">
                                     <Input

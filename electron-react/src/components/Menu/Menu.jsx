@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../estados/usuario";
 import { Avatar, AvatarIcon } from "@nextui-org/react";
 import { Titulo_sena_cb } from "../Titulo_sena_cb/Titulo_sena_cb";
+import { Notificaciones } from "../Notificaciones/Notificaciones";
 
 
 export const Menu = () => {
@@ -85,11 +86,12 @@ export const Menu = () => {
                                 <img src={cerrarSesion} alt='Cerrar Sesion' />
                             </Link>
                         </div>
-                        <div className="iconP">
-                            <Link>
+                        {/* <div className="iconP">
+                            <Link to={'/notificaciones'}>
                                 <img src={campana} alt='Notificaciones'/>
                             </Link>
-                        </div>
+                        </div> */}
+                        <Notificaciones/>
                         <div className="iconP">
                             <img src={informacion} alt='Mas Informacion'/>
                         </div>

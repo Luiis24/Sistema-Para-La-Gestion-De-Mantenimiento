@@ -532,11 +532,11 @@ const getOrdenTrabajoById = (req, res) => {
 
 const registerOrdenTrabajo = (req, res) => {
   console.log(req.body);
-  const { fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz } = req.body;
+  const { fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz, programa_formacion_ot, ficha_ot, operarios_ot } = req.body;
 
   pool.query(
-    'INSERT INTO public.orden_de_trabajo(fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz) VALUES ($1, $2, $3,$4, $5, $6,$7, $8, $9,$10, $11, $12,$13, $14, $15, $16, $17)',
-    [fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz],
+    'INSERT INTO public.orden_de_trabajo(fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz, programa_formacion_ot, ficha_ot, operarios_ot) VALUES ($1, $2, $3,$4, $5, $6,$7, $8, $9,$10, $11, $12,$13, $14, $15, $16, $17, $18, $19, $20)',
+    [fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz, programa_formacion_ot, ficha_ot, operarios_ot],
     (error) => {
       if (error) {
         console.error('Error al registrar orden de trabajo en la base de datos', error);
@@ -597,7 +597,7 @@ const getInsumosUtilizados = (req, res) => {
 
 const getInsumosUtilizadosAlmacen = (req, res) => {
   const {id_insumo} = req.body
-  pool.query('SELECT * FROM insumos_usados_ot WHERE id_insumos = $1', [id_insumo], (error, results) => {
+  pool.query('SELECT * FROM insumos_usados_ot WHERE id_insumos = $1 AND id_orden_de_trabajo IN (SELECT id_orden_de_trabajo FROM orden_de_trabajo WHERE fecha_fin_ot > CURRENT_DATE)', [id_insumo], (error, results) => {
     if (error) {
       console.error('Error al obtener los insumos utilizados', error);
       return res.status(500).json({ error: 'Error al obtener los insumos utilizados' });
@@ -1019,7 +1019,7 @@ const getHistorialReparacionesById = async (id_maquina) => {
 // Ordenes de trabajo (Get)
 
 const GetOrdenesTrabajo = async (req, res) => {
-  pool.query('SELECT * FROM orden_de_trabajo', (error, result) => {
+  pool.query('SELECT orden_de_trabajo.*, maquinas.nombre_maquina FROM orden_de_trabajo JOIN maquinas ON orden_de_trabajo.id_maquina = maquinas.id_maquina;', (error, result) => {
     if (error) {
       console.error('Error al consultar la base de datos', error);
       return res.status(500).json({ error: 'Error al obtener la lista de ordenes de trabajo' });
@@ -1033,7 +1033,7 @@ const GetOrdenesTrabajo = async (req, res) => {
 
 const GetOrdenTrabajo = async (req, res) => {
   const { id } = req.body;
-  pool.query('SELECT * FROM orden_de_trabajo WHERE id_orden_de_trabajo = $1', [id],
+  pool.query('SELECT orden_de_trabajo.*, maquinas.nombre_maquina FROM orden_de_trabajo JOIN maquinas ON orden_de_trabajo.id_maquina = maquinas.id_maquina WHERE orden_de_trabajo.id_orden_de_trabajo = $1;', [id],
     (error, result) => {
       if (error) {
         console.error('Error al consultar la base de datos', error);
@@ -1321,6 +1321,32 @@ const actualizarMaquina = async (req, res) => {
   }
 };
 
+// actualizar informacion tipo maquina
+
+const actualizarTipoMaquina = async (req, res) => {
+  const { id_tipo_maquina, nombre_tipo_maquina, descripcion_tipo_maquina} = req.body;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM tipo_maquina WHERE id_tipo_maquina = $1",
+      [id_tipo_maquina]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Tipo de maquina no encontrada" });
+    }
+
+    await pool.query(
+      "UPDATE tipo_maquina SET nombre_tipo_maquina=$1, descripcion_tipo_maquina=$2 WHERE id_tipo_maquina = $3;",
+      [nombre_tipo_maquina, descripcion_tipo_maquina, id_tipo_maquina]
+    );
+
+    res.status(200).json({ message: "Informacion de tipo de maquina actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+// actualizar estado de aprendiz
 const actualizarAprendiz = async (req, res) => {
   const { aprendizSelected, estado} = req.body;
   try {
@@ -1344,6 +1370,7 @@ const actualizarAprendiz = async (req, res) => {
   }
 };
 
+// actualizar estado de ficha
 const actualizarFicha = async (req, res) => {
   const { ficha_aprendiz, estado} = req.body;
   try {
@@ -1367,24 +1394,24 @@ const actualizarFicha = async (req, res) => {
   }
 };
 
+// actualizar cantidad Salida
 const actualizarSalidaInsumo = async (req, res) => {
   const { id_insumo, cantidad_insumo } = req.body;
   try {
-    // Retrieve the current quantity of the insumo from the database
+
     const currentInsumo = await pool.query(
       "SELECT cantidad_insumo FROM insumos WHERE id_insumos = $1",
       [id_insumo]
     );
 
-    // Ensure that the insumo exists
+    // Asegurar que el insumo exista
     if (currentInsumo.rows.length === 0) {
       return res.status(404).json({ message: "Insumo no encontrado" });
     }
 
-    // Calculate the updated quantity by subtracting cantidad_insumo from the current quantity
+    // Calcular que cantidad queda
     const updatedQuantity = currentInsumo.rows[0].cantidad_insumo - cantidad_insumo;
 
-    // Update the quantity in the database
     await pool.query(
       "UPDATE insumos SET cantidad_insumo = $1 WHERE id_insumos = $2;",
       [updatedQuantity, id_insumo]
@@ -1396,10 +1423,22 @@ const actualizarSalidaInsumo = async (req, res) => {
   }
 };
 
-const insumosADevolver = async (req, res) => {
+// const insumosADevolver = async (req, res) => {
+//   try {
+//     const result = await pool.query(
+//       "SELECT iuot.id_insumos, iuot.cantidad_insumo_ot FROM insumos_usados_ot iuot JOIN orden_de_trabajo ot ON iuot.id_orden_de_trabajo = ot.id_orden_de_trabajo WHERE ot.fecha_fin_ot <= NOW();"
+//     )
+//     res.status(200).json(result.rows)
+//   } catch(error){
+//     res.status(500).json({message: "Error en la base de datos"})
+//   }
+// }
+
+// componentes en mal estado
+const componentesAAlertar = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT iuot.id_insumos, iuot.cantidad_insumo_ot FROM insumos_usados_ot iuot JOIN orden_de_trabajo ot ON iuot.id_orden_de_trabajo = ot.id_orden_de_trabajo WHERE ot.fecha_fin_ot <= NOW();"
+      "SELECT c.*, m.*, cc.* FROM checklist c INNER JOIN ( SELECT id_maquina, MAX(num_inspeccion) AS max_num_inspeccion FROM checklist GROUP BY id_maquina ) t ON c.id_maquina = t.id_maquina AND c.num_inspeccion = t.max_num_inspeccion INNER JOIN maquinas m ON c.id_maquina = m.id_maquina INNER JOIN componentes_checklist cc ON c.id_componente = cc.id_componente WHERE c.estado_componente = 'alertar'"
     )
     res.status(200).json(result.rows)
   } catch(error){
@@ -1461,12 +1500,14 @@ module.exports = {
   GetOrdenTrabajo,
 
   actualizarMaquina,
+  actualizarTipoMaquina,
   actualizarAprendiz,
   actualizarFicha,
   registerInsumosUtilizados,
   getInsumosUtilizados,
   getInsumosUtilizadosAlmacen,
-  insumosADevolver,
-  actualizarSalidaInsumo
+  // insumosADevolver,
+  actualizarSalidaInsumo,
+  componentesAAlertar
 };
 

@@ -4,7 +4,7 @@ import axios from 'axios'
 import './Tabla_macanicos.css'
 import { DeleteIcon } from "../Tabla_insumos_ot/DeleteIcon";
 
-export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
+export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOperarios, handleDeleteRow }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rowsMecanicos, setrowsMecanicos] = useState([]);
     const [selectedAprendiz, setSelectedAprendiz] = useState(null);
@@ -30,11 +30,23 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
     }
 
     const deleteRow = (id) => {
-        setrowsMecanicos(rowsMecanicos.filter((_, idx) => idx !== id))
+        setrowsMecanicos(rowsMecanicos.filter((_, idx) => idx !== id));
+
+        handleDeleteRow(id);
     }
 
     const addRow = (newRow) => {
         setrowsMecanicos([...rowsMecanicos, newRow])
+    }
+
+    const validarformInsumos = () => {
+        const { nombre, documento } = formMecanicos;
+        // Verificar si todos los campos requeridos están llenos
+        if (nombre && documento) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     const handleChange = (e) => {
@@ -55,7 +67,14 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
 
 
     const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (!validarformInsumos()) {
+            return;
+        }
+
         addRow(formMecanicos);
+        handleOperarios(formMecanicos)
         resetForm();
     }
 

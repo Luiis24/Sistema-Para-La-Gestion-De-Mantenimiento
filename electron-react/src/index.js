@@ -5,15 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { NextUIProvider } from "@nextui-org/react";
 import { UsuarioProvider } from './estados/usuario';
-import { Registro_caracteristicas_motor } from './components/Registro_caracteristicas_motor/Registro_caracteristicas_motor';
-import Registro_descripcion_equipo_hv from './components/Registro_descripcion_equipo_hv/Registro_descripcion_equipo_hv';
+import { LoadingProvider } from './estados/spinner';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UsuarioProvider>
       <NextUIProvider>
+        <LoadingProvider>
         <App/>
+        </LoadingProvider>
       </NextUIProvider>
     </UsuarioProvider>
   </React.StrictMode>

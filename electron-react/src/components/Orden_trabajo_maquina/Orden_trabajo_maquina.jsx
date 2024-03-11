@@ -22,25 +22,13 @@ export const Orden_trabajo_maquina = () => {
   });
 
   const [formMecanicos, setFormMecanicos] = useState()
+  const [operarios_ot, setOperarios_ot] = useState([])
   const [formInsumos, setformInsumos] = useState([])
   const [formInsumosUtilizados, setformInsumosUtilizados] = useState([])
 
-  const [tipoTrabajo, setTipoTrabajo] = useState()
-  const [tipoMantenimiento, setTipoMantenimiento] = useState()
-  const [tipoSistema, setTipoSistema] = useState()
 
   const { id_maquina } = useParams();
   const { user } = useAuth();
-
-  const [formValues, setFormValues] = useState({
-    fecha_inicio_ot: "",
-    hora_inicio_ot: "",
-    fecha_fin_ot: "",
-    hora_fin_ot: "",
-    total_horas_ot: "",
-    precio_hora: "",
-    descripcion_de_trabajo: "",
-  });
 
   useEffect(() => {
     // Cargar valores del formulario desde el almacenamiento local o una base de datos
@@ -77,24 +65,24 @@ export const Orden_trabajo_maquina = () => {
         hora_inicio_ot: formOT.hora_inicio_ot,
         fecha_fin_ot: formOT.fecha_fin_ot,
         hora_fin_ot: formOT.hora_fin_ot,
-        // p_formacion: user.programa_aprendiz, 
         total_horas_ot: formOT.total_horas_ot,
         precio_hora: formOT.precio_hora,
         total_mano_obra: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
-        // ficha_ot: user.ficha_aprendiz, 
-        tipo_de_trabajo: tipoTrabajo,
-        tipo_de_mantenimiento: tipoMantenimiento,
-        tipo_de_sistema: tipoSistema,
+        tipo_de_trabajo: formOT.tipoTrabajo,
+        tipo_de_mantenimiento: formOT.tipoMantenimiento,
+        tipo_de_sistema: formOT.tipoSistema,
         descripcion_de_trabajo: formOT.descripcion_de_trabajo,
         // ubicacion_ot: formOT.ubicacion_ot, 
-        // nombre_maquina_ot: maquinaid.nombre_maquina, 
-        // mecanicos_responsables: formMecanicos,
+        // nombre_maquina_ot: maquinaid.nombre_maquina,
         subtotal_ot: totalInsumos,
         iva: 1,
         total_precio_horas: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
         costo_mantenimiento: totalInsumos + (parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora)),
         id_maquina: maquinaid.id_maquina,
-        id_aprendiz: userId
+        id_aprendiz: userId,
+        programa_formacion_ot: user.programa_aprendiz,
+        ficha_ot: user.ficha_aprendiz,
+        operarios_ot: operarios_ot
       });
 
       const ordenDeTrabajoId = response.data.id_orden_de_trabajo;
@@ -106,11 +94,20 @@ export const Orden_trabajo_maquina = () => {
           return;
         }
 
-        // Realizar la solicitud para registrar el uso del insumo
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
-          id_insumo: insumo.id_insumo,
-          cantidad: insumo.cantidad
-        });
+        // Verificar si el insumo es consumible o no consumible
+        if (insumo.consumible === "consumible") {
+          // Realizar la salida de insumo Consumible
+          await axios.post(`${process.env.REACT_APP_API_BASE_URL}/SalidaInsumo`, {
+            id_insumo: insumo.id_insumo,
+            cantidad_insumo: insumo.cantidad
+          });
+        } else {
+          // Realizar la solicitud para registrar el uso del insumo No consumible
+          await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
+            id_insumo: insumo.id_insumo,
+            cantidad: insumo.cantidad
+          });
+        }
 
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerInsumosUtilizados`, {
           nombre_insumo_ot: insumo.nombre,
@@ -153,11 +150,31 @@ export const Orden_trabajo_maquina = () => {
     registrarOrdenDeTrabajo(formOT);
   }
 
+  // traer insumos utilizados de tabla insumos
   const handleInsumosUsados = async (insumo) => {
-    // Crea una copia del array actual y luego agrega el nuevo insumo
+
     const updatedInsumos = [...formInsumosUtilizados, insumo];
     // Actualiza el estado con la nueva copia del array
     setformInsumosUtilizados(updatedInsumos);
+  }
+
+  const handleDeleteInsumos = (id) => {
+    const updatedInsumos = formInsumosUtilizados.filter((_, idx) => idx !== id);
+    setformInsumosUtilizados(updatedInsumos);
+  }
+
+  // traer operarios de tabla mecanicos
+  const handleOperarios = async (operario) => {
+
+    const updatedOperarios = [...operarios_ot, operario];
+    // Actualiza el estado con la nueva copia del array
+    setOperarios_ot(updatedOperarios);
+  }
+
+  const handleDeleteRow = (id) => {
+
+    const updatedOperarios = operarios_ot.filter((_, idx) => idx !== id);
+    setOperarios_ot(updatedOperarios);
   }
 
   return (
@@ -196,7 +213,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT? formOT.fecha_inicio_ot : ''}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
@@ -229,7 +246,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='precio_hora'>Precio Hora-Hombre</label>
-                <Input type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : ''}
+                <Input type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : '00.0'}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -240,7 +257,7 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_mano_obra'>Total Mano De Obra</label>
-                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' isDisabled value={formOT?.precio_hora * formOT?.total_horas_ot}
+                <Input type="number" name='total_mano_obra' placeholder="0.00" className='w-11/12 h-11' value={formOT?.precio_hora * formOT?.total_horas_ot}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -268,23 +285,12 @@ export const Orden_trabajo_maquina = () => {
           <div className="containerOT">
             <div className="sectionOT">
               <div className="valueOT">
-                <label htmlFor='ubicacion_ot'>Ubicacion (lugar donde se realiza el trabajo)</label>
-                <Input type='text' className='w-11/12 h-11' name='ubicacion_ot' onChange={handleChange} />
-              </div>
-              <div className="valueOT">
-                <label htmlFor='nombre_maquina_ot'>Nombre de la maquina o equipo al intervenir</label>
+                <label htmlFor='nombre_maquina_ot'>Nombre de la maquina o equipo</label>
                 <Input type='text' name='nombre_maquina_ot' className='w-11/12 h-11' value={maquinaid ? maquinaid.nombre_maquina : ''} disabled onChange={handleChange} />
               </div>
               <div className="valueOT">
-                <label htmlFor='id_maquina'>Codigo de la maquina o equipo</label>
-                <Input type='number' name='id_maquina' className='w-11/12 h-11' value={maquinaid ? maquinaid.id_maquina : ''} disabled onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="sectionOT">
-              <div className="valueOT">
-                <label>Tipo De Trabajo</label>
-                <Select className='w-11/12 h-11' placeholder='Tipo de trabajo' onChange={(e) => { setTipoTrabajo(e.target.value) }}>
+                <label>Tipo de trabajo</label>
+                <Select className='w-11/12 h-11' placeholder={formOT ? formOT.tipoTrabajo : 'Tipo de trabajo'} name='tipoTrabajo' onChange={handleChange}>
                   <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                   <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
                   <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
@@ -295,9 +301,12 @@ export const Orden_trabajo_maquina = () => {
                   <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
                 </Select>
               </div>
+            </div>
+
+            <div className="sectionOT">
               <div className="valueOT">
-                <label>Tipo De Mantenimiento</label>
-                <Select className='w-11/12 h-11' placeholder='Correctivo no planificado' onChange={(e) => { setTipoMantenimiento(e.target.value) }}>
+                <label>Tipo de mantenimiento</label>
+                <Select className='w-11/12 h-11' placeholder={formOT ? formOT.tipoMantenimiento : 'Tipo de mantenimiento'} name='tipoMantenimiento' onChange={handleChange}>
                   <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                   <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
                   <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
@@ -314,8 +323,8 @@ export const Orden_trabajo_maquina = () => {
                 </Select>
               </div>
               <div className="valueOT">
-                <label>Tipo De Sistema</label>
-                <Select className='w-11/12 h-11' placeholder='Mecanico' onChange={(e) => { setTipoSistema(e.target.value) }}>
+                <label>Tipo de sistema</label>
+                <Select className='w-11/12 h-11' placeholder={formOT ? formOT.tipoSistema : 'Tipo de sistema'} name='tipoSistema' onChange={handleChange}>
                   <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
                   <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
                   <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>
@@ -331,7 +340,7 @@ export const Orden_trabajo_maquina = () => {
             </div>
           </div>
 
-          <Tabla_mecanicos_ot formMecanicos={formMecanicos} setFormMecanicos={setFormMecanicos} />
+          <Tabla_mecanicos_ot formMecanicos={formMecanicos} setFormMecanicos={setFormMecanicos} handleOperarios={handleOperarios} handleDeleteRow={handleDeleteRow} />
 
           <hr />
           <div className="tituloSeccionOT">
@@ -354,7 +363,7 @@ export const Orden_trabajo_maquina = () => {
           </div>
           <hr />
 
-          <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} handleInsumosUsados={handleInsumosUsados} />
+          <Tabla_insumos_ot formInsumos={formInsumos} setformInsumos={setformInsumos} handleInsumosUsados={handleInsumosUsados} handleDeleteInsumos={handleDeleteInsumos} />
           <hr></hr>
           {/* <Button type='submit'>Registrar orden de trabajo</Button> */}
           <div className="button-inp flex justify-center btn-registrarIOT">

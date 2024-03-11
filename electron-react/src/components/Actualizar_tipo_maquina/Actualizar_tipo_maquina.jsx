@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Input, Select, SelectItem} from '@nextui-org/react';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const Actualizar_maquina = () => {
-    const [nombre_maquina, setNombre_maquina] = useState('');
-    const [manual_maquina, setManual_maquina] = useState('');
+export const Actualizar_tipo_maquina = () => {
+    const [nombre_tipo_maquina, setNombre_tipo_maquina] = useState('');
+    const [descripcion, setDescripcion] = useState('');
     const [maquina, setMaquina] = useState([]);
     const [selectedMaquina, setSelectedMaquina] = useState('');
 
@@ -15,10 +15,10 @@ export const Actualizar_maquina = () => {
         // Cargar tipos de máquina al montar el componente
         const fetchTiposMaquina = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/tipoMaquinas`);
                 setMaquina(response.data);
             } catch (error) {
-                console.error('Error al obtener máquina', error);
+                console.error('Error al obtener tipo de máquinas', error);
             }
         };
 
@@ -29,17 +29,17 @@ export const Actualizar_maquina = () => {
         event.preventDefault();
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarMaquina`, {
-                id_maquina: selectedMaquina,
-                nombre_maquina: nombre_maquina,
-                manual_maquina: manual_maquina,
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarTipoMaquina`, {
+                id_tipo_maquina: selectedMaquina,
+                nombre_tipo_maquina: nombre_tipo_maquina,
+                descripcion_tipo_maquina: descripcion,
             });
 
-            toast.success('Máquina actualizada exitosamente');
+            toast.success('Tipo máquina actualizada exitosamente');
             window.location.href = '/tornos'
             
         } catch (error) {
-            toast.error('Error al actualizar la máquina');
+            toast.error('Error al actualizar el tipo máquina');
         }
     };
 
@@ -49,7 +49,7 @@ export const Actualizar_maquina = () => {
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
-                    <h1>Actualizar informacion máquina</h1>
+                    <h1>Actualizar tipo de máquina</h1>
                 </div>
                 <div className='inp-registro-CM'>
                     <Select
@@ -59,8 +59,8 @@ export const Actualizar_maquina = () => {
                         placeholder='Seleccione la máquina'
                     >
                         {maquina.map((tipo) => (
-                            <SelectItem key={tipo.id_maquina} value={tipo.id_maquina}>
-                                {tipo.nombre_maquina}
+                            <SelectItem key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
+                                {tipo.nombre_tipo_maquina}
                             </SelectItem>
                         ))}
                     </Select>
@@ -68,17 +68,17 @@ export const Actualizar_maquina = () => {
                     <div>
                         <Input
                             type="text"
-                            placeholder="Cambiar nombre de la máquina"
-                            value={nombre_maquina}
-                            onChange={(event) => setNombre_maquina(event.target.value)}
+                            placeholder="Cambiar nombre del tipo de maquina"
+                            value={nombre_tipo_maquina}
+                            onChange={(event) => setNombre_tipo_maquina(event.target.value)}
                         />
                     </div>
                     <div>
                         <Input
                             type="text"
-                            placeholder="URL manual de la maquina"
-                            value={manual_maquina}
-                            onChange={(event) => setManual_maquina(event.target.value)}
+                            placeholder="Descripcion del tipo de maquina"
+                            value={descripcion}
+                            onChange={(event) => setDescripcion(event.target.value)}
                         />
                     </div>
                 </div>

@@ -32,6 +32,7 @@ router.post('/actualizarMaquina',dataController.actualizarMaquina);
 
 router.post('/crearTipoMaquina', dataController.crearTipoMaquina);
 router.get('/tipoMaquinas', dataController.getTipoMaquinas);
+router.post('/actualizarTipoMaquina',dataController.actualizarTipoMaquina);
 
 router.get('/ordenDeTrabajo/:id_maquina', dataController.getOrdenTrabajoById);
 router.get('/checklist/:id_maquina', dataController.getOrdenTrabajoById);
@@ -123,7 +124,10 @@ router.get('/GetInsumoById/:id_insumo', dataController.getInsumoById);
 
 router.post('/DevolverInsumo/:id', dataController.devolverInsumo);
 
-router.get('/insumosADevolver', dataController.insumosADevolver);
+// router.get('/insumosADevolver', dataController.insumosADevolver);
+router.get('/componentesAAlertar', dataController.componentesAAlertar);
+
+
 
 
 module.exports = router;

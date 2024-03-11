@@ -1,79 +1,10 @@
-
-/* Notificaciones css*/
-
-.notificacionesTabla{
-    width: 100%;
-    text-align: center;
+.img-semaforo img{
+    width: 120px;
+    height: 120px;
 }
 
-.notificacionesTabla thead{
-    background-color: #D9D9D9;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.notificacionesTabla tbody td{
-    font-size: 20px;
-}
-
-/* Alerta Maquina css */
-
-.notificacionMaquinaContainer{
-    position: absolute;
+.ot-notificacion {
+    position:absolute;
     top: 0;
-    bottom: 0;
-    left: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.notificacionMaquina{
-    display: flex;
-    flex-direction: column;
-    width: 90vh;
-    height: 50vh;
-    background-color: #fff;
-    box-shadow: 10px 10px 0px 100vh rgba(0,0,0,0.5);
-}
-
-.notificacionMaquina .headNotificacion{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 15px 5px 20px;
-    background-color: #D9D9D9;
-}
-
-.notificacionMaquina .bodyNotificacion{
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;
-}
-
-.bodyNotificacion .maquinaNoticar{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    gap: 10px;
-}
-
-.bodyNotificacion .maquinaNoticar img{
-    width: 200px;
-}
-
-.bodyNotificacion .maquinaNoticar p{
-    font-size: 17px;
-    text-align: center;
-}
-
-.cerrarN{
-    color: #ff0000;
-    cursor: pointer;
 }

@@ -1,5 +1,5 @@
 .img-logo-sena{
-    width: 100px;
+    width: 80px;
 }
 .logo-sena{
     display: flex;
@@ -30,5 +30,13 @@
     }
 }
 
+@media (max-width: 1280px) {
+    .titulo-sena{
+        font-size: 24px;
+    }
+    .titulo-taller{
+        font-size: 18px;
+    }
+}
 
 

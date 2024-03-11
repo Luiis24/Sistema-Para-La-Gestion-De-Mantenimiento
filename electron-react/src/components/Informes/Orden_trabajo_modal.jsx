@@ -4,6 +4,8 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { format } from "date-fns";
+// import { Prueba } from './Prueba';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
@@ -19,6 +21,15 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
             doc.save('ordenDeTrabajo.pdf');
         })
     }
+
+    const operariosJSON = ordenTrabajo && ordenTrabajo[0].operarios_ot ? ordenTrabajo[0].operarios_ot : [];
+    const operarios = [];
+
+    operariosJSON.forEach(function (jsonString) {
+        var operario = JSON.parse(jsonString);
+        operarios.push(operario);
+    });
+    console.log(operarios)
     return (
         <div className='modal-ot'>
             <div className="container-modal-ot">
@@ -47,7 +58,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                                 <p>Orden de trabajo: {ot.id_orden_de_trabajo}</p>
                             </div>
                             <div className="tituloSeccionOT">
-                                <h2>Orden de trabajo "maquina" {ot.id_maquina}</h2>
+                                <h2>Orden de trabajo {ot.nombre_maquina}</h2>
                             </div>
                             <hr />
                             <div className="containerOT">
@@ -75,7 +86,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
                                     <div className="valueOT">
                                         <label htmlFor='p_formacion'>Programa de Formacion</label>
-                                        <h3 className='w-11/12 h-11' >{ot.id_aprendiz} </h3>
+                                        <h3 className='w-11/12 h-11' >{ot.programa_formacion_ot} </h3>
                                     </div>
 
                                 </div>
@@ -108,7 +119,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
                                     <div className="valueOT">
                                         <label htmlFor='ficha_ot'>Ficha</label>
-                                        <h3 className='w-11/12 h-11'>{ot.id_aprendiz} </h3>
+                                        <h3 className='w-11/12 h-11'>{ot.ficha_ot} </h3>
                                     </div>
 
                                 </div>
@@ -125,16 +136,27 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                             <div className="containerOT">
                                 <div className="section-modal-ot">
                                     <div className="valueOT">
-                                        <label htmlFor='ubicacion_ot'>Ubicacion</label>
-                                        <h3 className='w-11/12 h-11'>{ot.id_maquina} </h3>
-                                    </div>
-                                    <div className="valueOT">
                                         <label htmlFor='nombre_maquina_ot'>Nombre de la maquina</label>
-                                        <h3 className='w-11/12 h-11' >{ot.id_maquina} </h3>
+                                        <h3 className='w-11/12 h-11' >{ot.nombre_maquina} </h3>
                                     </div>
                                     <div className="valueOT">
-                                        <label htmlFor='id_maquina'>Codigo de la maquina</label>
-                                        <h3 className='w-11/12 h-11' > {ot.id_maquina} </h3>
+                                        <label htmlFor='ubicacion_ot'>Subtotal</label>
+                                        <h3 className='w-11/12 h-11'>
+
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>
+                                            {ot.subtotal_ot}
+                                        </h3>
+                                    </div>
+                                    <div className="valueOT">
+                                        <label>Costo del mantenimiento</label>
+                                        <h3 className='w-11/12 h-11' >
+                                            <div className="pointer-events-none flex items-center">
+                                                <span className="text-default-400 text-small">$</span>
+                                            </div>
+                                            {ot.costo_mantenimiento}
+                                        </h3>
                                     </div>
                                 </div>
 
@@ -152,6 +174,23 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                                         <label>Tipo De Sistema</label>
                                         <h3 className='w-11/12 h-11' >{ot.tipo_de_sistema}</h3>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="containerOT">
+                                <div className="section-modal-ot">
+                                    {operarios && operarios.map((operario, index) => (
+                                        <div key={index}>
+                                            <div className="valueOT">
+                                                <label>Documento</label>
+                                                <h3 className='w-11/12 h-11'>{operario.documento}</h3>
+                                            </div>
+                                            <div className="valueOT">
+                                                <label>Nombre</label>
+                                                <h3 className='w-11/12 h-11'>{operario.nombre}</h3>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
@@ -197,47 +236,13 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
                                 </TableBody>
                             </Table>
-
-                            <div className="containerOT">
-                                <div className="section-modal-ot">
-                                    <div className="valueOT">
-                                        <label htmlFor='ubicacion_ot'>Subtotal</label>
-                                        <h3 className='w-11/12 h-11'>
-
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">$</span>
-                                            </div>
-                                            {ot.subtotal_ot}
-                                        </h3>
-                                    </div>
-                                    <div className="valueOT">
-                                        <label htmlFor='nombre_maquina_ot'>Total precio horas</label>
-                                        <h3 className='w-11/12 h-11' >
-
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">$</span>
-                                            </div>{ot.total_precio_horas}
-                                        </h3>
-                                    </div>
-                                </div>
-
-                                <div className="section-modal-ot">
-                                    <div className="valueOT">
-                                        <label>Costo del mantenimiento</label>
-                                        <h3 className='w-11/12 h-11' >
-                                            <div className="pointer-events-none flex items-center">
-                                                <span className="text-default-400 text-small">$</span>
-                                            </div>
-                                            {ot.costo_mantenimiento}
-                                        </h3>
-
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     )}
 
                 </section>
+                {/* <PDFDownloadLink document={<Prueba/>} fileName='myfirst.pdf'>
+            <Prueba ordenTrabajo={ordenTrabajo} insumosUtilizados={insumosUtilizados}/>
+            </PDFDownloadLink> */}
             </div>
         </div>
     )
