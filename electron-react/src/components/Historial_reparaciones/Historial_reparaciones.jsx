@@ -11,6 +11,8 @@ import "./Historial_reparaciones.css";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Historial_reparaciones = () => {
   const fechaActual = new Date().toISOString().split("T")[0]; // Cambiar el formato de fecha para postgres
@@ -20,6 +22,7 @@ export const Historial_reparaciones = () => {
   const [fecha_historial, setFecha_historial] = useState(fechaActual);
   const [maquinas, setMaquinas] = useState([]);
   const [selectedMaquina, setSelectedMaquina] = useState("");
+  const {isLoading, setIsLoading} = useLoading();
 
   useEffect(() => {
     fetchMaquinas();
@@ -27,17 +30,19 @@ export const Historial_reparaciones = () => {
 
   const fetchMaquinas = async () => {
     try {
+      setIsLoading(true)
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
       setMaquinas(response.data.reverse());
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error("Error al obtener las máquinas", error);
     }
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(selectedMaquina)
-
+    setIsLoading(true)
     try {
       await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearHistorialReparaciones`, {
         id_maquina: selectedMaquina,
@@ -46,9 +51,11 @@ export const Historial_reparaciones = () => {
         observaciones_historial,
         fecha_historial,
       });
-
+      setIsLoading(false)
       toast.success('Registro en el historial de reparaciones exitoso')
+      window.location.href = `/hojaVida/${selectedMaquina}`
     } catch (error) {
+      setIsLoading(false)
       toast.error('Error al registrar en el historial de reparaciones')
       console.error(
         "Error al registrar en el historial de reparaciones",
@@ -73,6 +80,7 @@ export const Historial_reparaciones = () => {
   return (
     <div className='container-rg-caracteristicasMotor'>
       <ToastContainer/>
+      {isLoading ? <Cargando/> : ''}
       <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
         <div className="titulo-registro-CM">
           <h2 className="Titulo-hlp">Historial de reparaciones</h2>

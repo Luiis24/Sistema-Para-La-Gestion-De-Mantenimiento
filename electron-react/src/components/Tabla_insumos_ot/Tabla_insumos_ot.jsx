@@ -60,13 +60,13 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
             // Buscar el insumo seleccionado
             const selectedInsumo = insumos.find(insumo => insumo.id_insumos === parseInt(value));
             // Calcular la cantidad máxima permitida
-            const maxCantidad = selectedInsumo.cantidad_insumo - (selectedInsumo.insumos_en_uso || 0);
+            const maxCantidad = selectedInsumo ? selectedInsumo.cantidad_insumo - (selectedInsumo.insumos_en_uso || 0) : 0;
             // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
             setformInsumos({
                 ...formInsumos,
                 [name]: value,
-                nombre: selectedInsumo.nombre_insumo,
-                id_insumo: selectedInsumo.id_insumos
+                nombre: selectedInsumo ? selectedInsumo.nombre_insumo : '',
+                id_insumo: selectedInsumo ? selectedInsumo.id_insumos : ''
             });
 
             setMaxCantidad(maxCantidad);
@@ -81,7 +81,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                 subtotal: subtotal
             });
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -153,8 +153,8 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                             // Verificar si la cantidad disponible es mayor que 0
                                             if (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) {
                                                 return (
-                                                    <SelectItem value={insumo.id_insumos} key={insumo.id_insumos}>
-                                                        {insumo.nombre_insumo}({insumo.cantidad_insumo - insumo.insumos_en_uso})
+                                                    <SelectItem value={insumo.id_insumos} key={insumo.id_insumos} endContent={<p>({insumo.cantidad_insumo - insumo.insumos_en_uso})</p>}>
+                                                        {insumo.nombre_insumo}
                                                     </SelectItem>
                                                 );
                                             } else {

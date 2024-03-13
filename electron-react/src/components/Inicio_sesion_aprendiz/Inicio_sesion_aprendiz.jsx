@@ -7,17 +7,21 @@ import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Inicio_sesion_aprendiz = () => {
   const [nId, setNId] = useState('');
   const [password, setPassword] = useState('');
   const { setUser } = useAuth();
   const [isVisible, setIsVisible] = React.useState(false);
+  const {isLoading, setIsLoading} = useLoading();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const Iniciar_Sesion = async (event) => {
     event.preventDefault();
+    setIsLoading(true)
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, {
         nId: nId,
@@ -32,6 +36,7 @@ export const Inicio_sesion_aprendiz = () => {
       }
 
       if (response.status === 200) {
+        setIsLoading(false)
         userRegister();
         toast.success('Inicio de sesión exitoso')
       }
@@ -40,6 +45,7 @@ export const Inicio_sesion_aprendiz = () => {
       console.log(response.data);
 
     } catch (error) {
+      setIsLoading(false)
       toast.error('Usuario incorrecto')
       console.error('Error al iniciar sesión', error);
     }
@@ -48,6 +54,7 @@ export const Inicio_sesion_aprendiz = () => {
   return (
     <div className='todo'>
       <ToastContainer/>
+      {isLoading ? <Cargando/> : ''}
       <form onSubmit={Iniciar_Sesion}>
       <div className='complete'>
         <div className='inicio_sesion'>

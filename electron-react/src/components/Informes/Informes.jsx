@@ -7,6 +7,8 @@ import './Informes.css'
 import { Orden_trabajo_modal } from './Orden_trabajo_modal';
 import menu from '../../img/menu.png'
 import { format } from "date-fns";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 
 export const Informes = () => {
@@ -15,6 +17,7 @@ export const Informes = () => {
     const [insumosUtilizados, setInsumosUtilizados] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [maquinas, setMaquinas] = useState()
+    const {isLoading, setIsLoading} = useLoading();
     const [filters, setFilters] = useState({
         tipoTrabajo: "all",
         tipoMantenimiento: "all",
@@ -23,11 +26,14 @@ export const Informes = () => {
     });
 
     useEffect(() => {
+        setIsLoading(true)
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/getOrdenesTrabajo`)
             .then(datos => {
                 setOrdenesTrabajo(datos.data);
+                setIsLoading(false)
             })
             .catch(error => {
+                setIsLoading(false)
                 console.error('Error al obtener los datos:', error);
             });
 
@@ -43,21 +49,27 @@ export const Informes = () => {
     // informacion orden de trabajo modal
     const handleInfoOT = async (id) => {
         try {
+            setIsLoading(true)
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/getOrdenTrabajo`, { id });
             const ot = await response.data
             setOrdenTrabajo(ot);
+            setIsLoading(false)
             setModalVisible(true);
         } catch (error) {
+            setIsLoading(false)
             console.log(error);
         }
     }
 
     const handleInfoIU = async (id_orden_de_trabajo) => {
         try {
+            setIsLoading(true)
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/getInsumosUtilizados`, { id_orden_de_trabajo });
             const iu = await response.data
             setInsumosUtilizados(iu);
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             console.log(error);
         }
     }
@@ -89,6 +101,7 @@ export const Informes = () => {
 
     return (
         <div>
+            {isLoading ? <Cargando/> : ''}
             <div className="navVertical">
                 <Link to={'/MenuPrincipal'}>
                     <div className="principal">

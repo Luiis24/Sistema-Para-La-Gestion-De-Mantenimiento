@@ -4,6 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input, Button, Select, SelectItem } from '@nextui-org/react';
 import { useAuth } from '../../estados/usuario';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Check_list = ({ id_maquina }) => {
     const [componentes, setComponentes] = useState([]);
@@ -14,23 +16,28 @@ export const Check_list = ({ id_maquina }) => {
     const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
     const [users, setUsers] = useState([]);
     const [formOperarios, setFormOperarios] = useState()
-    const {user, rol} = useAuth();
+    const { user, rol } = useAuth();
+    const { isLoading, setIsLoading } = useLoading();
 
     useEffect(() => {
         fetchComponentesByMaquina();
     }, []);
 
     useEffect(() => {
+        setIsLoading(true)
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
             .then(datos => {
                 setUsers(datos.data);
+                setIsLoading(false)
             })
             .catch(error => {
+                setIsLoading(false)
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
 
     const fetchComponentesByMaquina = async () => {
+        setIsLoading(false)
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/componenteChecklist/${selectedMaquina}`);
             const initialEstados = {};
@@ -48,7 +55,9 @@ export const Check_list = ({ id_maquina }) => {
                 return acc;
             }, {});
             setComponentes(groupedComponentes);
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
     };
@@ -60,53 +69,32 @@ export const Check_list = ({ id_maquina }) => {
         }));
     };
 
-    const renderEstadoOptions = (nombreComponente) => {
-        if (nombreComponente.toLowerCase().includes('nivel')) {
-            return (
-                <>
-                    <option disable selected hidden>Nivel</option>
-                    <option key="altoNivel" value="Alto Nivel">Alto Nivel</option>
-                    <option key="bajoNivel" value="Bajo Nivel">Bajo Nivel</option>
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <option disable selected hidden>Estado</option>
-                    <option key="bueno" value="bueno">Bueno</option>
-                    <option key="malo" value="malo">Malo</option>
-                    <option key="alertar" value="alertar">Alertar</option>
-                </>
-            );
-        }
-    };
     const handleOperario = (e) => {
-            const { name, value } = e.target;
-            if (name === "nombre") {
-                // Buscar el aprendiz seleccionado
-                const selectedAprendiz = users.find(user => user.id_aprendiz === parseInt(value));
-                // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
-                setFormOperarios({
-                    ...formOperarios,
-                    [name]: value,
-                    nombre: selectedAprendiz.nombre_aprendiz,
-                    num_doc_aprendiz: selectedAprendiz.num_doc_aprendiz,
-                    ficha_aprendiz: selectedAprendiz.ficha_aprendiz,
-                    programa_aprendiz: selectedAprendiz.programa_aprendiz,
-                    equipo_aprendiz: selectedAprendiz.equipo_aprendiz
-                });
-    
-            } else {
-                // setformInsumos({
-                //     ...formInsumos,
-                //     [name]: value,
-                //     subtotal: subtotal
-                // });
-            }
+        const { name, value } = e.target;
+        if (name === "nombre") {
+            // Buscar el aprendiz seleccionado
+            const selectedAprendiz = users.find(user => user.id_aprendiz === parseInt(value));
+            // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
+            setFormOperarios({
+                ...formOperarios,
+                [name]: value,
+                nombre: selectedAprendiz.nombre_aprendiz,
+                num_doc_aprendiz: selectedAprendiz.num_doc_aprendiz,
+                ficha_aprendiz: selectedAprendiz.ficha_aprendiz,
+                programa_aprendiz: selectedAprendiz.programa_aprendiz,
+                equipo_aprendiz: selectedAprendiz.equipo_aprendiz
+            });
+
+        } else {
+            // setformInsumos({
+            //     ...formInsumos,
+            //     [name]: value,
+            //     subtotal: subtotal
+            // });
+        }
     }
 
     const handleFormSubmit = async (event) => {
-        console.log('enviando')
         event.preventDefault();
 
         // Verificar que los valores necesarios estén presentes
@@ -116,23 +104,11 @@ export const Check_list = ({ id_maquina }) => {
         }
 
         try {
+            setIsLoading(true)
             const estadosRegistrados = Object.entries(estadosComponentes).map(([id_componente, estado_componente]) => ({
                 id_componente,
                 estado_componente,
             }));
-
-            console.log('Datos a enviar:', {
-                id_maquina: selectedMaquina,
-                fecha,
-                hora_inicio: horaInicio,
-                hora_fin: horaFin,
-                estadosComponentes: estadosRegistrados,
-                ficha_aprendiz: user.ficha_aprendiz ? user.ficha_aprendiz : formOperarios.ficha_aprendiz,
-                operario: user.nombre_aprendiz ? user.nombre_aprendiz : formOperarios.nombre,
-                num_doc_aprendiz: user.num_doc_aprendiz ? user.num_doc_aprendiz : formOperarios.num_doc_aprendiz,
-                programa_aprendiz: user.programa_aprendiz ? user.programa_aprendiz : formOperarios.programa_aprendiz,
-                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : formOperarios.equipo_aprendiz
-            });
 
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerChecklist`, {
                 id_maquina: selectedMaquina,
@@ -140,13 +116,14 @@ export const Check_list = ({ id_maquina }) => {
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
-                ficha_aprendiz: user.ficha_aprendiz,
-                operario: user.nombre_aprendiz,
-                num_doc_aprendiz: user.num_doc_aprendiz,
-                programa_aprendiz: user.programa_aprendiz,
-                equipo_aprendiz: user.equipo_aprendiz
+                ficha_aprendiz: user.ficha_aprendiz ? user.ficha_aprendiz : 0,
+                operario: user.nombre_aprendiz ? user.nombre_aprendiz : user.nombre_instructor,
+                num_doc_aprendiz: user.num_doc_aprendiz ? user.num_doc_aprendiz : user.cc_instructor,
+                programa_aprendiz: user.programa_aprendiz ? user.programa_aprendiz : 'instructor',
+                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : 0
             });
 
+            setIsLoading(false)
             toast.success('Registro en la checklist exitoso');
             setEstadosComponentes({});
             setFecha('');
@@ -156,6 +133,7 @@ export const Check_list = ({ id_maquina }) => {
 
 
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al registrar en la checklist', error);
             toast.error('Error al registrar en la checklist. Por favor, inténtelo nuevamente.');
         }
@@ -165,51 +143,54 @@ export const Check_list = ({ id_maquina }) => {
     return (
         <div>
             <ToastContainer />
-
+            {isLoading ? <Cargando /> : ''}
             <form onSubmit={handleFormSubmit}>
                 <div className="containerOT">
                     <div className="sectionOT">
                         <div className="valueOT">
                             <label>Fecha:</label>
-                            <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+                            <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} isRequired />
                         </div>
                         <div className="valueOT">
                             <label> Hora de Inicio:</label>
-                            <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
+                            <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} isRequired />
                         </div>
                         <div className="valueOT">
                             <label>Hora de Fin:</label>
-                            <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
+                            <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} isRequired />
                         </div>
-                        <div className="valueOT">
+                        {rol === 'Instructor' ?
+                            ''
+                            : <div className="valueOT">
                             <label>Ficha:</label>
-                            <Input value={user.ficha_aprendiz} readOnly/>
+                            <Input value={user.ficha_aprendiz} readOnly />
                         </div>
+                        }
+
                     </div>
                     <div className="sectionOT">
                         <div className="valueOT">
                             <label>Operario:</label>
-                            {rol === 'Instructor' ? 
-                            <Select placeholder='operario' name='nombre' onChange={handleOperario}>
-                                {users.map(user => 
-                                    <SelectItem key={user.id_aprendiz} value={user.id_aprendiz}>{user.nombre_aprendiz}</SelectItem>
-                                )}
-
-                            </Select>
-                            : <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : 'instructor'} readOnly/>}
+                            <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : user.nombre_instructor} readOnly />
                         </div>
                         <div className="valueOT">
                             <label>N.Identificacion:</label>
-                            <Input value={user.num_doc_aprendiz} readOnly/>
+                            <Input value={user.num_doc_aprendiz ? user.num_doc_aprendiz : user.cc_instructor} readOnly />
                         </div>
-                        <div className="valueOT">
-                            <label>Programa Formacion:</label>
-                            <Input value={user.programa_aprendiz} readOnly/>
-                        </div>
-                        <div className="valueOT">
-                            <label>Equipo:</label>
-                            <Input value={user.equipo_aprendiz} readOnly />
-                        </div>
+                        {rol === 'Instructor' ?
+                            ''
+                            : <>
+                                <div className="valueOT">
+                                    <label>Programa Formacion:</label>
+                                    <Input value={user.programa_aprendiz} readOnly />
+                                </div>
+                                <div className="valueOT">
+                                    <label>Equipo:</label>
+                                    <Input value={user.equipo_aprendiz} readOnly />
+                                </div>
+                            </>
+                        }
+
                     </div>
                 </div>
 
@@ -224,21 +205,35 @@ export const Check_list = ({ id_maquina }) => {
                                     <label>
                                         {componente.nombre_componente}
                                     </label>
-                                    <select
-                                        // value={estadosComponentes[componente.id_componente] || ''}
-                                        onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
-                                        className='2xl:w-72 w-64 h-14'
-                                    >
-                                        <option selected hidden>{estadosComponentes[componente.id_componente] || ''}</option>
-                                        {renderEstadoOptions(componente.nombre_componente)}
-                                    </select>
+                                    {componente.nombre_componente.toLowerCase().includes('nivel') ? (
+                                        <Select
+                                            onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
+                                            className='w-full h-14'
+                                            name='estado'
+                                            placeholder='Nivel'
+                                        >
+                                            <SelectItem key="Alto Nivel" value="Alto Nivel">Alto Nivel</SelectItem>
+                                            <SelectItem key="Bajo Nivel" value="Bajo Nivel">Bajo Nivel</SelectItem>
+                                        </Select>
+                                    ) : (
+                                        <Select
+                                            onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
+                                            className='w-full h-14'
+                                            name='estado'
+                                            placeholder='Estado'
+                                        >
+                                            <SelectItem key="bueno" value="bueno">Bueno</SelectItem>
+                                            <SelectItem key="malo" value="malo">Malo</SelectItem>
+                                            <SelectItem key="alertar" value="alertar">Alertar</SelectItem>
+                                        </Select>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
                 <div className="button-inp flex justify-center btn-registrarIOT">
-                    <Button className='rgCheckList' type='submit' onClick={() => handleFormSubmit}>Registrar</Button>
+                    <Button className='rgCheckList' type='submit' onClick={handleFormSubmit}>Registrar</Button>
                 </div>
             </form>
 

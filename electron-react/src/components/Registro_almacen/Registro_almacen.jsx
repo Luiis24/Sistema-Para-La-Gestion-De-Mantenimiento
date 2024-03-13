@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_almacen = () => {
     const [nombreInsumo, setNombreInsumo] = useState("");
@@ -13,11 +15,13 @@ export const Registro_almacen = () => {
     const [cantidadInsumo, setCantidadInsumo] = useState("");
     const [proveedorInsumo, setProveedorInsumo] = useState("");
     const [tipo, setTipo] = useState("");
+    const {isLoading, setIsLoading} = useLoading();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
+            setIsLoading(true)
             const response = await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/RegistrarInsumo`,
                 {
@@ -28,11 +32,12 @@ export const Registro_almacen = () => {
                     tipo: tipo
                 }
             );
-
+            setIsLoading(false)
             toast.success('Registro exitoso')
             window.location.href = "/almacen"
 
         } catch (error) {
+            setIsLoading(false)
             toast.error('Error al registrar insumo')
             console.error("Error al registrar insumos", error);
         }
@@ -41,6 +46,7 @@ export const Registro_almacen = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer/>
+            {isLoading ? <Cargando/> : ''}
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">

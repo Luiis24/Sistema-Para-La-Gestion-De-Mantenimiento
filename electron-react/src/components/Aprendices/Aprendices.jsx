@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom'
 import logoSena from '../../img/logo.png'
 import menu from '../../img/menu.png'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue, SelectItem, Select } from "@nextui-org/react";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const Aprendices = () => {
@@ -21,6 +25,7 @@ export const Aprendices = () => {
     });
 
     const [page, setPage] = React.useState(1);
+    const {isLoading, setIsLoading} = useLoading();
 
     // const { data, isLoading } = useSWR(`https://swapi.py4e.com/api/people?page=${page}`, users, {
     //     keepPreviousData: true,
@@ -35,20 +40,28 @@ export const Aprendices = () => {
     // const loadingState = isLoading || data?.results.length === 0 ? "loading" : "idle";
 
     const handleAprendiz = async () => {
+        setIsLoading(true)
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarAprendiz`, { aprendizSelected, estado });
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarAprendiz`, { aprendizSelected, estado });
+            setIsLoading(false)
+            toast.success('Estado aprendiz actualizado')
             setModalVisible(false);
         } catch (error) {
+            setIsLoading(false)
+            toast.error('Error al actualizar estado del aprendiz')
             console.log(error);
         }
     }
 
     useEffect(() => {
+        setIsLoading(true)
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
             .then(datos => {
                 setUsers(datos.data);
+                setIsLoading(false)
             })
             .catch(error => {
+                setIsLoading(false)
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
@@ -97,6 +110,8 @@ export const Aprendices = () => {
 
     return (
         <div>
+        {isLoading ? <Cargando/> : ''}
+        <ToastContainer/>
             <div className="navVertical">
                 <Link to={'/MenuPrincipal'}>
                     <div className="principal">
@@ -219,6 +234,7 @@ export const Aprendices = () => {
                             <TableColumn className='text-lg'>Telefono</TableColumn>
                             <TableColumn className='text-lg'>Ficha</TableColumn>
                             <TableColumn className='text-lg'>Estado</TableColumn>
+                            <TableColumn>Editar</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No se encontro."}
                             items={users ?? []}
@@ -233,10 +249,15 @@ export const Aprendices = () => {
                                     <TableCell className='text-lg'>{user.telefono_aprendiz}</TableCell>
                                     <TableCell className='text-lg'>{user.ficha_aprendiz}</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap[user.estado]} size="sm" variant="flat" onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }}>
+                                        <Chip className="capitalize text-lg p-3 rounded-lg" color={statusColorMap[user.estado]} size="sm" variant="flat">
                                             <p className='w-20 text-center'>{user.estado}</p>
                                         </Chip>
                                     </TableCell>
+                                    <TableCell>                                        
+                                        <svg className="w-5 h-5 dark:text-white cursor-pointer hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }}>
+                                            <path fillRule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clipRule="evenodd" />
+                                            <path fillRule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clipRule="evenodd" />
+                                        </svg></TableCell>
                                 </TableRow>
                             })}
                         </TableBody>
@@ -265,6 +286,3 @@ export const Aprendices = () => {
         </div>
     )
 }
-
-// ALTER TABLE IF EXISTS public.aprendices
-//     ADD COLUMN estado character varying(10);

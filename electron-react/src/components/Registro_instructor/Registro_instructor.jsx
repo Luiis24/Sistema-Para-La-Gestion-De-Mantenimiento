@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_instructor = () => {
   const [cc_instructor, setCc_instructor] = useState("");
@@ -12,11 +14,13 @@ export const Registro_instructor = () => {
   const [email_instructor, setEmail_instructor] = useState("");
   const [telefono_instructor, setTelefono_instructor] = useState("");
   const [password_instructor, setPassword_instructor] = useState("");
+  const {isLoading, setIsLoading} = useLoading();
 
   const enviar = async (event) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true)
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/registerInstructor`,
         {
@@ -27,10 +31,11 @@ export const Registro_instructor = () => {
           password_instructor,
         }
       );
-
+      setIsLoading(false)
       toast.success('Registro de instructor exitoso')
       window.location.href = '/instructores'
     } catch (error) {
+      setIsLoading(false)
       toast.error('Error al registrar instructor')
     }
   };
@@ -96,6 +101,7 @@ export const Registro_instructor = () => {
   return (
     <div className="container-rg-caracteristicasM">
       <ToastContainer/>
+      {isLoading ? <Cargando/> : ''}
       <div className="Registro_instructor my-5">
         <h2 className="titulo-inst">Registro de instructores</h2>
         <form className="form_inst" onSubmit={enviar}>

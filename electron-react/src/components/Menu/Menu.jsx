@@ -86,11 +86,6 @@ export const Menu = () => {
                                 <img src={cerrarSesion} alt='Cerrar Sesion' />
                             </Link>
                         </div>
-                        {/* <div className="iconP">
-                            <Link to={'/notificaciones'}>
-                                <img src={campana} alt='Notificaciones'/>
-                            </Link>
-                        </div> */}
                         <Notificaciones/>
                         <div className="iconP">
                             <img src={informacion} alt='Mas Informacion'/>

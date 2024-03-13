@@ -16,6 +16,8 @@ import {
   Input,
   Button,
 } from "@nextui-org/react";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Instructores = () => {
   const [users, setUsers] = useState([]);
@@ -23,14 +25,18 @@ export const Instructores = () => {
     nombre: "",
     estado: "all",
   });
+  const {isLoading, setIsLoading} = useLoading();
 
   useEffect(() => {
+    setIsLoading(true)
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/instructores`)
       .then((datos) => {
         setUsers(datos.data);
+        setIsLoading(false)
       })
       .catch((error) => {
+        setIsLoading(false)
         console.error("Error al obtener los datos:", error);
       });
   }, []);
@@ -73,6 +79,7 @@ export const Instructores = () => {
 
   return (
     <div>
+      {isLoading ? <Cargando/> : ''}
       <div className="navVertical">
         <Link to={"/MenuPrincipal"}>
           <div className="principal">

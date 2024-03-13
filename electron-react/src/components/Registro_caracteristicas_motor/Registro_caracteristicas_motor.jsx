@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom';
 import { Input, Select, SelectItem, Button } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_caracteristicas_motor = () => {
     const [maquinas, setMaquinas] = useState([]);
     const [selectedMaquina, setSelectedMaquina] = useState('');
+    const [ultimaMaquina, setUltimaMaquina] = useState('');
 
     const [marca_motor, setMarca_motor] = useState('');
     const [modelo_motor, setModelo_motor] = useState('');
@@ -19,16 +22,19 @@ export const Registro_caracteristicas_motor = () => {
     const [rpm_motor, setRpm_motor] = useState('');
     const [voltaje_motor, setVoltaje_motor] = useState('');
     const [amp_motor, setAmp_motor] = useState('');
+    const {isLoading, setIsLoading} = useLoading();
 
     // Cargar la lista de máquinas al montar el componente
     useEffect(() => {
         const fetchMaquinas = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
-                // Ordenar las máquinas por ID de forma descendente
-                const maquinasOrdenadas = response.data.sort((a, b) => b.id_maquina - a.id_maquina);
-                setMaquinas(maquinasOrdenadas);
+                setIsLoading(true)
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/ultimaMaquina`);
+                setSelectedMaquina(response.data.id_maquina);
+                setUltimaMaquina(response.data.nombre_maquina);
+                setIsLoading(false)
             } catch (error) {
+              setIsLoading(false)
                 console.error('Error al obtener la lista de máquinas', error);
             }
         };
@@ -40,6 +46,7 @@ export const Registro_caracteristicas_motor = () => {
         event.preventDefault();
 
         try {
+          setIsLoading(true)
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearCaracteristicasMotor`, {
                 id_maquina: selectedMaquina,
                 marca_motor,
@@ -52,39 +59,30 @@ export const Registro_caracteristicas_motor = () => {
                 voltaje_motor,
                 amp_motor,
             });
-
+            setIsLoading(false)
             toast.success('Características registradas exitosamente');
             window.location.href = '/crearComponentesCheck'
         } catch (error) {
+          setIsLoading(false)
             toast.error('Error al registrar carcaterísticas')
             console.error('Error al registrar las características del motor', error);
         }
     };
 
     return (
-      <div className="container-rg-caracteristicasM">
+      <div className="container-rg-caracteristicasMotor">
       <ToastContainer />
+      {isLoading ? <Cargando/> : ''}
       <form onSubmit={handleFormSubmit} className="rg-caracteristicasM">
         <div className="titulo-registro-CM">
           <h1>Características del motor</h1>
         </div>
         <div className="inputs-registo-motor">
             <div className="fila-1">
-          <Select
-            selectedKeys={selectedMaquina}
-            placeholder="Elige la máquina"
-            onChange={(event) => setSelectedMaquina(event.target.value)}
-           
-          >
-            <SelectItem disable selected hidden>
-              Maquinas registradas
-            </SelectItem>
-            {maquinas.map((maquina) => (
-              <SelectItem key={maquina.id_maquina} value={maquina.id_maquina}>
-                {maquina.nombre_maquina}
-              </SelectItem>
-            ))}
-          </Select>
+          <Input
+            value={ultimaMaquina}
+            isDisabled
+          />
           <div className="section-edp">
             <Input
               className="mt-8"
@@ -171,8 +169,8 @@ export const Registro_caracteristicas_motor = () => {
           </div>
           
           </div>
-          <div className="btn-mt">
-            <Button type="submit" className="btn-registrar">
+          <div className="btn-hv">
+            <Button type="submit" className="boton-registrar">
               Siguiente
             </Button>
           </div>

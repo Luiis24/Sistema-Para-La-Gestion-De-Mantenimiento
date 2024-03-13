@@ -6,30 +6,35 @@ import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_aprendiz = () => {
   const [tipo_doc_aprendiz, setTipo_doc_aprendiz] = useState("");
   const [num_doc_aprendiz, setNum_doc_aprendiz] = useState("");
   const [ficha_aprendiz, setFicha_aprendiz] = useState("");
-  const [programa_aprendiz, setPrograma_aprendiz] = useState("");
+  const [programa_aprendiz, setProgramaAprendiz] = useState("");
+  const [otroPrograma, setOtroPrograma] = useState('');
   const [nombre_aprendiz, setNombre_aprendiz] = useState("");
   const [email_aprendiz, setEmail_aprendiz] = useState("");
   const [telefono_aprendiz, setTelefono_aprendiz] = useState("");
   const [equipo_aprendiz, setEquipo_aprendiz] = useState("");
   const [password_aprendiz, setPassword_aprendiz] = useState("");
+  const { isLoading, setIsLoading } = useLoading();
 
 
   const enviarAP = async (event) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true)
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/registerAprendiz`,
         {
           tipo_doc_aprendiz,
           num_doc_aprendiz,
           ficha_aprendiz,
-          programa_aprendiz,
+          programa_aprendiz: programa_aprendiz === 'otro' ? otroPrograma : programa_aprendiz,
           nombre_aprendiz,
           email_aprendiz,
           telefono_aprendiz,
@@ -38,10 +43,11 @@ export const Registro_aprendiz = () => {
           estado: 'activo'
         }
       );
-
+      setIsLoading(false)
       toast.success("Aprendiz Registrado Exitosamente");
       window.location.href = '/aprendices'
     } catch (error) {
+      setIsLoading(false)
       toast.error("Error de registro");
     }
   };
@@ -67,18 +73,25 @@ export const Registro_aprendiz = () => {
 
   const Programa = [
     {
-      label: "Mantenimiento electromecánico",
-      value: "Mantenimiento electromecánico",
+      label: "Técnico mecánico en maquinaria",
+      value: "Técnico mecánico en maquinaria",
     },
     {
-      label: "Tecnólogo en mantenimiento",
-      value: "Técnólogo en mantenimiento",
+      label: "Tecnólogo en mantenimiento electromecanico",
+      value: "Tecnólogo en mantenimiento electromecanico",
     },
     {
-      label: "Técnico en mantenimiento mecánico",
-      value: "Técnico en mantenimiento mecánico",
+      label: "Técnico en mecanizado",
+      value: "Técnico en mecanizado",
     },
-    { label: "Técnico de mecanizado", value: "Técnico de mecanizado" },
+    {
+      label: "Tecnólogo en mantenimiento mecánico",
+      value: "Tecnólogo en mantenimiento mecánico"
+    },
+    {
+      label: "Otro",
+      value: "Otro"
+    },
   ];
   const Instructor = [
     {
@@ -144,9 +157,20 @@ export const Registro_aprendiz = () => {
     </svg>
   );
 
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setProgramaAprendiz(selectedValue);
+  };
+
+  const handleOtroInputChange = (event) => {
+    // Actualiza el estado de otroPrograma cuando se ingresa texto
+    setOtroPrograma(event.target.value);
+  };
+  console.log(programa_aprendiz)
   return (
     <div className="container-rg-caracteristicasMotor">
       <ToastContainer />
+      {isLoading ? <Cargando /> : ''}
       <div className="registrar-nuevo-aprendiz my-5">
         <form onSubmit={enviarAP}>
           <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
@@ -215,9 +239,6 @@ export const Registro_aprendiz = () => {
               <Select
                 className="max-w-xs"
                 placeholder="Instructor"
-                onChange={(express) =>
-                  setPrograma_aprendiz(express.target.value)
-                }
               >
                 {Instructor.map((Instructor) => (
                   <SelectItem key={Instructor.value} value={Instructor.value}>
@@ -236,19 +257,28 @@ export const Registro_aprendiz = () => {
               />
               {/*PROGRAMA/SELECT*/}
               <h3 className="h3-fila-2">Programa</h3>
-              <Select
-                className="max-w-xs"
-                placeholder="Programa de formación"
-                onChange={(express) =>
-                  setPrograma_aprendiz(express.target.value)
-                }
-              >
-                {Programa.map((programa) => (
-                  <SelectItem key={programa.value} value={programa.value}>
-                    {programa.label}
-                  </SelectItem>
-                ))}
-              </Select>
+              {programa_aprendiz === 'Otro' ? ( // Si el programa seleccionado es 'otro', muestra un Input
+                <Input
+                  className="max-w-xs"
+                  placeholder="Escribe otro programa"
+                  value={otroPrograma}
+                  onChange={handleOtroInputChange}
+                />
+              ) : (
+                <Select
+                  className="max-w-xs"
+                  placeholder="Programa de formación"
+                  value={programa_aprendiz || 'Programa de formación'} // Asigna 'placeholder' cuando programaAprendiz es vacío
+                  onChange={handleSelectChange}
+                >
+                  {Programa.map((programa) => (
+                    <SelectItem key={programa.value} value={programa.value} className="max-w-xs">
+                      {programa.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+              )}
+
               {/*EQUIPO*/}
               <h3 className="h3-fila-2">Equipo</h3>
               <Input

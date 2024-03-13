@@ -4,23 +4,27 @@ import { Link } from 'react-router-dom'
 import { Input } from "@nextui-org/react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 const CrearTipoMaquina = () => {
     const [nombreTipoMaquina, setNombreTipoMaquina] = useState('');
     const [descripcionTipoMaquina, setDescripcionTipoMaquina] = useState('');
+    const {isLoading, setIsLoading} = useLoading();
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true)
         try {
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearTipoMaquina`, {
                 nombre_tipo_maquina: nombreTipoMaquina,
                 descripcion_tipo_maquina: descripcionTipoMaquina,
             });
-
+            setIsLoading(false)
             toast.success('Tipo de máquina registrado exitosamente');
             window.location.href = '/tornos'
         } catch (error) {
+            setIsLoading(false)
             toast.error('Error al registrar el tipo de máquina');
         }
     };
@@ -28,6 +32,7 @@ const CrearTipoMaquina = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer/>
+            {isLoading ? <Cargando/> : ''}
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
                 <div className="titulo-registro-CM">
                     <h1>Crear nuevo tipo de maquina</h1>

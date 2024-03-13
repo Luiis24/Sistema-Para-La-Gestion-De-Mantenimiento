@@ -8,6 +8,8 @@ import { Tabla_mecanicos_ot } from '../Tabla_mecanicos_ot/Tabla_mecanicos'
 import { useAuth } from "../../estados/usuario";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Orden_trabajo_maquina = () => {
   const [maquinaid, setMaquinaid] = useState();
@@ -29,6 +31,7 @@ export const Orden_trabajo_maquina = () => {
 
   const { id_maquina } = useParams();
   const { user, rol } = useAuth();
+  const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
     // Cargar valores del formulario desde el almacenamiento local o una base de datos
@@ -39,13 +42,16 @@ export const Orden_trabajo_maquina = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true)
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/ordenDeTrabajo/${id_maquina}`)
       .then((datos) => {
         const maquina = datos.data;
         setMaquinaid(maquina);
+        setIsLoading(false)
       })
       .catch((error) => {
+        setIsLoading(false)
         console.error("Error al obtener los datos:", error);
       });
   }, [id_maquina]);
@@ -53,7 +59,7 @@ export const Orden_trabajo_maquina = () => {
   const registrarOrdenDeTrabajo = async () => {
     const userId = user.id_aprendiz ? user.id_aprendiz : user.id_instructor;
     try {
-
+      setIsLoading(false)
       // Calcular el total de insumos
       let totalInsumos = 0;
       formInsumosUtilizados.forEach(insumo => {
@@ -72,16 +78,14 @@ export const Orden_trabajo_maquina = () => {
         tipo_de_mantenimiento: formOT.tipoMantenimiento,
         tipo_de_sistema: formOT.tipoSistema,
         descripcion_de_trabajo: formOT.descripcion_de_trabajo,
-        // ubicacion_ot: formOT.ubicacion_ot, 
-        // nombre_maquina_ot: maquinaid.nombre_maquina,
         subtotal_ot: totalInsumos,
         iva: 1,
         total_precio_horas: parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora),
         costo_mantenimiento: totalInsumos + (parseInt(formOT.total_horas_ot) * parseInt(formOT.precio_hora)),
         id_maquina: maquinaid.id_maquina,
         id_aprendiz: userId,
-        programa_formacion_ot: user.programa_aprendiz ? user.programa_aprendiz : formOT.programa_formacion,
-        ficha_ot: user.ficha_aprendiz,
+        programa_formacion_ot: user.programa_aprendiz ? user.programa_aprendiz : 'instructor',
+        ficha_ot: user.ficha_aprendiz ? user.ficha_aprendiz : 0,
         operarios_ot: operarios_ot
       });
 
@@ -108,7 +112,7 @@ export const Orden_trabajo_maquina = () => {
         //     cantidad: insumo.cantidad
         //   });
         // }
-        
+
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/UsarInsumo/${insumo.id_insumo}`, {
           id_insumo: insumo.id_insumo,
           cantidad: insumo.cantidad
@@ -127,7 +131,7 @@ export const Orden_trabajo_maquina = () => {
         })
       }));
 
-      console.log(formOT)
+      setIsLoading(false)
       toast.success('Orden de trabajo registrada')
       window.location.href = '/informes'
     } catch (error) {
@@ -184,6 +188,7 @@ export const Orden_trabajo_maquina = () => {
 
   return (
     <div>
+      {isLoading ? <Cargando /> : ''}
       <div className="containerM">
         <div className="navHorizontal">
           <Link to={`/checklistMaquina/${id_maquina}`}>
@@ -218,40 +223,43 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_inicio_ot : ''}></Input>
+                <Input isRequired type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_inicio_ot'>Hora Inicio</label>
-                <Input type='time' className='w-11/12 h-11' name='hora_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_inicio_ot : ''}></Input>
+                <Input isRequired type='time' className='w-11/12 h-11' name='hora_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='fecha_fin_ot'>Fecha Finalizacion</label>
-                <Input type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_fin_ot : ''}></Input>
+                <Input isRequired type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_fin_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_fin_ot'>Hora Finalizacion</label>
-                <Input type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_fin_ot : ''}></Input>
+                <Input isRequired type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_fin_ot : ''}></Input>
               </div>
 
-              <div className="valueOT">
-                <label htmlFor='p_formacion'>Programa de Formacion</label>
-                <Input type='search' className='w-11/12 h-11 text-2xl' name='p_formacion' value={user.programa_aprendiz} disabled></Input>
-              </div>
+              {rol === 'Instructor' ?
+                ''
+                : <div className="valueOT">
+                  <label htmlFor='p_formacion'>Programa de Formacion</label>
+                  <Input type='search' className='w-11/12 h-11 text-2xl' name='p_formacion' value={user.programa_aprendiz} disabled></Input>
+                </div>
+              }
 
             </div>
             <div className="sectionOT">
 
               <div className="valueOT">
                 <label htmlFor='total_horas_ot'>Total Horas Trabajadas</label>
-                <Input type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange} placeholder={formOT ? formOT.total_horas_ot : ''}></Input>
+                <Input isRequired type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange} placeholder={formOT ? formOT.total_horas_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='precio_hora'>Precio Hora-Hombre</label>
-                <Input type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : '00.0'}
+                <Input isRequired type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : '00.0'}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -271,16 +279,13 @@ export const Orden_trabajo_maquina = () => {
                 />
               </div>
 
-              <div className="valueOT">
-                <label htmlFor='ficha_ot'>Ficha</label>
-                {rol === 'Instructor' ?
-                <Select>
-                  <SelectItem>sisa</SelectItem>
-                </Select> 
-                : <Input type='search' className='w-11/12 h-11' name='ficha_ot' value={user.ficha_aprendiz} disabled></Input>
-                }
-
-              </div>
+              {rol === 'Instructor' ?
+                ''
+                : <div className="valueOT">
+                  <label>Ficha:</label>
+                  <Input value={user.ficha_aprendiz} readOnly />
+                </div>
+              }
 
             </div>
 
@@ -361,6 +366,7 @@ export const Orden_trabajo_maquina = () => {
 
           <div className="containerDOT">
             <Textarea
+              isRequired
               placeholder={formOT ? formOT.descripcion_de_trabajo : 'Describe el trabajo o acividad a realizar'}
               className="col-span-8 md:col-span-6 mb-6 md:mb-0"
               name='descripcion_de_trabajo'

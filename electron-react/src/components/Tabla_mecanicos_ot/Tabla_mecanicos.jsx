@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Tabla_macanicos.css'
@@ -65,7 +65,6 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
         setSelectedAprendiz(aprendizSeleccionado ? aprendizSeleccionado.nombre_aprendiz : '');
     }
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
 
@@ -115,12 +114,13 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                             <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    <select className="select_insumosOT" name="documento" onChange={handleChange}>
-                                        <option selected disabled hidden>Número de identificación</option>
+                                    <Select name="documento" onChange={handleChange} placeholder="Número de identificación">
                                         {aprendices.map(aprendiz => (
-                                            <option value={aprendiz.num_doc_aprendiz} key={aprendiz.id_aprendiz}>{aprendiz.num_doc_aprendiz}</option>
+                                            <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
+                                                {aprendiz.num_doc_aprendiz}
+                                            </SelectItem>
                                         ))}
-                                    </select>
+                                    </Select>
                                 </div>
                                 <div className="formIOT">
                                     <Input placeholder="Nombre Completo" type="text" name="nombre" value={selectedAprendiz || ''} readOnly />

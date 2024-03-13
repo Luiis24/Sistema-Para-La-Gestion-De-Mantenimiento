@@ -1,26 +1,15 @@
 .modal-EC{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 .container-modal-EC {
-    width: 80%;
-    height: 90%;
-    background-color: #f6f6f6;
+    height: 55vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 10px 10px 0px 100vh rgba(0,0,0,0.5);
-    border-radius: 6px;
-    padding: 30px;
     overflow-y: scroll;
-    z-index: 1;
-    position: relative;
 }
 
 .componentesEstado {
@@ -38,13 +27,10 @@
     margin: 15px 0 10px;
 }
 
-.cerrarModal {
-    float: right;
-}
-
 .headModal {
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-start;
+    align-items: center;
 }
 
 .headModal img{
@@ -75,10 +61,6 @@
 .paginadorEC {
     display: flex;
     justify-content: center;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     border-top: 1px solid rgba(246, 246, 246, 0.92);
-    margin: 20px;
+    background-color: #fff;
 }

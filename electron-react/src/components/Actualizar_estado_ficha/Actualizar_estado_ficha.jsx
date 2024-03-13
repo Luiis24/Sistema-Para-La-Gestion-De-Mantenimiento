@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Input, Select, SelectItem, select } from '@nextui-org/react';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
+
 
 export const Actualizar_estado_ficha = () => {
     const [estado, setEstado] = useState();
     const [fichaSelected, setFichaSelected] = useState();
     const [aprendices, setAprendices] = useState([]);
+    const {isLoading, setIsLoading} = useLoading();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
@@ -16,23 +20,26 @@ export const Actualizar_estado_ficha = () => {
                 setAprendices(datos.data);
             })
             .catch(error => {
+                setIsLoading(false)
                 console.error('Error al obtener los datos:', error);
             });
     }, []);
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true)
         try {
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/actualizarFicha`, {
                 ficha_aprendiz: fichaSelected,
                 estado: estado,
             });
 
+            setIsLoading(false)
             toast.success('Ficha actualizada exitosamente');
             window.location.href = '/aprendices'
 
         } catch (error) {
+            setIsLoading(false)
             toast.error('Error al actualizar la máquina');
         }
     };
@@ -43,6 +50,7 @@ export const Actualizar_estado_ficha = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
+            {isLoading ? <Cargando/> : ''}
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">

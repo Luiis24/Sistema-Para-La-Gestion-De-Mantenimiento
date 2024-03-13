@@ -1216,8 +1216,9 @@ const devolverInsumo = async (req, res) => {
       return res.status(400).json({ message: 'La cantidad ingresada supera la cantidad en uso' });
     }
 
+    const cantidad_final = cantidadEnUso - cantidad
     // Realizar la devolución de insumo
-    await pool.query('UPDATE insumos SET insumos_en_uso = $1 nota_insumo = $2 WHERE id_insumos = $3', [cantidadEnUso - cantidad, nota, id]);
+    await pool.query('UPDATE insumos SET insumos_en_uso = $1, nota_insumo = $2 WHERE id_insumos = $3', [cantidad_final, nota, id]);
 
     res.status(200).json({ message: 'Insumo devuelto exitosamente' });
   } catch (error) {
@@ -1286,7 +1287,7 @@ const getHistorialRegistros = async (req, res) => {
 
   try {
     const response = await pool.query(
-      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC',
+      'SELECT * FROM checklist WHERE id_maquina = $1 ORDER BY num_inspeccion DESC LIMIT 50',
       [idMaquina]
     );
 
@@ -1415,8 +1416,36 @@ const actualizarSalidaInsumo = async (req, res) => {
     const updatedQuantity = currentInsumo.rows[0].cantidad_insumo - cantidad_insumo;
 
     await pool.query(
-      "UPDATE insumos SET cantidad_insumo = $1 nota_insumo = $2 WHERE id_insumos = $3;",
+      "UPDATE insumos SET cantidad_insumo = $1, nota_insumo = $2 WHERE id_insumos = $3;",
       [updatedQuantity, nota, id_insumo]
+    );
+
+    res.status(200).json({ message: "Cantidad de insumo actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+const actualizarSalidaInsumoEnUso = async (req, res) => {
+  const { id_insumo, cantidad_insumo, nota } = req.body;
+  try {
+
+    const currentInsumo = await pool.query(
+      "SELECT cantidad_insumo, insumos_en_uso FROM insumos WHERE id_insumos = $1",
+      [id_insumo]
+    );
+
+    // Asegurar que el insumo exista
+    if (currentInsumo.rows.length === 0) {
+      return res.status(404).json({ message: "Insumo no encontrado" });
+    }
+
+    // Calcular que cantidad queda
+    const updatedQuantity = currentInsumo.rows[0].cantidad_insumo - cantidad_insumo;
+    const updatedInsumosEnUso = currentInsumo.rows[0].insumos_en_uso - cantidad_insumo
+    await pool.query(
+      "UPDATE insumos SET cantidad_insumo = $1, insumos_en_uso = $2, nota_insumo = $3 WHERE id_insumos = $4;",
+      [updatedQuantity, updatedInsumosEnUso, nota, id_insumo]
     );
 
     res.status(200).json({ message: "Cantidad de insumo actualizada" });
@@ -1510,6 +1539,7 @@ module.exports = {
   getInsumosUtilizadosAlmacen,
   // insumosADevolver,
   actualizarSalidaInsumo,
+  actualizarSalidaInsumoEnUso,
   componentesAAlertar
 };
 

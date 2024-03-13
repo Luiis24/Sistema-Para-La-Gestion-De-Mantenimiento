@@ -15,7 +15,6 @@ import { Instructores } from './components/Instructores/Instructores';
 import { Registro_instructor } from './components/Registro_instructor/Registro_instructor';
 
 import { Almacen } from './components/Almacen/Almacen';
-import { Insumos } from './components/Insumos/Insumos';
 import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
 // import { Nueva_salida_almacen } from './components/Nueva_salida_almacen/Nueva_salida_almacen';
 

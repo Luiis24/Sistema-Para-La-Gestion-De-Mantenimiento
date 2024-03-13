@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input, Button } from '@nextui-org/react';
-import { Link } from 'react-router-dom';
+import { Input, Button, Textarea } from '@nextui-org/react';
 import { PlusIcon } from '../Aprendices/PlusIcon';
-import './Caracteristicas_maquina.css'
+import './Caracteristicas_maquina.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 const Caracteristicas_maquina = () => {
-    const [maquinas, setMaquinas] = useState([]);
+    const [ultimaMaquina, setUltimaMaquina] = useState('');
     const [selectedMaquina, setSelectedMaquina] = useState('');
     const [caracteristicas, setCaracteristicas] = useState([{ id: '', nombre: '', descripcion: '' }]);
     const [funcionMaquina, setFuncionMaquina] = useState('');
-
+    const { isLoading, setIsLoading } = useLoading();
     useEffect(() => {
         fetchMaquinas();
     }, []);
 
     const fetchMaquinas = async () => {
+        setIsLoading(true)
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
-            setMaquinas(response.data.reverse());
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/ultimaMaquina`);
+            setUltimaMaquina(response.data.nombre_maquina);
+            setSelectedMaquina(response.data.id_maquina)
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al obtener las máquinas', error);
         }
     };
@@ -29,7 +34,7 @@ const Caracteristicas_maquina = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true)
         try {
             await Promise.all(
                 caracteristicas.map(async (caracteristica) => {
@@ -55,22 +60,24 @@ const Caracteristicas_maquina = () => {
                 id_maquina: selectedMaquina,
                 funcion_maquina: funcionMaquina,
             });
-
+            setIsLoading(false)
             toast.success('Características de máquina registradas exitosamente');
-            setCaracteristicas([{ id: '', nombre: '', descripcion: '' }]);
-            setFuncionMaquina('');
             window.location.href = '/crearCaracteristicasMotor';
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al registrar las características de la máquina', error);
             toast.error('Error al registrar las características de la máquina');
         }
     };
 
     const handleDeleteCaracteristica = async (caracteristicaId) => {
+        setIsLoading(true)
         try {
             await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/Eliminar_Caracteristica_Maquina/${caracteristicaId}`);
+            setIsLoading(false)
             toast.success('Característica eliminada exitosamente');
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al eliminar la característica de la máquina', error);
             toast.error('Error al eliminar la característica de la máquina');
         }
@@ -84,25 +91,13 @@ const Caracteristicas_maquina = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
-
+            {isLoading ? <Cargando /> : ''}
             <form onSubmit={handleSubmit} className='rg-caracteristicasMq'>
                 <div className="titulo-registro-CM">
-                    <h2>Registro de características de máquina</h2>
+                    <h2>Registro características de {ultimaMaquina}</h2>
                 </div>
 
                 <div className='inp-registro-CM'>
-                    <select
-                        value={selectedMaquina}
-                        onChange={(event) => setSelectedMaquina(event.target.value)}
-                        className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
-                    >
-                        <option disable selected hidden>Seleccione una máquina</option>
-                        {maquinas.map((maquina) => (
-                            <option key={maquina.id_maquina} value={maquina.id_maquina}>
-                                {maquina.nombre_maquina}
-                            </option>
-                        ))}
-                    </select>
                     <div className="container-col-CM" id='container-col-CM'>
                         {caracteristicas.map((caracteristica, index) => (
                             <div key={index} className='col-carcateristicasM'>
@@ -136,8 +131,10 @@ const Caracteristicas_maquina = () => {
                     <div className="flex justify-end">
                         <Button
                             type="button"
-                            onClick={() => {setCaracteristicas([...caracteristicas, { id: '', nombre: '', descripcion: '' }])
-                        scrollCarcateristicas()}}
+                            onClick={() => {
+                                setCaracteristicas([...caracteristicas, { id: '', nombre: '', descripcion: '' }])
+                                scrollCarcateristicas()
+                            }}
                             className="bg-foreground text-background h-12"
                             endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                         >
@@ -145,17 +142,20 @@ const Caracteristicas_maquina = () => {
                         </Button>
                     </div>
                     <div>
-                        <textarea
+                        <Textarea
                             type="text"
+                            disableAutosize
                             placeholder="Función de la máquina"
-                            className='w-full mt-3 h-14 bg-gray-100 rounded-md p-3'
+                            className='w-full mt-3 h-18 p-3'
                             value={funcionMaquina}
                             onChange={(event) => setFuncionMaquina(event.target.value)}
                         />
                     </div>
                 </div>
-                <div className="flex justify-center mt-5 p-3">
-                    <button type="submit" className='boton-registrar'>Siguiente</button>
+                <div className="btn-hv">
+                    <Button type="submit" className="boton-registrar">
+                        Siguiente
+                    </Button>
                 </div>
 
             </form>

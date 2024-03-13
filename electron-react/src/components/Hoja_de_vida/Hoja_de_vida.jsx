@@ -5,6 +5,8 @@ import './Hoja_de_vida.css'
 import axios from 'axios'
 import { format } from "date-fns";
 import { Input, Textarea, Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from '@nextui-org/react'
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Hoja_de_vida = () => {
     const { id_maquina } = useParams();
@@ -14,6 +16,7 @@ export const Hoja_de_vida = () => {
     const [caracteristicasMaquina, setCaracteristicasMaquina] = useState([]);
     const [caracteristicasMotor, setCaracteristicasMotor] = useState([]);
     const [historialReparaciones, setHistorialReparaciones] = useState([]);
+    const {isLoading, setIsLoading} = useLoading();
 
 
 
@@ -21,6 +24,7 @@ export const Hoja_de_vida = () => {
 
         const handleMaquinaSelect = async () => {
             try {
+                setIsLoading(true)
                 // Obtener la descripción del equipo por id_maquina
                 const descripcionEquipoData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getDescripcionEquipoById/${id_maquina}`);
                 setDescripcionEquipo(descripcionEquipoData.data);
@@ -40,7 +44,9 @@ export const Hoja_de_vida = () => {
                 const historialReparacionesData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getHistorialReparacionesById/${id_maquina}`);
                 setHistorialReparaciones(historialReparacionesData.data);
                 // console.log('Historial de Reparaciones:', historialReparacionesData.data);
+                setIsLoading(false)
             } catch (error) {
+                setIsLoading(false)
                 console.error('Error al obtener la información de la máquina seleccionada', error);
             }
         };
@@ -49,13 +55,16 @@ export const Hoja_de_vida = () => {
     }, [id_maquina]);
 
     useEffect(() => {
+        setIsLoading(true)
         axios
             .get(`${process.env.REACT_APP_API_BASE_URL}/HojaVida/${id_maquina}`)
             .then((datos) => {
                 const maquina = datos.data;
                 setMaquinaid(maquina);
+                setIsLoading(false)
             })
             .catch((error) => {
+                setIsLoading(false)
                 console.error("Error al obtener los datos:", error);
             });
     }, [id_maquina]);
@@ -71,6 +80,7 @@ export const Hoja_de_vida = () => {
     return (
         <div>
             <Navbars></Navbars>
+            {isLoading ? <Cargando/> : ''}
             <div className="containerM">
 
                 <div className="navHorizontal">

@@ -19,7 +19,7 @@
 .container-modal-ot {
     width: 80%;
     height: 90%;
-    background-color: #f6f6f6;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     box-shadow: 10px 10px 0px 100vh rgba(0,0,0,0.5);
@@ -43,7 +43,7 @@
 }
 
 .section-modal-ot h3 {
-    background-color: #eeeeee;
+    background-color: #f4f4f4;
     display: flex;
     align-items: center;
     padding: 15px;
@@ -51,7 +51,7 @@
 }
 
 .funcionModalOT {
-    background-color: #eeeeee;
+    background-color: #f4f4f4;
     border-radius: 5px;
     padding: 15px;
     width: 100%;
@@ -60,12 +60,17 @@
 
 .section-logo-MOT {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
 
 .section-logo-MOT img{
-    width: 50px;
+    width: 70px;
+}
+
+.logoOTM {
+    width: 60px;
 }
 
 /* scroll */
@@ -87,4 +92,11 @@
 
 .container-modal-ot::-webkit-scrollbar-thumb:active {
     background-color: #999999;
+}
+
+@media (max-width: 1280px) {
+    .section-modal-ot {
+        width: 90%;
+        margin: 0 auto;
+    }
 }

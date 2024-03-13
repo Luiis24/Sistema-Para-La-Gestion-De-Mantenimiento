@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import './Checklist_maquina.css'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 import { Navbars } from '../Navbars/Navbars'
 import { Check_list } from '../Check_list/Check_list';
@@ -13,16 +15,20 @@ export const Checklist_maquina = () => {
     const { id_maquina } = useParams();
     const { programaFormacion } = useAuth();
     const [modalVisible, setModalVisible] = useState(false);
+    const {isLoading, setIsLoading} = useLoading();
 
 
     useEffect(() => {
+        setIsLoading(true)
         axios
             .get(`${process.env.REACT_APP_API_BASE_URL}/checklist/${id_maquina}`)
             .then((datos) => {
                 const maquina = datos.data;
                 setMaquinaid(maquina);
+                setIsLoading(false)
             })
             .catch((error) => {
+                setIsLoading(false)
                 console.error("Error al obtener los datos:", error);
             });
     }, [id_maquina]);
@@ -39,7 +45,7 @@ export const Checklist_maquina = () => {
     return (
         <div>
             <Navbars />
-
+            {isLoading ? <Cargando/> : ''}
             <div className="containerM">
 
                 <div className="navHorizontal">
