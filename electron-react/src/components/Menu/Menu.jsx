@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../estados/usuario";
 import { Avatar, AvatarIcon } from "@nextui-org/react";
 import { Titulo_sena_cb } from "../Titulo_sena_cb/Titulo_sena_cb";
+import { Notificaciones } from "../Notificaciones/Notificaciones";
 
 
 export const Menu = () => {
@@ -40,18 +41,14 @@ export const Menu = () => {
                         </Link>
                     </div>
                     <div className="informesMenu">
-                        {rol === 'Instructor' ? <Link to={'/informes'} className="a-menu">
+                        <Link to={'/informes'} className="a-menu">
                             <p className="text-menu">Informes</p>
-                        </Link> : <div className="a-menu cursor-not-allowed">
-                            <p className="text-menu">Informes</p>
-                        </div>}
+                        </Link>
                     </div>
                     <div className="almacenMenu">
-                        {rol === 'Instructor' ? <Link to={'/almacen'} className="a-menu">
+                        <Link to={'/almacen'} className="a-menu">
                             <p className="text-menu">Almacen</p>
-                        </Link> : <div className="a-menu cursor-not-allowed">
-                            <p className="text-menu">Almacen</p>
-                        </div>}
+                        </Link>
                     </div>
                     <div className="usuariosMenu">
                         {rol === 'Instructor' ? <Link to={'/aprendices'} className="a-menu">
@@ -65,7 +62,7 @@ export const Menu = () => {
 
                 <div className="containerUserName">
                     <p className="nombreUser">{nombre ? nombre : ''}</p>
-                    <p className="rolUser text-center">{rol ? rol : ''} { programaFormacion ? `- ${programaFormacion}`: ''}</p>
+                    <p className="rolUser flex-col text-center hidden md:flex">{rol ? rol : ''}  {programaFormacion ? `- ${programaFormacion}` : ''}</p>
                 </div>
 
 
@@ -89,13 +86,9 @@ export const Menu = () => {
                                 <img src={cerrarSesion} alt='Cerrar Sesion' />
                             </Link>
                         </div>
+                        <Notificaciones/>
                         <div className="iconP">
-                            <Link to={'/'}>
-                                <img src={campana} alt='Notificaciones' />
-                            </Link>
-                        </div>
-                        <div className="iconP">
-                            <img src={informacion} alt='Mas Informacion' />
+                            <img src={informacion} alt='Mas Informacion'/>
                         </div>
                     </div>
                 </div>

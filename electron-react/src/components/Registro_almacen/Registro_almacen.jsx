@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-import { Input } from "@nextui-org/react";
+import { Input, Select, SelectItem } from "@nextui-org/react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_almacen = () => {
     const [nombreInsumo, setNombreInsumo] = useState("");
@@ -10,43 +14,50 @@ export const Registro_almacen = () => {
     );
     const [cantidadInsumo, setCantidadInsumo] = useState("");
     const [proveedorInsumo, setProveedorInsumo] = useState("");
+    const [tipo, setTipo] = useState("");
+    const {isLoading, setIsLoading} = useLoading();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
+            setIsLoading(true)
             const response = await axios.post(
-                "http://localhost:4002/RegistrarInsumo",
+                `${process.env.REACT_APP_API_BASE_URL}/RegistrarInsumo`,
                 {
                     nombre_insumo: nombreInsumo,
                     fecha_llegada_insumo: fechaLlegadaInsumo,
                     cantidad_insumo: cantidadInsumo,
                     proveedor_insumo: proveedorInsumo,
+                    tipo: tipo
                 }
             );
-
-            console.log(response.data);
-
-            setNombreInsumo("");
-            setFechaLlegadaInsumo(new Date().toISOString().split("T")[0]);
-            setCantidadInsumo("");
-            setProveedorInsumo("");
+            setIsLoading(false)
+            toast.success('Registro exitoso')
+            window.location.href = "/almacen"
 
         } catch (error) {
+            setIsLoading(false)
+            toast.error('Error al registrar insumo')
             console.error("Error al registrar insumos", error);
         }
     };
 
     return (
         <div className='container-rg-caracteristicasM'>
-
+            <ToastContainer/>
+            {isLoading ? <Cargando/> : ''}
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
                     <h1>Agregar un nuevo insumo</h1>
                 </div>
                 <div className='inp-registro-CM'>
-                    <div className='mt-3'>
+                    <Select onChange={(e) => setTipo(e.target.value)} isRequired placeholder='Insumo o herramienta' className='mt-3'>
+                        <SelectItem key={'insumo'} value={'insumo'}>Insumo</SelectItem>
+                        <SelectItem key={'herramienta'} value={'herramienta'}>Herramienta</SelectItem>
+                    </Select>
+                    <div>
                         <Input
                             type="text"
                             placeholder='Nombre del insumo o herramienta'

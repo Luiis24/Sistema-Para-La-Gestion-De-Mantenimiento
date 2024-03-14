@@ -1,194 +1,92 @@
-body {
-  user-select: none;
+
+body{
+    user-select: none;
 }
-.Registro_instructor_componente {
-  justify-content: center;
-  display: flex;
-  margin-top: 7.5%;
+.Registro_instructor_componente{
+    justify-content: center;
+    display: flex;
 }
-.Registro_instructor Input::placeholder {
-  font-size: 16px;
+.Registro_instructor Input::placeholder{
+    font-size: 16px;
 }
-.Registro_instructor Input:focus {
-  font-size: 16px;
+.Registro_instructor Input:focus{
+    font-size: 16px;
 }
 .Registro_instructor {
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
   background-color: rgb(247, 247, 247);
   border-radius: 10px;
-  height: 680px;
-  width: 480px;
+  height: 630px;
+  width: 480px
 }
-.btn-inst {
-  background: rgb(0, 173, 0);
-  justify-content: center;
-  text-decoration: none;
-  align-items: center;
-  border-radius: 12px;
-  text-align: center;
-  border-style: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 60px;
-  margin-top: 17%;
-  color: white;
-  display: flex;
-  height: 40px;
-  padding: 9px;
-  width: 150px;
+.btn-inst{
+    background: rgb(0, 173, 0);
+    justify-content: center;
+    text-decoration: none;
+    align-items: center;
+    border-radius:12px;
+    text-align: center;
+    border-style: none;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 60px;
+    margin-top: 17%;
+    color:white;
+    display: flex;
+    height: 40px;
+    padding:9px;
+    width: 150px;
 }
-.btn-inst:hover {
-  background: rgb(0, 173, 0);
+.btn-inst:hover{
+    background: rgb(0, 153, 0);
 }
-.btn-inst:active {
-  background: rgb(1, 133, 1 );
+.btn-inst:active{
+    background: rgb(0, 193, 0);
 }
-.div-botton {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: space-around;
+.div-botton{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-around;
 }
-.boton-cancelar-instructor {
-  padding: 9px;
-  text-decoration: none;
-  font-weight: bold;
-  background-color: rgb(247, 247, 247);
-  width: 150px;
-  border-radius: 11px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  right: 0px;
-  top: 61px;
-  height: 40px;
-  font-size: 16px;
+.boton-cancelar-instructor{
+    padding: 9px;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: rgb(247, 247, 247);
+    height: 30px;
+    width: 150px;
+    border-radius: 11px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    right: 0px;
+    top: 61px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .boton-cancelar-instructor:hover{
+    background-color: rgb(237, 237, 237);
+  }
+  .boton-cancelar-instructor:active {
+    background-color: rgb(250, 250, 250);
+  }
+.titulo-inst{
+    color: rgb( 70, 70, 70);
+    justify-content: center;
+    font-family: sans-serif;
+    font-weight: bold;
+    user-select: none;
+	font-size: 24px;
+    display: flex;
+    margin: 30px;
 }
-
-.boton-cancelar-instructor:hover {
-  background-color: rgb(237, 237, 237);
-}
-.boton-cancelar-instructor:active {
-  background-color: rgb(250, 250, 250);
-}
-.titulo-inst {
-  color: rgb(70, 70, 70);
-  justify-content: center;
-  font-family: sans-serif;
-  font-weight: bold;
-  user-select: none;
-  font-size: 24px;
-  display: flex;
-  margin: 30px;
-}
-.form_inst {
-  display: flex;
-  margin-top: -20px;
-  flex-direction: column;
-  align-items: center;
-}
-
-/*----Responsive----*/
-
-@media (max-width: 500px) {
-  .Registro_instructor_componente {
-    margin-top: 12%;
-  }
-  .Registro_instructor {
-    width: 400px;
-  }
-  .btn-inst {
-    width: 130px;
-  }
-  .boton-cancelar-instructor {
-    width: 130px;
-    top: 53px;
-  }
-  .Registro_instructor Input::placeholder {
-    font-size: 15px;
-  }
-  .Registro_instructor Input:focus {
-    font-size: 15px;
-  }
-}
-@media (max-width: 450px) {
-  .Registro_instructor_componente {
-    margin-top: 12%;
-  }
-  .Registro_instructor {
-    width: 370px;
-  }
-  .btn-inst {
-    width: 110px;
-  }
-  .boton-cancelar-instructor {
-    width: 110px;
-    top: 47px;
-  }
-  .Registro_instructor Input::placeholder {
-    font-size: 15px;
-  }
-  .Registro_instructor Input:focus {
-    font-size: 15px;
-  }
-}
-@media (max-width: 430px) {
-  .Registro_instructor_componente {
-    margin-top: 25%;
-  }
-  .Registro_instructor {
-    width: 350px;
-    height: 620px;
-  }
-  .titulo-inst {
-    font-size: 22px;
-  }
-}
-@media (max-width: 400px) {
-  .Registro_instructor_componente {
-    margin-top: 9.5%;
-  }
-  .Registro_instructor {
-    width: 330px;
-    height: 620px;
-  }
-  .titulo-inst {
-    font-size: 22px;
-  }
-  .btn-inst {
-    width: 100px;
-    margin-left: 45px;
-    font-size: 15px;
-  }
-  .boton-cancelar-instructor {
-    width: 100px;
-    top: 41px;
-  }
-}
-@media (max-width: 360px) {
-  .Registro_instructor_componente {
-    margin-top: 15%;
-  }
-  .Registro_instructor {
-    width: 310px;
-    height: 620px;
-  }
-  .titulo-inst {
-    font-size: 20px;
-  }
-  .btn-inst {
-    width: 95px;
-    margin-left: 45px;
-    font-size: 15px;
-  }
-  .boton-cancelar-instructor {
-    width: 95px;
-    top: 39px;
-  }
-  .Registro_instructor Input::placeholder {
-    font-size: 14px;
-  }
-  .Registro_instructor Input:focus {
-    font-size: 15px;
-  }
+.form_inst{
+    display: flex;
+    margin-top: -20px;
+    flex-direction: column;
+    align-items: center;
 }

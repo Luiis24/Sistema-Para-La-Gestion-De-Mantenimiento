@@ -2,20 +2,28 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Input } from '@nextui-org/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Crear_maquina = () => {
     const [nombre_maquina, setNombre_maquina] = useState('');
     const [manual_maquina, setManual_maquina] = useState('');
     const [tiposMaquina, setTiposMaquina] = useState([]);
     const [selectedTipoMaquina, setSelectedTipoMaquina] = useState('');
+    const {isLoading, setIsLoading} = useLoading();
 
     useEffect(() => {
         // Cargar tipos de máquina al montar el componente
         const fetchTiposMaquina = async () => {
+            setIsLoading(true)
             try {
-                const response = await axios.get('http://localhost:4002/tipoMaquinas');
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/tipoMaquinas`);
                 setTiposMaquina(response.data);
+                setIsLoading(false)
             } catch (error) {
+                setIsLoading(false)
                 console.error('Error al obtener los tipos de máquina', error);
             }
         };
@@ -25,25 +33,27 @@ export const Crear_maquina = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true)
         try {
-            await axios.post('http://localhost:4002/crearMaquina', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearMaquina`, {
                 nombre_maquina: nombre_maquina,
                 manual_maquina: manual_maquina,
                 id_tipo_maquina: selectedTipoMaquina,
             });
-
-            console.log('Máquina registrada exitosamente');
+            setIsLoading(false)
+            toast.success('Máquina registrada exitosamente');
             window.location.href = '/crearDescripcionEquipo'
             
         } catch (error) {
-            console.error('Error al registrar la máquina', error);
+            setIsLoading(false)
+            toast.error('Error al registrar la máquina');
         }
     };
 
     return (
         <div className='container-rg-caracteristicasM'>
-
+            <ToastContainer/>
+            {isLoading ? <Cargando/> : ''}
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">

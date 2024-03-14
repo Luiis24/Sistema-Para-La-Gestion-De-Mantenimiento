@@ -12,9 +12,6 @@
     flex-direction: column;
     gap: 25px;
 }
-.principal-2{
-    display: none;
-}
 .valueHv{
     display: flex;
     justify-content: space-between;
@@ -28,7 +25,6 @@
 .container-table-hv {
     width: 88%;
     margin: 0 auto 40px;
-
   }
 
 /* carcateristicas maquina */
@@ -45,53 +41,25 @@
     margin-bottom: 3%;
 }
 
-/*Responsive*/
 
-@media (max-width:1310px){
-    .valueHv{
-        gap: 20px;
-    }
-}
-@media (max-width:1270px){
-    .valueHv{
-        gap: 20px;
-    }
-}
-@media (max-width:1053px){
-    .navHorizontal h2{
-        padding: 6px;
-    }
-}
-@media (max-width:879px){
-    .navHorizontal h2{
-        padding: 0px;
-    }
-    .containerHv{
+@media (max-width: 1000px) {
+    .containerHv {
         flex-direction: column;
+        gap: 25px;
     }
-    .sectionHv{
-        width: 88%;
-        margin-left: 6%;
+
+    .sectionHv {
+        width: 90%;
+        margin: 0 auto;
     }
-}
-@media (max-width:843px){
-    .navHorizontal h2{
-        font-size: 20px;
+
+    .tituloSeccionHv {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0 10px 0 10px;
     }
-}
-@media (max-width:752px){
-    .navHorizontal h2{
-        font-size: 17px;
+
+    .btn-registrarMOT Button {
+        width: 70%;
     }
-}
-@media (max-width:700px){
-    .menu-responsive{
-        display: block;
-        right: 10px;
-        top: 5px;
-    }
-    .navHorizontal {
-        z-index: 1;
-    }
-    
 }

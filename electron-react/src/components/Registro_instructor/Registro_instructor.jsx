@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./Registro_instructor.css";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_instructor = () => {
   const [cc_instructor, setCc_instructor] = useState("");
@@ -12,37 +14,15 @@ export const Registro_instructor = () => {
   const [email_instructor, setEmail_instructor] = useState("");
   const [telefono_instructor, setTelefono_instructor] = useState("");
   const [password_instructor, setPassword_instructor] = useState("");
+  const {isLoading, setIsLoading} = useLoading();
 
-  const mensajeNoRegistrado = () => {
-    toast.error("Error al registrar usuario", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  const mensajeRegistrado = () => {
-    toast.error("Un nuevo instructor fue registrado", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
   const enviar = async (event) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true)
       const response = await axios.post(
-        "http://localhost:4002/registerInstructor",
+        `${process.env.REACT_APP_API_BASE_URL}/registerInstructor`,
         {
           cc_instructor,
           nombre_instructor,
@@ -51,13 +31,12 @@ export const Registro_instructor = () => {
           password_instructor,
         }
       );
-
-      if (response) {
-        mensajeRegistrado();
-        // location.href = './sesion'
-      }
+      setIsLoading(false)
+      toast.success('Registro de instructor exitoso')
+      window.location.href = '/instructores'
     } catch (error) {
-      mensajeNoRegistrado();
+      setIsLoading(false)
+      toast.error('Error al registrar instructor')
     }
   };
 
@@ -120,8 +99,10 @@ export const Registro_instructor = () => {
   );
 
   return (
-    <div className="Registro_instructor_componente">
-      <div className="Registro_instructor">
+    <div className="container-rg-caracteristicasM">
+      <ToastContainer/>
+      {isLoading ? <Cargando/> : ''}
+      <div className="Registro_instructor my-5">
         <h2 className="titulo-inst">Registro de instructores</h2>
         <form className="form_inst" onSubmit={enviar}>
           <Input
@@ -140,14 +121,14 @@ export const Registro_instructor = () => {
           />
           <Input
             className="w-9/12 mt-8"
-            placeholder="Correo electrónico"
+            placeholder="Correo Electrónico"
             type="text"
             name="email_instructor"
             onChange={(express) => setEmail_instructor(express.target.value)}
           />
           <Input
             className="w-9/12 mt-8"
-            placeholder="Número de teléfono"
+            placeholder="Número de Teléfono"
             type="number"
             name="telefono_intructor"
             onChange={(express) => setTelefono_instructor(express.target.value)}

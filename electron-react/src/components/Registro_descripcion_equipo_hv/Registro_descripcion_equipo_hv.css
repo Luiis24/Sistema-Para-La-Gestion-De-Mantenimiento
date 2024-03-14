@@ -3,7 +3,7 @@
   border-radius: 10px;
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
   width: 55%;
-  height: 1270px;
+  height: 1250px;
   margin: 30px;
 }
 .inputs-registro-hv {
@@ -13,10 +13,10 @@
   align-items: flex-start;
 }
 .fila-1-responsive {
-  width: 32%;
+  width: 40%;
 }
 .fila-2-responsive {
-  width: 32%;
+  width: 40%;
 }
 .section-edp textarea {
   max-width: 100%;
@@ -44,12 +44,12 @@
   margin-top: 5%;
   justify-content: center;
 }
-.boton-registrar {
+/* .boton-registrar {
   width: 20%;
   font-size: 15px;
   color: #ffff;
   background: rgb(0, 173, 0);
-}
+} */
 .btn-hv Button:hover {
   background: rgb(1, 133, 1);
 }
@@ -84,19 +84,28 @@
     margin-top: 32px;
   }
   .Registro-descripcion-hv {
-    height: 2170px;
+    height: 2190px;
   }
 }
 @media (max-width: 750px) {
   .btn-hv {
-    margin-top: 5%;
+    margin-top: 8%;
+  }
+  .boton-registrar{
+    width: 25%;
   }
 }
 @media (max-width: 500px) {
+  .Registro-descripcion-hv {
+    width: 80%;
+  }
   .titulo-registro {
     font-size: 22px;
   }
   .btn-hv {
-    margin-top: 10%;
+    margin-top: 15%;
+  }
+  .boton-registrar{
+    width: 30%;
   }
 }

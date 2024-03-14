@@ -38,3 +38,14 @@
     position: relative;
     right: 56px 
 } */
+
+@media (max-width: 1290px) {
+    .btn-registrarMOT button {
+        width: 30%;
+    }
+}
+@media (max-width: 1000px) {
+    .btn-registrarMOT button {
+        width: 60%;
+    }
+}

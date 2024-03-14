@@ -3,11 +3,14 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from '@nextui-org/react';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Componentes_check = () => {
     const [tipoComponente, setTipoComponente] = useState('');
     const [nombreComponente, setNombreComponente] = useState('');
     const [componentes, setComponentes] = useState([]);
+    const {isLoading, setIsLoading} = useLoading();
 
     useEffect(() => {
         // Obtener la lista de componentes al cargar el componente
@@ -15,27 +18,32 @@ export const Componentes_check = () => {
     }, []);
 
     const fetchComponentes = async () => {
+        setIsLoading(true)
         try {
-            const response = await axios.get('http://localhost:4002/componenteChecklist');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/componenteChecklist`);
             setComponentes(response.data);
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
     };
 
     const RegistrarComponente = async () => {
+        setIsLoading(true)
         try {
-            const response = await axios.post('http://localhost:4002/registerComponenteChecklist', {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerComponenteChecklist`, {
                 tipo_componente: tipoComponente,
                 nombre_componente: nombreComponente
             });
 
-            console.log(response.data);
+            setIsLoading(false)
             toast.success('Componente registrado exitosamente');
 
             // Actualizar la lista de componentes después de registrar uno nuevo
             fetchComponentes();
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al registrar componente del checklist', error);
             toast.error('Error al registrar componente del checklist');
         }
@@ -44,6 +52,7 @@ export const Componentes_check = () => {
     return (
         <div>
             <ToastContainer />
+            {isLoading ? <Cargando/> : ''}
             <form className='flex gap-5 flex-col m-5'>
                 
             <h2>Registro de Componentes del Checklist</h2>

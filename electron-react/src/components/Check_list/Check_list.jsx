@@ -2,28 +2,48 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Select, SelectItem, Textarea } from '@nextui-org/react';
+import { useAuth } from '../../estados/usuario';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
-// ... (importaciones)
-
-export const Check_list = () => {
+export const Check_list = ({ id_maquina }) => {
     const [componentes, setComponentes] = useState([]);
     const [estadosComponentes, setEstadosComponentes] = useState({});
     const [fecha, setFecha] = useState('');
     const [horaInicio, setHoraInicio] = useState('');
     const [horaFin, setHoraFin] = useState('');
+    const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
+    const [users, setUsers] = useState([]);
+    const [formOperarios, setFormOperarios] = useState()
+    const [observacion, setObservacion] = useState()
+    const { user, rol } = useAuth();
+    const { isLoading, setIsLoading } = useLoading();
 
     useEffect(() => {
-        // Llamada a la API para obtener los componentes del checklist
-        fetchComponentesChecklist();
+        fetchComponentesByMaquina();
     }, []);
 
-    const fetchComponentesChecklist = async () => {
+    useEffect(() => {
+        setIsLoading(true)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
+            .then(datos => {
+                setUsers(datos.data);
+                setIsLoading(false)
+            })
+            .catch(error => {
+                setIsLoading(false)
+                console.error('Error al obtener los datos:', error);
+            });
+    }, []);
+
+    const fetchComponentesByMaquina = async () => {
+        setIsLoading(false)
         try {
-            const response = await axios.get('http://localhost:4002/componenteChecklist');
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/componenteChecklist/${selectedMaquina}`);
             const initialEstados = {};
             response.data.forEach((componente) => {
-                initialEstados[componente.id_componente] = ''; // Estado inicial: vacío
+                initialEstados[componente.id_componente] = '';
             });
             setEstadosComponentes(initialEstados);
 
@@ -36,7 +56,9 @@ export const Check_list = () => {
                 return acc;
             }, {});
             setComponentes(groupedComponentes);
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al obtener la lista de componentes del checklist', error);
         }
     };
@@ -48,80 +70,131 @@ export const Check_list = () => {
         }));
     };
 
-    const renderEstadoOptions = (nombreComponente) => {
-        if (nombreComponente.toLowerCase().includes('nivel')) {
-            return (
-                <>
-                    <option disable selected hidden>Nivel</option>
-                    <option key="altoNivel" value="Alto Nivel">Alto Nivel</option>
-                    <option key="bajoNivel" value="Bajo Nivel">Bajo Nivel</option>
-                </>
-            );
+    const handleOperario = (e) => {
+        const { name, value } = e.target;
+        if (name === "nombre") {
+            // Buscar el aprendiz seleccionado
+            const selectedAprendiz = users.find(user => user.id_aprendiz === parseInt(value));
+            // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
+            setFormOperarios({
+                ...formOperarios,
+                [name]: value,
+                nombre: selectedAprendiz.nombre_aprendiz,
+                num_doc_aprendiz: selectedAprendiz.num_doc_aprendiz,
+                ficha_aprendiz: selectedAprendiz.ficha_aprendiz,
+                programa_aprendiz: selectedAprendiz.programa_aprendiz,
+                equipo_aprendiz: selectedAprendiz.equipo_aprendiz
+            });
+
         } else {
-            return (
-                <>
-                    <option disable selected hidden>Estado</option>
-                    <option key="bueno" value="bueno">Bueno</option>
-                    <option key="malo" value="malo">Malo</option>
-                    <option key="alertar" value="alertar">Alertar</option>
-                </>
-            );
+            // setformInsumos({
+            //     ...formInsumos,
+            //     [name]: value,
+            //     subtotal: subtotal
+            // });
         }
-    };
+    }
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
+        // Verificar que los valores necesarios estén presentes
+        if (!selectedMaquina || !fecha || !horaInicio || !horaFin) {
+            toast.error('Por favor, complete todos los campos antes de enviar.');
+            return;
+        }
+
         try {
-            // Enviar estados a la API para registrarlos
+            setIsLoading(true)
             const estadosRegistrados = Object.entries(estadosComponentes).map(([id_componente, estado_componente]) => ({
                 id_componente,
                 estado_componente,
             }));
 
-            // Enviar información de hoja de inspección y estados de componentes
-            await axios.post('http://localhost:4002/registerHojaInspeccion', {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerChecklist`, {
+                id_maquina: selectedMaquina,
                 fecha,
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
                 estadosComponentes: estadosRegistrados,
+                ficha_aprendiz: user.ficha_aprendiz ? user.ficha_aprendiz : 0,
+                operario: user.nombre_aprendiz ? user.nombre_aprendiz : user.nombre_instructor,
+                num_doc_aprendiz: user.num_doc_aprendiz ? user.num_doc_aprendiz : user.cc_instructor,
+                programa_aprendiz: user.programa_aprendiz ? user.programa_aprendiz : 'instructor',
+                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : 0,
+                observacion: observacion || ''
             });
 
-            toast.success('Hoja de inspección y estados de componentes registrados exitosamente');
-
-            // Limpiar estados y fechas después del registro
+            setIsLoading(false)
+            toast.success('Registro en la checklist exitoso');
             setEstadosComponentes({});
             setFecha('');
             setHoraInicio('');
             setHoraFin('');
+            window.location.href = `/checklistMaquina/${selectedMaquina}`
+
 
         } catch (error) {
-            console.error('Error al registrar hoja de inspección y estados de componentes', error);
-            toast.error('Error al registrar hoja de inspección y estados de componentes');
+            setIsLoading(false)
+            console.error('Error al registrar en la checklist', error);
+            toast.error('Error al registrar en la checklist. Por favor, inténtelo nuevamente.');
         }
     };
+
 
     return (
         <div>
             <ToastContainer />
-
+            {isLoading ? <Cargando /> : ''}
             <form onSubmit={handleFormSubmit}>
-                {/* <div className="sectionFormCheck">
-                    <label className='flex flex-col gap-3 mb-5'>
-                        Fecha:
-                        <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
-                    </label>
-                    <label className='flex flex-col gap-3 mb-5'>
-                        Hora de Inicio:
-                        <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} required />
-                    </label>
-                    <label className='flex flex-col gap-3'>
-                        Hora de Fin:
-                        <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} required />
-                    </label>
-                </div> */}
+                <div className="containerOT">
+                    <div className="sectionOT">
+                        <div className="valueOT">
+                            <label>Fecha:</label>
+                            <Input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} isRequired />
+                        </div>
+                        <div className="valueOT">
+                            <label> Hora de Inicio:</label>
+                            <Input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)} isRequired />
+                        </div>
+                        <div className="valueOT">
+                            <label>Hora de Fin:</label>
+                            <Input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)} isRequired />
+                        </div>
+                        {rol === 'Instructor' ?
+                            ''
+                            : <div className="valueOT">
+                                <label>Ficha:</label>
+                                <Input value={user.ficha_aprendiz} readOnly />
+                            </div>
+                        }
 
+                    </div>
+                    <div className="sectionOT">
+                        <div className="valueOT">
+                            <label>Operario:</label>
+                            <Input value={user.nombre_aprendiz ? user.nombre_aprendiz : user.nombre_instructor} readOnly />
+                        </div>
+                        <div className="valueOT">
+                            <label>N.Identificacion:</label>
+                            <Input value={user.num_doc_aprendiz ? user.num_doc_aprendiz : user.cc_instructor} readOnly />
+                        </div>
+                        {rol === 'Instructor' ?
+                            ''
+                            : <>
+                                <div className="valueOT">
+                                    <label>Programa Formacion:</label>
+                                    <Input value={user.programa_aprendiz} readOnly />
+                                </div>
+                                <div className="valueOT">
+                                    <label>Equipo:</label>
+                                    <Input value={user.equipo_aprendiz} readOnly />
+                                </div>
+                            </>
+                        }
 
+                    </div>
+                </div>
 
                 {Object.entries(componentes).map(([tipo, componentesTipo]) => (
                     <div key={tipo}>
@@ -134,23 +207,63 @@ export const Check_list = () => {
                                     <label>
                                         {componente.nombre_componente}
                                     </label>
-                                    <select
-                                        value={estadosComponentes[componente.id_componente] || ''}
-                                        onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
-                                        className='2xl:w-72 w-64 h-14'
-                                    >
-                                        {renderEstadoOptions(componente.nombre_componente)}
-                                    </select>
+                                    {componente.nombre_componente.toLowerCase().includes('nivel') ? (
+                                        <Select
+                                            onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
+                                            className='w-full h-14'
+                                            name='estado'
+                                            placeholder='Nivel'
+                                        >
+                                            <SelectItem key="Alto Nivel" value="Alto Nivel">Alto Nivel</SelectItem>
+                                            <SelectItem key="Bajo Nivel" value="Bajo Nivel">Bajo Nivel</SelectItem>
+                                        </Select>
+                                    ) : (
+                                        <Select
+                                            onChange={(e) => handleEstadoChange(componente.id_componente, e.target.value)}
+                                            className='w-full h-14'
+                                            name='estado'
+                                            placeholder='Estado'
+                                        >
+                                            <SelectItem key="bueno" value="bueno">Bueno</SelectItem>
+                                            <SelectItem key="malo" value="malo">Malo</SelectItem>
+                                            <SelectItem key="alertar" value="alertar">Alertar</SelectItem>
+                                        </Select>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
 
-                <div className="button-inp flex justify-center">
-                    <Button className='rgCheckList' type='submit'>Registrar</Button>
+                {Object.values(estadosComponentes).includes('alertar') && (
+                    <>
+                        <div className="nombreSistema mt-5">
+                            <h2>Observaciones</h2>
+                        </div>
+                        <Textarea placeholder='Registrar observaciones sobre componente en mal estado' className='w-[88%] mx-auto mt-3' onChange={(e) => setObservacion(e.target.value)} />
+                    </>
+                )}
+
+                <div className="button-inp flex justify-center btn-registrarIOT">
+                    <Button className='rgCheckList' type='submit' onClick={handleFormSubmit}>Registrar</Button>
                 </div>
             </form>
+
         </div>
     );
 };
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN ficha_aprendiz integer;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN operario character varying;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN num_doc_aprendiz integer;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN programa_aprendiz character varying;
+
+// ALTER TABLE IF EXISTS public.checklist
+//     ADD COLUMN equipo_aprendiz integer;

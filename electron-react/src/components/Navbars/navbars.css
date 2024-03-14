@@ -33,9 +33,6 @@
 .principal .logoSena {
     width: 65px;
 }
-.logoSena-2{
-    display: none;
-}
 
 .principal:hover {
     transform: scale(1.01);
@@ -224,60 +221,56 @@
     display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
     .navVertical {
         position: fixed;
         top: 0;
-        width: 20%;
+        width: 100%;
         height: 50px;
         background-color: #34A853;
-        z-index: 1;
+        z-index: 999;
     }
-    .navHorizontal a{
-        display: none;
-    }
+
     .principal {
         height: 50px;
     }
-    .logoSena{
+
+    .principal .logoSena{
+        width: 56px;
+        filter: brightness(100);
+    }
+
+    .principal h2{
         display: none;
     }
-    .principal .logoSena-2{
-        margin-left: -15px;
-        display: block;
-        width: 90px;
-    }
-    .principal h2{
-        margin-left: -10px;
-        color: #ffff;
-        display: block;
-    }
+
     .containerSectionN {
         display: none;
     }
+
     .containerM {
         width: 100%;
-        margin: 0px 0 0 0;
+        margin: 50px 0 0 0;
     }
-    .navHorizontal {
-        display: none;
-    }
+
     .homeR {
         display: block;
         position: fixed;
         left: 0px;
     }
+
     .logoSenaR {
         width: 60px;
         filter: brightness(100);
     }
+
     .menu-responsive {
         display: block;
         position: fixed;
         right: 10px;
         top: 5px;
-        cursor: pointer;
     }
+
     .menuR {
         filter: invert(1);
         width: 35px;
@@ -302,21 +295,26 @@
         background-color: #000000;
     }
 
-    .navListR {
-        gap: 20px;
+    .containerM .navHorizontal {
+        width: 100%;
+        padding: 0;
+        justify-content: space-around;
+        background-color: #fff;
+        color: #000000;
     }
 
-    .navListR li {
-        display: flex;
-        justify-content: center;
-        padding: 10px;
-        font-size: 1.5rem;
+    .navHorizontal a {
+       background-color: #eeeeee;
+    } 
+
+    .navHorizontal h2 {
+        color: #505050;
+    }
+
+    #active {
         color: #fff;
     }
 
-    .navHorizontal h2 {
-       display: none;
-    }
 }
 
 @media (max-width: 1040px) {
@@ -330,3 +328,4 @@
         width: 1.2rem;
     }
 }
+

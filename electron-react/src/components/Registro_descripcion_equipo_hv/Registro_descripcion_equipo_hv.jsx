@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Registro_descripcion_equipo_hv.css";
 import { Input, Textarea, Button, Select, SelectItem } from "@nextui-org/react";
-import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_descripcion_equipo_hv = () => {
     const fechaActual = new Date().toISOString().split("T")[0];
     const [maquinas, setMaquinas] = useState([]);
     const [selectedMaquina, setSelectedMaquina] = useState("");
+    const [ultimaMaquina, setUltimaMaquina] = useState('');
 
     const [nombre, setNombre] = useState("");
     const [marca, setMarca] = useState("");
@@ -33,6 +35,7 @@ export const Registro_descripcion_equipo_hv = () => {
     const [sistema_neumatico_equipo, setSistema_neumatico_equipo] = useState("");
     const [sistema_hidraulico_equipo, setSistema_hidraulico_equipo] = useState("");
     const [sistema_termico_equipo, setSistema_termico_equipo] = useState("");
+    const {isLoading, setIsLoading} = useLoading();
 
     useEffect(() => {
         fetchMaquinas();
@@ -40,8 +43,9 @@ export const Registro_descripcion_equipo_hv = () => {
 
     const fetchMaquinas = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
-            setMaquinas(response.data.reverse()); // Reversing the order to display newer machines first
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/ultimaMaquina`);
+            setUltimaMaquina(response.data.nombre_maquina);
+            setSelectedMaquina(response.data.id_maquina)
         } catch (error) {
             console.error("Error al obtener las máquinas", error);
         }
@@ -49,15 +53,17 @@ export const Registro_descripcion_equipo_hv = () => {
 
     const registrarEquipo = async (equipo) => {
         try {
+            setIsLoading(true)
             const response = await axios.post(
                 `${process.env.REACT_APP_API_BASE_URL}/registrarEquipo`,
                 equipo
             );
 
-
+            setIsLoading(false)
             toast.success('Registro exitoso')
             window.location.href = '/crearCaracteristicasMaquina'
         } catch (error) {
+            setIsLoading(false)
             toast.error('Error al registrar equipo')
             console.error("Error al registrar equipo", error);
         }
@@ -96,34 +102,22 @@ export const Registro_descripcion_equipo_hv = () => {
     };
 
     return (
-      <div className="registro-hv-componente">
-      <ToastContainer />
-      <div className="Registro-descripcion-hv">
-        <div className="titulo-registro">
-          <h1>Descripción del equipo</h1>
-        </div>
-        <form className="form-equip" onSubmit={handleSubmit}>
+        <div className="container-rg-caracteristicasMotor">
+            <ToastContainer/>
+            {isLoading ? <Cargando/> : ''}
+            <div className="Registro-descripcion-hv">
+                <div className="titulo-registro">
+                    <h1>Descripción del equipo</h1>
+                </div>
+                <form className="form-equip" onSubmit={handleSubmit}>
           <div className="inputs-registro-hv">
             <div className="fila-1-responsive">
               <div>
-                <Select
+                <Input
+                  isDisabled
                   className="sel-equip"
-                  placeholder="Selecciona máquina"
-                  selectedKeys={selectedMaquina}
-                  onChange={(event) => setSelectedMaquina(event.target.value)}
-                >
-                  <SelectItem disable selected hidden>
-                    Maquinas registradas
-                  </SelectItem>
-                  {maquinas.map((maquina) => (
-                    <SelectItem
-                      key={maquina.id_maquina}
-                      value={maquina.id_maquina}
-                    >
-                      {maquina.nombre_maquina}
-                    </SelectItem>
-                  ))}
-                </Select>
+                  value={ultimaMaquina}
+                />
               </div>
               <div className="section-edp">
                 <Input
@@ -340,8 +334,8 @@ export const Registro_descripcion_equipo_hv = () => {
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+            </div>
+        </div>
     );
 };
 export default Registro_descripcion_equipo_hv;

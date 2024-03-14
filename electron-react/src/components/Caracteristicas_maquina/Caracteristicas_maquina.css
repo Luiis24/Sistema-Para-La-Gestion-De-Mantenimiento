@@ -34,3 +34,17 @@
     background-color: #dedede;
     border-radius: 10px;
 }
+
+@media (max-width: 768px) {
+
+    .rg-caracteristicasMq {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1080px) {
+
+    .rg-caracteristicasMq {
+        width: 60%;
+    }
+}

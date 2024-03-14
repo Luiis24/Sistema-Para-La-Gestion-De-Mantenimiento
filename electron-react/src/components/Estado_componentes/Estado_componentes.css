@@ -1,0 +1,66 @@
+.modal-EC{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-modal-EC {
+    height: 55vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+.componentesEstado {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin: 10px auto;
+}
+
+.txEstados{
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    margin: 15px 0 10px;
+}
+
+.headModal {
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+}
+
+.headModal img{
+    width: 50px;
+}
+
+/* scroll */
+
+.container-modal-EC::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.container-modal-EC::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+    border-radius: 4px;
+}
+
+.container-modal-EC::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.container-modal-EC::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+.paginadorEC {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(246, 246, 246, 0.92);
+    background-color: #fff;
+}

@@ -1,70 +1,53 @@
 import React, { useState } from "react";
 import "./Registro_aprendiz.css";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Select, SelectItem,Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 import { Link } from "react-router-dom";
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_aprendiz = () => {
   const [tipo_doc_aprendiz, setTipo_doc_aprendiz] = useState("");
   const [num_doc_aprendiz, setNum_doc_aprendiz] = useState("");
   const [ficha_aprendiz, setFicha_aprendiz] = useState("");
-  const [programa_aprendiz, setPrograma_aprendiz] = useState("");
+  const [programa_aprendiz, setProgramaAprendiz] = useState("");
+  const [otroPrograma, setOtroPrograma] = useState('');
   const [nombre_aprendiz, setNombre_aprendiz] = useState("");
   const [email_aprendiz, setEmail_aprendiz] = useState("");
   const [telefono_aprendiz, setTelefono_aprendiz] = useState("");
   const [equipo_aprendiz, setEquipo_aprendiz] = useState("");
   const [password_aprendiz, setPassword_aprendiz] = useState("");
+  const { isLoading, setIsLoading } = useLoading();
 
-  const mensajeNoRegistrado = () => {
-    toast.error("Error al registrar", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  const mensajeRegistrado = () => {
-    toast.error("Un nuevo aprendiz fue registrado", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   const enviarAP = async (event) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true)
       const response = await axios.post(
-        "http://localhost:4002/registerAprendiz",
+        `${process.env.REACT_APP_API_BASE_URL}/registerAprendiz`,
         {
           tipo_doc_aprendiz,
           num_doc_aprendiz,
           ficha_aprendiz,
-          programa_aprendiz,
+          programa_aprendiz: programa_aprendiz === 'otro' ? otroPrograma : programa_aprendiz,
           nombre_aprendiz,
           email_aprendiz,
           telefono_aprendiz,
           equipo_aprendiz,
           password_aprendiz,
+          estado: 'activo'
         }
       );
-
-      console.log(response.data);
+      setIsLoading(false)
       toast.success("Aprendiz Registrado Exitosamente");
+      window.location.href = '/aprendices'
     } catch (error) {
-      console.error("Error al registrar el Aprendiz", error);
+      setIsLoading(false)
       toast.error("Error de registro");
     }
   };
@@ -90,18 +73,25 @@ export const Registro_aprendiz = () => {
 
   const Programa = [
     {
-      label: "Mantenimiento electromecánico",
-      value: "Mantenimiento electromecánico",
+      label: "Técnico mecánico en maquinaria",
+      value: "Técnico mecánico en maquinaria",
     },
     {
-      label: "Tecnólogo en mantenimiento",
-      value: "Técnólogo en mantenimiento",
+      label: "Tecnólogo en mantenimiento electromecanico",
+      value: "Tecnólogo en mantenimiento electromecanico",
     },
     {
-      label: "Técnico en mantenimiento mecánico",
-      value: "Técnico en mantenimiento mecánico",
+      label: "Técnico en mecanizado",
+      value: "Técnico en mecanizado",
     },
-    { label: "Técnico de mecanizado", value: "Técnico de mecanizado" },
+    {
+      label: "Tecnólogo en mantenimiento mecánico",
+      value: "Tecnólogo en mantenimiento mecánico"
+    },
+    {
+      label: "Otro",
+      value: "Otro"
+    },
   ];
   const Instructor = [
     {
@@ -167,28 +157,38 @@ export const Registro_aprendiz = () => {
     </svg>
   );
 
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    setProgramaAprendiz(selectedValue);
+  };
+
+  const handleOtroInputChange = (event) => {
+    // Actualiza el estado de otroPrograma cuando se ingresa texto
+    setOtroPrograma(event.target.value);
+  };
+  console.log(programa_aprendiz)
   return (
-    <div className="registro-aprendiz-componente">
-      <div className="registrar-nuevo-aprendiz">
-          <h2 className="titulo-registro">Registro de nuevos aprendices</h2>
-          <form className="form-apr" onSubmit={enviarAP}>
+    <div className="container-rg-caracteristicasMotor">
+      <ToastContainer />
+      {isLoading ? <Cargando /> : ''}
+      <div className="registrar-nuevo-aprendiz my-5">
+        <form onSubmit={enviarAP}>
+          <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
           <div className="inputs-registro-aprendiz">
             <div className="inputs-primer-fila-registro-aprendiz">
               {/*NOMBRE*/}
-              
-              <h3 className="h3-fila">Nombre</h3>
+              <h3 className="h3-fila-1">Nombre</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Nombre completo"
                 type="text"
                 name="nombre_aprendiz"
                 onChange={(express) => setNombre_aprendiz(express.target.value)}
               />
-             
               {/*TELÉFONO*/}
-              <h3 className="h3-fila mt-7">Teléfono</h3>
+              <h3 className="h3-fila-1">Teléfono</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Número de teléfono"
                 type="number"
                 name=""
@@ -197,9 +197,9 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*DOCUMENTO/SELECT */}
-              <h3 className="h3-fila mt-7">Tipo de documento</h3>            
+              <h3 className="h3-fila-1">Tipo de documento</h3>
               <Select
-                className="w-72 mt-7"
+                className="max-w-xs"
                 placeholder="Seleccione tipo documento"
                 onChange={(express) =>
                   setTipo_doc_aprendiz(express.target.value)
@@ -212,9 +212,9 @@ export const Registro_aprendiz = () => {
                 ))}
               </Select>
               {/*NUM-DOCUMENTO*/}
-              <h3 className="h3-fila mt-7">Número de documento</h3>
+              <h3 className="h3-fila-1">Número de documento</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Número de documento"
                 type="number"
                 name=""
@@ -223,9 +223,9 @@ export const Registro_aprendiz = () => {
                 }
               />
               {/*EMAIL*/}
-              <h3 className="h3-fila mt-7">Correo Electrónico</h3>
+              <h3 className="h3-fila-1">Correo Electrónico</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Ingresa tú email "
                 type="email"
                 name=""
@@ -235,13 +235,10 @@ export const Registro_aprendiz = () => {
             {/*FILA #2*/}
             <div className="inputs-segunda-fila-registro-aprendiz">
               {/*INSTRUCTOR*/}
-              <h3 className="h3-fila">Instructor</h3>
+              <h3 className="h3-fila-2">Instructor</h3>
               <Select
-                className="w-72 mt-7"
+                className="max-w-xs"
                 placeholder="Instructor"
-                onChange={(express) =>
-                  setPrograma_aprendiz(express.target.value)
-                }
               >
                 {Instructor.map((Instructor) => (
                   <SelectItem key={Instructor.value} value={Instructor.value}>
@@ -250,33 +247,42 @@ export const Registro_aprendiz = () => {
                 ))}
               </Select>
               {/*FICHA*/}
-              <h3 className="h3-fila mt-7">Ficha</h3>
+              <h3 className="h3-fila-2">Ficha</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Ficha"
                 type="number"
                 name=""
                 onChange={(express) => setFicha_aprendiz(express.target.value)}
               />
               {/*PROGRAMA/SELECT*/}
-              <h3 className="h3-fila mt-7">Programa</h3>
-              <Select
-                className="w-72 mt-7"
-                placeholder="Programa de formación"
-                onChange={(express) =>
-                  setPrograma_aprendiz(express.target.value)
-                }
-              >
-                {Programa.map((programa) => (
-                  <SelectItem key={programa.value} value={programa.value}>
-                    {programa.label}
-                  </SelectItem>
-                ))}
-              </Select>
+              <h3 className="h3-fila-2">Programa</h3>
+              {programa_aprendiz === 'Otro' ? ( // Si el programa seleccionado es 'otro', muestra un Input
+                <Input
+                  className="max-w-xs"
+                  placeholder="Escribe otro programa"
+                  value={otroPrograma}
+                  onChange={handleOtroInputChange}
+                />
+              ) : (
+                <Select
+                  className="max-w-xs"
+                  placeholder="Programa de formación"
+                  value={programa_aprendiz || 'Programa de formación'} // Asigna 'placeholder' cuando programaAprendiz es vacío
+                  onChange={handleSelectChange}
+                >
+                  {Programa.map((programa) => (
+                    <SelectItem key={programa.value} value={programa.value} className="max-w-xs">
+                      {programa.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+              )}
+
               {/*EQUIPO*/}
-              <h3 className="h3-fila mt-7">Equipo</h3>
+              <h3 className="h3-fila-2">Equipo</h3>
               <Input
-                className="w-72 mt-7"
+                className="w-64"
                 placeholder="Equipo de trabajo"
                 type="number"
                 name=""
@@ -284,9 +290,8 @@ export const Registro_aprendiz = () => {
               />
 
               {/*PASSWORD*/}
-              <h3 className="h3-fila mt-7">Contraseña</h3>
+              <h3 className="h3-fila-2">Contraseña</h3>
               <Input
-              className="w-72 mt-7"
                 onChange={(express) =>
                   setPassword_aprendiz(express.target.value)
                 }
@@ -306,19 +311,20 @@ export const Registro_aprendiz = () => {
                   </button>
                 }
                 type={isVisible ? "text" : "password"}
-                
+                className="max-w-xs"
               />
             </div>
           </div>
           <div className="btn-terminar-registro">
             <Link to={"/aprendices"}>
+              {" "}
               <button className="boton-cancelar-aprendices" type="submit">
                 ⮜ ‎ Atrás
               </button>
             </Link>
-            <Button className="boton-registrar" type="submit">
+            <button className="boton-registrar" type="submit">
               Registrar
-            </Button>
+            </button>
           </div>
         </form>
       </div>

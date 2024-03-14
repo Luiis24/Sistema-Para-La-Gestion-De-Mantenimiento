@@ -1,49 +1,101 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import React, { useState } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './Tabla_macanicos.css'
 import { DeleteIcon } from "../Tabla_insumos_ot/DeleteIcon";
 
-export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
+export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOperarios, handleDeleteRow }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rowsMecanicos, setrowsMecanicos] = useState([]);
+    const [selectedAprendiz, setSelectedAprendiz] = useState(null);
+
+    const [aprendices, setAprendices] = useState([]);
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
+            .then(datos => {
+                setAprendices(datos.data);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos:', error);
+            });
+    }, []);
+
+    // Restablecer el formulario
+    const resetForm = () => {
+        setFormMecanicos({
+            nombre: '',
+            documento: ''
+        });
+        setSelectedAprendiz(null); // Limpiar el aprendiz seleccionado
+    }
 
     const deleteRow = (id) => {
-        setrowsMecanicos(rowsMecanicos.filter((_, idx) => idx !== id))
+        setrowsMecanicos(rowsMecanicos.filter((_, idx) => idx !== id));
+
+        handleDeleteRow(id);
     }
 
     const addRow = (newRow) => {
         setrowsMecanicos([...rowsMecanicos, newRow])
     }
 
+    const validarformInsumos = () => {
+        const { nombre, documento } = formMecanicos;
+        // Verificar si todos los campos requeridos están llenos
+        if (nombre && documento) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        // Buscar el aprendiz seleccionado por su número de documento
+        const aprendizSeleccionado = aprendices.find(aprendiz => aprendiz.num_doc_aprendiz === parseInt(value));
+    
         setFormMecanicos({
             ...formMecanicos,
-            [e.target.name]: e.target.value
-        })
+            [name]: value,
+            nombre: aprendizSeleccionado ? aprendizSeleccionado.nombre_aprendiz : '', // Agregar el nombre del aprendiz al estado formMecanicos
+        });
+    
+        // Establecer el nombre del aprendiz seleccionado
+        setSelectedAprendiz(aprendizSeleccionado ? aprendizSeleccionado.nombre_aprendiz : '');
     }
 
     const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (!validarformInsumos()) {
+            return;
+        }
+
         addRow(formMecanicos);
+        handleOperarios(formMecanicos)
+        resetForm();
     }
+
     return (
         <div>
             <div className="containerTIOT">
                 <Table className='w-full'>
                     <TableHeader>
-                        <TableColumn className="text-lg">Nombres</TableColumn>
-                        <TableColumn className="text-lg ">Número Documento</TableColumn>
-                        <TableColumn className="text-lg ">Eliminar</TableColumn>
+                        <TableColumn className="md:text-lg">Nombres</TableColumn>
+                        <TableColumn className="md:text-lg ">Número Documento</TableColumn>
+                        <TableColumn className="md:text-lg ">Eliminar</TableColumn>
                     </TableHeader>
                     <TableBody>
                         {rowsMecanicos[0] ? rowsMecanicos.map((row, id) => {
                             return <TableRow key={id + 1}>
-                                <TableCell className="text-lg">{row.nombre}</TableCell>
-                                <TableCell className="text-lg">{row.documento}</TableCell>
+                                <TableCell className="md:text-lg">{row.nombre}</TableCell>
+                                <TableCell className="md:text-lg">{row.documento}</TableCell>
                                 <TableCell onClick={() => deleteRow(id)} className="text-red-500"><DeleteIcon /></TableCell>
                             </TableRow>
                         }) : <TableRow>
-                            <TableCell className="text-lg text-slate-400">Nombre completo</TableCell>
-                            <TableCell className="text-lg text-slate-400 ">No. Documento</TableCell>
+                            <TableCell className="md:text-lg text-slate-400">Nombre completo</TableCell>
+                            <TableCell className="md:text-lg text-slate-400 ">No. Documento</TableCell>
                             <TableCell className="text-slate-400"><DeleteIcon /></TableCell>
                         </TableRow>}
 
@@ -55,19 +107,23 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos }) => {
             </div>
 
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} placement={"center"}>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-
-                                    <Input className="" placeholder="Nombre completo" type="text" name="nombre" onChange={handleChange} />
+                                    <Select name="documento" onChange={handleChange} placeholder="Número de identificación">
+                                        {aprendices.map(aprendiz => (
+                                            <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
+                                                {aprendiz.num_doc_aprendiz}
+                                            </SelectItem>
+                                        ))}
+                                    </Select>
                                 </div>
                                 <div className="formIOT">
-
-                                    <Input placeholder="Número de identificación" type="number" name="documento" onChange={handleChange} />
+                                    <Input placeholder="Nombre Completo" type="text" name="nombre" value={selectedAprendiz || ''} readOnly />
                                 </div>
                             </ModalBody>
                             <ModalFooter>

@@ -5,6 +5,9 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
+require('dotenv').config();
+
+
 let mainWindow;
 
 function createWindow() {

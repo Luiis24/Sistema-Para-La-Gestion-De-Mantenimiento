@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Registro_componentes_check.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input, Button, Select, SelectItem } from '@nextui-org/react';
+import { Input, Select, SelectItem, Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
+import './Registro_componente_check.css'
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Registro_componentes_check = () => {
     const [tipoComponente, setTipoComponente] = useState('');
     const [nombreComponente, setNombreComponente] = useState('');
     const [componentes, setComponentes] = useState([]);
     const [ultimaMaquina, setUltimaMaquina] = useState('');
+    const {isLoading, setIsLoading} = useLoading();
 
     useEffect(() => {
+        setIsLoading(true)
         fetchUltimaMaquina();
         fetchComponentes();
+        setIsLoading(false)
     }, []);
 
     const fetchUltimaMaquina = async () => {
@@ -37,18 +42,20 @@ export const Registro_componentes_check = () => {
 
     const RegistrarComponente = async () => {
         try {
+            setIsLoading(true)
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/registerComponenteChecklist`, {
                 tipo_componente: tipoComponente,
                 nombre_componente: nombreComponente
             });
 
-
+            setIsLoading(false)
             toast.success('Componente registrado exitosamente');
 
             fetchComponentes();
 
             fetchUltimaMaquina();
         } catch (error) {
+            setIsLoading(false)
             console.error('Error al registrar componente del checklist', error);
             toast.error('Error al registrar componente del checklist');
         }
@@ -57,7 +64,7 @@ export const Registro_componentes_check = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
-
+            {isLoading ? <Cargando/> : ''}
             <form className='rg-componentes' onSubmit={RegistrarComponente}>
                 <div className="titulo-registro-CM">
                     <h2>Registro de componentes {ultimaMaquina}</h2>

@@ -5,72 +5,69 @@ import {
   SelectItem,
   Textarea,
   Input,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
+  Button
 } from "@nextui-org/react";
 import "./Historial_reparaciones.css";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Historial_reparaciones = () => {
   const fechaActual = new Date().toISOString().split("T")[0]; // Cambiar el formato de fecha para postgres
-  const [historial, setHistorial] = useState([]);
   const [procedimiento_historial, setProcedimiento_historial] = useState("");
   const [insumos_usados_historial, setinsumos_usados_historial] = useState("");
   const [observaciones_historial, setObservaciones_historial] = useState("");
   const [fecha_historial, setFecha_historial] = useState(fechaActual);
   const [maquinas, setMaquinas] = useState([]);
   const [selectedMaquina, setSelectedMaquina] = useState("");
+  const {isLoading, setIsLoading} = useLoading();
 
   useEffect(() => {
-    fetchHistorialReparaciones();
     fetchMaquinas();
   }, []);
 
-  const fetchHistorialReparaciones = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:4002/GetHistorialReparaciones"
-      );
-      setHistorial(response.data);
-    } catch (error) {
-      console.error("Error al obtener el historial de reparaciones", error);
-    }
-  };
-
   const fetchMaquinas = async () => {
     try {
-      const response = await axios.get("http://localhost:4002/getMaquinas");
+      setIsLoading(true)
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
       setMaquinas(response.data.reverse());
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.error("Error al obtener las máquinas", error);
     }
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true)
     try {
-      await axios.post("http://localhost:4002/crearHistorialReparaciones", {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearHistorialReparaciones`, {
         id_maquina: selectedMaquina,
         procedimiento_historial,
         insumos_usados_historial,
         observaciones_historial,
         fecha_historial,
       });
-
-      console.log("Registro en el historial de reparaciones exitoso");
-      fetchHistorialReparaciones();
+      setIsLoading(false)
+      toast.success('Registro en el historial de reparaciones exitoso')
+      window.location.href = `/hojaVida/${selectedMaquina}`
     } catch (error) {
+      setIsLoading(false)
+      toast.error('Error al registrar en el historial de reparaciones')
       console.error(
         "Error al registrar en el historial de reparaciones",
         error
       );
     }
   };
+
+  const handleselected = (e) => {
+    setSelectedMaquina(e.target.value)
+  }
+
 
   const formatFecha = (fecha) => {
     const date = new Date(fecha);
@@ -81,117 +78,74 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className="Historial-rp">
-      <div className="Historial-rp-bq">
-        <h1 className="Titulo-hlp">Historial de reparaciones</h1>
-        <form onSubmit={handleFormSubmit}>
-          <div className="container-hlp">
-            <div className="section-hlp">
-              <div className="value-hr">
-                <Select
-                  value={selectedMaquina}
-                  placeholder="Selecciona una máquina"
-                  onChange={(event) => setSelectedMaquina(event.target.value)}
+    <div className='container-rg-caracteristicasMotor'>
+      <ToastContainer/>
+      {isLoading ? <Cargando/> : ''}
+      <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
+        <div className="titulo-registro-CM">
+          <h2 className="Titulo-hlp">Historial de reparaciones</h2>
+        </div>
+        <div className='inp-registro-CM'>
+          <div className="value-hr">
+            <Select
+              placeholder="Selecciona una máquina"
+              selectedKeys={selectedMaquina}
+              onChange={handleselected}
+            >
+              {maquinas.map((maquina) => (
+                <SelectItem
+                  key={maquina.id_maquina}
+                  value={maquina.id_maquina}
                 >
-                  <SelectItem disable selected hidden>
-                    Maquinas registradas
-                  </SelectItem>
-                  {maquinas.map((maquina) => (
-                    <SelectItem
-                      key={maquina.id_maquina}
-                      value={maquina.id_maquina}
-                    >
-                      {maquina.nombre_maquina}
-                    </SelectItem>
-                  ))}
-                </Select>
-              </div>
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Describe el procedimiento realizado"
-                  value={procedimiento_historial}
-                  onChange={(event) =>
-                    setProcedimiento_historial(event.target.value)
-                  }
-                />
-              </div>
-            </div>
-          </div>
-          <div className="container-hlp">
-            <div className="section-hlp">
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Escribe los repuestos involucrados"
-                  value={insumos_usados_historial}
-                  onChange={(event) =>
-                    setinsumos_usados_historial(event.target.value)
-                  }
-                />
-              </div>
-              <div className="value-hr">
-                <Textarea
-                  type="Textarea"
-                  placeholder="Escribe las observaciones"
-                  value={observaciones_historial}
-                  onChange={(event) =>
-                    setObservaciones_historial(event.target.value)
-                  }
-                />
-              </div>
-              <div className="value-hr">
-                <Input
-                  type="text"
-                  placeholder="Fecha:"
-                  value={formatFecha(fecha_historial)}
-                  readOnly
-                />
-              </div>
-            </div>
-          </div>
-          <div className="Button-registrar-hlp">
-            <Button type="submit">Registrar reparación</Button>
-          </div>
-        </form>
-        <hr />
-        <div className="Titulo-hlp">
-          <h2>Historiales registrados</h2>
-        </div>
-        <div className="container-table-hr">
-          <div className="h-72 overflow-y-auto">
-          <Table className="">
-            <TableHeader>
-              <TableColumn className="text-lg">Procedimiento</TableColumn>
-              <TableColumn className="text-lg">
-                Repuestos involucrados
-              </TableColumn>
-              <TableColumn className="text-lg">Observaciones</TableColumn>
-              <TableColumn className="text-lg">Fecha</TableColumn>
-            </TableHeader>
-            <TableBody>
-              {historial.map((registro) => (
-                <TableRow key={registro.id_registro}>
-                  <TableCell className="text-lg text-slate-400">
-                    {" "}
-                    {registro.procedimiento_historial}
-                  </TableCell>
-                  <TableCell className="text-lg text-slate-400">
-                    {registro.insumos_usados_historial}
-                  </TableCell>
-                  <TableCell className="text-lg text-slate-400">
-                    {registro.observaciones_historial}
-                  </TableCell>
-                  <TableCell className="text-lg text-slate-400">
-                    {formatFecha(registro.fecha_historial)}
-                  </TableCell>
-                </TableRow>
+                  {maquina.nombre_maquina}
+                </SelectItem>
               ))}
-            </TableBody>
-          </Table>
+            </Select>
+          </div>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Describe el procedimiento realizado"
+              value={procedimiento_historial}
+              onChange={(event) =>
+                setProcedimiento_historial(event.target.value)
+              }
+            />
+          </div>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Escribe los repuestos involucrados"
+              value={insumos_usados_historial}
+              onChange={(event) =>
+                setinsumos_usados_historial(event.target.value)
+              }
+            />
+          </div>
+          <div className="value-hr">
+            <Textarea
+              type="Textarea"
+              placeholder="Escribe las observaciones"
+              value={observaciones_historial}
+              onChange={(event) =>
+                setObservaciones_historial(event.target.value)
+              }
+            />
+          </div>
+          <div className="value-hr">
+            <Input
+              type="text"
+              placeholder="Fecha:"
+              value={formatFecha(fecha_historial)}
+              readOnly
+            />
           </div>
         </div>
-      </div>
+        <div className='btn-terminar-registro'>
+          <Link to={'/informes'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
+          <button type="submit" className='boton-registrar'>Registrar</button>
+        </div>
+      </form>
     </div>
   );
 };

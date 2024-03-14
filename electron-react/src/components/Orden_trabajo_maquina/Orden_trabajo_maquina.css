@@ -6,7 +6,6 @@ hr{
 .tituloSeccionOT {
     width: 100%;
     height: 50px;
-    background-color: #ffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,6 +38,7 @@ body{
 .valueOT label{
     width: 50%;
     font-size: 17px;
+    text-wrap: balance;
 }
 .mecanicoResponsable {
     display: flex;
@@ -98,5 +98,27 @@ Input[type=number]::-webkit-inner-spin-button {
 @media (max-width: 1280px) {
     .valueOT label {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .containerOT {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .sectionOT {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .tituloSeccionOT {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0 10px 0 10px;
+    }
+
+    .btn-registrarMOT Button {
+        width: 70%;
     }
 }

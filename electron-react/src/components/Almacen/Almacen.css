@@ -1,10 +1,8 @@
-
 /* Almacen css */
 
 .BDInventarioTabla{
     width: 100%;
 }
-
 .BDInventarioTabla thead {
     background-color: #D9D9D9;
     height: 50px;
@@ -12,29 +10,142 @@
     font-weight: bold;
     text-align: center;
 }
-
 .BDInventarioTabla tbody td{
     text-align: center;
     height: 40px;
     font-size: 18px;
 }
-
 .filtrosAlmacen {
     width: 100%;
     display: flex;
     padding: 20px;
     gap: 10px;
     align-items: center;
-    justify-content: space-between;
 }
-
 .containerAlmacen {
     padding: 20px 50px;
 }
-
 .paginador {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 3vh;
 }
+
+.filterI {
+    background-color: #f1f1f1;
+    border: 1px solid #ececec;
+    width: 15%;
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+}
+/* modales */
+.modal-insumos {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-modal-insumos {
+    width: 40%;
+    max-height: 90%;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgb(247, 247, 247);
+    box-shadow: 10px 10px 0px 100vh rgba(0,0,0,0.5);
+}
+.atrasN-alm{
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    border-top: 1px solid #cbcbcb;
+}
+.titulo-form-MI {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: rgb(70, 70, 70);
+    -webkit-user-select: none;
+    user-select: none;
+    margin-bottom: 3%;
+}
+.inp-registro-DI {
+    width: 92%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 80%;
+    overflow-y: scroll;
+}
+/* scroll */
+.inp-registro-DI::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.inp-registro-DI::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+    border-radius: 4px;
+}
+
+.inp-registro-DI::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.inp-registro-DI::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+/*----Responsive----*/
+
+@media (max-width: 1100px) {
+    .form-modal-insumos {
+        width: 60%;
+    }
+    .filtrosAlmacen {
+        gap: 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 768px) { 
+    .filterI {
+        width: 100%;
+    }
+    .form-modal-insumos {
+        width: 90%;
+    }
+}
+@media (max-width: 498px) {
+    .filtrosAlmacen {
+        grid-template-columns: 1fr;
+    }  
+    .btn-entr Button{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+@media (max-width: 400px) {
+    .form-modal-insumos {
+        width: 60%;
+    }
+    .containerAlmacen {
+        padding: 20px 20px;
+    }
+}
+
+

@@ -1,31 +1,52 @@
-.inputs-registo-motor{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start; 
+.inputs-registo-motor {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
 }
-.fila-1{
-    width: 32%;
-  }
-  .fila-2{
-    width: 32%;
-  }
+
+.fila-1 {
+  width: 32%;
+}
+
+.fila-2 {
+  width: 32%;
+}
+
 .container-rg-caracteristicasM {
   display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   justify-content: center;
   align-items: center;
-  margin-top: 6%;
+  overflow-y: scroll;
 }
+
+.container-rg-caracteristicasMotor {
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: scroll;
+}
+
 .rg-caracteristicasM {
   background-color: rgb(247, 247, 247);
-  width: 50%;
+  width: 35%;
   height: fit-content;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
   z-index: 1;
-  margin: 0px 0px 50px 0px;
 }
+
 .titulo-registro-CM {
   text-align: center;
   display: flex;
@@ -35,94 +56,89 @@
   font-weight: bold;
   font-family: sans-serif;
   color: rgb(70, 70, 70);
+  -webkit-user-select: none;
   user-select: none;
   margin-bottom: 3%;
 }
-.btn-mt {
-    display: flex;
-    margin-top: 5%;
-    justify-content: center;
+
+.inp-registro-CM {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+
+  .rg-caracteristicasM {
+    width: 90%;
+    height: fit-content;
   }
+
+  .container-rg-caracteristicasMotor {
+    align-items: flex-start;
+  }
+
+}
+
+@media (max-width: 1080px) and (min-width: 768px){
+
+  .rg-caracteristicasM {
+    width: 60%;
+    height: fit-content;
+  }
+
+}
+
+@media (max-height: 500px) {
+  .container-rg-caracteristicasMotor {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 890px) {
+  .inputs-registo-motor {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fila-1 {
+    width: 80%;
+  }
+
+  .fila-2 {
+    width: 80%;
+    margin-top: 32px;
+  }
+
+  .btn-mt {
+    margin-top: 10%;
+  }
+
   .btn-registrar {
     width: 25%;
-    font-size: 15px;
-    color: #ffff;
-    background: rgb(0, 173, 0);
   }
-  .btn-mt Button:hover {
-    background: rgb(1, 133, 1);
-  }
-  .btn-mt Button:active {
-    background: rgb(0, 173, 0);
-  }
-  @media (max-width: 1050px) {
-    .btn-registrar{
-        width: 25%;
-      }
-      .rg-caracteristicasM{
-        width: 70%;
-    }
-    .fila-1{
-      width: 40%;
-    }
-    .fila-2{
-      width: 40%;
-    }
-  }
-  @media (max-width: 950px) {
-    .btn-registrar{
-        width: 25%;
-      }
-      .rg-caracteristicasM{
-        width: 70%;
-    }
-    .fila-1{
-      width: 40%;
-    }
-    .fila-2{
-      width: 40%;
-    }
-  }
-@media (max-width: 700px) {
-    .inputs-registo-motor{
-        flex-direction: column;
-        align-items: center;
-    }
-    .fila-1{
-        width: 80%;
-      }
-      .fila-2{
-        width: 80%;
-        margin-top: 32px;
-      }
-      .btn-mt {
-        margin-top: 10%;
-      }
-      .btn-registrar{
-        width: 25%;
-      }
-  }
+}
+
 @media (max-width: 750px) {
-    .btn-registrar{
-        width: 30%;
-      }   
+  .btn-registrar {
+    width: 30%;
   }
-  @media (max-width: 500px) {
-    .btn-registrar{
-        width: 40%;
-      }
-      .rg-caracteristicasM{
-        width: 70%;
-    }
+}
+
+@media (max-width: 500px) {
+  .btn-registrar {
+    width: 40%;
   }
-  @media (max-width: 420px) {
-    .rg-caracteristicasM{
-        width: 70%;
-    }
-    .titulo-registro {
-        font-size: 22px;
-      }
-    .btn-registrar{
-        width: 40%;
-      }
+}
+
+@media (max-width: 420px) {
+  .titulo-registro {
+    font-size: 22px;
   }
+
+  .btn-registrar {
+    width: 40%;
+  }
+}

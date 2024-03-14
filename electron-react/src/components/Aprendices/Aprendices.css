@@ -3,9 +3,11 @@
 .BDAprendicesTabla {
   width: 100%;
 }
-.atrasN {
+
+.navList .atrasN {
   display: none;
 }
+
 .BDAprendicesTabla thead {
   background-color: #d9d9d9;
   height: 50px;
@@ -13,6 +15,7 @@
   font-weight: bold;
   text-align: center;
 }
+
 .BDAprendicesTabla tbody td {
   text-align: center;
   height: 40px;
@@ -26,12 +29,15 @@
   gap: 10px;
   align-items: center;
 }
-.filtersUsuarios Input::placeholder{
+
+.filtersUsuarios Input::placeholder {
   font-size: 14.5px;
 }
-.filtersUsuarios Input:focus{
+
+.filtersUsuarios Input:focus {
   font-size: 15px;
 }
+
 .filterU {
   background-color: #f1f1f1;
   border: 1px solid #ececec;
@@ -40,61 +46,26 @@
   border-radius: 8px;
   padding: 10px;
 }
+
 .filterU option {
   border-radius: 5px;
   padding: 50px;
 }
+
 .containerUsuarios {
   padding: 20px 50px;
 }
 
 /*----Responsive----*/
 
-@media (max-width: 1490px) {
-  .filtersUsuarios {
-    gap: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .filterU {
-    width: 100%;
-  }
-  .filtersUsuarios Button {
-    width: 100%;
-    display: flex;
-    font-size: 14px;
-    justify-content: space-between;
-  }
-}
-@media (max-width: 1040px) {
-  #active {
-    font-size: 22px;
-  }
-}
-@media (max-width: 900px) {
-  #active {
-    width: 250px;
-  }
-}
-@media (max-width: 850px) {
-  #active {
-    font-size: 21px;
-    width: 250px;
-  }
-}
-@media (max-width: 750px) {
-  #active {
-    width: 250px;
-  }
-}
-@media (max-width: 700px) {
-  .logoSena {
-    display: none;
-  }
+
+
+@media (max-width: 768px) {
   .navList {
     display: none;
   }
-  #navbar-toggle:checked ~ .navList {
+
+  #navbar-toggle:checked~.navList {
     display: block;
     position: fixed;
     width: 100%;
@@ -104,24 +75,29 @@
     background-color: #ffffff;
     margin: 0;
   }
+
   .filtersUsuarios {
     gap: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
+
   .filterU {
     width: 100%;
   }
+
   .filtersUsuarios Button {
     width: 100%;
     display: flex;
     font-size: 14px;
     justify-content: space-between;
   }
+
   .atrasN {
     display: block;
   }
 }
+
 @media (max-width: 570px) {
   .filtersUsuarios {
     gap: 20px;

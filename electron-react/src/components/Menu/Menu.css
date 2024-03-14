@@ -96,23 +96,23 @@
 
 @media (max-width: 1350px) and (min-width: 1280px){
     .containerMenu{
-        grid-template-rows: 220px 200px;
+        grid-template-rows: 210px 200px;
     }
 }
 
 @media (max-width: 1280px) and (min-width: 900px){
     .containerMenu{
-        grid-template-rows: 180px 180px;
+        grid-template-rows: 170px 170px;
     }
 }
 
-@media (max-width: 900px) and (min-width: 500px){
+@media (max-width: 900px) and (min-width: 700px){
     .containerMenu{
         grid-template-rows: 150px 150px;
     }
 }
 
-@media (max-width: 500px){
+@media (max-width: 700px){
     .containerMenu{
         width: 90%;
         grid-template-columns: 1fr;
@@ -131,6 +131,12 @@
         font-size: 14px;
     }
 }
+
+/* @media (max-height: 667px) {
+    .menu-principal {
+        top: 200px;
+    }
+} */
 
 
 /* iconos flotantes */
@@ -163,6 +169,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    
     position: absolute;
     right: 80px;
     top: 19px;
@@ -170,7 +177,7 @@
 
 .nombreUser {
     font-weight: bold;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .rolUser {
@@ -178,5 +185,11 @@
     font-size: 15px;
 }
 
+@media (max-width: 768px) {
+    .containerUserName{
+        right: 70px;
+        top: 25px;
+    }
 
+}
 

@@ -1,6 +1,5 @@
 .img-logo-sena{
-    width: 70px;
-    filter: invert(37%) sepia(94%) saturate(1723%) hue-rotate(93deg) brightness(92%) contrast(104%);
+    width: 80px;
 }
 .logo-sena{
     display: flex;
@@ -24,5 +23,20 @@
     user-select: none;
 }
 
+@media (max-width: 768px) {
+    .img-logo-sena {
+        width: 56px;
+        padding: 10px 0 0 10px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .titulo-sena{
+        font-size: 24px;
+    }
+    .titulo-taller{
+        font-size: 18px;
+    }
+}
 
 
