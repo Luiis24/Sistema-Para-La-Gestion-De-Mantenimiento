@@ -353,7 +353,7 @@ const getComponenteChecklist = (req, res) => {
 
 const registerChecklist = async (req, res) => {
   try {
-    const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes, ficha_aprendiz, operario, num_doc_aprendiz, programa_aprendiz, equipo_aprendiz } = req.body;
+    const { id_maquina, fecha, hora_inicio, hora_fin, estadosComponentes, ficha_aprendiz, operario, num_doc_aprendiz, programa_aprendiz, equipo_aprendiz, observacion } = req.body;
 
     // console.log('Datos recibidos en el controlador:', {
     //   id_maquina,
@@ -378,8 +378,8 @@ const registerChecklist = async (req, res) => {
 
     // Construir la consulta SQL para insertar en la tabla checklist
     const query = `
-      INSERT INTO checklist (id_maquina, num_inspeccion, fecha, hora_inicio, hora_fin, estado_componente, id_componente, ficha_aprendiz, operario, num_doc_aprendiz, programa_aprendiz, equipo_aprendiz)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      INSERT INTO checklist (id_maquina, num_inspeccion, fecha, hora_inicio, hora_fin, estado_componente, id_componente, ficha_aprendiz, operario, num_doc_aprendiz, programa_aprendiz, equipo_aprendiz, observacion)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
     `;
 
     // Ejecutar la consulta para cada estadoComponente
@@ -396,7 +396,8 @@ const registerChecklist = async (req, res) => {
         operario,
         num_doc_aprendiz,
         programa_aprendiz,
-        equipo_aprendiz
+        equipo_aprendiz,
+        observacion
       ];
       console.log(values)
 

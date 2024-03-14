@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Input, Button, Select, SelectItem } from '@nextui-org/react';
+import { Input, Button, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { useAuth } from '../../estados/usuario';
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
@@ -16,6 +16,7 @@ export const Check_list = ({ id_maquina }) => {
     const [selectedMaquina, setSelectedMaquina] = useState(id_maquina);
     const [users, setUsers] = useState([]);
     const [formOperarios, setFormOperarios] = useState()
+    const [observacion, setObservacion] = useState()
     const { user, rol } = useAuth();
     const { isLoading, setIsLoading } = useLoading();
 
@@ -120,7 +121,8 @@ export const Check_list = ({ id_maquina }) => {
                 operario: user.nombre_aprendiz ? user.nombre_aprendiz : user.nombre_instructor,
                 num_doc_aprendiz: user.num_doc_aprendiz ? user.num_doc_aprendiz : user.cc_instructor,
                 programa_aprendiz: user.programa_aprendiz ? user.programa_aprendiz : 'instructor',
-                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : 0
+                equipo_aprendiz: user.equipo_aprendiz ? user.equipo_aprendiz : 0,
+                observacion: observacion || ''
             });
 
             setIsLoading(false)
@@ -129,7 +131,7 @@ export const Check_list = ({ id_maquina }) => {
             setFecha('');
             setHoraInicio('');
             setHoraFin('');
-            window.location.href = "/tornos"
+            window.location.href = `/checklistMaquina/${selectedMaquina}`
 
 
         } catch (error) {
@@ -162,9 +164,9 @@ export const Check_list = ({ id_maquina }) => {
                         {rol === 'Instructor' ?
                             ''
                             : <div className="valueOT">
-                            <label>Ficha:</label>
-                            <Input value={user.ficha_aprendiz} readOnly />
-                        </div>
+                                <label>Ficha:</label>
+                                <Input value={user.ficha_aprendiz} readOnly />
+                            </div>
                         }
 
                     </div>
@@ -232,6 +234,16 @@ export const Check_list = ({ id_maquina }) => {
                         </div>
                     </div>
                 ))}
+
+                {Object.values(estadosComponentes).includes('alertar') && (
+                    <>
+                        <div className="nombreSistema mt-5">
+                            <h2>Observaciones</h2>
+                        </div>
+                        <Textarea placeholder='Registrar observaciones sobre componente en mal estado' className='w-[88%] mx-auto mt-3' onChange={(e) => setObservacion(e.target.value)} />
+                    </>
+                )}
+
                 <div className="button-inp flex justify-center btn-registrarIOT">
                     <Button className='rgCheckList' type='submit' onClick={handleFormSubmit}>Registrar</Button>
                 </div>

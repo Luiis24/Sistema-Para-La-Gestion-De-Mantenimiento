@@ -184,9 +184,9 @@ export const Herramientas = () => {
             }
 
             const totalCantidad = parseInt(cantidadDevolver) + parseInt(cantidadConsumida);
-            console.log(totalCantidad, maxCantidadDevolver)
-            if (totalCantidad < maxCantidadDevolver) {
-                console.error('La suma de la cantidad a devolver y la cantidad a salir supera la cantidad máxima permitida');
+            if (totalCantidad > maxCantidadDevolver) {
+                setIsLoading(false)
+                toast.error('La suma de la cantidad a devolver y la cantidad a salir supera la cantidad máxima permitida');
                 return;
             }
             const currentDate = new Date();

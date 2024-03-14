@@ -22,7 +22,8 @@ export const Informes = () => {
         tipoTrabajo: "all",
         tipoMantenimiento: "all",
         tipoSistema:"all",
-        maquina:"all"
+        maquina:"all",
+        encurso:"all"
     });
 
     useEffect(() => {
@@ -76,16 +77,19 @@ export const Informes = () => {
 
     //filtros informes
     const filterOrdenes = (ordenesTrabajo) => {
+        const fechaActual = new Date(); // Obtener la fecha actual
+        
         return ordenesTrabajo.filter((orden) => {
+            const fechaFin = new Date(orden.fecha_fin_ot); // Convertir la fecha de finalización a objeto Date
+            console.log(fechaFin, fechaActual)
+    
             return (
-                (filters.tipoTrabajo === "all" ||
-                    orden.tipo_de_trabajo === filters.tipoTrabajo) &&
-                (filters.tipoMantenimiento === "all" ||
-                    orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
-                (filters.tipoSistema === "all" ||
-                    orden.tipo_de_sistema === filters.tipoSistema) &&
-                (filters.maquina === "all" ||
-                    orden.nombre_maquina === filters.maquina)
+                (filters.tipoTrabajo === "all" || orden.tipo_de_trabajo === filters.tipoTrabajo) &&
+                (filters.tipoMantenimiento === "all" || orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
+                (filters.tipoSistema === "all" || orden.tipo_de_sistema === filters.tipoSistema) &&
+                (filters.maquina === "all" || orden.nombre_maquina === filters.maquina) &&
+                (filters.encurso === "all" || // Filtrar solo las órdenes en curso
+                    (orden.fecha_fin_ot && fechaFin <= fechaActual)) // Comprobar si la fecha de finalización es anterior o igual a la fecha actual
             );
         });
     };
@@ -186,6 +190,11 @@ export const Informes = () => {
                             <SelectItem value='de alimentacion' key='de alimentacion'>De alimentacion</SelectItem>
                             <SelectItem value='de seguridad' key='de seguridad'>De seguridad</SelectItem>
                             <SelectItem value='de comunicacion' key='de comunicacion'>De comunicacion</SelectItem>
+                        </Select>
+
+                        <Select className='w-11/12 h-11' placeholder='En curso' onChange={(e) => { handleEstado('encurso', e.target.value); }}>
+                            <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
+                            <SelectItem value='en curso' key='en curso'>En curso</SelectItem>
                         </Select>
                     </div>
 
