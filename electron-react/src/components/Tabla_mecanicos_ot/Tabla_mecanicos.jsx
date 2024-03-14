@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Select, SelectItem } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Select, SelectItem, Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Tabla_macanicos.css'
@@ -114,13 +114,13 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                             <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    <Select name="documento" onChange={handleChange} placeholder="Número de identificación">
+                                    <Autocomplete name="documento" type="number" onChange={handleChange} placeholder="Número de identificación">
                                         {aprendices.map(aprendiz => (
-                                            <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
+                                            <AutocompleteItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
                                                 {aprendiz.num_doc_aprendiz}
-                                            </SelectItem>
+                                            </AutocompleteItem>
                                         ))}
-                                    </Select>
+                                    </Autocomplete>
                                 </div>
                                 <div className="formIOT">
                                     <Input placeholder="Nombre Completo" type="text" name="nombre" value={selectedAprendiz || ''} readOnly />
@@ -132,7 +132,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                                         Cerrar
                                     </Button>
                                 </div>
-                                <div className='button-2-inp'>
+                                <div className='botton-registrar-div'>
                                     <Button className='text-white' type="submit" onPress={onClose} onClick={handleSubmit}>
                                         Registrar
                                     </Button>

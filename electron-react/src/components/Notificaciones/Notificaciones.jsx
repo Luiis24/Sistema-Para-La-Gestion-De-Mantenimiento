@@ -84,10 +84,10 @@ export const Notificaciones = () => {
                                                                         <p className="text-small text-foreground/80">{format(new Date(componente.fecha), "dd/MM/yyyy")}</p>
 
                                                                         {/* Mostrar solo los primeros 30 caracteres con tres puntos al final */}
-                                                                        <p className='text-small w-1/2'>{componente.observacion.length > 50 && !componente.showMore ? componente.observacion.slice(0, 50) + "..." : componente.observacion}</p>
+                                                                        <p className='text-small w-2/3'>{componente.observacion.length > 50 && !componente.showMore ? componente.observacion.slice(0, 50) + "..." : componente.observacion}</p>
                                                                         {/* Mostrar el botón "Leer más" o "Mostrar menos" según corresponda */}
                                                                         {componente.observacion.length > 50 &&
-                                                                            <p className='text-small font-semibold cursor-pointer w-1/2' onClick={() => toggleShowMore(index)}>
+                                                                            <p className='text-small font-semibold cursor-pointer' onClick={() => toggleShowMore(index)}>
                                                                                 {componente.showMore ? "Mostrar menos" : "Leer más"}
                                                                             </p>
                                                                         }
@@ -95,7 +95,7 @@ export const Notificaciones = () => {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex flex-col col-span-6 md:col-span-8">
+                                                            <div className="flex flex-col col-span-6 md:col-span-8 items-start">
                                                                 <div className="flex justify-between">
                                                                     <div className="flex flex-col gap-0">
                                                                         <h1 className="text-lg font-medium">{componente.operario}</h1>

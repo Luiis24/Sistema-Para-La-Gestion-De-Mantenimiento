@@ -105,9 +105,9 @@ const loginInstructor = (req, res) => {
 
 const registerAprendiz = (req, res) => {
   console.log(req.body);
-  const { tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, estado } = req.body;
+  const { tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, id_instructor, estado } = req.body;
 
-  if (!tipo_doc_aprendiz || !num_doc_aprendiz || !ficha_aprendiz || !programa_aprendiz || !nombre_aprendiz || !email_aprendiz || !telefono_aprendiz || !equipo_aprendiz || !password_aprendiz) {
+  if (!tipo_doc_aprendiz || !num_doc_aprendiz || !ficha_aprendiz || !programa_aprendiz || !nombre_aprendiz || !email_aprendiz || !telefono_aprendiz || !equipo_aprendiz || !password_aprendiz || !id_instructor) {
     return res.status(400).json({ error: 'Falta información requerida' });
   }
 
@@ -142,8 +142,8 @@ const registerAprendiz = (req, res) => {
 
       // Si no hay conflictos, proceder con la inserción
       pool.query(
-        'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)',
-        [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz, estado],
+        'INSERT INTO aprendices (tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz, equipo_aprendiz, password_aprendiz, id_instructor, estado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',
+        [tipo_doc_aprendiz, num_doc_aprendiz, ficha_aprendiz, programa_aprendiz, nombre_aprendiz, email_aprendiz, telefono_aprendiz_num, equipo_aprendiz, password_aprendiz, id_instructor, estado],
         (error) => {
           if (error) {
             console.error('Error al insertar el Aprendiz en la base de datos', error);
@@ -1020,7 +1020,7 @@ const getHistorialReparacionesById = async (id_maquina) => {
 // Ordenes de trabajo (Get)
 
 const GetOrdenesTrabajo = async (req, res) => {
-  pool.query('SELECT orden_de_trabajo.*, maquinas.nombre_maquina FROM orden_de_trabajo JOIN maquinas ON orden_de_trabajo.id_maquina = maquinas.id_maquina;', (error, result) => {
+  pool.query('SELECT orden_de_trabajo.*, maquinas.nombre_maquina FROM orden_de_trabajo JOIN maquinas ON orden_de_trabajo.id_maquina = maquinas.id_maquina ORDER BY orden_de_trabajo.fecha_fin_ot DESC;', (error, result) => {
     if (error) {
       console.error('Error al consultar la base de datos', error);
       return res.status(500).json({ error: 'Error al obtener la lista de ordenes de trabajo' });

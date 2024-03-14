@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import logoSena from '../../img/logo.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, SelectItem, Select } from "@nextui-org/react";
+import logoSena from '../../img/OIG3.png'
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, SelectItem, Select, Pagination } from "@nextui-org/react";
 import axios from 'axios';
 import './Informes.css'
 import { Orden_trabajo_modal } from './Orden_trabajo_modal';
@@ -17,14 +17,18 @@ export const Informes = () => {
     const [insumosUtilizados, setInsumosUtilizados] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [maquinas, setMaquinas] = useState()
-    const {isLoading, setIsLoading} = useLoading();
+    const { isLoading, setIsLoading } = useLoading();
     const [filters, setFilters] = useState({
         tipoTrabajo: "all",
         tipoMantenimiento: "all",
-        tipoSistema:"all",
-        maquina:"all",
-        encurso:"all"
+        tipoSistema: "all",
+        maquina: "all",
+        encurso: "all"
     });
+
+    // paginador
+    const [paginaActual, setPaginaActual] = useState(1);
+    const itemsPorPagina = 15;
 
     useEffect(() => {
         setIsLoading(true)
@@ -38,7 +42,7 @@ export const Informes = () => {
                 console.error('Error al obtener los datos:', error);
             });
 
-            axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`)
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`)
             .then(datos => {
                 setMaquinas(datos.data);
             })
@@ -76,21 +80,30 @@ export const Informes = () => {
     }
 
     //filtros informes
+
     const filterOrdenes = (ordenesTrabajo) => {
-        const fechaActual = new Date(); // Obtener la fecha actual
-        
+        const fechaActual = new Date().toISOString(); // Obtener la fecha actual
+
         return ordenesTrabajo.filter((orden) => {
-            const fechaFin = new Date(orden.fecha_fin_ot); // Convertir la fecha de finalización a objeto Date
-            console.log(fechaFin, fechaActual)
-    
-            return (
-                (filters.tipoTrabajo === "all" || orden.tipo_de_trabajo === filters.tipoTrabajo) &&
-                (filters.tipoMantenimiento === "all" || orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
-                (filters.tipoSistema === "all" || orden.tipo_de_sistema === filters.tipoSistema) &&
-                (filters.maquina === "all" || orden.nombre_maquina === filters.maquina) &&
-                (filters.encurso === "all" || // Filtrar solo las órdenes en curso
-                    (orden.fecha_fin_ot && fechaFin <= fechaActual)) // Comprobar si la fecha de finalización es anterior o igual a la fecha actual
-            );
+            const fechaFin = new Date(orden.fecha_fin_ot).toISOString();
+            // Verificar si se aplican los filtros de en curso y la fecha de finalización es posterior a la fecha actual
+            if (filters.encurso === "en curso") {
+                return (
+                    (filters.tipoTrabajo === "all" || orden.tipo_de_trabajo === filters.tipoTrabajo) &&
+                    (filters.tipoMantenimiento === "all" || orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
+                    (filters.tipoSistema === "all" || orden.tipo_de_sistema === filters.tipoSistema) &&
+                    (filters.maquina === "all" || orden.nombre_maquina === filters.maquina) &&
+                    (fechaFin >= fechaActual)
+                );
+            } else {
+                // Aplicar los filtros sin considerar el estado de en curso
+                return (
+                    (filters.tipoTrabajo === "all" || orden.tipo_de_trabajo === filters.tipoTrabajo) &&
+                    (filters.tipoMantenimiento === "all" || orden.tipo_de_mantenimiento === filters.tipoMantenimiento) &&
+                    (filters.tipoSistema === "all" || orden.tipo_de_sistema === filters.tipoSistema) &&
+                    (filters.maquina === "all" || orden.nombre_maquina === filters.maquina)
+                );
+            }
         });
     };
 
@@ -103,14 +116,24 @@ export const Informes = () => {
 
     const filteredOrdenes = filterOrdenes(ordenesTrabajo);
 
+    // cambiar de pagina
+
+    const totalPaginas = Math.ceil(filteredOrdenes.length / itemsPorPagina);
+    const cambiarPagina = (pagina) => {
+        setPaginaActual(pagina);
+    }
+    const startIndex = (paginaActual - 1) * itemsPorPagina;
+    const endIndex = startIndex + itemsPorPagina;
+    const paginatedOrdenes = filteredOrdenes.slice(startIndex, endIndex);
+
     return (
         <div>
-            {isLoading ? <Cargando/> : ''}
+            {isLoading ? <Cargando /> : ''}
             <div className="navVertical">
                 <Link to={'/MenuPrincipal'}>
                     <div className="principal">
                         <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
-                        <h2>Principal</h2>
+                        <h2>SGMI</h2>
                     </div>
                 </Link>
                 <input type="checkbox" id="navbar-toggle"></input>
@@ -120,10 +143,11 @@ export const Informes = () => {
                     <li>
                         <Link to={"/registroReparacion"}>Reparacion</Link>
                     </li>
-                    <div className='atrasN'>
-                        <Link to={'/MenuPrincipal'}>
+
+                    <div className='atrasN-alm'>
+                        <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
                             <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
-                                <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                                 </svg>
                                 <h3 className='text-lg'>Atrás</h3>
@@ -144,9 +168,9 @@ export const Informes = () => {
                     <div className="filtersUsuarios">
                         <Select className='w-11/12 h-11' placeholder="Maquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
-                            {maquinas? maquinas.map(maquina => 
-                                <SelectItem key={maquina.nombre_maquina} value={maquina.nombre_maquina}>{maquina.nombre_maquina}</SelectItem> 
-                                ) : ''}
+                            {maquinas ? maquinas.map(maquina =>
+                                <SelectItem key={maquina.nombre_maquina} value={maquina.nombre_maquina}>{maquina.nombre_maquina}</SelectItem>
+                            ) : ''}
                         </Select>
 
                         <Select className='w-11/12 h-11' placeholder="Tipo de trabajo" onChange={(e) => { handleEstado('tipoTrabajo', e.target.value); }}>
@@ -209,7 +233,7 @@ export const Informes = () => {
                             <TableColumn className='text-lg'>Costo</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No se encontro."}>
-                            {filteredOrdenes.map((orden) => {
+                            {paginatedOrdenes.map((orden) => {
                                 return (
                                     <TableRow key={orden.id_orden_de_trabajo} onClick={() => { handleInfoOT(orden.id_orden_de_trabajo); handleInfoIU(orden.id_orden_de_trabajo) }} className='cursor-pointer'>
                                         <TableCell>{orden.nombre_maquina}</TableCell>
@@ -226,6 +250,9 @@ export const Informes = () => {
                     </Table>
                 </div>
 
+                <div className="paginador">
+                    <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default" />
+                </div>
             </div>
 
             {modalVisible && (

@@ -78,7 +78,7 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className='container-rg-caracteristicasMotor'>
+    <div className='container-rg-caracteristicasM'>
       <ToastContainer/>
       {isLoading ? <Cargando/> : ''}
       <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>

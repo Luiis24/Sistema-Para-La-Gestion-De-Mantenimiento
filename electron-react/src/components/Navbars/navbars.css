@@ -26,12 +26,15 @@
 }
 
 .principal h2 {
-    font-size: 22px;
+    font-size: 28px;
     color: #000000;
+    font-weight: 400;
 }
 
 .principal .logoSena {
-    width: 65px;
+    width: 46px;
+    margin-right: 5px;
+    border-radius: 10px;
 }
 
 .principal:hover {
@@ -236,12 +239,14 @@
     }
 
     .principal .logoSena{
-        width: 56px;
-        filter: brightness(100);
+        width: 40px;
+        margin-right: 0;
     }
 
     .principal h2{
-        display: none;
+        font-size: 16px;
+        color: #fff;
+        font-weight: bold;
     }
 
     .containerSectionN {
@@ -257,11 +262,6 @@
         display: block;
         position: fixed;
         left: 0px;
-    }
-
-    .logoSenaR {
-        width: 60px;
-        filter: brightness(100);
     }
 
     .menu-responsive {

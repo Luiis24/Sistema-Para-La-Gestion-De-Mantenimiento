@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { SearchIcon } from "../Aprendices/SearchIcon";
 import { PlusIcon } from "../Aprendices/PlusIcon";
-import logoSena from "../../img/logo.png";
+import logoSena from '../../img/OIG3.png'
+import menu from '../../img/menu.png'
 import "./Instructores.css";
 import { Link } from "react-router-dom";
 import {
@@ -25,7 +26,7 @@ export const Instructores = () => {
     nombre: "",
     estado: "all",
   });
-  const {isLoading, setIsLoading} = useLoading();
+  const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
     setIsLoading(true)
@@ -79,14 +80,16 @@ export const Instructores = () => {
 
   return (
     <div>
-      {isLoading ? <Cargando/> : ''}
+      {isLoading ? <Cargando /> : ''}
       <div className="navVertical">
         <Link to={"/MenuPrincipal"}>
           <div className="principal">
             <img className="logoSena" src={logoSena} alt="Logo Sena"></img>
-            <h2>Principal</h2>
+            <h2>SGMI</h2>
           </div>
         </Link>
+        <input type="checkbox" id="navbar-toggle"></input>
+        <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
         <ul className="navList">
           <li id="">
             <Link to={"/aprendices"}>Aprendices</Link>
@@ -94,6 +97,16 @@ export const Instructores = () => {
           <li id="activeMaquina">
             Instructores
           </li>
+          <div className='atrasN-alm'>
+            <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
+              <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
+                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                </svg>
+                <h3 className='text-lg'>Atrás</h3>
+              </div>
+            </Link>
+          </div>
         </ul>
       </div>
       <div className="containerM">

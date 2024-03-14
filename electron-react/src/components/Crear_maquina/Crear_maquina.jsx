@@ -92,7 +92,7 @@ export const Crear_maquina = () => {
                 </div>
                 <div className='btn-terminar-registro'>
                     <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
-                    <button type="submit" className='boton-registrar'>Registrar</button>
+                    <button type="submit" className='boton-registrar'>Siguiente</button>
                 </div>
             </form>
 

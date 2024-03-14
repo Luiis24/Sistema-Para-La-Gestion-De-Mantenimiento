@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './navbars.css'
 import { Link } from 'react-router-dom'
-import logoSena from '../../img/logo.png'
+import logoSena from '../../img/OIG3.png'
 import { useAuth } from '../../estados/usuario';
 import menu from '../../img/menu.png'
 import { useLoading } from '../../estados/spinner'
@@ -127,7 +127,7 @@ export const Navbars = () => {
           </div>
           {rol === 'Instructor' ? <div className="adminMaquina">
             <p className='text-sm text-gray-600 pl-4 font-semibold'>Admin tools</p>
-            <Dropdown placement="right">
+            <Dropdown>
               <DropdownTrigger>
                 <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                   <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -143,7 +143,7 @@ export const Navbars = () => {
                   <DropdownItem><Link to={'/actualizarTipoMaquina'}><div className="text-small font-bold">Editar</div></Link></DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <Dropdown placement="right">
+            <Dropdown>
               <DropdownTrigger>
                 <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                   <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@ export const Navbars = () => {
             </Dropdown>
           </div> : ''}
 
-          <div className='atrasN'>
+          <div className='atrasN-alm'>
             <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
               <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
                 <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

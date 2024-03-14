@@ -79,7 +79,7 @@ export const Registro_salida_insumo = () => {
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
-                    <h1>Registrar salida de insumo</h1>
+                    <h1>Registrar salida de recurso</h1>
                 </div>
                 <div className='inp-registro-CM'>
                     <div className='mt-3'>

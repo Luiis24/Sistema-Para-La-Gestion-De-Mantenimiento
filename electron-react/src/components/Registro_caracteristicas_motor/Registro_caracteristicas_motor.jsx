@@ -70,7 +70,7 @@ export const Registro_caracteristicas_motor = () => {
     };
 
     return (
-      <div className="container-rg-caracteristicasMotor">
+      <div className="container-rg-caracteristicasM">
       <ToastContainer />
       {isLoading ? <Cargando/> : ''}
       <form onSubmit={handleFormSubmit} className="rg-caracteristicasM">

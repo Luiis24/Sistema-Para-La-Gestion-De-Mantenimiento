@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import { format } from "date-fns";
-import logoSena from '../../img/logo.png'
+import logoSena from '../../img/OIG3.png'
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { SearchIcon } from '../Aprendices/SearchIcon';
 import { PlusIcon } from '../Aprendices/PlusIcon';
@@ -211,7 +211,7 @@ export const Herramientas = () => {
             setIsLoading(false)
             setModalDevolucionVisible(false);
             toast.success('Registro de devolucion exitoso')
-            window.location.href = "/almacen"
+            window.location.href = "/herramientas"
         } catch (error) {
             setIsLoading(false)
             toast.error('Error al devolver insumo')
@@ -232,13 +232,23 @@ export const Herramientas = () => {
                 <Link to={'/MenuPrincipal'}>
                     <div className="principal">
                         <img className="logoSena" src={logoSena} alt='Logo Sena'></img>
-                        <h2>Principal</h2>
+                        <h2>SGMI</h2>
                     </div>
                 </Link>
                 <input type="checkbox" id="navbar-toggle"></input>
                 <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
+                    <div className='atrasN-alm'>
+            <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
+              <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
+                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                </svg>
+                <h3 className='text-lg'>Atrás</h3>
+              </div>
+            </Link>
+          </div>
                 </ul>
             </div>
 
@@ -251,53 +261,77 @@ export const Herramientas = () => {
 
                 <div className="containerAlmacen">
                     <div className="filtrosAlmacen">
-                        <Input classNames={{
-                            base: "w-1/3 sm:max-w-[44%]",
-                            inputWrapper: "border-1",
-                        }}
+                        <Input
+                            className="w-full h-14"
                             placeholder="Buscar por nombre..."
-                            size="sm"
                             startContent={<SearchIcon className="text-default-300" />}
                             onChange={handleNombre}
                         />
 
-                        <Select placeholder='Estado' name='estado' onChange={handleUso} className='w-1/5'>
+                        <Select
+                            placeholder="Estado"
+                            name="estado"
+                            onChange={handleUso}
+                            className="w-full"
+                        >
                             <SelectItem value="all">Todos</SelectItem>
                             <SelectItem value="1">Disponible</SelectItem>
                             <SelectItem value="0">En uso</SelectItem>
                         </Select>
-
-                        <Button onClick={handleOrdenNombre} className="bg-default-100 h-12 w-1/5">
-                            {ordenNombreAscendente ? 'Ordenar A-Z' : 'Ordenar Z-A'}
+                        <Button
+                            onClick={handleOrdenNombre}
+                            className="bg-default-100 h-14 w-full text-base"
+                        >
+                            {ordenNombreAscendente ? "Ordenar A-Z" : "Ordenar Z-A"}
                         </Button>
 
-                        <Button className="bg-default-100 h-12 w-1/5" onClick={handleOrdenCantidad}>
-                            {ordenCantidadAscendente ? 'Mayor a menor' : 'Menor a mayor'}
+                        <Button
+                            className="bg-default-100 h-14 w-full text-base"
+                            onClick={handleOrdenCantidad}
+                        >
+                            {ordenCantidadAscendente ? "Mayor a menor" : "Menor a mayor"}
                         </Button>
 
-
-                        {rol === 'Instructor' ?
+                        {rol === "Instructor" ? (
                             <Link to={"/entradaAlmacen"}>
-                                <Button
-                                    className="bg-foreground text-background h-12"
-                                    endContent={<PlusIcon style={{ fontSize: 'medium' }} />}
-                                    size="sm" >
-                                    Nuevo Recurso
-                                </Button>
-                            </Link> : ''}
-                        {rol === 'Instructor' ?
+                                <div className="btn-entr">
+                                    <Button
+                                        className="bg-foreground text-background h-14 w-full"
+                                        endContent={<PlusIcon style={{ fontSize: "large" }} />}
+                                    >
+                                        Nuevo Recurso
+                                    </Button>
+                                </div>
+                            </Link>
+                        ) : (
+                            ""
+                        )}
+                        {rol === "Instructor" ? (
                             <Link to={"/salidaAlmacen"}>
-                                <Button
-                                    className="bg-foreground text-background text-gray-200 h-12"
-                                    endContent={
-                                        <svg className="w-4 h-4 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M5.027 10.9a8.729 8.729 0 0 1 6.422-3.62v-1.2A2.061 2.061 0 0 1 12.61 4.2a1.986 1.986 0 0 1 2.104.23l5.491 4.308a2.11 2.11 0 0 1 .588 2.566 2.109 2.109 0 0 1-.588.734l-5.489 4.308a1.983 1.983 0 0 1-2.104.228 2.065 2.065 0 0 1-1.16-1.876v-.942c-5.33 1.284-6.212 5.251-6.25 5.441a1 1 0 0 1-.923.806h-.06a1.003 1.003 0 0 1-.955-.7A10.221 10.221 0 0 1 5.027 10.9Z" />
-                                        </svg>
-                                    }
-                                    size="sm" >
-                                    Salida Recurso
-                                </Button>
-                            </Link> : ''}
+                                <div className="btn-entr">
+                                    <Button
+                                        className="bg-foreground text-background h-14 w-full"
+                                        endContent={
+                                            <svg
+                                                className="w-4 h-4 dark:text-white"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M5.027 10.9a8.729 8.729 0 0 1 6.422-3.62v-1.2A2.061 2.061 0 0 1 12.61 4.2a1.986 1.986 0 0 1 2.104.23l5.491 4.308a2.11 2.11 0 0 1 .588 2.566 2.109 2.109 0 0 1-.588.734l-5.489 4.308a1.983 1.983 0 0 1-2.104.228 2.065 2.065 0 0 1-1.16-1.876v-.942c-5.33 1.284-6.212 5.251-6.25 5.441a1 1 0 0 1-.923.806h-.06a1.003 1.003 0 0 1-.955-.7A10.221 10.221 0 0 1 5.027 10.9Z" />
+                                            </svg>
+                                        }
+                                    >
+                                        Salida Recurso
+                                    </Button>
+                                </div>
+                            </Link>
+                        ) : (
+                            ""
+                        )}
                     </div>
 
 

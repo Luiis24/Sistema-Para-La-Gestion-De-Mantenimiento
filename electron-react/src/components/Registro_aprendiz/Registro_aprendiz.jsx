@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Registro_aprendiz.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,8 +20,10 @@ export const Registro_aprendiz = () => {
   const [telefono_aprendiz, setTelefono_aprendiz] = useState("");
   const [equipo_aprendiz, setEquipo_aprendiz] = useState("");
   const [password_aprendiz, setPassword_aprendiz] = useState("");
-  const { isLoading, setIsLoading } = useLoading();
+  const [idInstructor, setIdInstructor] = useState('')
 
+  const [Instructores, setInstructores] = useState([])
+  const { isLoading, setIsLoading } = useLoading();
 
   const enviarAP = async (event) => {
     event.preventDefault();
@@ -34,12 +36,13 @@ export const Registro_aprendiz = () => {
           tipo_doc_aprendiz,
           num_doc_aprendiz,
           ficha_aprendiz,
-          programa_aprendiz: programa_aprendiz === 'otro' ? otroPrograma : programa_aprendiz,
+          programa_aprendiz: programa_aprendiz === 'Otro' ? otroPrograma : programa_aprendiz,
           nombre_aprendiz,
           email_aprendiz,
           telefono_aprendiz,
           equipo_aprendiz,
           password_aprendiz,
+          id_instructor: idInstructor,
           estado: 'activo'
         }
       );
@@ -93,12 +96,20 @@ export const Registro_aprendiz = () => {
       value: "Otro"
     },
   ];
-  const Instructor = [
-    {
-      label: "Enain",
-      value: "Enain",
-    },
-  ];
+
+  useEffect(() => {
+    setIsLoading(true)
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/instructores`)
+        .then(datos => {
+            setInstructores(datos.data);
+            setIsLoading(false)
+        })
+        .catch(error => {
+            setIsLoading(false)
+            console.error('Error al obtener los datos:', error);
+        });
+}, []);
+
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -166,7 +177,7 @@ export const Registro_aprendiz = () => {
     // Actualiza el estado de otroPrograma cuando se ingresa texto
     setOtroPrograma(event.target.value);
   };
-  console.log(programa_aprendiz)
+
   return (
     <div className="container-rg-caracteristicasMotor">
       <ToastContainer />
@@ -239,10 +250,11 @@ export const Registro_aprendiz = () => {
               <Select
                 className="max-w-xs"
                 placeholder="Instructor"
+                onChange={(e) => setIdInstructor(e.target.value)}
               >
-                {Instructor.map((Instructor) => (
-                  <SelectItem key={Instructor.value} value={Instructor.value}>
-                    {Instructor.label}
+                {Instructores.map((Instructor) => (
+                  <SelectItem key={Instructor.id_instructor} value={Instructor.id_instructor}>
+                    {Instructor.nombre_instructor}
                   </SelectItem>
                 ))}
               </Select>

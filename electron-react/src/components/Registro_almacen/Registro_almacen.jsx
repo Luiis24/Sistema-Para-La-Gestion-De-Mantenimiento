@@ -34,7 +34,12 @@ export const Registro_almacen = () => {
             );
             setIsLoading(false)
             toast.success('Registro exitoso')
-            window.location.href = "/almacen"
+            if(tipo === 'insumo'){
+                window.location.href = "/almacen"
+            } else {
+                window.location.href = "/herramientas"
+            }
+
 
         } catch (error) {
             setIsLoading(false)
@@ -50,7 +55,7 @@ export const Registro_almacen = () => {
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
-                    <h1>Agregar un nuevo insumo</h1>
+                    <h1>Agregar un nuevo recurso</h1>
                 </div>
                 <div className='inp-registro-CM'>
                     <Select onChange={(e) => setTipo(e.target.value)} isRequired placeholder='Insumo o herramienta' className='mt-3'>

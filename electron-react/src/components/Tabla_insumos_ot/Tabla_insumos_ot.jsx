@@ -209,7 +209,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                         Cerrar
                                     </Button>
                                 </div>
-                                <div className='button-2-inp'>
+                                <div className='botton-registrar-div'>
                                     <Button className='text-white' type="submit" onPress={onClose} onClick={handleSubmit}>
                                         Registrar
                                     </Button>

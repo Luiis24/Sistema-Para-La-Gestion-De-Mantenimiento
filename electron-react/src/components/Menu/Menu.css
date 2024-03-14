@@ -191,5 +191,10 @@
         top: 25px;
     }
 
+    .herramientasMenu {
+        background-color: #fff;
+        border-radius: 16px;
+    }
+
 }
 

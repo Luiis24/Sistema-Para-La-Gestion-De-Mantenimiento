@@ -88,11 +88,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/crearTipoMaquina",
-    element: <><CrearTipoMaquina /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><CrearTipoMaquina /><Animacion_cuadros /></>
   },
   {
     path: "/crearMaquina",
-    element: <><Crear_maquina /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Crear_maquina /><Animacion_cuadros /></>
   },
   {
     path: "/informes",
@@ -104,24 +104,24 @@ const router = createBrowserRouter([
   },
   {
     path: "/Registroinstructores",
-    element: <><Registro_instructor /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Registro_instructor /><Animacion_cuadros /></>
   },
   {
     path: "/crearCaracteristicasMotor",
-    element: <><Registro_caracteristicas_motor /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Registro_caracteristicas_motor /><Animacion_cuadros /></>
   },
   ,
   {
     path: "/crearCaracteristicasMaquina",
-    element: <><Caracteristicas_maquina /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Caracteristicas_maquina /><Animacion_cuadros /></>
   },
   {
     path: "/crearDescripcionEquipo",
-    element: <><Registro_descripcion_equipo_hv /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Registro_descripcion_equipo_hv /><Animacion_cuadros /></>
   },
   {
     path: "/crearComponentesCheck",
-    element: <><Registro_componentes_check /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Registro_componentes_check /><Animacion_cuadros /></>
   },
   {
     path: "/herramientas",
@@ -129,27 +129,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/entradaAlmacen",
-    element: <><Registro_almacen /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Registro_almacen /><Animacion_cuadros /></>
   },
   {
     path: "/salidaAlmacen",
-    element: <><Registro_salida_insumo/><Animacion_cuadros/></>
+    element: <><Titulo_sena_cb/><Registro_salida_insumo/><Animacion_cuadros/></>
   },
   {
     path: "/registroReparacion",
-    element: <><Historial_reparaciones /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Historial_reparaciones /><Animacion_cuadros /></>
   },
   {
     path: "/actualizarMaquina",
-    element: <><Actualizar_maquina /><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Actualizar_maquina /><Animacion_cuadros /></>
   },
   {
     path: "/actualizarTipoMaquina",
-    element: <><Actualizar_tipo_maquina/><Animacion_cuadros /></>
+    element: <><Titulo_sena_cb/><Actualizar_tipo_maquina/><Animacion_cuadros /></>
   },
   {
     path: "/actualizarFicha",
-    element: <><Actualizar_estado_ficha/><Animacion_cuadros/></>
+    element: <><Titulo_sena_cb/><Actualizar_estado_ficha/><Animacion_cuadros/></>
   }
 ]);
 

@@ -59,7 +59,7 @@ export const Registro_componentes_check = () => {
             console.error('Error al registrar componente del checklist', error);
             toast.error('Error al registrar componente del checklist');
         }
-    };
+    };console.log(tipoComponente)
 
     return (
         <div className='container-rg-caracteristicasM'>
@@ -73,20 +73,19 @@ export const Registro_componentes_check = () => {
                 <div className='inp-registro-CM'>
                 <div className='mt-3'>
                     <Select
-                    placeholder='Tipo de componente o sistema'
+                        placeholder='Tipo de componente o sistema'
                         id="tipoComponente"
-                        selectedKeys={tipoComponente}
                         onChange={(event) => setTipoComponente(event.target.value)}
                    
                     >
-                        <SelectItem value="Componente Electrico">Componente eléctrico</SelectItem>
-                        <SelectItem value="Componente Mecanico">Componente mecánico</SelectItem>
-                        <SelectItem value="Estados de la Maquina">Estados de la máquina</SelectItem>
-                        <SelectItem value="Funcionamiento Electrico">Funcionamiento eléctrico</SelectItem>
-                        <SelectItem value="Motor">Motor</SelectItem>
-                        <SelectItem value="Niveles de Aceite">Niveles de aceite</SelectItem>
-                        <SelectItem value="Sistema de Lubricacion">Sistema de lubricación</SelectItem>
-                        <SelectItem value="Sistema Electrico">Sistema eléctrico</SelectItem>
+                        <SelectItem value="Componente Electrico" key="Componente Electrico">Componente eléctrico</SelectItem>
+                        <SelectItem value="Componente Mecanico" key="Componente Mecanico">Componente mecánico</SelectItem>
+                        <SelectItem value="Estados de la Maquina" key="Estados de la Maquina">Estados de la máquina</SelectItem>
+                        <SelectItem value="Funcionamiento Electrico" key="Funcionamiento Electrico">Funcionamiento eléctrico</SelectItem>
+                        <SelectItem value="Motor" key="Motor">Motor</SelectItem>
+                        <SelectItem value="Niveles de Aceite" key="Niveles de Aceite">Niveles de aceite</SelectItem>
+                        <SelectItem value="Sistema de Lubricacion" key="Sistema de Lubricacion">Sistema de lubricación</SelectItem>
+                        <SelectItem value="Sistema Electrico" key="Sistema Electrico">Sistema eléctrico</SelectItem>
                     </Select>
                 </div>
 

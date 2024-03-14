@@ -1,5 +1,6 @@
 .img-logo-sena{
-    width: 80px;
+    width: 60px;
+    border-radius: 10px;
 }
 .logo-sena{
     display: flex;
@@ -26,7 +27,7 @@
 @media (max-width: 768px) {
     .img-logo-sena {
         width: 56px;
-        padding: 10px 0 0 10px;
+        margin: 10px 0 0 10px;
     }
 }
 
@@ -39,4 +40,12 @@
     }
 }
 
+@media (max-width: 900px) {
+    .titulo-sena{
+        font-size: 20px;
+    }
+    .titulo-taller{
+        font-size: 16px;
+    }
+}
 

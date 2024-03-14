@@ -223,22 +223,22 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='fecha_inicio_ot'>Fecha Inicio</label>
-                <Input isRequired type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_inicio_ot : ''}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_inicio_ot'>Hora Inicio</label>
-                <Input isRequired type='time' className='w-11/12 h-11' name='hora_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_inicio_ot : ''}></Input>
+                <Input type='time' className='w-11/12 h-11' name='hora_inicio_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_inicio_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='fecha_fin_ot'>Fecha Finalizacion</label>
-                <Input isRequired type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_fin_ot : ''}></Input>
+                <Input type='date' className='w-11/12 h-11' name='fecha_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.fecha_fin_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='hora_fin_ot'>Hora Finalizacion</label>
-                <Input isRequired type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_fin_ot : ''}></Input>
+                <Input type='time' className='w-11/12 h-11' name='hora_fin_ot' onChange={handleChange} placeholder={formOT ? formOT.hora_fin_ot : ''}></Input>
               </div>
 
               {rol === 'Instructor' ?
@@ -254,12 +254,12 @@ export const Orden_trabajo_maquina = () => {
 
               <div className="valueOT">
                 <label htmlFor='total_horas_ot'>Total Horas Trabajadas</label>
-                <Input isRequired type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange} placeholder={formOT ? formOT.total_horas_ot : ''}></Input>
+                <Input type='number' className='w-11/12 h-11' name='total_horas_ot' onChange={handleChange} placeholder={formOT ? formOT.total_horas_ot : ''}></Input>
               </div>
 
               <div className="valueOT">
                 <label htmlFor='precio_hora'>Precio Hora-Hombre</label>
-                <Input isRequired type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : '00.0'}
+                <Input type="number" className='w-11/12 h-11' name='precio_hora' onChange={handleChange} placeholder={formOT ? formOT.precio_hora : '00.0'}
                   startContent={
                     <div className="pointer-events-none flex items-center">
                       <span className="text-default-400 text-small">$</span>
@@ -366,7 +366,7 @@ export const Orden_trabajo_maquina = () => {
 
           <div className="containerDOT">
             <Textarea
-              isRequired
+            
               placeholder={formOT ? formOT.descripcion_de_trabajo : 'Describe el trabajo o acividad a realizar'}
               className="col-span-8 md:col-span-6 mb-6 md:mb-0"
               name='descripcion_de_trabajo'
