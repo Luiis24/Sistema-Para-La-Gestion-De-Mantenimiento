@@ -1478,6 +1478,21 @@ const componentesAAlertar = async (req, res) => {
   }
 }
 
+const actualizarOrdenTrabajo = async (req, res) => {
+  const { id_orden_de_trabajo, fecha_fin } = req.body;
+  try {
+    await pool.query(
+      "UPDATE orden_de_trabajo SET fecha_fin_ot= $1 WHERE id_orden_de_trabajo = $2;",
+      [fecha_fin, id_orden_de_trabajo]
+    );
+
+    res.status(200).json({ message: "Orden de trabajo actualizado" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
+
 
 module.exports = {
   registerInstructor,
@@ -1541,6 +1556,7 @@ module.exports = {
   // insumosADevolver,
   actualizarSalidaInsumo,
   actualizarSalidaInsumoEnUso,
-  componentesAAlertar
+  componentesAAlertar,
+  actualizarOrdenTrabajo
 };
 

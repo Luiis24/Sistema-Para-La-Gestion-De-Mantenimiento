@@ -37,7 +37,7 @@ export const Menu = () => {
                 <div className="containerMenu">
                     <div className="maquinasMenu">
                         <Link to={'/tornos'} className="a-menu">
-                            <p className="text-menu">Maquinas</p>
+                            <p className="text-menu">Máquinas</p>
                         </Link>
                     </div>
                     <div className="informesMenu">
@@ -47,7 +47,7 @@ export const Menu = () => {
                     </div>
                     <div className="almacenMenu">
                         <Link to={'/almacen'} className="a-menu">
-                            <p className="text-menu">Almacen</p>
+                            <p className="text-menu">Almacén</p>
                         </Link>
                     </div>
                     <div className="usuariosMenu">

@@ -18,7 +18,7 @@ export const Almacen = () => {
     const [insumos, setInsumos] = useState([]);
     const [insumosUtilizadosAlmacen, setInsumosUtilizadosAlmacen] = useState([]);
     const [modalVisibleInsumoU, setModalVisibleInsumoU] = useState(false);
-    const { rol } = useAuth();
+    const { rol, nombre } = useAuth();
     const { isLoading, setIsLoading } = useLoading();
 
     // filtros
@@ -196,13 +196,13 @@ export const Almacen = () => {
             const devolverInsumoPromise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/DevolverInsumo/${selectedInsumoId}`, {
                 id_insumo: selectedInsumoId,
                 cantidad: cantidadDevolver,
-                nota: `${nota || ""} - Fecha: ${formattedDate}` // Verificar si la nota existe, si no, enviar una cadena vacía
+                nota: `${nota || ""}. ${nombre} - Fecha: ${formattedDate}` // Verificar si la nota existe, si no, enviar una cadena vacía
             });
 
             const salidaInsumoPromise = axios.post(`${process.env.REACT_APP_API_BASE_URL}/SalidaInsumoEnUso`, {
                 id_insumo: selectedInsumoId,
                 cantidad_insumo: cantidadConsumida,
-                nota: `${nota || ""} - Fecha: ${formattedDate}` // Verificar si la nota existe, si no, enviar una cadena vacía
+                nota: `${nota || ""}. ${nombre} - Fecha: ${formattedDate}` // Verificar si la nota existe, si no, enviar una cadena vacía
             });
 
             // Esperar a que ambas solicitudes se completen antes de continuar

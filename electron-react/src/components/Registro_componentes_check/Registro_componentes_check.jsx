@@ -65,46 +65,74 @@ export const Registro_componentes_check = () => {
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
             {isLoading ? <Cargando/> : ''}
-            <form className='rg-componentes' onSubmit={RegistrarComponente}>
-                <div className="titulo-registro-CM">
-                    <h2>Registro de componentes {ultimaMaquina}</h2>
-                    
-                </div>
-                <div className='inp-registro-CM'>
-                <div className='mt-3'>
-                    <Select
-                        placeholder='Tipo de componente o sistema'
-                        id="tipoComponente"
-                        onChange={(event) => setTipoComponente(event.target.value)}
-                   
-                    >
-                        <SelectItem value="Componente Electrico" key="Componente Electrico">Componente eléctrico</SelectItem>
-                        <SelectItem value="Componente Mecanico" key="Componente Mecanico">Componente mecánico</SelectItem>
-                        <SelectItem value="Estados de la Maquina" key="Estados de la Maquina">Estados de la máquina</SelectItem>
-                        <SelectItem value="Funcionamiento Electrico" key="Funcionamiento Electrico">Funcionamiento eléctrico</SelectItem>
-                        <SelectItem value="Motor" key="Motor">Motor</SelectItem>
-                        <SelectItem value="Niveles de Aceite" key="Niveles de Aceite">Niveles de aceite</SelectItem>
-                        <SelectItem value="Sistema de Lubricacion" key="Sistema de Lubricacion">Sistema de lubricación</SelectItem>
-                        <SelectItem value="Sistema Electrico" key="Sistema Electrico">Sistema eléctrico</SelectItem>
-                    </Select>
-                </div>
+            <form className="rg-componentes" onSubmit={RegistrarComponente}>
+        <div className="titulo-registro-CM">
+          <h2>Registro de componentes {ultimaMaquina}</h2>
+        </div>
+        <div className="inp-registro-CM">
+          <div className="mt-3">
+            <Select
+              placeholder="Tipo de componente o sistema"
+              id="tipoComponente"
+              selectedKeys={tipoComponente}
+              onChange={(event) => setTipoComponente(event.target.value)}
+            >
+              <SelectItem value="Componente Electrico">
+                Componente eléctrico
+              </SelectItem>
+              <SelectItem value="Componente Mecanico">
+                Componente mecánico
+              </SelectItem>
+              <SelectItem value="Estados de la Maquina">
+                Estados de la máquina
+              </SelectItem>
+              <SelectItem value="Funcionamiento Electrico">
+                Funcionamiento eléctrico
+              </SelectItem>
+              <SelectItem value="Motor">Motor</SelectItem>
+              <SelectItem value="Niveles de Aceite">
+                Niveles de aceite
+              </SelectItem>
+              <SelectItem value="Sistema de Lubricacion">
+                Sistema de lubricación
+              </SelectItem>
+              <SelectItem value="Sistema Electrico">
+                Sistema eléctrico
+              </SelectItem>
+            </Select>
+          </div>
 
-                <div className='input-check'>
-                    <Input
-                    className='mt-8'
-                        type="text"
-                        id="nombreComponente"
-                        placeholder='Nombre del componente'
-                        value={nombreComponente}
-                        onChange={(event) => setNombreComponente(event.target.value)}
-                    />
-                </div>
-                </div>
-                <div className='btn-terminar-registro'>
-                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Salir</h3></Link>
-                    <Button type="submit" className='boton-registrar'>Registrar</Button>
-                </div>
-            </form>
+          <div className="input-check">
+            <Input
+              className="mt-8"
+              type="text"
+              id="nombreComponente"
+              placeholder="Nombre del componente"
+              value={nombreComponente}
+              onChange={(event) => setNombreComponente(event.target.value)}
+            />
+          </div>
+        </div>
+        <div className="btn-terminar-ch">
+          <Link to={"/tornos"}>
+            <Button className="boton-cancelar-registro">
+              <svg
+                className="w-6 h-6 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+              </svg>{" "}
+              Salir
+            </Button>
+          </Link>
+          <Button type="submit" className="boton-registrar">
+            Registrar
+          </Button>
+        </div>
+      </form>
         </div>
     );
 };  

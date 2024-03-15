@@ -59,7 +59,12 @@
 /*----Responsive----*/
 
 
-
+@media(max-width: 1335px){
+  .filtersUsuarios{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
 @media (max-width: 768px) {
   .navList {
     display: none;
@@ -96,6 +101,10 @@
   .atrasN {
     display: block;
   }
+
+  .atrasN-alm {
+    top: 50vh;
+  }
 }
 
 @media (max-width: 570px) {
@@ -107,21 +116,46 @@
 }
 
 
-/* info aprendiz */
+/* Modal info aprendiz */
+
 .infoAprendiz {
   height: 50vh;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 10px 0 10px 0;
 }
 
 .infoAprendiz div{
   display: flex;
   align-items: center;
   gap: 20px;
+  width: 90%;
+  margin: auto;
 }
 
 .infoAprendiz div label{
   width: 30%;
+}
+
+/* scroll */
+
+.infoAprendiz::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.infoAprendiz::-webkit-scrollbar-thumb {
+  background: #e7e7e7;
+  border-radius: 4px;
+}
+
+.infoAprendiz::-webkit-scrollbar-thumb:hover {
+  background: #b3b3b3;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.infoAprendiz::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
 }

@@ -44,14 +44,14 @@
   margin-top: 5%;
   justify-content: center;
 }
-/* .boton-registrar {
+.boton-registrar {
   width: 20%;
   font-size: 15px;
   color: #ffff;
   background: rgb(0, 173, 0);
-} */
+}
 .btn-hv Button:hover {
-  background: rgb(1, 133, 1);
+  background: rgb(1, 153, 1);
 }
 .btn-hv Button:active {
   background: rgb(0, 173, 0);

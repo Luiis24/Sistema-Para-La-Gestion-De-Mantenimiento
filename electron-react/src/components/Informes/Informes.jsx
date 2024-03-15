@@ -141,7 +141,7 @@ export const Informes = () => {
                 <ul className="navList">
                     <li id="activeMaquina">Informes</li>
                     <li>
-                        <Link to={"/registroReparacion"}>Reparacion</Link>
+                        <Link to={"/registroReparacion"}>Reparación</Link>
                     </li>
 
                     <div className='atrasN-alm'>
@@ -166,7 +166,7 @@ export const Informes = () => {
                 <div className="containerInformes">
 
                     <div className="filtersUsuarios">
-                        <Select className='w-11/12 h-11' placeholder="Maquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
+                        <Select className='w-11/12 h-11' placeholder="Máquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             {maquinas ? maquinas.map(maquina =>
                                 <SelectItem key={maquina.nombre_maquina} value={maquina.nombre_maquina}>{maquina.nombre_maquina}</SelectItem>
@@ -177,9 +177,9 @@ export const Informes = () => {
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                             <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
-                            <SelectItem value='reparacion' key='reparacion'>Reparacion</SelectItem>
-                            <SelectItem value='modificacion' key='modificacion'>Modificacion</SelectItem>
-                            <SelectItem value='fabricacion' key='fabricacion'>Fabricacion</SelectItem>
+                            <SelectItem value='reparacion' key='reparacion'>Reparación</SelectItem>
+                            <SelectItem value='modificacion' key='modificacion'>Modificación</SelectItem>
+                            <SelectItem value='fabricacion' key='fabricacion'>Fabricación</SelectItem>
                             <SelectItem value='montaje' key='montaje'>Montaje</SelectItem>
                             <SelectItem value='desmontaje' key='desmontaje'>Desmontaje</SelectItem>
                             <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
@@ -192,7 +192,7 @@ export const Informes = () => {
                             <SelectItem value='mantenimiento preventivo' key='mantenimiento preventivo'>Mantenimiento preventivo</SelectItem>
                             <SelectItem value='basado en el tiempo' key='basado en el tiempo'>Basado en el tiempo</SelectItem>
                             <SelectItem value='basado en el uso o contador' key='basado en el uso o contador'>Basado en el uso o contador</SelectItem>
-                            <SelectItem value='basado en condicion' key='basado en condicion'>Basado en condicion</SelectItem>
+                            <SelectItem value='basado en condicion' key='basado en condicion'>Basado en condición</SelectItem>
                             <SelectItem value='predictivo' key='predictivo'>Predictivo</SelectItem>
                             <SelectItem value='proactivo' key='proactivo'>Proactivo</SelectItem>
                             <SelectItem value='detectivo' key='detectivo'>Detectivo</SelectItem>
@@ -204,16 +204,16 @@ export const Informes = () => {
 
                         <Select className='w-11/12 h-11' placeholder='Tipo de sistema' onChange={(e) => { handleEstado('tipoSistema', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
-                            <SelectItem value='mecanico' key='mecanico'>Mecanico</SelectItem>
-                            <SelectItem value='electrico' key='electrico'>Electrico</SelectItem>
-                            <SelectItem value='hidraulico' key='hidraulico'>Hidraulico</SelectItem>
-                            <SelectItem value='neumatico' key='neumatico'>Neumatico</SelectItem>
+                            <SelectItem value='mecanico' key='mecanico'>Mecánico</SelectItem>
+                            <SelectItem value='electrico' key='electrico'>Eléctrico</SelectItem>
+                            <SelectItem value='hidraulico' key='hidraulico'>Hidráulico</SelectItem>
+                            <SelectItem value='neumatico' key='neumatico'>Neumático</SelectItem>
                             <SelectItem value='de control' key='de control'>De control</SelectItem>
-                            <SelectItem value='de refrigeracion' key='de refrigeracion'>De refrigeracion</SelectItem>
-                            <SelectItem value='de lubricacion' key='de lubricacion'>De lubricacion</SelectItem>
-                            <SelectItem value='de alimentacion' key='de alimentacion'>De alimentacion</SelectItem>
+                            <SelectItem value='de refrigeracion' key='de refrigeracion'>De refrigeración</SelectItem>
+                            <SelectItem value='de lubricacion' key='de lubricacion'>De lubricación</SelectItem>
+                            <SelectItem value='de alimentacion' key='de alimentacion'>De alimentación</SelectItem>
                             <SelectItem value='de seguridad' key='de seguridad'>De seguridad</SelectItem>
-                            <SelectItem value='de comunicacion' key='de comunicacion'>De comunicacion</SelectItem>
+                            <SelectItem value='de comunicacion' key='de comunicacion'>De comunicación</SelectItem>
                         </Select>
 
                         <Select className='w-11/12 h-11' placeholder='En curso' onChange={(e) => { handleEstado('encurso', e.target.value); }}>
@@ -224,7 +224,7 @@ export const Informes = () => {
 
                     <Table selectionMode="single">
                         <TableHeader>
-                            <TableColumn className='text-lg'>Maquina</TableColumn>
+                            <TableColumn className='text-lg'>Máquina</TableColumn>
                             <TableColumn className='text-lg'>Tipo de trabajo</TableColumn>
                             <TableColumn className='text-lg'>Tipo de mantenimiento</TableColumn>
                             <TableColumn className='text-lg'>Tipo de sistema</TableColumn>
@@ -236,13 +236,13 @@ export const Informes = () => {
                             {paginatedOrdenes.map((orden) => {
                                 return (
                                     <TableRow key={orden.id_orden_de_trabajo} onClick={() => { handleInfoOT(orden.id_orden_de_trabajo); handleInfoIU(orden.id_orden_de_trabajo) }} className='cursor-pointer'>
-                                        <TableCell>{orden.nombre_maquina}</TableCell>
-                                        <TableCell>{orden.tipo_de_trabajo}</TableCell>
-                                        <TableCell>{orden.tipo_de_mantenimiento}</TableCell>
-                                        <TableCell>{orden.tipo_de_sistema}</TableCell>
-                                        <TableCell>{format(new Date(orden.fecha_inicio_ot), "dd/MM/yyyy")}</TableCell>
-                                        <TableCell>{format(new Date(orden.fecha_fin_ot), "dd/MM/yyyy")}</TableCell>
-                                        <TableCell>{orden.costo_mantenimiento}</TableCell>
+                                        <TableCell className='text-lg'>{orden.nombre_maquina}</TableCell>
+                                        <TableCell className='text-lg'>{orden.tipo_de_trabajo}</TableCell>
+                                        <TableCell className='text-lg'>{orden.tipo_de_mantenimiento}</TableCell>
+                                        <TableCell className='text-lg'>{orden.tipo_de_sistema}</TableCell>
+                                        <TableCell className='text-lg'>{format(new Date(orden.fecha_inicio_ot), "dd/MM/yyyy")}</TableCell>
+                                        <TableCell className='text-lg'>{format(new Date(orden.fecha_fin_ot), "dd/MM/yyyy")}</TableCell>
+                                        <TableCell className='text-lg'>{orden.costo_mantenimiento}</TableCell>
                                     </TableRow>
                                 )
                             })}
@@ -262,7 +262,3 @@ export const Informes = () => {
         </div>
     )
 }
-
-// INSERT INTO public.orden_de_trabajo(
-// 	fecha_inicio_ot, hora_inicio_ot, fecha_fin_ot, hora_fin_ot, total_horas_ot, precio_hora, total_mano_obra, tipo_de_trabajo, tipo_de_mantenimiento, tipo_de_sistema, descripcion_de_trabajo, subtotal_ot, iva, total_precio_horas, costo_mantenimiento, id_maquina, id_aprendiz)
-// 	VALUES ('24-02-2024', '16:00', '29-02-2024', '18:00', '36', '4000', '50000', 'Inspeccion', 'Correctivo no planificado', 'Mecanico', 'reparacion del sistema mecanico', '456000', '50000', '900000', '99380498', '2', '23');

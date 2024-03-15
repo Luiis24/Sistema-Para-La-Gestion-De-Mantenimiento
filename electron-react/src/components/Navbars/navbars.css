@@ -100,7 +100,7 @@
     margin-top: 20px;
 }
 
-.atrasN{
+.atrasN {
     border-top: 1px solid #cbcbcb;
 }
 
@@ -178,7 +178,7 @@
     align-items: center;
     gap: 10px;
 }
- 
+
 .navHorizontal a:hover {
     background-color: #30944B;
 }
@@ -238,12 +238,12 @@
         height: 50px;
     }
 
-    .principal .logoSena{
+    .principal .logoSena {
         width: 40px;
         margin-right: 0;
     }
 
-    .principal h2{
+    .principal h2 {
         font-size: 16px;
         color: #fff;
         font-weight: bold;
@@ -287,7 +287,7 @@
         margin: 0;
     }
 
-    #navbar-toggle:checked~ h3 {
+    #navbar-toggle:checked~h3 {
         flex-direction: column;
         display: block;
         position: fixed;
@@ -304,8 +304,8 @@
     }
 
     .navHorizontal a {
-       background-color: #eeeeee;
-    } 
+        background-color: #eeeeee;
+    }
 
     .navHorizontal h2 {
         color: #505050;
@@ -318,7 +318,7 @@
 }
 
 @media (max-width: 1040px) {
-    .navHorizontal h2{
+    .navHorizontal h2 {
         gap: 0;
         overflow: hidden;
         font-size: 1rem;
@@ -328,4 +328,3 @@
         width: 1.2rem;
     }
 }
-

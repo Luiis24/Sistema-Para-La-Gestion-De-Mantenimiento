@@ -119,18 +119,16 @@ export const Instructores = () => {
           <div className="filtersUsuarios">
             <Input
               classNames={{
-                base: "w-full sm:max-w-[44%]",
+                base: "w-full",
                 inputWrapper: "border-1",
               }}
               startContent={<SearchIcon className="text-default-300" />}
-              placeholder="Buscar por nombre..."
-              size="sm"
               onChange={handleNombre}
             />
 
             <Link to={"/Registroinstructores"}>
               <Button
-                className="bg-foreground text-background h-12"
+                className="bg-foreground text-background h-14 w-full"
                 endContent={<PlusIcon style={{ fontSize: "large" }} />}
                 a
                 size="sm"

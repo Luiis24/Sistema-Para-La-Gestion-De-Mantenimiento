@@ -6,16 +6,16 @@ import { PlusIcon } from './PlusIcon'
 import { Link } from 'react-router-dom'
 import logoSena from '../../img/OIG3.png'
 import menu from '../../img/menu.png'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue, SelectItem, Select } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Input, Button, Pagination, Spinner, getKeyValue, SelectItem, Select, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Aprendices_modal } from './Aprendices_modal';
 
 
 export const Aprendices = () => {
     const [users, setUsers] = useState([]);
+    const [aprendiz, setAprendiz] = useState({})
     const [modalVisible, setModalVisible] = useState(false);
     const [estado, setEstado] = useState();
     const [aprendizSelected, setAprendizSelected] = useState()
@@ -29,6 +29,7 @@ export const Aprendices = () => {
     const [pages, setPages] = useState()
     const [paginaActual, setPaginaActual] = useState(1);
     const itemsPorPagina = 15;
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 
     const { isLoading, setIsLoading } = useLoading();
@@ -117,6 +118,11 @@ export const Aprendices = () => {
     const endIndex = startIndex + itemsPorPagina;
     const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
+    const handleModalAprendiz = (user) => {
+        setAprendiz(user);
+        onOpen()
+    }
+
     return (
         <div>
             {isLoading ? <Cargando /> : ''}
@@ -162,7 +168,7 @@ export const Aprendices = () => {
                             base: "w-full",
                             inputWrapper: "border-1",
                         }}
-                            placeholder="Buscar por numero de documento..."
+                            placeholder="Buscar por Nº de documento..."
                             startContent={<SearchIcon className="text-default-300" />}
                             onChange={handleNombre}
                         />
@@ -184,7 +190,7 @@ export const Aprendices = () => {
 
                         <Link to={'/registroAprendiz'}>
                             <Button
-                                className="bg-foreground text-background h-12 md:w-32"
+                                className="bg-foreground text-background h-14 w-full"
                                 endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                                 size="sm"
                             >
@@ -193,7 +199,7 @@ export const Aprendices = () => {
                         </Link>
                         <Link to={'/actualizarFicha'}>
                             <Button
-                                className="bg-foreground text-background h-12 md:w-32"
+                                className="bg-foreground text-background h-14 w-full"
                                 endContent={
                                     <svg className="w-5 h-5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                         <path fillRule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clipRule="evenodd" />
@@ -233,7 +239,7 @@ export const Aprendices = () => {
                             <TableColumn className='text-lg'>Telefono</TableColumn>
                             <TableColumn className='text-lg'>Ficha</TableColumn>
                             <TableColumn className='text-lg'>Estado</TableColumn>
-                            <TableColumn>Editar</TableColumn>
+                            <TableColumn>Acciones</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={"No se encontro."}
                             items={paginatedUsers ?? []}
@@ -253,11 +259,26 @@ export const Aprendices = () => {
                                         </Chip>
                                     </TableCell>
                                     <TableCell>
-                                        <svg className="w-5 h-5 dark:text-white cursor-pointer hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }}>
-                                            <path fillRule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clipRule="evenodd" />
-                                            <path fillRule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clipRule="evenodd" />
-                                        </svg>
-                                        <Aprendices_modal aprendiz={user}/>
+                                        <Dropdown>
+                                            <DropdownTrigger>
+                                                <Button isIconOnly size="sm" variant="light">
+                                                    <svg className="w-6 h-6 text-gray-800 hover:text-lime-500 dark:text-white" aria-hidden="true" fill="none" focusable="false" role="presentation" viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                                                            fill="currentColor"
+                                                        />
+                                                    </svg>
+                                                    {/* <svg className="w-5 h-5 dark:text-white cursor-pointer hover:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path fillRule="evenodd" d="M11.3 6.2H5a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h11c1.1 0 2-1 2-2.1V11l-4 4.2c-.3.3-.7.6-1.2.7l-2.7.6c-1.7.3-3.3-1.3-3-3.1l.6-2.9c.1-.5.4-1 .7-1.3l3-3.1Z" clipRule="evenodd" />
+                                                            <path fillRule="evenodd" d="M19.8 4.3a2.1 2.1 0 0 0-1-1.1 2 2 0 0 0-2.2.4l-.6.6 2.9 3 .5-.6a2.1 2.1 0 0 0 .6-1.5c0-.2 0-.5-.2-.8Zm-2.4 4.4-2.8-3-4.8 5-.1.3-.7 3c0 .3.3.7.6.6l2.7-.6.3-.1 4.7-5Z" clipRule="evenodd" />
+                                                        </svg> */}
+                                                </Button>
+                                            </DropdownTrigger>
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={() => handleModalAprendiz(user)}>Informacion</DropdownItem>
+                                                <DropdownItem onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }} >Editar</DropdownItem>
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </TableCell>
                                 </TableRow>
                             })}
@@ -287,6 +308,65 @@ export const Aprendices = () => {
                     </form>
                 </div>
             )}
+
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl' placement={'top'}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Informacion aprendiz</ModalHeader>
+                            <ModalBody>
+                                <div className='infoAprendiz'>
+                                    <div className='flex items-center gap-5'>
+                                        <label>Nombre:</label>
+                                        <Input value={aprendiz.nombre_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Correo:</label>
+                                        <Input value={aprendiz.email_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Telefono:</label>
+                                        <Input value={aprendiz.telefono_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Numero identidad:</label>
+                                        <Input value={aprendiz.num_doc_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Tipo de documento:</label>
+                                        <Input value={aprendiz.tipo_doc_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Equipo:</label>
+                                        <Input value={aprendiz.equipo_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Ficha:</label>
+                                        <Input value={aprendiz.ficha_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Contraseña:</label>
+                                        <Input value={aprendiz.password_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Programa:</label>
+                                        <Input value={aprendiz.programa_aprendiz} />
+                                    </div>
+                                    <div>
+                                        <label>Estado:</label>
+                                        <Input value={aprendiz.estado} />
+                                    </div>
+                                </div>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Cerrar
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }

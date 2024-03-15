@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Input } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
@@ -190,7 +190,7 @@ export const Registro_aprendiz = () => {
               {/*NOMBRE*/}
               <h3 className="h3-fila-1">Nombre</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Nombre completo"
                 type="text"
                 name="nombre_aprendiz"
@@ -199,7 +199,7 @@ export const Registro_aprendiz = () => {
               {/*TELÉFONO*/}
               <h3 className="h3-fila-1">Teléfono</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Número de teléfono"
                 type="number"
                 name=""
@@ -210,7 +210,7 @@ export const Registro_aprendiz = () => {
               {/*DOCUMENTO/SELECT */}
               <h3 className="h3-fila-1">Tipo de documento</h3>
               <Select
-                className="max-w-xs"
+                className="w-full mt-7"
                 placeholder="Seleccione tipo documento"
                 onChange={(express) =>
                   setTipo_doc_aprendiz(express.target.value)
@@ -225,7 +225,7 @@ export const Registro_aprendiz = () => {
               {/*NUM-DOCUMENTO*/}
               <h3 className="h3-fila-1">Número de documento</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Número de documento"
                 type="number"
                 name=""
@@ -236,7 +236,7 @@ export const Registro_aprendiz = () => {
               {/*EMAIL*/}
               <h3 className="h3-fila-1">Correo Electrónico</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Ingresa tú email "
                 type="email"
                 name=""
@@ -248,7 +248,7 @@ export const Registro_aprendiz = () => {
               {/*INSTRUCTOR*/}
               <h3 className="h3-fila-2">Instructor</h3>
               <Select
-                className="max-w-xs"
+                className="w-full mt-7"
                 placeholder="Instructor"
                 onChange={(e) => setIdInstructor(e.target.value)}
               >
@@ -261,7 +261,7 @@ export const Registro_aprendiz = () => {
               {/*FICHA*/}
               <h3 className="h3-fila-2">Ficha</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Ficha"
                 type="number"
                 name=""
@@ -271,20 +271,20 @@ export const Registro_aprendiz = () => {
               <h3 className="h3-fila-2">Programa</h3>
               {programa_aprendiz === 'Otro' ? ( // Si el programa seleccionado es 'otro', muestra un Input
                 <Input
-                  className="max-w-xs"
+                  className="w-full mt-7"
                   placeholder="Escribe otro programa"
                   value={otroPrograma}
                   onChange={handleOtroInputChange}
                 />
               ) : (
                 <Select
-                  className="max-w-xs"
+                  className="w-full mt-7"
                   placeholder="Programa de formación"
                   value={programa_aprendiz || 'Programa de formación'} // Asigna 'placeholder' cuando programaAprendiz es vacío
                   onChange={handleSelectChange}
                 >
                   {Programa.map((programa) => (
-                    <SelectItem key={programa.value} value={programa.value} className="max-w-xs">
+                    <SelectItem key={programa.value} value={programa.value} className="w-full mt-7">
                       {programa.label}
                     </SelectItem>
                   ))}
@@ -294,7 +294,7 @@ export const Registro_aprendiz = () => {
               {/*EQUIPO*/}
               <h3 className="h3-fila-2">Equipo</h3>
               <Input
-                className="w-64"
+                className="w-full mt-7"
                 placeholder="Equipo de trabajo"
                 type="number"
                 name=""
@@ -323,20 +323,22 @@ export const Registro_aprendiz = () => {
                   </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="max-w-xs"
+                className="w-full mt-7"
               />
             </div>
           </div>
-          <div className="btn-terminar-registro">
+          <div className="btn-terminar">
             <Link to={"/aprendices"}>
               {" "}
-              <button className="boton-cancelar-aprendices" type="submit">
-                ⮜ ‎ Atrás
-              </button>
+              <Button className="boton-cancelar-aprendices">
+              <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                </svg> Atrás
+              </Button>
             </Link>
-            <button className="boton-registrar" type="submit">
+            <Button className="boton-registrar-ap" type="submit">
               Registrar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

@@ -60,6 +60,7 @@ router.get('/GetCaracteristicasMaquina', dataController.GetCaracteristicasMaquin
 // informes
 router.get('/getOrdenesTrabajo', dataController.GetOrdenesTrabajo);
 router.post('/getOrdenTrabajo', dataController.GetOrdenTrabajo);
+router.post('/terminarOrdenTrabajo', dataController.actualizarOrdenTrabajo);
 
 //Ultima maquina:
 router.get('/ultimaMaquina', dataController.ultimaMaquina)

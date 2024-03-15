@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Crear_maquina.css'
 import { Link } from 'react-router-dom';
-import { Input } from '@nextui-org/react';
+import { Input, Button } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLoading } from '../../estados/spinner';
@@ -57,7 +58,7 @@ export const Crear_maquina = () => {
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
-                    <h1>Crear una nueva maquina</h1>
+                    <h1>Crear una nueva máquina</h1>
                 </div>
                 <div className='inp-registro-CM'>
                     <select
@@ -65,7 +66,7 @@ export const Crear_maquina = () => {
                         onChange={(event) => setSelectedTipoMaquina(event.target.value)}
                         className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
                     >
-                        <option disable selected hidden>Tipo de maquina</option>
+                        <option disable selected hidden>Tipo de máquina</option>
                         {tiposMaquina.map((tipo) => (
                             <option key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
                                 {tipo.nombre_tipo_maquina}
@@ -76,7 +77,7 @@ export const Crear_maquina = () => {
                     <div>
                         <Input
                             type="text"
-                            placeholder="Nombre de la maquina"
+                            placeholder="Nombre de la máquina"
                             value={nombre_maquina}
                             onChange={(event) => setNombre_maquina(event.target.value)}
                         />
@@ -84,15 +85,17 @@ export const Crear_maquina = () => {
                     <div>
                         <Input
                             type="text"
-                            placeholder="URL manual de la maquina"
+                            placeholder="URL manual de la máquina"
                             value={manual_maquina}
                             onChange={(event) => setManual_maquina(event.target.value)}
                         />
                     </div>
                 </div>
-                <div className='btn-terminar-registro'>
-                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
-                    <button type="submit" className='boton-registrar'>Siguiente</button>
+                <div className='btn-terminar'>
+                    <Link to={'/tornos'} ><Button className='boton-cancelar-registro'><svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                </svg> Atrás</Button></Link>
+                    <Button type="submit" className='boton-registrar'>Siguiente</Button>
                 </div>
             </form>
 

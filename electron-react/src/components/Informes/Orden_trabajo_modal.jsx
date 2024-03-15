@@ -1,13 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import logoSena from '../../img/logo.png'
 import logo from '../../img/OIG3.png'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button } from '@nextui-org/react'
 import { format } from "date-fns";
+import axios from 'axios'
+import { useLoading } from '../../estados/spinner';
+import { Cargando } from '../Cargando/Cargando'
 
 export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isLoading, setIsLoading } = useLoading();
     const [date, setDate] = useState()
     const downloadPDF = () => {
         const capture = document.querySelector('.info-ot');
@@ -50,10 +55,33 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
         var operario = JSON.parse(jsonString);
         operarios.push(operario);
     });
+
+    const terminarOT = async () => {
+        try {
+            setIsLoading(true)
+            const fecha_fin = new Date()
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/terminarOrdenTrabajo`,
+                {
+                    id_orden_de_trabajo: ordenTrabajo[0].id_orden_de_trabajo,
+                    fecha_fin
+                }
+            )
+
+            setIsLoading(false)
+            window.location.href = '/informes'
+        } catch (error) {
+            setIsLoading(false)
+            console.log('error')
+        }
+    }
+
+
     return (
         <div className='modal-ot'>
+            {isLoading ? <Cargando /> : ''}
             <div className="container-modal-ot">
                 <div className="accionesModalOT">
+                    <a onClick={onOpen}>Terminar</a>
                     <button onClick={downloadPDF} title='Imprimir'>
                         <svg className="w-6 h-6 text-gray-800 hover:text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5c0 1.1.9 2 2 2h1v-4c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4c0 .6-.4 1-1 1H9Z" clipRule="evenodd" />
@@ -282,6 +310,56 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
                 </section>
             </div>
+
+            {/* {modalTerminarOT && (
+                <div className="modal-insumos">
+
+                    <div className='form-modal-insumos'>
+                        <div className="titulo-form-MI">
+                            <h3>Alerta</h3>
+                        </div>
+
+                        <p>Estas seguro de terminar orden de trabajo</p>
+
+                        <div className='btn-terminar-registro'>
+                            <a className='boton-cancelar-registro' onClick={() => setModalTerminarOT(false)}><h3>⮜ ‎ Atrás</h3></a>
+                            <button onClick={terminarOT} className='boton-registrar'>Terminar</button>
+                        </div>
+                    </div>
+
+                </div>
+            )} */}
+            <Modal
+                backdrop="blur"
+                placement='center'
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                classNames={{
+                    backdrop: "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20"
+                }}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Alerta</ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    Estas seguro que deseas terminar la orden de trabajo,
+                                    se actualizara la fecha de finalizacion {date}.
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Cerrar
+                                </Button>
+                                <Button className='boton-registrar' onPress={terminarOT}>
+                                    terminar
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }
