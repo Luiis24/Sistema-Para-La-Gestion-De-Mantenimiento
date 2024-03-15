@@ -103,7 +103,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                 </Table>
             </div>
             <div className="btn-registrarMOT">
-                <Button onPress={onOpen}>Agregar mecánico</Button>
+                <Button onPress={onOpen}>Agregar operario</Button>
             </div>
 
 
@@ -111,16 +111,16 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar mecánico</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-2xl">Registrar operario</ModalHeader>
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
-                                    <Autocomplete name="documento" type="number" onChange={handleChange} placeholder="Número de identificación">
+                                    <Select name="documento" type="number" onChange={handleChange} placeholder="Número de identificación">
                                         {aprendices.map(aprendiz => (
-                                            <AutocompleteItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
+                                            <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
                                                 {aprendiz.num_doc_aprendiz}
-                                            </AutocompleteItem>
+                                            </SelectItem>
                                         ))}
-                                    </Autocomplete>
+                                    </Select>
                                 </div>
                                 <div className="formIOT">
                                     <Input placeholder="Nombre Completo" type="text" name="nombre" value={selectedAprendiz || ''} readOnly />

@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './Tabla_insumos_ot.css'
 import { DeleteIcon } from "./DeleteIcon";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsados, handleDeleteInsumos }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -59,9 +61,11 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
         if (name === "nombre") {
             // Buscar el insumo seleccionado
             const selectedInsumo = insumos.find(insumo => insumo.id_insumos === parseInt(value));
+            console.log(selectedInsumo)
             // Calcular la cantidad máxima permitida
             const maxCantidad = selectedInsumo ? selectedInsumo.cantidad_insumo - (selectedInsumo.insumos_en_uso || 0) : 0;
-            // Actualizar el estado con el nombre y el id_insumo seleccionados, y establecer el valor máximo para la cantidad
+            console.log(maxCantidad)
+            setMaxCantidad(maxCantidad);
             setformInsumos({
                 ...formInsumos,
                 [name]: value,
@@ -69,7 +73,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                 id_insumo: selectedInsumo ? selectedInsumo.id_insumos : ''
             });
 
-            setMaxCantidad(maxCantidad);
+
         } else {
             // Actualizar el estado con los demás campos y calcular el subtotal
             const cantidad = name === "cantidad" ? value : formInsumos.cantidad;
@@ -90,12 +94,22 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
             return;
         }
 
+        const { nombre, cantidad } = formInsumos;
+        const selectedInsumo = insumos.find(insumo => insumo.id_insumos === parseInt(nombre));
+
+        if (selectedInsumo && parseInt(cantidad) > parseInt(selectedInsumo.cantidad_insumo) - parseInt(selectedInsumo.insumos_en_uso)) {
+            // Si la cantidad ingresada es mayor que la cantidad disponible del insumo
+            console.error('La cantidad ingresada supera la cantidad disponible del insumo.');
+            return;
+        }
+
         addRow(formInsumos);
         handleInsumosUsados(formInsumos);
         resetForm();
     }
     return (
         <div>
+            <ToastContainer/>
             <div className="containerTIOT">
                 <Table className="tablaOT">
                     <TableHeader>
@@ -177,7 +191,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
                                         name="cantidad"
                                         onChange={handleChange}
                                         min={1}
-                                        max={maxCantidad}
+                                        max={1}
                                     />
                                 </div>
                                 <div className="formInsumosIOT">

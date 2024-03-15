@@ -105,3 +105,23 @@
     grid-template-columns: 1fr
   }
 }
+
+
+/* info aprendiz */
+.infoAprendiz {
+  height: 50vh;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoAprendiz div{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.infoAprendiz div label{
+  width: 30%;
+}
