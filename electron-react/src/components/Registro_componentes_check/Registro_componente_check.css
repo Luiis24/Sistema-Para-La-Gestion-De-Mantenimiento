@@ -1,102 +1,120 @@
 .input-check Input::placeholder {
-    font-size: 16px;
-  }
-  .input-check Input:focus {
-    font-size: 16px;
+  font-size: 16px;
+}
+.input-check Input:focus {
+  font-size: 16px;
+}
+.btn-terminar-ch{
+  display: flex;
+  margin-top: 5.5%;
+  justify-content: space-around;
+}
+.boton-registrar {
+  width: 25%;
+  background: rgb(0, 173, 0);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+}
+.boton-cancelar-registro {
+  font-weight: bold;
+  background-color: rgb(247, 247, 247);
+  border-radius: 11px;
+  cursor: pointer;
+  height: 40px;
+  font-size: 16px;
+}
+.rg-componentes {
+  background-color: rgb(247, 247, 247);
+  width: 45%;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+}
+@media (max-width: 1200px) {
+  .rg-componentes {
+    width: 50%;
   }
   .boton-registrar {
-      width: 25%;
-    }
-    .boton-cancelar-registro{
-      width: 25%;
-    }
-  .rg-componentes{
-    background-color: rgb(247, 247, 247);
-    width: 45%;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
+    width: 30%;
   }
-  @media (max-width: 1200px) {
-      .rg-componentes{
-          width: 50%;
-      }
-      .boton-registrar {
-          width: 30%;
-        }
-        .boton-cancelar-registro{
-          width: 30%;
-        }
+  .boton-cancelar-registro {
+    width: 30%;
   }
-  @media (max-width: 1000px) {
-      .rg-componentes{
-          width: 55%;
-      }
-      .boton-registrar {
-          width: 30%;
-        }
-        .boton-cancelar-registro{
-          width: 30%;
-        }
+}
+@media (max-width: 1000px) {
+  .rg-componentes {
+    width: 55%;
   }
-  @media (max-width: 850px) {
-      .rg-componentes{
-          width: 60%;
-      }
-      .boton-registrar {
-          width: 30%;
-        }
-        .boton-cancelar-registro{
-          width: 30%;
-        }
+  .boton-registrar {
+    width: 30%;
   }
-  @media (max-width: 700px) {
-      .rg-componentes{
-          width: 70%;
-      }
-      .boton-registrar {
-          width: 40%;
-        }
-        .boton-cancelar-registro{
-          width: 40%;
-        }
+  .boton-cancelar-registro {
+    width: 30%;
   }
-  @media (max-width: 550px) {
-      .rg-componentes{
-          width: 70%;
-      }
-      .boton-registrar {
-          width: 40%;
-        }
-        .input-check Input::placeholder {
-          font-size: 15px;
-        }
-        .input-check Input:focus {
-          font-size: 15px;
-        }
-        .titulo-registro-CM{
-          font-size: 22px;
-        }
-        .boton-cancelar-registro{
-          width: 40%;
-        }
+}
+@media (max-width: 850px) {
+  .rg-componentes {
+    width: 60%;
   }
-  @media (max-width: 450px) {
-      .rg-componentes{
-          width: 75%;
-      }
-      .boton-registrar {
-          width: 40%;
-        }
-        .titulo-registro-CM{
-          font-size: 22px;
-        }
-        .boton-cancelar-registro{
-          width: 40%;
-        }
+  .boton-registrar {
+    width: 30%;
   }
-  @media (max-width: 380px) {
-        .titulo-registro-CM{
-          font-size: 20px;
-        }     
+  .boton-cancelar-registro {
+    width: 30%;
   }
+}
+@media (max-width: 700px) {
+  .rg-componentes {
+    width: 70%;
+  }
+  .boton-registrar {
+    width: 40%;
+  }
+  .boton-cancelar-registro {
+    width: 40%;
+  }
+}
+@media (max-width: 550px) {
+  .rg-componentes {
+    width: 70%;
+  }
+  .boton-registrar {
+    width: 40%;
+  }
+  .input-check Input::placeholder {
+    font-size: 15px;
+  }
+  .input-check Input:focus {
+    font-size: 15px;
+  }
+  .titulo-registro-CM {
+    font-size: 22px;
+  }
+  .boton-cancelar-registro {
+    width: 40%;
+  }
+}
+@media (max-width: 450px) {
+  .rg-componentes {
+    width: 75%;
+  }
+  .boton-registrar {
+    width: 40%;
+  }
+  .titulo-registro-CM {
+    font-size: 22px;
+  }
+  .boton-cancelar-registro {
+    width: 40%;
+  }
+}
+@media (max-width: 380px) {
+  .titulo-registro-CM {
+    font-size: 20px;
+  }
+}
