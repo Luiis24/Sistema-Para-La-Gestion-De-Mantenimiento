@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Input, Select, SelectItem } from '@nextui-org/react';
+import { Input, Select, SelectItem, Button } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLoading } from '../../estados/spinner';
@@ -90,9 +90,15 @@ export const Actualizar_tipo_maquina = () => {
                         />
                     </div>
                 </div>
-                <div className='btn-terminar-registro'>
-                    <Link to={'/tornos'} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></Link>
-                    <button type="submit" className='boton-registrar'>Registrar</button>
+                <div className='btn-terminar'>
+                    <Link to={'/tornos'} className='boton-cancelar-registro'>
+                    <Button className="boton-cancelar-aprendices">
+              <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                </svg> Atrás
+              </Button>
+                    </Link>
+                    <Button type="submit" className='boton-registrar-ap'>Registrar</Button>
                 </div>
             </form>
 

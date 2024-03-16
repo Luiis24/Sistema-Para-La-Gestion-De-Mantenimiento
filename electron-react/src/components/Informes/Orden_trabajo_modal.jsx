@@ -4,7 +4,7 @@ import logo from '../../img/OIG3.png'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Button } from '@nextui-org/react'
-import { format } from "date-fns";
+import { format, isAfter } from "date-fns";
 import axios from 'axios'
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
@@ -13,7 +13,9 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { isLoading, setIsLoading } = useLoading();
-    const [date, setDate] = useState()
+    const [date, setDate] = useState();
+    const [fechaFin, setFechaFin] = useState();
+
     const downloadPDF = () => {
         const capture = document.querySelector('.info-ot');
         html2canvas(capture).then((canvas) => {
@@ -48,6 +50,12 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
         setDate(formattedDate);
     }, []);
 
+    useEffect(() => {
+        if (ordenTrabajo && ordenTrabajo[0] && ordenTrabajo[0].fecha_fin_ot) {
+            setFechaFin(new Date(ordenTrabajo[0].fecha_fin_ot));
+        }
+    }, [ordenTrabajo])
+
     const operariosJSON = ordenTrabajo && ordenTrabajo[0].operarios_ot ? ordenTrabajo[0].operarios_ot : [];
     const operarios = [];
 
@@ -81,14 +89,17 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
             {isLoading ? <Cargando /> : ''}
             <div className="container-modal-ot">
                 <div className="accionesModalOT">
-                    <a onClick={onOpen}>Terminar</a>
+
+                    {fechaFin && isAfter(fechaFin, new Date()) ? ( // Comprueba si la fecha de finalización es posterior a la fecha actual
+                        <a onClick={onOpen}>Terminar</a>
+                    ) : null}
                     <button onClick={downloadPDF} title='Imprimir'>
                         <svg className="w-6 h-6 text-gray-800 hover:text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5c0 1.1.9 2 2 2h1v-4c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4c0 .6-.4 1-1 1H9Z" clipRule="evenodd" />
                         </svg>
-
                     </button>
                     <a href={'/informes'}><p>cerrar</p></a>
+
                 </div>
 
                 <section className="info-ot">
