@@ -11,6 +11,8 @@ import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {EyeFilledIcon} from '../Inicio_sesion_aprendiz/EyeFilledIcon'
+import {EyeSlashFilledIcon} from '../Inicio_sesion_aprendiz/EyeSlashFilledIcon'
 
 
 export const Aprendices = () => {
@@ -30,6 +32,9 @@ export const Aprendices = () => {
     const [paginaActual, setPaginaActual] = useState(1);
     const itemsPorPagina = 15;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const [isVisible, setIsVisible] = React.useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
 
     const { isLoading, setIsLoading } = useLoading();
@@ -160,6 +165,7 @@ export const Aprendices = () => {
 
                 <div className="navHorizontal">
                     <h2 id='active'>Lista de aprendices</h2>
+                    <Link to={"/instructores"}><h2>Lista de instructores</h2></Link>
                 </div>
 
                 <div className="containerUsuarios">
@@ -176,7 +182,7 @@ export const Aprendices = () => {
                         <Select placeholder="Fichas" onChange={(e) => { handleEstado('ficha', e.target.value); }}>
                             <SelectItem value="all" key={'all'}>Todos</SelectItem>
                             {FichasNORepetidos.map(ficha => (
-                                <SelectItem value={`${ficha}`} key={`${ficha}`}>{ficha}</SelectItem>
+                                <SelectItem value={`${ficha}`} key={ficha}>{ficha}</SelectItem>
                             ))}
                         </Select>
 
@@ -302,14 +308,20 @@ export const Aprendices = () => {
                             <SelectItem key={'activo'} value={'activo'}>Activo</SelectItem>
                         </Select>
                         <div className='btn-terminar-registro'>
-                            <a onClick={() => setModalVisible(false)} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
-                            <button type="submit" className='boton-registrar'>Actualizar</button>
+                            <a className='boton-cancelar-registro'>
+                                <Button className="boton-cancelar-aprendices" onClick={() => setModalVisible(false)}>
+                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                    </svg> Atrás
+                                </Button>
+                            </a>
+                            <Button type="submit" className='boton-registrar'>Actualizar</Button>
                         </div>
                     </form>
                 </div>
             )}
 
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl' placement={'top'}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl' placement={'center'}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -346,7 +358,16 @@ export const Aprendices = () => {
                                     </div>
                                     <div>
                                         <label>Contraseña:</label>
-                                        <Input value={aprendiz.password_aprendiz} />
+                                        <Input value={aprendiz.password_aprendiz} endContent={
+                                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                                {isVisible ? (
+                                                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                                ) : (
+                                                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                                )}
+                                            </button>
+                                        }
+                                            type={isVisible ? "text" : "password"} />
                                     </div>
                                     <div>
                                         <label>Programa:</label>

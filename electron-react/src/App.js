@@ -16,7 +16,6 @@ import { Registro_instructor } from './components/Registro_instructor/Registro_i
 
 import { Almacen } from './components/Almacen/Almacen';
 import { Registro_almacen } from './components/Registro_almacen/Registro_almacen';
-// import { Nueva_salida_almacen } from './components/Nueva_salida_almacen/Nueva_salida_almacen';
 
 
 import { Notificaciones } from './components/Notificaciones/Notificaciones';
@@ -44,6 +43,8 @@ import { Registro_salida_insumo } from './components/Registro_salida_insumo/Regi
 import { Actualizar_estado_ficha } from './components/Actualizar_estado_ficha/Actualizar_estado_ficha';
 import { Actualizar_tipo_maquina } from './components/Actualizar_tipo_maquina/Actualizar_tipo_maquina';
 import { Herramientas } from './components/Herramientas/Herramientas';
+
+import './css/estilosReutilizados.css'
 
 const router = createBrowserRouter([
   {

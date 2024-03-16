@@ -228,7 +228,7 @@ export const Almacen = () => {
     return (
         <div>
             {isLoading ? <Cargando /> : ''}
-            <ToastContainer/>
+            <ToastContainer />
             <div className="navVertical">
                 <Link to={'/MenuPrincipal'}>
                     <div className="principal">
@@ -241,15 +241,15 @@ export const Almacen = () => {
                 <ul className='navList'>
                     <li id='activeMaquina'>Inventario</li>
                     <div className='atrasN-alm'>
-            <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
-              <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
-                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
-                </svg>
-                <h3 className='text-lg'>Atrás</h3>
-              </div>
-            </Link>
-          </div>
+                        <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
+                            <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
+                                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                </svg>
+                                <h3 className='text-lg'>Atrás</h3>
+                            </div>
+                        </Link>
+                    </div>
                 </ul>
             </div>
 
@@ -261,79 +261,79 @@ export const Almacen = () => {
                 </div>
 
                 <div className="containerAlmacen">
-                <div className="filtrosAlmacen">
-            <Input
-             className="w-full h-14"
-              placeholder="Buscar por nombre..."
-              startContent={<SearchIcon className="text-default-300" />}
-              onChange={handleNombre}
-            />
-            
-            <Select
-              placeholder="Estado"
-              name="estado"
-              onChange={handleUso}
-              className="w-full"
-            >
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="1">Disponible</SelectItem>
-              <SelectItem value="0">En uso</SelectItem>
-            </Select>
-            <Button
-              onClick={handleOrdenNombre}
-              className="bg-default-100 h-14 w-full text-base"
-            >
-              {ordenNombreAscendente ? "Ordenar A-Z" : "Ordenar Z-A"}
-            </Button>
+                    <div className="filtrosAlmacen">
+                        <Input
+                            className="w-full h-14"
+                            placeholder="Buscar por nombre..."
+                            startContent={<SearchIcon className="text-default-300" />}
+                            onChange={handleNombre}
+                        />
 
-            <Button
-              className="bg-default-100 h-14 w-full text-base"
-              onClick={handleOrdenCantidad}
-            >
-              {ordenCantidadAscendente ? "Mayor a menor" : "Menor a mayor"}
-            </Button>
+                        <Select
+                            placeholder="Estado"
+                            name="estado"
+                            onChange={handleUso}
+                            className="w-full"
+                        >
+                            <SelectItem value="all">Todos</SelectItem>
+                            <SelectItem value="1">Disponible</SelectItem>
+                            <SelectItem value="0">En uso</SelectItem>
+                        </Select>
+                        <Button
+                            onClick={handleOrdenNombre}
+                            className="bg-default-100 h-14 w-full text-base"
+                        >
+                            {ordenNombreAscendente ? "Ordenar A-Z" : "Ordenar Z-A"}
+                        </Button>
 
-            {rol === "Instructor" ? (
-              <Link to={"/entradaAlmacen"}>
-                <div className="btn-entr">
-                <Button
-                  className="bg-foreground text-background h-14 w-full"
-                  endContent={<PlusIcon style={{ fontSize: "large" }} />}
-                >
-                  Nuevo Recurso
-                </Button>
-                </div>
-              </Link>
-            ) : (
-              ""
-            )}
-            {rol === "Instructor" ? (
-              <Link to={"/salidaAlmacen"}>
-                <div className="btn-entr">
-                <Button
-                  className="bg-foreground text-background h-14 w-full"
-                  endContent={
-                    <svg
-                      className="w-4 h-4 dark:text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M5.027 10.9a8.729 8.729 0 0 1 6.422-3.62v-1.2A2.061 2.061 0 0 1 12.61 4.2a1.986 1.986 0 0 1 2.104.23l5.491 4.308a2.11 2.11 0 0 1 .588 2.566 2.109 2.109 0 0 1-.588.734l-5.489 4.308a1.983 1.983 0 0 1-2.104.228 2.065 2.065 0 0 1-1.16-1.876v-.942c-5.33 1.284-6.212 5.251-6.25 5.441a1 1 0 0 1-.923.806h-.06a1.003 1.003 0 0 1-.955-.7A10.221 10.221 0 0 1 5.027 10.9Z" />
-                    </svg>
-                  }
-                >
-                  Salida Recurso
-                </Button>
-                </div>
-              </Link>
-            ) : (
-              ""
-            )}
-          </div>
+                        <Button
+                            className="bg-default-100 h-14 w-full text-base"
+                            onClick={handleOrdenCantidad}
+                        >
+                            {ordenCantidadAscendente ? "Mayor a menor" : "Menor a mayor"}
+                        </Button>
+
+                        {rol === "Instructor" ? (
+                            <Link to={"/entradaAlmacen"}>
+                                <div className="btn-entr">
+                                    <Button
+                                        className="bg-foreground text-background h-14 w-full"
+                                        endContent={<PlusIcon style={{ fontSize: "large" }} />}
+                                    >
+                                        Nuevo Recurso
+                                    </Button>
+                                </div>
+                            </Link>
+                        ) : (
+                            ""
+                        )}
+                        {rol === "Instructor" ? (
+                            <Link to={"/salidaAlmacen"}>
+                                <div className="btn-entr">
+                                    <Button
+                                        className="bg-foreground text-background h-14 w-full"
+                                        endContent={
+                                            <svg
+                                                className="w-4 h-4 dark:text-white"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M5.027 10.9a8.729 8.729 0 0 1 6.422-3.62v-1.2A2.061 2.061 0 0 1 12.61 4.2a1.986 1.986 0 0 1 2.104.23l5.491 4.308a2.11 2.11 0 0 1 .588 2.566 2.109 2.109 0 0 1-.588.734l-5.489 4.308a1.983 1.983 0 0 1-2.104.228 2.065 2.065 0 0 1-1.16-1.876v-.942c-5.33 1.284-6.212 5.251-6.25 5.441a1 1 0 0 1-.923.806h-.06a1.003 1.003 0 0 1-.955-.7A10.221 10.221 0 0 1 5.027 10.9Z" />
+                                            </svg>
+                                        }
+                                    >
+                                        Salida Recurso
+                                    </Button>
+                                </div>
+                            </Link>
+                        ) : (
+                            ""
+                        )}
+                    </div>
 
 
                     <Table>
@@ -347,7 +347,7 @@ export const Almacen = () => {
                             <TableColumn className='text-lg'>Estado</TableColumn>
                             <TableColumn>Acciones</TableColumn>
                         </TableHeader>
-                        <TableBody emptyContent={"No se encontro insumos."}>
+                        <TableBody emptyContent={"No se encontró insumos."}>
                             {paginatedInsumos.map(insumo => {
                                 return <TableRow key={insumo.id_insumos}>
                                     <TableCell className='text-lg'>{insumo.nombre_insumo}</TableCell>
@@ -435,8 +435,14 @@ export const Almacen = () => {
                                 />
                             </div>
                             <div className='btn-terminar-registro'>
-                                <a onClick={() => setModalDevolucionVisible(false)} className='boton-cancelar-registro'><h3>⮜ ‎ Atrás</h3></a>
-                                <button type="submit" className='boton-registrar'>Devolver</button>
+                                <a className='boton-cancelar-registro'>
+                                    <Button className="boton-cancelar-aprendices" onClick={() => setModalDevolucionVisible(false)}>
+                                        <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                        </svg> Atrás
+                                    </Button>
+                                </a>
+                                <Button type="submit" className='boton-registrar'>Devolver</Button>
                             </div>
                         </form>
 
@@ -473,7 +479,11 @@ export const Almacen = () => {
                             </Table>
 
                             <div className='btn-terminar-registro'>
-                                <a className='boton-cancelar-registro' onClick={() => setModalVisibleInsumoU(false)}><h3>⮜ ‎ Atrás</h3></a>
+                                <Button className='boton-cancelar-registro' onClick={() => setModalVisibleInsumoU(false)}>
+                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                    </svg> Atrás
+                                </Button>
                             </div>
                         </div>
 
@@ -488,11 +498,16 @@ export const Almacen = () => {
                             <div className="titulo-form-MI">
                                 <h3>Nota</h3>
                             </div>
-
-                            <p>{notaInsumo}</p>
+                            <div className='h-[30vh]'>
+                                <p className='p-5'>{notaInsumo}</p>
+                            </div>
 
                             <div className='btn-terminar-registro'>
-                                <a className='boton-cancelar-registro' onClick={() => setModalVisible(false)}><h3>⮜ ‎ Atrás</h3></a>
+                                <Button className='boton-cancelar-registro' onClick={() => setModalVisible(false)}>
+                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                    </svg> Atrás
+                                </Button>
                             </div>
                         </div>
 

@@ -1,0 +1,15 @@
+
+
+/* formularios */
+
+.boton-registrar:hover {
+    background: rgb(1, 153, 1);
+  }
+  .boton-registrar:active {
+    background: rgb(0, 173, 0);
+  }
+  .btn-terminar-registro{
+    display: flex;
+    margin-top: 5.5%;
+    justify-content: space-around;
+  }

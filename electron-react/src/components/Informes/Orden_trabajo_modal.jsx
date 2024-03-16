@@ -88,17 +88,25 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
         <div className='modal-ot'>
             {isLoading ? <Cargando /> : ''}
             <div className="container-modal-ot">
-                <div className="accionesModalOT">
+                <div className="accionesModalOT flex items-center">
 
                     {fechaFin && isAfter(fechaFin, new Date()) ? ( // Comprueba si la fecha de finalización es posterior a la fecha actual
-                        <a onClick={onOpen}>Terminar</a>
+                        <button onClick={onOpen} title='Terminar'>
+                            <svg className="w-6 h-6 text-gray-800 hover:text-green-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 0 0-1 1H6a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2a1 1 0 0 0-1-1H9Zm1 2h4v2h1a1 1 0 1 1 0 2H9a1 1 0 0 1 0-2h1V4Zm5.707 8.707a1 1 0 0 0-1.414-1.414L11 14.586l-1.293-1.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4Z" clipRule="evenodd" />
+                            </svg>
+                        </button>
                     ) : null}
                     <button onClick={downloadPDF} title='Imprimir'>
                         <svg className="w-6 h-6 text-gray-800 hover:text-green-600 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5c0 1.1.9 2 2 2h1v-4c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4c0 .6-.4 1-1 1H9Z" clipRule="evenodd" />
                         </svg>
                     </button>
-                    <a href={'/informes'}><p>cerrar</p></a>
+                    <Button isIconOnly radius="full" onClick={() => window.location.href = `/informes`} className='bg-white hover:bg-default'>
+                        <svg className="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                        </svg>
+                    </Button>
 
                 </div>
 
@@ -322,24 +330,6 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
                 </section>
             </div>
 
-            {/* {modalTerminarOT && (
-                <div className="modal-insumos">
-
-                    <div className='form-modal-insumos'>
-                        <div className="titulo-form-MI">
-                            <h3>Alerta</h3>
-                        </div>
-
-                        <p>Estas seguro de terminar orden de trabajo</p>
-
-                        <div className='btn-terminar-registro'>
-                            <a className='boton-cancelar-registro' onClick={() => setModalTerminarOT(false)}><h3>⮜ ‎ Atrás</h3></a>
-                            <button onClick={terminarOT} className='boton-registrar'>Terminar</button>
-                        </div>
-                    </div>
-
-                </div>
-            )} */}
             <Modal
                 backdrop="blur"
                 placement='center'

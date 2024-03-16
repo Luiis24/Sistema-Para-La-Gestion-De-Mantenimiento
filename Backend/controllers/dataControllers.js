@@ -13,9 +13,9 @@ const pool = new Pool(CONFIG_BD)
 
 const registerInstructor = (req, res) => {
   console.log(req.body);
-  const { cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor } = req.body;
+  const { cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor, estado } = req.body;
 
-  if (!cc_instructor || !nombre_instructor || !email_instructor || !telefono_instructor || !password_instructor) {
+  if (!cc_instructor || !nombre_instructor || !email_instructor || !telefono_instructor || !password_instructor || !estado) {
     return res.status(400).json({ error: 'Falta información requerida' });
   }
 
@@ -44,7 +44,7 @@ const registerInstructor = (req, res) => {
       return res.status(409).json({ error: 'El Instructor ya existe' });
     }
 
-    pool.query('INSERT INTO instructores (cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor) VALUES ($1, $2, $3, $4, $5)', [cc_instructor, nombre_instructor, email_instructor, telefono_instructor_num, password_instructor], (error) => {
+    pool.query('INSERT INTO instructores (cc_instructor, nombre_instructor, email_instructor, telefono_instructor, password_instructor, estado) VALUES ($1, $2, $3, $4, $5, $6)', [cc_instructor, nombre_instructor, email_instructor, telefono_instructor_num, password_instructor, estado], (error) => {
       if (error) {
         console.error('Error al insertar el Instructor en la base de datos', error);
         return res.status(500).json({ error: 'Error al registrar el Instructor' });
@@ -1492,6 +1492,29 @@ const actualizarOrdenTrabajo = async (req, res) => {
   }
 };
 
+// actualizar estado de instructor
+const actualizarInstructor = async (req, res) => {
+  const { instructorSelected, estado} = req.body;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM instructores WHERE id_instructor = $1",
+      [instructorSelected]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "instructor no encontrado" });
+    }
+
+    await pool.query(
+      "UPDATE instructores SET estado = $1 WHERE id_instructor = $2",
+      [estado, instructorSelected]
+    );
+
+    res.status(200).json({ message: "Informacion de instructor actualizada" });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 
 module.exports = {
@@ -1557,6 +1580,7 @@ module.exports = {
   actualizarSalidaInsumo,
   actualizarSalidaInsumoEnUso,
   componentesAAlertar,
-  actualizarOrdenTrabajo
+  actualizarOrdenTrabajo,
+  actualizarInstructor
 };
 

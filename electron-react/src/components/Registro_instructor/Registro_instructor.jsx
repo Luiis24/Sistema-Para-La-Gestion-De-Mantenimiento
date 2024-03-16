@@ -29,6 +29,7 @@ export const Registro_instructor = () => {
           email_instructor,
           telefono_instructor,
           password_instructor,
+          estado: 'activo'
         }
       );
       setIsLoading(false)

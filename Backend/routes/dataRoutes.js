@@ -4,6 +4,7 @@ const dataController = require('../controllers/dataControllers');
 
 router.post('/registerInstructor', dataController.registerInstructor);
 router.get('/instructores', dataController.getInstructores);
+router.post('/actualizarInstructor', dataController.actualizarInstructor);
 
 router.post('/login', dataController.login);
 
