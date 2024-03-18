@@ -5,9 +5,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     bottom: 0;
+
+
+    position: fixed;
+    right: 0;
+    left: 0;
+    overflow-y: scroll;
 }
 
 .containerMenu {

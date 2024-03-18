@@ -28,9 +28,9 @@ export const Aprendices = () => {
     });
 
     // paginador
-    const [pages, setPages] = useState()
     const [paginaActual, setPaginaActual] = useState(1);
     const itemsPorPagina = 15;
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [isVisible, setIsVisible] = React.useState(false);
@@ -144,10 +144,7 @@ export const Aprendices = () => {
                 <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
 
                 <ul className="navList">
-                    <li id="activeMaquina">Aprendices</li>
-                    <li>
-                        <Link to={"/instructores"}>Instructores</Link>
-                    </li>
+                    <li id="activeMaquina">Usuarios</li>
                     <div className='atrasN-alm'>
                         <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
                             <div className="herramientaMaquinaN text-gray-800 hover:text-gray-200">
@@ -221,21 +218,21 @@ export const Aprendices = () => {
 
 
                     <Table
-                        bottomContent={
-                            pages > 0 ? (
-                                <div className="flex w-full justify-center">
-                                    <Pagination
-                                        isCompact
-                                        showControls
-                                        showShadow
-                                        color="primary"
-                                        page={paginaActual}
-                                        total={totalPaginas}
-                                        onChange={cambiarPagina}
-                                    />
-                                </div>
-                            ) : null
-                        }
+                        // bottomContent={
+                        //     paginatedUsers.length > 0 ? (
+                        //         <div className="flex w-full justify-center">
+                        //             <Pagination
+                        //                 isCompact
+                        //                 showControls
+                        //                 showShadow
+                        //                 color="primary"
+                        //                 page={paginaActual}
+                        //                 total={totalPaginas}
+                        //                 onChange={cambiarPagina}
+                        //             />
+                        //         </div>
+                        //     ) : null
+                        // }
                     >
                         <TableHeader>
                             <TableColumn className='text-lg'>Nombre</TableColumn>

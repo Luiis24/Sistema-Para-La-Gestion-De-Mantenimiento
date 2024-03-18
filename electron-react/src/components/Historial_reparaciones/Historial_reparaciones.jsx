@@ -78,7 +78,7 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className='container-rg-caracteristicasM'>
+    <div className='container-rg-historial md:fixed relative'>
       <ToastContainer />
       {isLoading ? <Cargando /> : ''}
       <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>

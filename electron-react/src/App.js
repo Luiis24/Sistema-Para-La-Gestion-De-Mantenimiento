@@ -45,6 +45,7 @@ import { Actualizar_tipo_maquina } from './components/Actualizar_tipo_maquina/Ac
 import { Herramientas } from './components/Herramientas/Herramientas';
 
 import './css/estilosReutilizados.css'
+import { Mas_informacion } from './components/Mas_informacion/Mas_informacion';
 
 const router = createBrowserRouter([
   {
@@ -109,7 +110,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/crearCaracteristicasMotor",
-    element: <><Titulo_sena_cb/><Registro_caracteristicas_motor /><Animacion_cuadros /></>
+    element: <><Registro_caracteristicas_motor /><Animacion_cuadros /></>
   },
   ,
   {
@@ -118,7 +119,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/crearDescripcionEquipo",
-    element: <><Titulo_sena_cb/><Registro_descripcion_equipo_hv /><Animacion_cuadros /></>
+    element: <><Registro_descripcion_equipo_hv /><Animacion_cuadros /></>
   },
   {
     path: "/crearComponentesCheck",
@@ -151,6 +152,10 @@ const router = createBrowserRouter([
   {
     path: "/actualizarFicha",
     element: <><Titulo_sena_cb/><Actualizar_estado_ficha/><Animacion_cuadros/></>
+  },
+  {
+    path: "/masInformacion",
+    element: <><Mas_informacion/><Animacion_cuadros/></>
   }
 ]);
 

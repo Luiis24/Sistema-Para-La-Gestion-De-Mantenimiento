@@ -166,14 +166,14 @@ export const Informes = () => {
                 <div className="containerInformes">
 
                     <div className="filtersUsuarios">
-                        <Select className='w-11/12 h-11' placeholder="Máquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
+                        <Select className='w-full' placeholder="Máquinas" onChange={(e) => { handleEstado('maquina', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             {maquinas ? maquinas.map(maquina =>
                                 <SelectItem key={maquina.nombre_maquina} value={maquina.nombre_maquina}>{maquina.nombre_maquina}</SelectItem>
                             ) : ''}
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder="Tipo de trabajo" onChange={(e) => { handleEstado('tipoTrabajo', e.target.value); }}>
+                        <Select className='w-full' placeholder="Tipo de trabajo" onChange={(e) => { handleEstado('tipoTrabajo', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='inspeccion' key='inspeccion'>Inspeccion</SelectItem>
                             <SelectItem value='servicio' key='servicio'>Servicio</SelectItem>
@@ -185,7 +185,7 @@ export const Informes = () => {
                             <SelectItem value='cambio' key='cambio'>Cambio</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Tipo de mantenimiento' onChange={(e) => { handleEstado('tipoMantenimiento', e.target.value); }}>
+                        <Select className='w-full' placeholder='Tipo de mantenimiento' onChange={(e) => { handleEstado('tipoMantenimiento', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='correctivo no planificado' key='correctivo no planificado'>Correctivo no planificado</SelectItem>
                             <SelectItem value='correctivo palificado' key='correctivo palificado'>Correctivo planificado</SelectItem>
@@ -202,7 +202,7 @@ export const Informes = () => {
                             <SelectItem value='de reemplazo' key='de reemplazo'>De reemplazo</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='Tipo de sistema' onChange={(e) => { handleEstado('tipoSistema', e.target.value); }}>
+                        <Select className='w-full' placeholder='Tipo de sistema' onChange={(e) => { handleEstado('tipoSistema', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='mecanico' key='mecanico'>Mecánico</SelectItem>
                             <SelectItem value='electrico' key='electrico'>Eléctrico</SelectItem>
@@ -216,7 +216,7 @@ export const Informes = () => {
                             <SelectItem value='de comunicacion' key='de comunicacion'>De comunicación</SelectItem>
                         </Select>
 
-                        <Select className='w-11/12 h-11' placeholder='En curso' onChange={(e) => { handleEstado('encurso', e.target.value); }}>
+                        <Select className='w-full' placeholder='En curso' onChange={(e) => { handleEstado('encurso', e.target.value); }}>
                             <SelectItem value={'all'} key={'all'}>Todos</SelectItem>
                             <SelectItem value='en curso' key='en curso'>En curso</SelectItem>
                         </Select>

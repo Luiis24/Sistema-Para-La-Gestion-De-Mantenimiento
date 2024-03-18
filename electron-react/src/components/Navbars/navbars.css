@@ -224,6 +224,10 @@
     display: none;
 }
 
+.rotate-90 {
+    transform: rotate(180deg);
+  }
+
 @media (max-width: 768px) {
     .navVertical {
         position: fixed;

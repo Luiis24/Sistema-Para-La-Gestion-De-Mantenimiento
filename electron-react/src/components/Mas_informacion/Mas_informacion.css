@@ -1,0 +1,11 @@
+.logoMI img{
+    width: 60px;
+    border-radius: 10px;
+}
+
+.bannerMI {
+    height: 25vh;
+    background: rgb(0,68,19);
+    background: linear-gradient(90deg, rgba(0,68,19,1) 0%, rgba(48,148,75,1) 50%, rgba(0,68,19,1) 100%);
+    color: #fff;
+}

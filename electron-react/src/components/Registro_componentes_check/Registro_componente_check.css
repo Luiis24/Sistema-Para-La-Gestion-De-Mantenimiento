@@ -39,52 +39,25 @@
   .rg-componentes {
     width: 50%;
   }
-  .boton-registrar {
-    width: 30%;
-  }
-  .boton-cancelar-registro {
-    width: 30%;
-  }
 }
 @media (max-width: 1000px) {
   .rg-componentes {
     width: 55%;
-  }
-  .boton-registrar {
-    width: 30%;
-  }
-  .boton-cancelar-registro {
-    width: 30%;
   }
 }
 @media (max-width: 850px) {
   .rg-componentes {
     width: 60%;
   }
-  .boton-registrar {
-    width: 30%;
-  }
-  .boton-cancelar-registro {
-    width: 30%;
-  }
 }
 @media (max-width: 700px) {
   .rg-componentes {
     width: 70%;
   }
-  .boton-registrar {
-    width: 40%;
-  }
-  .boton-cancelar-registro {
-    width: 40%;
-  }
 }
 @media (max-width: 550px) {
   .rg-componentes {
     width: 70%;
-  }
-  .boton-registrar {
-    width: 40%;
   }
   .input-check Input::placeholder {
     font-size: 15px;
@@ -95,22 +68,13 @@
   .titulo-registro-CM {
     font-size: 22px;
   }
-  .boton-cancelar-registro {
-    width: 40%;
-  }
 }
 @media (max-width: 450px) {
   .rg-componentes {
     width: 75%;
   }
-  .boton-registrar {
-    width: 40%;
-  }
   .titulo-registro-CM {
     font-size: 22px;
-  }
-  .boton-cancelar-registro {
-    width: 40%;
   }
 }
 @media (max-width: 380px) {

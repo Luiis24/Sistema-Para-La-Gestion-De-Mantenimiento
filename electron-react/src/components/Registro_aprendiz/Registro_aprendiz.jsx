@@ -184,7 +184,7 @@ export const Registro_aprendiz = () => {
       {isLoading ? <Cargando /> : ''}
       <div className="registrar-nuevo-aprendiz my-5">
         <form onSubmit={enviarAP}>
-          <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
+          <h2 className="titulo-registro-ap">Registrar nuevos aprendices</h2>
           <div className="inputs-registro-aprendiz">
             <div className="inputs-primer-fila-registro-aprendiz">
               {/*NOMBRE*/}
@@ -217,7 +217,7 @@ export const Registro_aprendiz = () => {
                 }
               >
                 {Documento.map((documento) => (
-                  <SelectItem key={documento.value} value={documento.value}>
+                  <SelectItem key={documento.value} value={documento.value} className="w-full py-3">
                     {documento.label}
                   </SelectItem>
                 ))}
@@ -253,7 +253,7 @@ export const Registro_aprendiz = () => {
                 onChange={(e) => setIdInstructor(e.target.value)}
               >
                 {Instructores.map((Instructor) => (
-                  <SelectItem key={Instructor.id_instructor} value={Instructor.id_instructor}>
+                  <SelectItem key={Instructor.id_instructor} value={Instructor.id_instructor} className="w-full py-3">
                     {Instructor.nombre_instructor}
                   </SelectItem>
                 ))}
@@ -284,7 +284,7 @@ export const Registro_aprendiz = () => {
                   onChange={handleSelectChange}
                 >
                   {Programa.map((programa) => (
-                    <SelectItem key={programa.value} value={programa.value} className="w-full mt-7">
+                    <SelectItem key={programa.value} value={programa.value} className="w-full py-3">
                       {programa.label}
                     </SelectItem>
                   ))}

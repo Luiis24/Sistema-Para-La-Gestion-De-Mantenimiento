@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
+import {Titulo_sena_cb} from '../Titulo_sena_cb/Titulo_sena_cb'
 
 export const Registro_caracteristicas_motor = () => {
     const [maquinas, setMaquinas] = useState([]);
@@ -70,9 +71,10 @@ export const Registro_caracteristicas_motor = () => {
     };
 
     return (
-      <div className="container-rg-caracteristicasM">
+      <div className="container-rg-caracteristicasMa flex-col overflow-y-scroll">
       <ToastContainer />
       {isLoading ? <Cargando/> : ''}
+      <div className="w-full flex justify-start"><Titulo_sena_cb/></div>
       <form onSubmit={handleFormSubmit} className="rg-caracteristicasM">
         <div className="titulo-registro-CM">
           <h1>Características del motor</h1>

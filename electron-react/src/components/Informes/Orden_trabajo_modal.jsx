@@ -18,7 +18,9 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
 
     const downloadPDF = () => {
         const capture = document.querySelector('.info-ot');
-        html2canvas(capture).then((canvas) => {
+        html2canvas(capture, {
+            scale: 2 // Ajusta este valor según tu preferencia
+        }).then((canvas) => {
             const imgData = canvas.toDataURL('img/png');
 
             // Establecer el tamaño de la página a tamaño carta (Letter size)
@@ -40,7 +42,7 @@ export const Orden_trabajo_modal = ({ ordenTrabajo, insumosUtilizados }) => {
             doc.addImage(imgData, 'PNG', marginLeft, marginTop, imgWidth, imgHeight);
 
             // Guardar el PDF con el nombre especificado
-            doc.save('ordenDeTrabajo.pdf');
+            doc.save(`ordenDeTrabajo${ordenTrabajo[0].id_orden_de_trabajo}.pdf`);
         });
     }
 

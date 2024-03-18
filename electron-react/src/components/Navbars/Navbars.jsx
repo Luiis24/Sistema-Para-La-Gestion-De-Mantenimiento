@@ -105,7 +105,7 @@ export const Navbars = () => {
               return <div className="tipoMaquina" key={tipoM.id_tipo_maquina}>
                 <div id={tipoM.id_tipo_maquina} className={`tipoMaquinaN hover:text-gray-200 focus:bg-gray-200 ${tipoMSeleccionada === tipoM.id_tipo_maquina ? 'activeMaquina' : ''}`} onClick={() => { selectTipoMaquina(tipoM.id_tipo_maquina) }}>
                   <h3 className='text-2xl'>{tipoM.nombre_tipo_maquina}</h3>
-                  <svg className="w-4 h-4 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 dark:text-white ${tipoMSeleccionada === tipoM.id_tipo_maquina ? 'rotate-90' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 9-7 7-7-7" />
                   </svg>
                 </div>

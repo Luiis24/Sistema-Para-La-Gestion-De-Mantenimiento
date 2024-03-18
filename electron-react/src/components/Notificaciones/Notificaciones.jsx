@@ -57,7 +57,7 @@ export const Notificaciones = () => {
                                         <>
                                             <Card
                                                 isBlurred
-                                                className="border-none dark:bg-default-100/50 max-w-[100%]"
+                                                className="border-none dark:bg-default-100/50 max-w-[100%] my-2"
                                                 shadow="sm"
                                             >
                                                 <CardBody>

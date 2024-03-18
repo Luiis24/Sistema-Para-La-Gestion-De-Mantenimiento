@@ -27,6 +27,10 @@ export const Instructores = () => {
   const { isLoading, setIsLoading } = useLoading();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  // paginador
+  const [paginaActual, setPaginaActual] = useState(1);
+  const itemsPorPagina = 15;
+
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -96,6 +100,16 @@ export const Instructores = () => {
     onOpen()
   }
 
+  // cambiar de pagina
+
+  const totalPaginas = Math.ceil(filteredUsers.length / itemsPorPagina);
+  const cambiarPagina = (pagina) => {
+    setPaginaActual(pagina);
+  }
+  const startIndex = (paginaActual - 1) * itemsPorPagina;
+  const endIndex = startIndex + itemsPorPagina;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
   return (
     <div>
       {isLoading ? <Cargando /> : ''}
@@ -110,11 +124,8 @@ export const Instructores = () => {
         <input type="checkbox" id="navbar-toggle"></input>
         <label htmlFor="navbar-toggle" className="menu-responsive"><img className='menuR' src={menu} alt='menu'></img></label>
         <ul className="navList">
-          <li id="">
-            <Link to={"/aprendices"}>Aprendices</Link>
-          </li>
           <li id="activeMaquina">
-            Instructores
+            Usuarios
           </li>
           <div className='atrasN-alm'>
             <Link to={'/MenuPrincipal'} onClick={() => { localStorage.removeItem('formValues') }}>
@@ -170,7 +181,7 @@ export const Instructores = () => {
               <TableColumn>Acciones</TableColumn>
             </TableHeader>
             <TableBody emptyContent={"No se encontro."}>
-              {filteredUsers.map((user) => {
+              {paginatedUsers.map((user) => {
                 return (
                   <TableRow key={user.id_aprendiz}>
                     <TableCell className="text-lg">
@@ -213,6 +224,9 @@ export const Instructores = () => {
               })}
             </TableBody>
           </Table>
+        </div>
+        <div className="paginador">
+          <Pagination showControls total={totalPaginas} initialPage={paginaActual} onChange={cambiarPagina} color="default" />
         </div>
       </div>
 

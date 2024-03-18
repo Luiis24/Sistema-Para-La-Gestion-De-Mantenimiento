@@ -1,15 +1,25 @@
-
-
 /* formularios */
 
 .boton-registrar:hover {
-    background: rgb(1, 153, 1);
-  }
-  .boton-registrar:active {
-    background: rgb(0, 173, 0);
-  }
-  .btn-terminar-registro{
-    display: flex;
-    margin-top: 5.5%;
-    justify-content: space-around;
-  }
+  background: rgb(1, 153, 1);
+}
+
+.boton-registrar:active {
+  background: rgb(0, 173, 0);
+}
+
+.btn-terminar-registro {
+  display: flex;
+  margin-top: 5.5%;
+  justify-content: space-around;
+}
+
+.titulo-registro {
+  color: rgb(70, 70, 70);
+  justify-content: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  margin: 30px 0px 10px;
+}
