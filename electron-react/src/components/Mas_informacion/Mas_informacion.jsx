@@ -11,7 +11,7 @@ export const Mas_informacion = () => {
             <div className='bannerMI'>
                 <div className='w-[88%] m-auto flex justify-start logoMI'><Link to={'/MenuPrincipal'} className='flex items-center gap-2 mt-3'><img src={logo}></img> <h3 className='font-semibold text-lg text-pretty'>Sistema Gestion Mantenimiento Industrial</h3></Link></div>
                 <div className='w-full text-center'><h2 className='font-bold md:text-4xl text-xl'>Centro de información</h2></div>
-                <div className='flex justify-center gap-3 mt-8 md:w-full w-[90%] m-auto'>
+                <div className='flex justify-center gap-3 mt-8 pb-8 md:w-full w-[90%] m-auto'>
                     <Chip variant="bordered" className='text-white font-medium uppercase'>Copyright</Chip>
                     <Chip variant="bordered" className='text-white font-medium uppercase'>Desarrolladores</Chip>
                     <Chip variant="bordered" className='text-white font-medium uppercase'>Contacto</Chip>
@@ -63,7 +63,7 @@ export const Mas_informacion = () => {
                 </Card>
             </div>
 
-            <div className='md:absolute relative bottom-0 h-32 w-full f'>
+            <div className='2xl:absolute relative bottom-0 h-32 w-full f'>
                 <hr />
                 <div className='w-[88%] m-auto mt-10 flex-col'>
                     <p className='text-lg font-semibold flex items-center gap-2'>

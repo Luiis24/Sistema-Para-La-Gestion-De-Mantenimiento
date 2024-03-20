@@ -53,7 +53,7 @@ export const Menu = () => {
                     <div className="usuariosMenu">
                         {rol === 'Instructor' ? <Link to={'/aprendices'} className="a-menu">
                             <p className="text-menu">Usuarios</p>
-                        </Link> : <div className="a-menu cursor-not-allowed">
+                        </Link> : <div className="a-menu cursor-not-allowed backdrop-blur-sm">
                             <p className="text-menu">Usuarios</p>
                         </div>}
                     </div>
