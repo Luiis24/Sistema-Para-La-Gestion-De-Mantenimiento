@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
+import historial from '../../img/historia.png'
 
 import { Navbars } from '../Navbars/Navbars'
 import { Check_list } from '../Check_list/Check_list';
@@ -15,7 +16,7 @@ export const Checklist_maquina = () => {
     const { id_maquina } = useParams();
     const { programaFormacion } = useAuth();
     const [modalVisible, setModalVisible] = useState(false);
-    const {isLoading, setIsLoading} = useLoading();
+    const { isLoading, setIsLoading } = useLoading();
 
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export const Checklist_maquina = () => {
     return (
         <div>
             <Navbars />
-            {isLoading ? <Cargando/> : ''}
+            {isLoading ? <Cargando /> : ''}
             <div className="containerM">
 
                 <div className="navHorizontal">
@@ -82,7 +83,8 @@ export const Checklist_maquina = () => {
 
                     <div className="button-HR">
                         <button onClick={openModal}>
-                            Historial
+                            <p className='hidden md:flex'>Historial</p>
+                            <img src={historial}/>
                         </button>
                     </div>
                     <Estado_componentes id_maquina={id_maquina} modalVisible={modalVisible} onClose={closeModal} />

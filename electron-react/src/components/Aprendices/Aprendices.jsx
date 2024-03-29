@@ -11,8 +11,8 @@ import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {EyeFilledIcon} from '../Inicio_sesion_aprendiz/EyeFilledIcon'
-import {EyeSlashFilledIcon} from '../Inicio_sesion_aprendiz/EyeSlashFilledIcon'
+import { EyeFilledIcon } from '../Inicio_sesion_aprendiz/EyeFilledIcon'
+import { EyeSlashFilledIcon } from '../Inicio_sesion_aprendiz/EyeSlashFilledIcon'
 
 
 export const Aprendices = () => {
@@ -178,9 +178,9 @@ export const Aprendices = () => {
 
                         <Select placeholder="Fichas" onChange={(e) => { handleEstado('ficha', e.target.value); }}>
                             <SelectItem value="all" key={'all'}>Todos</SelectItem>
-                            {FichasNORepetidos.map(ficha => (
-                                <SelectItem value={`${ficha}`} key={ficha}>{ficha}</SelectItem>
-                            ))}
+                            {FichasNORepetidos.map(ficha => {
+                                return <SelectItem value={ficha} key={ficha}>{ficha}</SelectItem>
+                            })}
                         </Select>
 
 
@@ -218,21 +218,21 @@ export const Aprendices = () => {
 
 
                     <Table
-                        // bottomContent={
-                        //     paginatedUsers.length > 0 ? (
-                        //         <div className="flex w-full justify-center">
-                        //             <Pagination
-                        //                 isCompact
-                        //                 showControls
-                        //                 showShadow
-                        //                 color="primary"
-                        //                 page={paginaActual}
-                        //                 total={totalPaginas}
-                        //                 onChange={cambiarPagina}
-                        //             />
-                        //         </div>
-                        //     ) : null
-                        // }
+                    // bottomContent={
+                    //     paginatedUsers.length > 0 ? (
+                    //         <div className="flex w-full justify-center">
+                    //             <Pagination
+                    //                 isCompact
+                    //                 showControls
+                    //                 showShadow
+                    //                 color="primary"
+                    //                 page={paginaActual}
+                    //                 total={totalPaginas}
+                    //                 onChange={cambiarPagina}
+                    //             />
+                    //         </div>
+                    //     ) : null
+                    // }
                     >
                         <TableHeader>
                             <TableColumn className='text-lg'>Nombre</TableColumn>
@@ -305,14 +305,14 @@ export const Aprendices = () => {
                             <SelectItem key={'activo'} value={'activo'}>Activo</SelectItem>
                         </Select>
                         <div className='btn-terminar-registro'>
-                            <a className='boton-cancelar-registro'>
-                                <Button className="boton-cancelar-aprendices" onClick={() => setModalVisible(false)}>
+                            <a className='boton-cancelar-registroR'>
+                                <Button className="boton-cancelarR" onClick={() => setModalVisible(false)}>
                                     <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                                     </svg> Atrás
                                 </Button>
                             </a>
-                            <Button type="submit" className='boton-registrar'>Actualizar</Button>
+                            <Button type="submit" className='boton-registrarR'>Actualizar</Button>
                         </div>
                     </form>
                 </div>

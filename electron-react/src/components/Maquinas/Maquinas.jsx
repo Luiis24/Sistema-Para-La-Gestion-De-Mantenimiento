@@ -25,7 +25,7 @@ export const Maquinas = () => {
         <div className="md:grid grid-cols-3 gap-5 w-[85%] mx-auto mb-16 items-center">
           <Card className="py-4 mt-4">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">             
-            <h4 className="font-bold text-large">Checklist</h4>
+              <h4 className="font-bold text-large">Checklist</h4>
               <p className="text-tiny uppercase font-bold">Registra el estado de la máquina</p>
             </CardHeader>
             <CardBody className="overflow-visible py-2 items-center">
@@ -39,7 +39,7 @@ export const Maquinas = () => {
           </Card>
           <Card className="py-4 mt-4">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-            <h4 className="font-bold text-large">Orden de trabajo</h4>
+              <h4 className="font-bold text-large">Orden de trabajo</h4>
               <p className="text-tiny uppercase font-bold">Registra una orden de trabajo</p>
             </CardHeader>
             <CardBody className="overflow-visible py-2 items-center">
@@ -53,7 +53,7 @@ export const Maquinas = () => {
           </Card>
           <Card className="py-4 mt-4">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">    
-            <h4 className="font-bold text-large">Hoja de vida</h4>
+              <h4 className="font-bold text-large">Hoja de vida</h4>
               <p className="text-tiny uppercase font-bold">Observa especificaciones de la máquina</p>
             </CardHeader>
             <CardBody className="overflow-visible py-2 items-center">

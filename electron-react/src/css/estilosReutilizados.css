@@ -23,3 +23,63 @@
   display: flex;
   margin: 30px 0px 10px;
 }
+
+.boton-registrarR {
+  width: 40%;
+  background: rgb(0, 173, 0);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.boton-cancelar-registroR {
+  height: 40px;
+  width: 40%;
+}
+
+.boton-cancelarR:hover {
+  background-color: #dedede;
+  border-radius: 10px;
+}
+
+.boton-cancelarR {
+  width: 100%;
+  font-weight: bold;
+  background-color: rgb(247, 247, 247);
+  font-size: 16px;
+}
+
+@media (max-width: 1100px) {
+  .boton-cancelar-registroR{
+    width: 35%;
+  }
+
+  .boton-registrarR{
+    width: 35%;
+  }
+}
+
+@media (max-width: 768px) {
+  .boton-cancelar-registroR{
+    width: 30%;
+  }
+
+  .boton-registrarR{
+    width: 30%;
+  }
+}
+
+@media (max-width: 400px) {
+  .boton-cancelar-registroR{
+    width: 40%;
+  }
+
+  .boton-registrarR{
+    width: 40%;
+  }
+}
+

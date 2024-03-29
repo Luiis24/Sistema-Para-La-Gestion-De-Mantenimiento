@@ -22,18 +22,6 @@
     resize: none;
 }
 
-.boton-cancelar-registro {
-    width: 150px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.boton-cancelar-registro:hover {
-    background-color: #dedede;
-    border-radius: 10px;
-}
 
 @media (max-width: 768px) {
 

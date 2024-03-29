@@ -11,7 +11,7 @@ export const Registro_salida_insumo = () => {
     const [idInsumo, setIdInsumo] = useState("");
     const [cantidadInsumo, setCantidadInsumo] = useState("");
     const [nota, setNota] = useState();
-    const {isLoading, setIsLoading} = useLoading();
+    const { isLoading, setIsLoading } = useLoading();
 
     const [insumos, setInsumos] = useState([]);
     useEffect(() => {
@@ -37,13 +37,13 @@ export const Registro_salida_insumo = () => {
                 return;
             }
             const cantidad_insumo_BD = insumo_BD.cantidad_insumo;
-    
+
             if (cantidadInsumo <= 0) {
                 toast.error('La cantidad de salida debe ser mayor que cero');
                 setIsLoading(false)
                 return;
             }
-    
+
             if (cantidadInsumo > cantidad_insumo_BD) {
                 toast.error('La cantidad de salida supera la cantidad disponible en stock');
                 setIsLoading(false)
@@ -75,7 +75,7 @@ export const Registro_salida_insumo = () => {
     return (
         <div className='container-rg-caracteristicasM'>
             <ToastContainer />
-            {isLoading ? <Cargando/> : ''}
+            {isLoading ? <Cargando /> : ''}
             <form onSubmit={handleSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
@@ -119,14 +119,14 @@ export const Registro_salida_insumo = () => {
                     </div>
                 </div>
                 <div className='btn-terminar'>
-                    <Link to={'/almacen'} className='boton-cancelar-registro'>
-                    <Button className="boton-cancelar-aprendices">
+                    <Link to={'/almacen'} className='boton-cancelar-registroR'>
+                        <Button className="boton-cancelarR">
                             <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                             </svg> Atrás
                         </Button>
                     </Link>
-                    <Button type="submit" className='boton-registrar-ap'>Registrar</Button>
+                    <Button type="submit" className='boton-registrarR'>Registrar</Button>
                 </div>
             </form>
 

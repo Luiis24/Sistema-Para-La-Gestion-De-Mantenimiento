@@ -50,10 +50,16 @@ export const Almacen = () => {
         setIsLoading(true)
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/insumos`)
             .then(datos => {
-                const sortedInsumos = datos.data.sort(
+                // Filtrar los insumos para quedarse solo con los que tienen tipo "insumo"
+                const insumosFiltrados = datos.data.filter(insumo => insumo.tipo === 'insumo');
+                
+                // Ordenar los insumos filtrados por fecha de llegada
+                const sortedInsumos = insumosFiltrados.sort(
                     (a, b) =>
                         new Date(b.fecha_llegada_insumo) - new Date(a.fecha_llegada_insumo)
                 );
+    
+                // Asignar los insumos filtrados y ordenados a setInsumos
                 setInsumos(sortedInsumos);
                 setIsLoading(false)
             })
@@ -69,6 +75,7 @@ export const Almacen = () => {
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/getInsumosUtilizadosAlmacen`, { id_insumo });
             const insumos = await response.data
             setInsumosUtilizadosAlmacen(insumos);
+            console.log(insumosUtilizadosAlmacen)
             setIsLoading(false)
             setModalVisibleInsumoU(true);
         } catch (error) {
@@ -82,39 +89,36 @@ export const Almacen = () => {
         const filtered = insumos.filter(insumo => {
             if (filters.estado === 'all') {
                 return (
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             } else if (filters.estado === '1') { // Si se selecciona "Disponible"
                 return (
                     (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) &&
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             } else if (filters.estado === '0') { // Si se selecciona "En uso"
                 return (
                     (insumo.insumos_en_uso > 0) &&
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre) &&
-                    (insumo.tipo === 'insumo')
+                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
                 );
             }
             return true;
         });
-
+    
+        // Aplicar ordenamiento después del filtrado
         if (ordenNombreAscendente) {
             filtered.sort((a, b) => (a.nombre_insumo > b.nombre_insumo) ? 1 : -1);
         } else {
             filtered.sort((a, b) => (a.nombre_insumo < b.nombre_insumo) ? 1 : -1);
         }
-
+    
         if (!ordenCantidadAscendente) {
             filtered.sort((a, b) => b.cantidad_insumo - a.cantidad_insumo);
         }
-
+    
         return filtered;
     }
-
-
+    
     // cambiar filtros
 
     const handleUso = (event) => {
@@ -275,9 +279,9 @@ export const Almacen = () => {
                             onChange={handleUso}
                             className="w-full"
                         >
-                            <SelectItem value="all">Todos</SelectItem>
-                            <SelectItem value="1">Disponible</SelectItem>
-                            <SelectItem value="0">En uso</SelectItem>
+                            <SelectItem value="all" key={'all'}>Todos</SelectItem>
+                            <SelectItem value="1" key={'1'}>Disponible</SelectItem>
+                            <SelectItem value="0" key={'0'}>En uso</SelectItem>
                         </Select>
                         <Button
                             onClick={handleOrdenNombre}
@@ -435,14 +439,14 @@ export const Almacen = () => {
                                 />
                             </div>
                             <div className='btn-terminar-registro'>
-                                <a className='boton-cancelar-registro'>
-                                    <Button className="boton-cancelar-aprendices" onClick={() => setModalDevolucionVisible(false)}>
+                                <a className='boton-cancelar-registroR'>
+                                    <Button className="boton-cancelarR" onClick={() => setModalDevolucionVisible(false)}>
                                         <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                                         </svg> Atrás
                                     </Button>
                                 </a>
-                                <Button type="submit" className='boton-registrar'>Devolver</Button>
+                                <Button type="submit" className='boton-registrarR'>Devolver</Button>
                             </div>
                         </form>
 
@@ -479,11 +483,13 @@ export const Almacen = () => {
                             </Table>
 
                             <div className='btn-terminar-registro'>
-                                <Button className='boton-cancelar-registro' onClick={() => setModalVisibleInsumoU(false)}>
-                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
-                                    </svg> Atrás
-                                </Button>
+                                <a className='boton-cancelar-registroR'>
+                                    <Button className='boton-cancelarR' onClick={() => setModalVisibleInsumoU(false)}>
+                                        <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                        </svg> Atrás
+                                    </Button>
+                                </a>
                             </div>
                         </div>
 
@@ -503,11 +509,13 @@ export const Almacen = () => {
                             </div>
 
                             <div className='btn-terminar-registro'>
-                                <Button className='boton-cancelar-registro' onClick={() => setModalVisible(false)}>
-                                    <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
-                                    </svg> Atrás
-                                </Button>
+                                <a className='boton-cancelar-registroR'>
+                                    <Button className='boton-cancelarR' onClick={() => setModalVisible(false)}>
+                                        <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                                        </svg> Atrás
+                                    </Button>
+                                </a>
                             </div>
                         </div>
 

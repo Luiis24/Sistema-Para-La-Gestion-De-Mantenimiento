@@ -21,7 +21,7 @@ export const Mas_informacion = () => {
             <div className='md:grid grid-cols-3 gap-5 w-[70%] mx-auto mb-16 mt-16 items-center'>
                 <Card className="py-4 flex-col justify-center items-center">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col">
-                        <h4 className="font-bold text-large">Luis Fernando Morales</h4>
+                        <h4 className="font-bold text-large text-center">Luis Fernando Morales</h4>
                         <p className="text-tiny uppercase font-bold">Luis@misena.edu.co</p>
                     </CardHeader>
                     <CardBody className="overflow-visible py-2 flex items-center">
@@ -35,7 +35,7 @@ export const Mas_informacion = () => {
                 </Card>
                 <Card className="py-4 flex-col justify-center items-center">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col">
-                        <h4 className="font-bold text-large">Jhon Eduard España</h4>
+                        <h4 className="font-bold text-large text-center">Jhon Eduard España</h4>
                         <p className="text-tiny uppercase font-bold">Jhon@misena.edu.co</p>
                     </CardHeader>
                     <CardBody className="overflow-visible py-2 flex items-center">
@@ -49,7 +49,7 @@ export const Mas_informacion = () => {
                 </Card>
                 <Card className="py-4 flex-col justify-center items-center">
                     <CardHeader className="pb-0 pt-2 px-4 flex-col">
-                        <h4 className="font-bold text-large">Camilo Andres Jaramillo</h4>
+                        <h4 className="font-bold text-large text-center">Camilo Andres Jaramillo</h4>
                         <p className="text-tiny uppercase font-bold">Camilo@misena.edu.co</p>
                     </CardHeader>
                     <CardBody className="overflow-visible py-2 flex items-center">

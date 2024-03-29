@@ -9,7 +9,7 @@
   margin-top: 5.5%;
   justify-content: space-around;
 }
-.boton-registrar {
+/* .boton-registrar {
   width: 25%;
   background: rgb(0, 173, 0);
   border-radius: 12px;
@@ -27,7 +27,7 @@
   cursor: pointer;
   height: 40px;
   font-size: 16px;
-}
+} */
 .rg-componentes {
   background-color: rgb(247, 247, 247);
   width: 45%;

@@ -13,7 +13,7 @@ export const Crear_maquina = () => {
     const [manual_maquina, setManual_maquina] = useState('');
     const [tiposMaquina, setTiposMaquina] = useState([]);
     const [selectedTipoMaquina, setSelectedTipoMaquina] = useState('');
-    const {isLoading, setIsLoading} = useLoading();
+    const { isLoading, setIsLoading } = useLoading();
 
     useEffect(() => {
         // Cargar tipos de máquina al montar el componente
@@ -44,7 +44,7 @@ export const Crear_maquina = () => {
             setIsLoading(false)
             toast.success('Máquina registrada exitosamente');
             window.location.href = '/crearDescripcionEquipo'
-            
+
         } catch (error) {
             setIsLoading(false)
             toast.error('Error al registrar la máquina');
@@ -53,8 +53,8 @@ export const Crear_maquina = () => {
 
     return (
         <div className='container-rg-caracteristicasM'>
-            <ToastContainer/>
-            {isLoading ? <Cargando/> : ''}
+            <ToastContainer />
+            {isLoading ? <Cargando /> : ''}
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
@@ -92,10 +92,14 @@ export const Crear_maquina = () => {
                     </div>
                 </div>
                 <div className='btn-terminar'>
-                    <Link to={'/tornos'} ><Button className='boton-cancelar-registro'><svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
-                </svg> Atrás</Button></Link>
-                    <Button type="submit" className='boton-registrar'>Siguiente</Button>
+                    <Link to={'/tornos'} className='boton-cancelar-registroR'>
+                        <Button className="boton-cancelarR">
+                            <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
+                            </svg> Atrás
+                        </Button>
+                    </Link>
+                    <Button type="submit" className='boton-registrarR'>Siguiente</Button>
                 </div>
             </form>
 

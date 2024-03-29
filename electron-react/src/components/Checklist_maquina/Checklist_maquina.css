@@ -62,9 +62,30 @@
     right: 10px;
 }
 
+.button-HR button {
+    color: #000000;
+    font-size: bold;
+    padding: 5px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.button-HR button img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
+.button-HR button:hover{
+    background-color: #e2e2e2;
+}
+
+
 @media (max-width: 768px) {
     .button-HR {
-        top: 120px;
+        top: 115px;
     }
 }
 
