@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Registro_aprendiz.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Input, Select, SelectItem, Button } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { Select, SelectItem, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
@@ -19,8 +20,10 @@ export const Registro_aprendiz = () => {
   const [telefono_aprendiz, setTelefono_aprendiz] = useState("");
   const [equipo_aprendiz, setEquipo_aprendiz] = useState("");
   const [password_aprendiz, setPassword_aprendiz] = useState("");
-  const { isLoading, setIsLoading } = useLoading();
+  const [idInstructor, setIdInstructor] = useState('')
 
+  const [Instructores, setInstructores] = useState([])
+  const { isLoading, setIsLoading } = useLoading();
 
   const enviarAP = async (event) => {
     event.preventDefault();
@@ -33,12 +36,13 @@ export const Registro_aprendiz = () => {
           tipo_doc_aprendiz,
           num_doc_aprendiz,
           ficha_aprendiz,
-          programa_aprendiz: programa_aprendiz === 'otro' ? otroPrograma : programa_aprendiz,
+          programa_aprendiz: programa_aprendiz === 'Otro' ? otroPrograma : programa_aprendiz,
           nombre_aprendiz,
           email_aprendiz,
           telefono_aprendiz,
           equipo_aprendiz,
           password_aprendiz,
+          id_instructor: idInstructor,
           estado: 'activo'
         }
       );
@@ -92,12 +96,21 @@ export const Registro_aprendiz = () => {
       value: "Otro"
     },
   ];
-  const Instructor = [
-    {
-      label: "Enain",
-      value: "Enain",
-    },
-  ];
+
+
+  useEffect(() => {
+    setIsLoading(true)
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/instructores`)
+        .then(datos => {
+            setInstructores(datos.data);
+            setIsLoading(false)
+        })
+        .catch(error => {
+            setIsLoading(false)
+            console.error('Error al obtener los datos:', error);
+        });
+}, []);
+
   const [isVisible, setIsVisible] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -165,14 +178,30 @@ export const Registro_aprendiz = () => {
     // Actualiza el estado de otroPrograma cuando se ingresa texto
     setOtroPrograma(event.target.value);
   };
-  console.log(programa_aprendiz)
+  
+  // Validaciones del form
+
+  const soloLetras = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+     if (
+      charCode !== 32 && // Espacio
+      (charCode < 65 || charCode > 90) && // Letras mayúsculas
+      (charCode < 97 || charCode > 122) && // Letras minúsculas
+      charCode !== 209 && charCode !== 241 // Letra Ñ y letra ñ
+    ) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="container-rg-caracteristicasMotor">
       <ToastContainer />
       {isLoading ? <Cargando /> : ''}
       <div className="registrar-nuevo-aprendiz my-5">
         <form onSubmit={enviarAP}>
-          <h2 className="titulo-registro">Registrar nuevos aprendices</h2>
+          <h2 className="titulo-registro-ap">Registrar nuevos aprendices</h2>
           <div className="inputs-registro-aprendiz">
             <div className="inputs-primer-fila-registro-aprendiz">
               {/*NOMBRE*/}
@@ -181,8 +210,9 @@ export const Registro_aprendiz = () => {
                 className="w-full mt-7"
                 placeholder="Nombre completo"
                 type="text"
+                onKeyPress={soloLetras}
                 name="nombre_aprendiz"
-                onChange={(express) => setNombre_aprendiz(express.target.value)}
+                onChange={(e) => setNombre_aprendiz(e.target.value)}
               />
               {/*TELÉFONO*/}
               <h3 className="h3-fila-1">Teléfono</h3>
@@ -205,7 +235,7 @@ export const Registro_aprendiz = () => {
                 }
               >
                 {Documento.map((documento) => (
-                  <SelectItem key={documento.value} value={documento.value}>
+                  <SelectItem key={documento.value} value={documento.value} className="w-full py-3">
                     {documento.label}
                   </SelectItem>
                 ))}
@@ -238,10 +268,11 @@ export const Registro_aprendiz = () => {
               <Select
                 className="w-full mt-7"
                 placeholder="Instructor"
+                onChange={(e) => setIdInstructor(e.target.value)}
               >
-                {Instructor.map((Instructor) => (
-                  <SelectItem key={Instructor.value} value={Instructor.value}>
-                    {Instructor.label}
+                {Instructores.map((Instructor) => (
+                  <SelectItem key={Instructor.id_instructor} value={Instructor.id_instructor} className="w-full py-3">
+                    {Instructor.nombre_instructor}
                   </SelectItem>
                 ))}
               </Select>
@@ -271,7 +302,7 @@ export const Registro_aprendiz = () => {
                   onChange={handleSelectChange}
                 >
                   {Programa.map((programa) => (
-                    <SelectItem key={programa.value} value={programa.value} className="w-full mt-7">
+                    <SelectItem key={programa.value} value={programa.value} className="w-full py-3">
                       {programa.label}
                     </SelectItem>
                   ))}
@@ -316,7 +347,6 @@ export const Registro_aprendiz = () => {
           </div>
           <div className="btn-terminar">
             <Link to={"/aprendices"}>
-              {" "}
               <Button className="boton-cancelar-aprendices">
               <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />

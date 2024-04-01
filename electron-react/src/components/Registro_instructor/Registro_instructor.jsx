@@ -29,6 +29,7 @@ export const Registro_instructor = () => {
           email_instructor,
           telefono_instructor,
           password_instructor,
+          estado: 'activo'
         }
       );
       setIsLoading(false)
@@ -98,6 +99,22 @@ export const Registro_instructor = () => {
     </svg>
   );
 
+   // Validaciones del form
+
+   const soloLetras = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+     if (
+      charCode !== 32 && // Espacio
+      (charCode < 65 || charCode > 90) && // Letras mayúsculas
+      (charCode < 97 || charCode > 122) && // Letras minúsculas
+      charCode !== 209 && charCode !== 241 // Letra Ñ y letra ñ
+    ) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="container-rg-caracteristicasM">
       <ToastContainer/>
@@ -116,8 +133,9 @@ export const Registro_instructor = () => {
             className="w-9/12 mt-8"
             placeholder="Nombre completo"
             type="text"
+            onKeyPress={soloLetras}
             name="nombre_instructor"
-            onChange={(express) => setNombre_instructor(express.target.value)}
+            onChange={(e) => setNombre_instructor(e.target.value)}
           />
           <Input
             className="w-9/12 mt-8"
