@@ -6,7 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Input, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useLoading } from '../../estados/spinner';
-import { Cargando } from '../Cargando/Cargando'
+import { Cargando } from '../Cargando/Cargando';
+import {Titulo_sena_cb} from '../Titulo_sena_cb/Titulo_sena_cb'
 
 export const Registro_instructor = () => {
   const [cc_instructor, setCc_instructor] = useState("");
@@ -14,13 +15,18 @@ export const Registro_instructor = () => {
   const [email_instructor, setEmail_instructor] = useState("");
   const [telefono_instructor, setTelefono_instructor] = useState("");
   const [password_instructor, setPassword_instructor] = useState("");
-  const {isLoading, setIsLoading} = useLoading();
+  const { isLoading, setIsLoading } = useLoading();
 
   const enviar = async (event) => {
     event.preventDefault();
 
     try {
       setIsLoading(true)
+      if(isInvalid){
+        toast.error('Contraseña insegura')
+        setIsLoading(false)
+        return
+      }
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/registerInstructor`,
         {
@@ -99,10 +105,35 @@ export const Registro_instructor = () => {
     </svg>
   );
 
+  // validaciones form
+
+  const validatePassword = (e) => e.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/);
+
+  const isInvalid = React.useMemo(() => {
+    if (password_instructor === "") return false;
+
+    return validatePassword(password_instructor) ? false : true;
+  }, [password_instructor]);
+
+  const soloLetras = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+     if (
+      charCode !== 32 && // Espacio
+      (charCode < 65 || charCode > 90) && // Letras mayúsculas
+      (charCode < 97 || charCode > 122) && // Letras minúsculas
+      charCode !== 209 && charCode !== 241 // Letra Ñ y letra ñ
+    ) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
   return (
-    <div className="container-rg-caracteristicasM">
-      <ToastContainer/>
-      {isLoading ? <Cargando/> : ''}
+    <div className="container-registro-instructor">
+      <ToastContainer />
+      {isLoading ? <Cargando /> : ''}
+      <div className="w-full flex justify-start"><Titulo_sena_cb/></div>
       <div className="Registro_instructor my-5">
         <h2 className="titulo-inst">Registro de instructores</h2>
         <form className="form_inst" onSubmit={enviar}>
@@ -111,20 +142,22 @@ export const Registro_instructor = () => {
             placeholder="Número de identificación"
             type="number"
             name="cc_instructor"
-            onChange={(express) => setCc_instructor(express.target.value)}
+            onChange={(express) => {setCc_instructor(express.target.value)}}
           />
           <Input
             className="w-9/12 mt-8"
             placeholder="Nombre completo"
+            onKeyPress={soloLetras}
             type="text"
             name="nombre_instructor"
-            onChange={(express) => setNombre_instructor(express.target.value)}
+            onChange={(express) => {setNombre_instructor(express.target.value)}}
           />
           <Input
             className="w-9/12 mt-8"
             placeholder="Correo Electrónico"
             type="text"
             name="email_instructor"
+            autocomplete="off"
             onChange={(express) => setEmail_instructor(express.target.value)}
           />
           <Input
@@ -138,6 +171,7 @@ export const Registro_instructor = () => {
             onChange={(express) => setPassword_instructor(express.target.value)}
             variant="bordered"
             placeholder="Ingresa tu contraseña"
+            autocomplete="off"
             endContent={
               <button
                 className="focus:outline-none"
@@ -153,17 +187,20 @@ export const Registro_instructor = () => {
             }
             type={isVisible ? "text" : "password"}
             className="w-9/12 mt-8"
+            isInvalid={isInvalid}
+            // color={isInvalid ? "danger" : "success"}
+            errorMessage={isInvalid && "Este campo requiere mayusculas, minusculas y numeros (min 8 digitos)"}
           />
-          <div className="div-botton">
-            <Link to={"/instructores"}>
-              <Button className="boton-cancelar-instructor">
-              <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <div className="btn-terminar w-9/12">
+            <Link to={"/instructores"} className="boton-cancelar-registroR">
+              <Button className="boton-cancelarR">
+                <svg className="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.5 7H12v-.9a2.1 2.1 0 0 0-1.2-2 1.8 1.8 0 0 0-2 .4L3.8 9a2.2 2.2 0 0 0 0 3.2l5 4.5a1.8 1.8 0 0 0 2 .3 2.1 2.1 0 0 0 1.2-2v-.9h1a2 2 0 0 1 2 2V19a1 1 0 0 0 1.3 1 6.6 6.6 0 0 0-1.8-13Z" />
                 </svg> Atrás
               </Button>
             </Link>
-            <Button className="btn-inst" type="submit">
-     Registrarse
+            <Button className="boton-registrarR" type="submit">
+              Registrarse
             </Button>
           </div>
         </form>

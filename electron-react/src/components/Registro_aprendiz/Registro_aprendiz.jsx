@@ -8,6 +8,7 @@ import { Select, SelectItem, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
+import {Titulo_sena_cb} from '../Titulo_sena_cb/Titulo_sena_cb'
 
 export const Registro_aprendiz = () => {
   const [tipo_doc_aprendiz, setTipo_doc_aprendiz] = useState("");
@@ -30,6 +31,11 @@ export const Registro_aprendiz = () => {
 
     try {
       setIsLoading(true)
+      if(isInvalid && isInvalidDocumento){
+        toast.error('Campos llenados de manera incorrecta')
+        setIsLoading(false)
+        return
+      }
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/registerAprendiz`,
         {
@@ -96,6 +102,7 @@ export const Registro_aprendiz = () => {
       value: "Otro"
     },
   ];
+
 
   useEffect(() => {
     setIsLoading(true)
@@ -177,13 +184,52 @@ export const Registro_aprendiz = () => {
     // Actualiza el estado de otroPrograma cuando se ingresa texto
     setOtroPrograma(event.target.value);
   };
+  
+  // Validaciones del form
+
+  const soloLetras = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+     if (
+      charCode !== 32 && // Espacio
+      (charCode < 65 || charCode > 90) && // Letras mayúsculas
+      (charCode < 97 || charCode > 122) && // Letras minúsculas
+      charCode !== 209 && charCode !== 241 // Letra Ñ y letra ñ
+    ) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
+  const validatePassword = (e) => e.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/);
+
+  const isInvalid = React.useMemo(() => {
+    if (password_aprendiz === "") return false;
+
+    return validatePassword(password_aprendiz) ? false : true;
+  }, [password_aprendiz]);
+
+  const validateDocument = (e) => e.match(/^[0-9]{10,10}$/);
+  const isInvalidDocument = React.useMemo(() => {
+    if (telefono_aprendiz === "") return false;
+
+    return validateDocument(telefono_aprendiz) ? false : true;
+  }, [telefono_aprendiz]);
+
+  const validateDocumento = (e) => e.match(/^[0-9]{9,12}$/);
+  const isInvalidDocumento = React.useMemo(() => {
+    if (num_doc_aprendiz === "") return false;
+
+    return validateDocumento(num_doc_aprendiz) ? false : true;
+  }, [num_doc_aprendiz]);
 
   return (
-    <div className="container-rg-caracteristicasMotor">
+    <div className="container-registro-aprendiz">
       <ToastContainer />
       {isLoading ? <Cargando /> : ''}
+      <div className="w-full flex justify-start"><Titulo_sena_cb/></div>
       <div className="registrar-nuevo-aprendiz my-5">
-        <form onSubmit={enviarAP}>
+        <form onSubmit={enviarAP} className="mb-5">
           <h2 className="titulo-registro-ap">Registrar nuevos aprendices</h2>
           <div className="inputs-registro-aprendiz">
             <div className="inputs-primer-fila-registro-aprendiz">
@@ -193,8 +239,9 @@ export const Registro_aprendiz = () => {
                 className="w-full mt-7"
                 placeholder="Nombre completo"
                 type="text"
+                onKeyPress={soloLetras}
                 name="nombre_aprendiz"
-                onChange={(express) => setNombre_aprendiz(express.target.value)}
+                onChange={(e) => setNombre_aprendiz(e.target.value)}
               />
               {/*TELÉFONO*/}
               <h3 className="h3-fila-1">Teléfono</h3>
@@ -206,6 +253,8 @@ export const Registro_aprendiz = () => {
                 onChange={(express) =>
                   setTelefono_aprendiz(express.target.value)
                 }
+                isInvalid={isInvalidDocument}
+                errorMessage={isInvalidDocument && "Este campo requiere 10 digitos"}
               />
               {/*DOCUMENTO/SELECT */}
               <h3 className="h3-fila-1">Tipo de documento</h3>
@@ -232,6 +281,8 @@ export const Registro_aprendiz = () => {
                 onChange={(express) =>
                   setNum_doc_aprendiz(express.target.value)
                 }
+                isInvalid={isInvalidDocumento}
+                errorMessage={isInvalidDocumento && "Este campo requiere entre 9 y 12 digitos"}
               />
               {/*EMAIL*/}
               <h3 className="h3-fila-1">Correo Electrónico</h3>
@@ -324,6 +375,9 @@ export const Registro_aprendiz = () => {
                 }
                 type={isVisible ? "text" : "password"}
                 className="w-full mt-7"
+                isInvalid={isInvalid}
+                // color={isInvalid ? "danger" : "success"}
+                errorMessage={isInvalid && "Este campo requiere mayusculas, minusculas y numeros (min 8 digitos)"}
               />
             </div>
           </div>

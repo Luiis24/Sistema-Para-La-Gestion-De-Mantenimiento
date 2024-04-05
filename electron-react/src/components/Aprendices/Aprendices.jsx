@@ -179,7 +179,7 @@ export const Aprendices = () => {
                         <Select placeholder="Fichas" onChange={(e) => { handleEstado('ficha', e.target.value); }}>
                             <SelectItem value="all" key={'all'}>Todos</SelectItem>
                             {FichasNORepetidos.map(ficha => {
-                                return <SelectItem value={ficha} key={ficha}>{ficha}</SelectItem>
+                                return <SelectItem value={ficha} key={ficha}>{`${ficha}`}</SelectItem>
                             })}
                         </Select>
 

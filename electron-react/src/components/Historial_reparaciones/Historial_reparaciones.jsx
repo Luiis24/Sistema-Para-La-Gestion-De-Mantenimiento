@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
+import {Titulo_sena_cb} from '../Titulo_sena_cb/Titulo_sena_cb'
 
 export const Historial_reparaciones = () => {
   const fechaActual = new Date().toISOString().split("T")[0]; // Cambiar el formato de fecha para postgres
@@ -78,9 +79,10 @@ export const Historial_reparaciones = () => {
   };
 
   return (
-    <div className='container-rg-historial md:fixed relative'>
+    <div className='container-rg-historial'>
       <ToastContainer />
       {isLoading ? <Cargando /> : ''}
+      <div className="w-full flex justify-start"><Titulo_sena_cb/></div>
       <form onSubmit={handleFormSubmit} className='rg-caracteristicasM my-5'>
         <div className="titulo-registro-CM">
           <h2 className="Titulo-hlp">Historial de reparaciones</h2>
@@ -89,7 +91,6 @@ export const Historial_reparaciones = () => {
           <div className="value-hr">
             <Select
               placeholder="Selecciona una máquina"
-              selectedKeys={selectedMaquina}
               onChange={handleselected}
             >
               {maquinas.map((maquina) => (

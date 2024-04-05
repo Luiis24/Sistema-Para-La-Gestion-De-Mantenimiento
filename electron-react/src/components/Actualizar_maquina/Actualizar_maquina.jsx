@@ -62,7 +62,6 @@ export const Actualizar_maquina = () => {
                 <div className='inp-registro-CM'>
                     <Select
                         onChange={(event) => setSelectedMaquina(event.target.value)}
-                        selectedKeys={selectedMaquina}
                         className=' mt-3'
                         placeholder='Seleccione la máquina'
                     >

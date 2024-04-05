@@ -1,16 +1,29 @@
+.container-registro-aprendiz {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  align-items: center;
+  overflow-y: scroll;
+}
 
 .registro-aprendiz-componente {
   display: flex;
   justify-content: center;
 }
+
 .registrar-nuevo-aprendiz {
   background-color: rgb(247, 247, 247);
   border-radius: 10px;
   box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
   width: 850px;
-  height: 860px;
+  height: fit-content;
   margin: 40px 0px 50px;
 }
+
 .titulo-registro-ap {
   color: rgb(70, 70, 70);
   justify-content: center;
@@ -20,40 +33,49 @@
   display: flex;
   margin: 30px 0px 10px;
 }
+
 .inputs-registro-aprendiz Input::placeholder {
   font-size: 16px;
 }
+
 .inputs-registro-aprendiz Input:focus {
   font-size: 16px;
 }
+
 .inputs-registro-aprendiz {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
 }
+
 .h3-fila-1 {
   display: flex;
   font-size: 15px;
   margin-top: 8%;
   justify-content: flex-start;
 }
+
 .h3-fila-2 {
   display: flex;
   font-size: 15px;
   margin-top: 8%;
   justify-content: flex-start;
 }
+
 .break-word {
   white-space: normal !important;
   word-wrap: break-word !important;
 }
-.inputs-primer-fila-registro-aprendiz{
+
+.inputs-primer-fila-registro-aprendiz {
   width: 40%;
 }
-.inputs-segunda-fila-registro-aprendiz{
+
+.inputs-segunda-fila-registro-aprendiz {
   width: 40%;
 }
+
 .boton-registrar-ap {
   background: rgb(0, 173, 0);
   border-radius: 12px;
@@ -65,17 +87,21 @@
   display: flex;
   justify-content: center;
 }
+
 .boton-registrar-ap:hover {
   background: rgb(1, 153, 1);
 }
+
 .boton-registrar-ap:active {
   background: rgb(0, 173, 0);
 }
-.btn-terminar{
+
+.btn-terminar {
   display: flex;
   margin-top: 5.5%;
   justify-content: space-around;
 }
+
 .boton-cancelar-aprendices {
   font-weight: bold;
   background-color: rgb(247, 247, 247);
@@ -85,353 +111,170 @@
   height: 40px;
   font-size: 16px;
 }
+
 .boton-cancelar-aprendices:hover {
   background-color: rgb(237, 237, 237);
 }
+
 .boton-cancelar-aprendices:active {
   background-color: rgb(250, 250, 250);
 }
+
 button .boton-registrar {
   background-color: rgb(0, 173, 0);
 }
+
 @media (max-width: 850px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 730px;
     height: 1030px;
   }
-  .btn-terminar{
+
+  .btn-terminar {
     margin-top: 7.5%;
   }
+
   .inputs-registro-aprendiz {
     flex-direction: column;
     align-items: center;
   }
-  .inputs-primer-fila-registro-aprendiz{
+
+  .inputs-primer-fila-registro-aprendiz {
     width: 80%;
   }
-  .inputs-segunda-fila-registro-aprendiz{
+
+  .inputs-segunda-fila-registro-aprendiz {
     width: 80%;
   }
+
   .h3-fila-1 {
     display: none;
   }
+
   .h3-fila-2 {
     display: none;
   }
 }
+
 @media (max-width: 770px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 640px;
   }
 }
+
 @media (max-width: 700px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 590px;
   }
 }
+
 @media (max-width: 650px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 520px;
     height: 1030px;
   }
+
   .h3-fila-1 {
     display: none;
   }
+
   .h3-fila-2 {
     display: none;
   }
-  .boton-registrar-ap{
+
+  .boton-registrar-ap {
     width: 140px;
     margin-right: 8%;
   }
-  .boton-cancelar-aprendices{
+
+  .boton-cancelar-aprendices {
     width: 140px;
     margin-left: 30%;
   }
 }
+
 @media (max-width: 580px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 460px;
   }
-  .boton-registrar-ap{
+
+  .boton-registrar-ap {
     width: 130px;
     margin-right: 10%;
   }
-  .boton-cancelar-aprendices{
+
+  .boton-cancelar-aprendices {
     width: 130px;
     margin-left: 30%;
   }
-  .btn-terminar{
+
+  .btn-terminar {
     margin-top: 8.5%;
   }
 }
+
 @media (max-width: 530px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 430px;
   }
 }
+
 @media (max-width: 480px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 390px;
   }
-  .boton-registrar-ap{
+
+  .boton-registrar-ap {
     width: 120px;
     margin-right: 11%;
   }
-  .boton-cancelar-aprendices{
+
+  .boton-cancelar-aprendices {
     width: 120px;
     margin-left: 32%;
   }
 }
+
 @media (max-width: 440px) {
-  .registrar-nuevo-aprendiz{
+  .registrar-nuevo-aprendiz {
     width: 370px;
   }
+
   .inputs-registro-aprendiz Input::placeholder {
     font-size: 15px;
   }
+
   .inputs-registro-aprendiz Input:focus {
     font-size: 15px;
   }
-  .btn-terminar{
+
+  .btn-terminar {
     margin-top: 10.5%;
   }
-  .titulo-registro-ap{
+
+  .titulo-registro-ap {
     font-size: 21px;
   }
 }
+
 @media (max-width: 375px) {
-  .titulo-registro-ap{
+  .titulo-registro-ap {
     font-size: 20px;
   }
-  .registrar-nuevo-aprendiz{
+
+  .registrar-nuevo-aprendiz {
     width: 310px;
   }
-  .titulo-registro{
+
+  .titulo-registro {
     font-size: 20px;
   }
-  .boton-cancelar-aprendices{
+
+  .boton-cancelar-aprendices {
     margin-left: 15%;
   }
-  .boton-registrar-ap{
+
+  .boton-registrar-ap {
     margin-right: 7%;
   }
 }
-.registro-aprendiz-componente {
-  display: flex;
-  justify-content: center;
-}
-.registrar-nuevo-aprendiz {
-  background-color: rgb(247, 247, 247);
-  border-radius: 10px;
-  box-shadow: 3px 3px 10px 2px rgba(0, 0, 0, 0.26);
-  width: 850px;
-  height: 860px;
-  margin: 40px 0px 50px;
-}
-.titulo-registro-ap {
-  color: rgb(70, 70, 70);
-  justify-content: center;
-  font-family: sans-serif;
-  font-weight: bold;
-  font-size: 24px;
-  display: flex;
-  margin: 30px 0px 10px;
-}
-.inputs-registro-aprendiz Input::placeholder {
-  font-size: 16px;
-}
-.inputs-registro-aprendiz Input:focus {
-  font-size: 16px;
-}
-.inputs-registro-aprendiz {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: flex-start;
-}
-.h3-fila-1 {
-  display: flex;
-  font-size: 15px;
-  margin-top: 8%;
-  justify-content: flex-start;
-}
-.h3-fila-2 {
-  display: flex;
-  font-size: 15px;
-  margin-top: 8%;
-  justify-content: flex-start;
-}
-.break-word {
-  white-space: normal !important;
-  word-wrap: break-word !important;
-}
-.inputs-primer-fila-registro-aprendiz{
-  width: 40%;
-}
-.inputs-segunda-fila-registro-aprendiz{
-  width: 40%;
-}
-.boton-registrar-ap {
-  background: rgb(0, 173, 0);
-  border-radius: 12px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  width: 150px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-}
-.boton-registrar-ap:hover {
-  background: rgb(1, 153, 1);
-}
-.boton-registrar-ap:active {
-  background: rgb(0, 173, 0);
-}
-.btn-terminar{
-  display: flex;
-  margin-top: 5.5%;
-  justify-content: space-around;
-}
-.boton-cancelar-aprendices {
-  font-weight: bold;
-  background-color: rgb(247, 247, 247);
-  width: 150px;
-  border-radius: 11px;
-  cursor: pointer;
-  height: 40px;
-  font-size: 16px;
-}
-.boton-cancelar-aprendices:hover {
-  background-color: rgb(237, 237, 237);
-}
-.boton-cancelar-aprendices:active {
-  background-color: rgb(250, 250, 250);
-}
-button .boton-registrar {
-  background-color: rgb(0, 173, 0);
-}
-@media (max-width: 850px) {
-  .registrar-nuevo-aprendiz{
-    width: 730px;
-    height: 1030px;
-  }
-  .btn-terminar{
-    margin-top: 7.5%;
-  }
-  .inputs-registro-aprendiz {
-    flex-direction: column;
-    align-items: center;
-  }
-  .inputs-primer-fila-registro-aprendiz{
-    width: 80%;
-  }
-  .inputs-segunda-fila-registro-aprendiz{
-    width: 80%;
-  }
-  .h3-fila-1 {
-    display: none;
-  }
-  .h3-fila-2 {
-    display: none;
-  }
-}
-@media (max-width: 770px) {
-  .registrar-nuevo-aprendiz{
-    width: 640px;
-  }
-}
-@media (max-width: 700px) {
-  .registrar-nuevo-aprendiz{
-    width: 590px;
-  }
-}
-@media (max-width: 650px) {
-  .registrar-nuevo-aprendiz{
-    width: 520px;
-    height: 1030px;
-  }
-  .h3-fila-1 {
-    display: none;
-  }
-  .h3-fila-2 {
-    display: none;
-  }
-  .boton-registrar-ap{
-    width: 140px;
-    margin-right: 8%;
-  }
-  .boton-cancelar-aprendices{
-    width: 140px;
-    margin-left: 30%;
-  }
-}
-@media (max-width: 580px) {
-  .registrar-nuevo-aprendiz{
-    width: 460px;
-  }
-  .boton-registrar-ap{
-    width: 130px;
-    margin-right: 10%;
-  }
-  .boton-cancelar-aprendices{
-    width: 130px;
-    margin-left: 30%;
-  }
-  .btn-terminar{
-    margin-top: 8.5%;
-  }
-}
-@media (max-width: 530px) {
-  .registrar-nuevo-aprendiz{
-    width: 430px;
-  }
-}
-@media (max-width: 480px) {
-  .registrar-nuevo-aprendiz{
-    width: 390px;
-  }
-  .boton-registrar-ap{
-    width: 120px;
-    margin-right: 11%;
-  }
-  .boton-cancelar-aprendices{
-    width: 120px;
-    margin-left: 32%;
-  }
-}
-@media (max-width: 440px) {
-  .registrar-nuevo-aprendiz{
-    width: 370px;
-  }
-  .inputs-registro-aprendiz Input::placeholder {
-    font-size: 15px;
-  }
-  .inputs-registro-aprendiz Input:focus {
-    font-size: 15px;
-  }
-  .btn-terminar{
-    margin-top: 10.5%;
-  }
-  .titulo-registro-ap{
-    font-size: 21px;
-  }
-}
-@media (max-width: 375px) {
-  .titulo-registro-ap{
-    font-size: 20px;
-  }
-  .registrar-nuevo-aprendiz{
-    width: 310px;
-  }
-  .titulo-registro{
-    font-size: 20px;
-  }
-  .boton-cancelar-aprendices{
-    margin-left: 15%;
-  }
-  .boton-registrar-ap{
-    margin-right: 7%;
-  }
-} 

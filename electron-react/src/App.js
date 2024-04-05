@@ -106,7 +106,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/Registroinstructores",
-    element: <><Titulo_sena_cb/><Registro_instructor /><Animacion_cuadros /></>
+    element: <><Registro_instructor /><Animacion_cuadros /></>
   },
   {
     path: "/crearCaracteristicasMotor",
@@ -139,7 +139,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/registroReparacion",
-    element: <><Titulo_sena_cb/><Historial_reparaciones /><Animacion_cuadros /></>
+    element: <><Historial_reparaciones /><Animacion_cuadros /></>
   },
   {
     path: "/actualizarMaquina",

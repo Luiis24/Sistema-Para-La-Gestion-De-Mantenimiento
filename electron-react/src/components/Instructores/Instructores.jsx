@@ -110,6 +110,22 @@ export const Instructores = () => {
   const endIndex = startIndex + itemsPorPagina;
   const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
+  // validar campo buscar por nombre
+
+  const soloLetras = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+     if (
+      charCode !== 32 && // Espacio
+      (charCode < 65 || charCode > 90) && // Letras mayúsculas
+      (charCode < 97 || charCode > 122) && // Letras minúsculas
+      charCode !== 209 && charCode !== 241 // Letra Ñ y letra ñ
+    ) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div>
       {isLoading ? <Cargando /> : ''}
@@ -157,6 +173,7 @@ export const Instructores = () => {
               placeholder="Buscar por nombre..."
               startContent={<SearchIcon className="text-default-300" />}
               onChange={handleNombre}
+              onKeyPress={soloLetras}
             />
 
             <Link to={"/Registroinstructores"}>

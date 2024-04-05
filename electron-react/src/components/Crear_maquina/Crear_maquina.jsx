@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Crear_maquina.css'
 import { Link } from 'react-router-dom';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Select, SelectItem } from '@nextui-org/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useLoading } from '../../estados/spinner';
@@ -61,18 +61,16 @@ export const Crear_maquina = () => {
                     <h1>Crear una nueva máquina</h1>
                 </div>
                 <div className='inp-registro-CM'>
-                    <select
-                        value={selectedTipoMaquina}
+                    <Select
                         onChange={(event) => setSelectedTipoMaquina(event.target.value)}
-                        className=' mt-3 h-14 bg-gray-100 rounded-md p-3'
+                        placeholder='Tipo de máquina'
                     >
-                        <option disable selected hidden>Tipo de máquina</option>
                         {tiposMaquina.map((tipo) => (
-                            <option key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
+                            <SelectItem key={tipo.id_tipo_maquina} value={tipo.id_tipo_maquina}>
                                 {tipo.nombre_tipo_maquina}
-                            </option>
+                            </SelectItem>
                         ))}
-                    </select>
+                    </Select>
 
                     <div>
                         <Input

@@ -54,18 +54,16 @@ export const Actualizar_estado_ficha = () => {
             <form onSubmit={handleFormSubmit} className='rg-caracteristicasM'>
 
                 <div className="titulo-registro-CM">
-                    <h1>Actualizar Ficha</h1>
+                    <h1>Actualizar ficha</h1>
                 </div>
                 <div className='inp-registro-CM'>
                     <Select
-                        onChange={(event) => setFichaSelected(event.target.value)}
-                        className=' mt-3'
-                        placeholder='Seleccione la Ficha'
+                        className='mt-3'
+                        placeholder='Seleccione la ficha'
+                        onChange={(e) => setFichaSelected(e.target.value)}
                     >
                         {FichasNORepetidos.map((ficha) => (
-                            <SelectItem value={ficha} key={ficha}>
-                                {ficha}
-                            </SelectItem>
+                            <SelectItem key={ficha} value={ficha}>{`${ficha}`}</SelectItem>
                         ))}
                     </Select>
 

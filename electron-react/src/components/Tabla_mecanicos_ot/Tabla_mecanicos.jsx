@@ -117,7 +117,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                                     <Select name="documento" type="number" onChange={handleChange} placeholder="Número de identificación">
                                         {aprendices.map(aprendiz => (
                                             <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
-                                                {aprendiz.num_doc_aprendiz}
+                                                {`${aprendiz.num_doc_aprendiz}`}
                                             </SelectItem>
                                         ))}
                                     </Select>
