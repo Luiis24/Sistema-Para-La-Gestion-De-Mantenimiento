@@ -3,9 +3,26 @@
     border-radius: 10px;
 }
 
-.bannerMI {
+.containerMasInfo{
+    display: grid;
+    grid-template-columns: 0.7fr 1fr;
+}
+
+.botonAtras {
+    background-color: #34A853;
+    color: #fff;
+    width: 80%;
+}
+
+@media (max-width: 900px) {
+    .containerMasInfo{
+        display: flex;
+        flex-direction: column;
+    }
+}
+/* .bannerMI {
     height: fit-content;
     background: rgb(0,68,19);
     background: linear-gradient(90deg, rgba(0,68,19,1) 0%, rgba(48,148,75,1) 50%, rgba(0,68,19,1) 100%);
     color: #fff;
-}
+} */

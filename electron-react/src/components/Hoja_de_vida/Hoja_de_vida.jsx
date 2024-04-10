@@ -16,7 +16,8 @@ export const Hoja_de_vida = () => {
     const [caracteristicasMaquina, setCaracteristicasMaquina] = useState([]);
     const [caracteristicasMotor, setCaracteristicasMotor] = useState([]);
     const [historialReparaciones, setHistorialReparaciones] = useState([]);
-    const {isLoading, setIsLoading} = useLoading();
+    const [maquina, setMaquina] = useState()
+    const { isLoading, setIsLoading } = useLoading();
 
 
 
@@ -44,6 +45,13 @@ export const Hoja_de_vida = () => {
                 const historialReparacionesData = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getHistorialReparacionesById/${id_maquina}`);
                 setHistorialReparaciones(historialReparacionesData.data);
                 // console.log('Historial de Reparaciones:', historialReparacionesData.data);
+
+                // Obtener la url manual de la maquina
+                const informacionMaquina = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/getMaquinas`);
+                const maquinasFiltradas = informacionMaquina.data.filter(maquina => maquina.id_maquina === parseInt(id_maquina));
+                setMaquina(maquinasFiltradas);
+                console.log('Maquina:', maquinasFiltradas);
+
                 setIsLoading(false)
             } catch (error) {
                 setIsLoading(false)
@@ -75,12 +83,12 @@ export const Hoja_de_vida = () => {
         const mes = date.getMonth() + 1;
         const año = date.getFullYear();
         return `${dia}/${mes}/${año}`;
-      };
+    };
 
     return (
         <div>
             <Navbars></Navbars>
-            {isLoading ? <Cargando/> : ''}
+            {isLoading ? <Cargando /> : ''}
             <div className="containerM">
 
                 <div className="navHorizontal">
@@ -369,7 +377,7 @@ export const Hoja_de_vida = () => {
                             <div className="tituloSeccionOT">
                                 <h2>Datos del equipo - Características</h2>
                             </div>
-                            <hr/>
+                            <hr />
                             <div className="container-table-hv">
                                 <Table className='w-full'>
                                     <TableHeader>
@@ -498,11 +506,11 @@ export const Hoja_de_vida = () => {
 
                     {historialReparaciones.length > 0 && (
                         <div>
-                            <hr/>
+                            <hr />
                             <div className="tituloSeccionOT">
                                 <h2>Historial de reparaciones</h2>
                             </div>
-                            <hr/>
+                            <hr />
                             <div className="container-table-hv">
                                 <Table>
                                     <TableHeader>
@@ -536,8 +544,25 @@ export const Hoja_de_vida = () => {
                             </div>
                         </div>
                     )}
+
+                    {maquina && (
+                        <div>
+                            <hr />
+                            <div className="tituloSeccionOT">
+                                <h2>Manual de la maquina</h2>
+                            </div>
+                            <hr />
+                            <div className="containerHv">
+
+                                {maquina.map(m => 
+                                <p className='mb-10 text-center'>{m.manual_maquina}</p>
+                                )}
+            
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

@@ -73,6 +73,32 @@ export const Registro_descripcion_equipo_hv = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!nombre ||
+      !marca ||
+      !fechaFabricacion ||
+      !fabricante_equipo ||
+      !ubicacion_equipo ||
+      !caracteristicas_equipo ||
+      !codigo_equipo ||
+      !modelo_equipo ||
+      !num_serie_equipo ||
+      !prioridad_equipo ||
+      !voltaje_equipo ||
+      !corriente_equipo ||
+      !frecuencia_equipo ||
+      !capacidad_equipo ||
+      !peso_equipo ||
+      !alimentacion_equipo ||
+      !sistema_electrico_equipo ||
+      !sistema_electronico_equipo ||
+      !sistema_mecanico_equipo ||
+      !sistema_neumatico_equipo ||
+      !sistema_hidraulico_equipo ||
+      !sistema_termico_equipo) {
+      toast.error("Por favor, complete todos los campos");
+      return; 
+  }
+
     const equipo = {
       nombre_equipo: nombre,
       marca_equipo: marca,

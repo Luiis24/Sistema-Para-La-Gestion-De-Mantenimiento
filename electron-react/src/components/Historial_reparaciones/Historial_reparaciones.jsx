@@ -44,6 +44,13 @@ export const Historial_reparaciones = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true)
+    if (!procedimiento_historial ||
+      !insumos_usados_historial ||
+      !observaciones_historial) {
+        setIsLoading(false)
+      toast.error("Por favor, complete todos los campos");
+      return; 
+  }
     try {
       await axios.post(`${process.env.REACT_APP_API_BASE_URL}/crearHistorialReparaciones`, {
         id_maquina: selectedMaquina,

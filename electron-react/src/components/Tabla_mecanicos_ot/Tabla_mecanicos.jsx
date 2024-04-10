@@ -8,17 +8,19 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [rowsMecanicos, setrowsMecanicos] = useState([]);
     const [selectedAprendiz, setSelectedAprendiz] = useState(null);
+    const [aprendicesDisponibles, setAprendicesDisponibles] = useState([]); // Estado para almacenar los aprendices disponibles
 
-    const [aprendices, setAprendices] = useState([]);
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_BASE_URL}/aprendices`)
             .then(datos => {
-                setAprendices(datos.data);
+                // Filtrar aprendices disponibles excluyendo los que ya están en rowsMecanicos
+                const aprendicesFiltrados = datos.data.filter(aprendiz => !rowsMecanicos.find(row => parseInt(row.documento) === aprendiz.num_doc_aprendiz));
+                setAprendicesDisponibles(aprendicesFiltrados);
             })
             .catch(error => {
                 console.error('Error al obtener los datos:', error);
             });
-    }, []);
+    }, [rowsMecanicos]); // Actualizar la lista de aprendices disponibles cada vez que cambie la lista de mecánicos
 
     // Restablecer el formulario
     const resetForm = () => {
@@ -53,7 +55,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
         const { name, value } = e.target;
     
         // Buscar el aprendiz seleccionado por su número de documento
-        const aprendizSeleccionado = aprendices.find(aprendiz => aprendiz.num_doc_aprendiz === parseInt(value));
+        const aprendizSeleccionado = aprendicesDisponibles.find(aprendiz => aprendiz.num_doc_aprendiz === parseInt(value));
     
         setFormMecanicos({
             ...formMecanicos,
@@ -73,7 +75,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
         }
 
         addRow(formMecanicos);
-        handleOperarios(formMecanicos)
+        handleOperarios(formMecanicos);
         resetForm();
     }
 
@@ -115,7 +117,7 @@ export const Tabla_mecanicos_ot = ({ formMecanicos, setFormMecanicos, handleOper
                             <ModalBody className="modalIOT">
                                 <div className="formIOT">
                                     <Select name="documento" type="number" onChange={handleChange} placeholder="Número de identificación">
-                                        {aprendices.map(aprendiz => (
+                                        {aprendicesDisponibles.map(aprendiz => (
                                             <SelectItem value={aprendiz.num_doc_aprendiz} key={aprendiz.num_doc_aprendiz}>
                                                 {`${aprendiz.num_doc_aprendiz}`}
                                             </SelectItem>

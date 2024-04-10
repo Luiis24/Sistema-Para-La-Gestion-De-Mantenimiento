@@ -155,7 +155,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/masInformacion",
-    element: <><Mas_informacion/><Animacion_cuadros/></>
+    element: <><Mas_informacion/></>
   }
 ]);
 

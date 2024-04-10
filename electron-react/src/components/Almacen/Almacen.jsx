@@ -89,17 +89,17 @@ export const Almacen = () => {
         const filtered = insumos.filter(insumo => {
             if (filters.estado === 'all') {
                 return (
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                    (filters.nombre === '' || insumo.nombre_insumo.toLowerCase().includes(filters.nombre.toLowerCase()))
                 );
             } else if (filters.estado === '1') { // Si se selecciona "Disponible"
                 return (
                     (insumo.cantidad_insumo - (insumo.insumos_en_uso || 0) > 0) &&
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                    (filters.nombre === '' || insumo.nombre_insumo.toLowerCase().includes(filters.nombre.toLowerCase()))
                 );
             } else if (filters.estado === '0') { // Si se selecciona "En uso"
                 return (
                     (insumo.insumos_en_uso > 0) &&
-                    (filters.nombre === '' || insumo.nombre_insumo === filters.nombre)
+                    (filters.nombre === '' || insumo.nombre_insumo.toLowerCase().includes(filters.nombre.toLowerCase()))
                 );
             }
             return true;

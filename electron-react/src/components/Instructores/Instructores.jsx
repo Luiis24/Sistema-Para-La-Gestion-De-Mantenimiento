@@ -18,7 +18,8 @@ export const Instructores = () => {
   const [users, setUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [estado, setEstado] = useState();
-  const [instructorSelected, setInstructorSelected] = useState()
+  const [instructorSelected, setInstructorSelected] = useState();
+  const [instructorSelectedName, setInstructorSelectedName] = useState()
   const [filters, setFilters] = useState({
     nombre: "",
     estado: "all",
@@ -73,7 +74,9 @@ export const Instructores = () => {
       return (
         (filters.estado === "all" ||
           user.estado_instructor === filters.estado) &&
-        (filters.nombre === "" || user.nombre_instructor === filters.nombre)
+        (filters.nombre === "" || 
+          user.nombre_instructor.toLowerCase().includes(filters.nombre.toLowerCase())
+        )
       );
     });
   };
@@ -232,7 +235,7 @@ export const Instructores = () => {
                         </DropdownTrigger>
                         <DropdownMenu>
                           <DropdownItem onClick={() => handleModalInstructor(user)}>Informacion</DropdownItem>
-                          <DropdownItem onClick={() => { setModalVisible(true); setInstructorSelected(user.id_instructor) }} >Editar</DropdownItem>
+                          <DropdownItem onClick={() => { setModalVisible(true); setInstructorSelected(user.id_instructor); setInstructorSelectedName(user.nombre_instructor) }} >Editar</DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
                     </TableCell>
@@ -271,19 +274,6 @@ export const Instructores = () => {
                     <Input value={instructor.cc_instructor} />
                   </div>
                   <div>
-                    <label>Contraseña:</label>
-                    <Input value={instructor.password_instructor} endContent={
-                      <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                        {isVisible ? (
-                          <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    }
-                      type={isVisible ? "text" : "password"} />
-                  </div>
-                  <div>
                     <label>Estado:</label>
                     <Input value={instructor.estado} />
                   </div>
@@ -305,7 +295,7 @@ export const Instructores = () => {
             <div className="titulo-form-MI">
               <h3>Actualizar estado instructor</h3>
             </div>
-            <Input value={instructorSelected} />
+            <Input value={instructorSelectedName} />
             <Select name='estado' onChange={(e) => setEstado(e.target.value)} placeholder='Cambiar estado'>
               <SelectItem key={'inactivo'} value={'inactivo'}>Inactivo</SelectItem>
               <SelectItem key={'activo'} value={'activo'}>Activo</SelectItem>

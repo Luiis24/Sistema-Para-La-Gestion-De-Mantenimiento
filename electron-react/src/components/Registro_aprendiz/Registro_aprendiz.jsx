@@ -31,7 +31,7 @@ export const Registro_aprendiz = () => {
 
     try {
       setIsLoading(true)
-      if(isInvalid && isInvalidDocumento){
+      if(isInvalid || isInvalidDocumento){
         toast.error('Campos llenados de manera incorrecta')
         setIsLoading(false)
         return
@@ -325,6 +325,7 @@ export const Registro_aprendiz = () => {
                   className="w-full mt-7"
                   placeholder="Escribe otro programa"
                   value={otroPrograma}
+                  onKeyPress={soloLetras}
                   onChange={handleOtroInputChange}
                 />
               ) : (

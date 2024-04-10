@@ -7,13 +7,15 @@ import { PlusIcon } from '../Aprendices/PlusIcon';
 import './Caracteristicas_maquina.css';
 import { useLoading } from '../../estados/spinner';
 import { Cargando } from '../Cargando/Cargando'
+import { DeleteIcon } from "../Tabla_insumos_ot/DeleteIcon";
 
 const Caracteristicas_maquina = () => {
     const [ultimaMaquina, setUltimaMaquina] = useState('');
     const [selectedMaquina, setSelectedMaquina] = useState('');
-    const [caracteristicas, setCaracteristicas] = useState([{ id: '', nombre: '', descripcion: '' }]);
+    const [caracteristicas, setCaracteristicas] = useState([{ id: 0, nombre: '', descripcion: '' }]);
     const [funcionMaquina, setFuncionMaquina] = useState('');
     const { isLoading, setIsLoading } = useLoading();
+    const [idCounter, setIdCounter] = useState(1);
     useEffect(() => {
         fetchMaquinas();
     }, []);
@@ -29,8 +31,7 @@ const Caracteristicas_maquina = () => {
             setIsLoading(false)
             console.error('Error al obtener las máquinas', error);
         }
-    };
-
+    };console.log(caracteristicas)
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -38,20 +39,25 @@ const Caracteristicas_maquina = () => {
         try {
             await Promise.all(
                 caracteristicas.map(async (caracteristica) => {
-                    if (caracteristica.id !== '') {
-                        // Existing characteristic, update it
-                        await axios.put(`${process.env.REACT_APP_API_BASE_URL}/Actualizar_Caracteristica_Maquina/${caracteristica.id}`, {
-                            nombre_caracteristica: caracteristica.nombre,
-                            descripcion_caracteristica: caracteristica.descripcion,
-                        });
-                    } else {
-                        // New characteristic, create it
-                        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/Crear_Caracteristica_Maquina`, {
-                            id_maquina: selectedMaquina,
-                            nombre_caracteristica: caracteristica.nombre,
-                            descripcion_caracteristica: caracteristica.descripcion,
-                        });
-                    }
+                    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/Crear_Caracteristica_Maquina`, {
+                        id_maquina: selectedMaquina,
+                        nombre_caracteristica: caracteristica.nombre,
+                        descripcion_caracteristica: caracteristica.descripcion,
+                    });
+                    // if (caracteristica.id !== '') {
+                    //     // Existing characteristic, update it
+                    //     await axios.put(`${process.env.REACT_APP_API_BASE_URL}/Actualizar_Caracteristica_Maquina/${caracteristica.id}`, {
+                    //         nombre_caracteristica: caracteristica.nombre,
+                    //         descripcion_caracteristica: caracteristica.descripcion,
+                    //     });
+                    // } else {
+                    //     // New characteristic, create it
+                    //     await axios.post(`${process.env.REACT_APP_API_BASE_URL}/Crear_Caracteristica_Maquina`, {
+                    //         id_maquina: selectedMaquina,
+                    //         nombre_caracteristica: caracteristica.nombre,
+                    //         descripcion_caracteristica: caracteristica.descripcion,
+                    //     });
+                    // }
                 })
             );
 
@@ -70,23 +76,26 @@ const Caracteristicas_maquina = () => {
         }
     };
 
-    const handleDeleteCaracteristica = async (caracteristicaId) => {
-        setIsLoading(true)
-        try {
-            await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/Eliminar_Caracteristica_Maquina/${caracteristicaId}`);
-            setIsLoading(false)
-            toast.success('Característica eliminada exitosamente');
-        } catch (error) {
-            setIsLoading(false)
-            console.error('Error al eliminar la característica de la máquina', error);
-            toast.error('Error al eliminar la característica de la máquina');
-        }
+    const handleDeleteCaracteristica = (caracteristicaIndex) => {
+        const updatedCaracteristicas = caracteristicas.filter((_, index) => index !== caracteristicaIndex);
+        setCaracteristicas(updatedCaracteristicas);
     };
 
     const scrollCarcateristicas = () => {
-        const container_cm = document.getElementById('container-col-CM')
-        container_cm.classList.add('overflow-y-scroll')
-    }
+        const container_cm = document.getElementById('container-col-CM');
+        container_cm.classList.add('overflow-y-scroll');
+    };
+
+    const addNewCaracteristica = () => {
+        const newCaracteristica = {
+            id: idCounter,
+            nombre: '',
+            descripcion: ''
+        };
+        setCaracteristicas([...caracteristicas, newCaracteristica]);
+        setIdCounter(prevCounter => prevCounter + 1);
+        scrollCarcateristicas();
+    };
 
     return (
         <div className='container-rg-caracteristicasM'>
@@ -120,21 +129,19 @@ const Caracteristicas_maquina = () => {
                                         setCaracteristicas(updatedCaracteristicas);
                                     }}
                                 />
-                                {caracteristica.id !== '' && (
-                                    <button type="button" onClick={() => handleDeleteCaracteristica(caracteristica.id)}>
-                                        Eliminar Característica
-                                    </button>
-                                )}
+                                <button
+                                    type="button"
+                                    onClick={() => handleDeleteCaracteristica(index)}
+                                >
+                                    <DeleteIcon />
+                                </button>
                             </div>
                         ))}
                     </div>
                     <div className="flex justify-end">
                         <Button
                             type="button"
-                            onClick={() => {
-                                setCaracteristicas([...caracteristicas, { id: '', nombre: '', descripcion: '' }])
-                                scrollCarcateristicas()
-                            }}
+                            onClick={addNewCaracteristica}
                             className="bg-foreground text-background h-12"
                             endContent={<PlusIcon style={{ fontSize: 'large' }} />}
                         >

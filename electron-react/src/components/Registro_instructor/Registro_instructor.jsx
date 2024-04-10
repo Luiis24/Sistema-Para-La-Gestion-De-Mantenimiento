@@ -22,8 +22,8 @@ export const Registro_instructor = () => {
 
     try {
       setIsLoading(true)
-      if(isInvalid){
-        toast.error('Contraseña insegura')
+      if(isInvalid || isInvalidDocumento || isInvalidNumero){
+        toast.error('Campos llenados de manera incorrecta')
         setIsLoading(false)
         return
       }
@@ -129,6 +129,20 @@ export const Registro_instructor = () => {
     return true;
   };
 
+  const validateDocumento = (e) => e.match(/^[0-9]{9,12}$/);
+  const isInvalidDocumento = React.useMemo(() => {
+    if (cc_instructor === "") return false;
+
+    return validateDocumento(cc_instructor) ? false : true;
+  }, [cc_instructor]);
+
+  const validateNumero = (e) => e.match(/^[0-9]{10,10}$/);
+  const isInvalidNumero = React.useMemo(() => {
+    if (telefono_instructor === "") return false;
+
+    return validateNumero(telefono_instructor) ? false : true;
+  }, [telefono_instructor]);
+
   return (
     <div className="container-registro-instructor">
       <ToastContainer />
@@ -143,6 +157,8 @@ export const Registro_instructor = () => {
             type="number"
             name="cc_instructor"
             onChange={(express) => {setCc_instructor(express.target.value)}}
+            isInvalid={isInvalidDocumento}
+            errorMessage={isInvalidDocumento && "Este campo requiere entre 9 y 12 digitos"}
           />
           <Input
             className="w-9/12 mt-8"
@@ -166,6 +182,8 @@ export const Registro_instructor = () => {
             type="number"
             name="telefono_intructor"
             onChange={(express) => setTelefono_instructor(express.target.value)}
+            isInvalid={isInvalidNumero}
+            errorMessage={isInvalidNumero && "Este campo requiere 10 digitos"}
           />
           <Input
             onChange={(express) => setPassword_instructor(express.target.value)}

@@ -20,7 +20,9 @@ export const Aprendices = () => {
     const [aprendiz, setAprendiz] = useState({})
     const [modalVisible, setModalVisible] = useState(false);
     const [estado, setEstado] = useState();
-    const [aprendizSelected, setAprendizSelected] = useState()
+    const [aprendizSelected, setAprendizSelected] = useState();
+    const [aprendizSelectedName, setAprendizSelectedName] = useState();
+
     const [filters, setFilters] = useState({
         nombre: '',
         ficha: 'all',
@@ -85,8 +87,11 @@ export const Aprendices = () => {
                 user.ficha_aprendiz === parseInt(filters.ficha)) &&
                 (filters.equipo === 'all' ||
                     user.equipo_aprendiz === filters.equipo) &&
-                (filters.nombre === '' ||
-                    user.num_doc_aprendiz === parseInt(filters.nombre))
+                (
+                    filters.nombre === '' ||
+                    user.num_doc_aprendiz.toString().includes(filters.nombre) || // Filtrar por num_doc_aprendiz
+                    user.nombre_aprendiz.toLowerCase().includes(filters.nombre.toLowerCase()) // Filtrar por nombre_aprendiz, ignorando mayúsculas y minúsculas
+                )
             )
         })
     }
@@ -171,7 +176,7 @@ export const Aprendices = () => {
                             base: "w-full",
                             inputWrapper: "border-1",
                         }}
-                            placeholder="Buscar por Nº de documento..."
+                            placeholder="Buscar por Nº de documento o nombre..."
                             startContent={<SearchIcon className="text-default-300" />}
                             onChange={handleNombre}
                         />
@@ -279,7 +284,7 @@ export const Aprendices = () => {
                                             </DropdownTrigger>
                                             <DropdownMenu>
                                                 <DropdownItem onClick={() => handleModalAprendiz(user)}>Informacion</DropdownItem>
-                                                <DropdownItem onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz) }} >Editar</DropdownItem>
+                                                <DropdownItem onClick={() => { setModalVisible(true); setAprendizSelected(user.id_aprendiz); setAprendizSelectedName(user.nombre_aprendiz) }} >Editar</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </TableCell>
@@ -299,7 +304,7 @@ export const Aprendices = () => {
                         <div className="titulo-form-MI">
                             <h3>Actualizar estado aprendiz</h3>
                         </div>
-                        <Input value={aprendizSelected} />
+                        <Input value={aprendizSelectedName} />
                         <Select name='estado' onChange={(e) => setEstado(e.target.value)} placeholder='Cambiar estado'>
                             <SelectItem key={'inactivo'} value={'inactivo'}>Inactivo</SelectItem>
                             <SelectItem key={'activo'} value={'activo'}>Activo</SelectItem>
@@ -352,19 +357,6 @@ export const Aprendices = () => {
                                     <div>
                                         <label>Ficha:</label>
                                         <Input value={aprendiz.ficha_aprendiz} />
-                                    </div>
-                                    <div>
-                                        <label>Contraseña:</label>
-                                        <Input value={aprendiz.password_aprendiz} endContent={
-                                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                                                {isVisible ? (
-                                                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                                                ) : (
-                                                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                                                )}
-                                            </button>
-                                        }
-                                            type={isVisible ? "text" : "password"} />
                                     </div>
                                     <div>
                                         <label>Programa:</label>
