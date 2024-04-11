@@ -96,7 +96,7 @@ export const Tabla_insumos_ot = ({ formInsumos, setformInsumos, handleInsumosUsa
             return;
         }
 
-        if (selectedInsumo && parseInt(formInsumos.cantidad) > parseInt(selectedInsumo.cantidad_insumo) - parseInt(selectedInsumo.insumos_en_uso)) {
+        if (selectedInsumo && parseInt(formInsumos.cantidad) > parseInt(selectedInsumo.cantidad_insumo) - parseInt(selectedInsumo.insumos_en_uso) || parseInt(formInsumos.cantidad) < 1) {
             toast.error('La cantidad ingresada supera la cantidad disponible del insumo.');
             return;
         }
