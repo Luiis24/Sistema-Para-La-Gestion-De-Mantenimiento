@@ -74,7 +74,7 @@ export const Instructores = () => {
       return (
         (filters.estado === "all" ||
           user.estado_instructor === filters.estado) &&
-        (filters.nombre === "" || 
+        (filters.nombre === "" ||
           user.nombre_instructor.toLowerCase().includes(filters.nombre.toLowerCase())
         )
       );
@@ -117,7 +117,7 @@ export const Instructores = () => {
 
   const soloLetras = (event) => {
     const charCode = event.which ? event.which : event.keyCode;
-     if (
+    if (
       charCode !== 32 && // Espacio
       (charCode < 65 || charCode > 90) && // Letras mayúsculas
       (charCode < 97 || charCode > 122) && // Letras minúsculas
@@ -272,6 +272,22 @@ export const Instructores = () => {
                   <div>
                     <label>Numero identidad:</label>
                     <Input value={instructor.cc_instructor} />
+                  </div>
+                  <div>
+                    <label>Contraseña:</label>
+                    <Input
+                      value={instructor.password_instructor}
+                      endContent={
+                        <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                          {isVisible ? (
+                            <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
+                      type={isVisible ? "text" : "password"}
+                    />
                   </div>
                   <div>
                     <label>Estado:</label>

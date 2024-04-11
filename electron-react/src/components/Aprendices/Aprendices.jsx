@@ -363,6 +363,22 @@ export const Aprendices = () => {
                                         <Input value={aprendiz.programa_aprendiz} />
                                     </div>
                                     <div>
+                                        <label>Contraseña:</label>
+                                        <Input
+                                            value={aprendiz.password_aprendiz}
+                                            endContent={
+                                                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                                    {isVisible ? (
+                                                        <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                                    ) : (
+                                                        <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                                    )}
+                                                </button>
+                                            }
+                                            type={isVisible ? "text" : "password"}
+                                        />
+                                    </div>
+                                    <div>
                                         <label>Estado:</label>
                                         <Input value={aprendiz.estado} />
                                     </div>
