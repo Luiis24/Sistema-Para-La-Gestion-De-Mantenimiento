@@ -1,0 +1,88 @@
+.inicio_sesion{
+    background-color: rgb(237, 237, 237);
+    box-shadow: 3px 3px 10px 2px rgba(0,0,0,0.26);
+    width: 350px;
+    height: 335px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+    font-weight: bold;
+}
+.titulo-sesion{
+    font-size: 27px;
+    margin-bottom: 7%;
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    user-select: none;
+}
+
+.btn-iniciar-ses{
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    margin-top: 10%;
+}
+.boton-iniciar{
+    text-decoration: none;
+    border-style: none;
+    padding:9px;
+    border-radius:15px;
+    text-decoration: none;
+    font-weight: bold;
+    color:white;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgb(0, 173, 0);
+    width: 60%;
+}
+.boton-iniciar:hover{
+    background: rgb(0, 153, 0);
+}
+.boton-iniciar:active{
+    background: rgb(0, 193, 0);
+}
+.complete{
+    margin-top: 6%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.numid{
+ padding: 2px;
+ margin-left: 10%;
+ user-select: none;
+ font-size: 17px;
+}
+.cont{
+font-size: 17px;
+padding: 2px;
+margin-top: 6%;
+user-select: none;
+}
+.inpt-cc{
+font-family: sans-serif;
+background-color: rgb(215, 215, 215);
+color: rgb(117, 117, 117);
+border-radius: 10px;
+padding: 5px;
+border-style: none;
+margin-left: 2%;
+margin-top: 2%;
+width: 75%;
+ color: black;
+}
+.inpt-pass{
+font-family: sans-serif;
+background-color: rgb(215, 215, 215);
+color: gray;
+border-radius: 10px;
+padding: 5px;
+border-style: none;
+margin-top: 2%;
+width: 75%;
+}

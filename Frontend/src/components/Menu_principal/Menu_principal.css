@@ -1,0 +1,119 @@
+.tarjetas{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5%;
+
+}
+.TFSA-tarjetas{
+    display: flex;
+    margin-bottom: -13.5%;
+
+}
+.EAI-tarjetas{
+    display: flex;
+}
+.cnc-y-comp-tarjetas{
+display: flex;
+}
+
+.tornos-tarjeta,
+.sierra-tarjeta,
+.esmeriles-tarjeta,
+.fresadoras-tarjeta{
+      cursor: pointer;
+     width: 246px;
+    height: 135px;
+}
+
+
+.tornos-tarjeta{
+    margin-right: 0.5%;
+}
+
+.cnc-tarjeta{
+      width: 244.5px;
+    height: 135px;
+        margin-right: 0.5%;
+            margin-top: -0.1%;  
+}
+
+.esmeriles-tarjeta{ 
+    width: 247px;
+    height: 135px;
+        margin-right: 0.5%;
+    }
+.fresadoras-tarjeta{
+        margin-right: 0.5%;
+}
+
+.sierra-tarjeta{
+        margin-right: 0.5%;  
+}
+
+.aprendices-tarjeta,
+.informes-tarjeta{
+width: 381.5px;
+    height: 135px;
+    cursor: pointer;
+}
+
+.aprendices-tarjeta{
+        margin-right: 0.5%;
+}
+
+.compresor-tarjeta{
+    width: 495.5px;
+    height: 135px;
+     margin-bottom: 0.5%;
+     margin-top: -0.1%;
+     cursor: pointer;
+}
+
+
+.almacen-tarjeta{
+    width: 261px;
+    height: 275px;
+    margin-bottom: 0.2%;
+    cursor: pointer;
+
+}
+
+.img-cnc,
+.img-torno,
+.img-sierra,
+.img-esmeril,
+.img-almacen,
+.img-informes,
+.img-compresor,
+.img-aprendices,
+.img-fresadora{
+     width: 100%;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.img-cnc:hover,
+.img-torno:hover,
+.img-sierra:hover,
+.img-almacen:hover,
+.img-esmeril:hover,
+.img-informes:hover,
+.img-compresor:hover,
+.img-aprendices:hover,
+.img-fresadora:hover{
+    filter: blur(1px)  invert(5%);
+}
+
+.img-cnc:active,
+.img-torno:active,
+.img-sierra:active,
+.img-almacen:active,
+.img-esmeril:active,
+.img-informes:active,
+.img-compresor:active,
+.img-aprendices:active,
+.img-fresadora:active{
+    filter: invert(10%);
+}
+
+
