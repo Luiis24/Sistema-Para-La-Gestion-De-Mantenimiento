@@ -1,3 +1,5 @@
+##SGMI
+
 Descripción del Proyecto:
 
 Contexto del Proyecto:
@@ -54,5 +56,16 @@ Desarrollo Continuo:
 
 Estado Actual y Futuro:
 
-Actualmente, el proyecto se encuentra en fase de desarrollo activo.
-Estamos trabajando en terminar el desarollo del proyecto.
+Actualmente, el proyecto NO se encuentra en fase de desarrollo activo.
+Proximamente se estara trabajando en terminar el desarollo del proyecto.
+
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/5585843e-4ed3-4e4d-bb1e-377cb1bed000" />
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/1c37eb0d-20a8-431c-83ba-f1a7d630a5af" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/400d1b2c-722f-4d75-bca0-c9fbe50960c2" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/f29894b1-ed66-4643-9299-fff475624787" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/5ff1eb05-f57b-47a3-98af-fcfa1a2bf79d" />
+
+
+
+
+
